@@ -1,0 +1,220 @@
+---
+alwaysApply: true
+---
+# Programming Idioms, Philosophies, and Principles
+
+## Core Programming Philosophy
+
+### Fail-Fast Philosophy
+- **Immediate Failure**: If something is unexpected, fail immediately with a clear error
+- **No Fallback Logic**: Do not write fallback logic that hides the problem, unless explicitly stated
+- **Default Case Failure**: In if-else-if or switch-case, use the default case to fail, not to provide fallback behavior
+- **No Silent Failures**: System should never continue running in an invalid state
+- **Clear Error Messages**: Provide specific, actionable error messages with context information
+
+### Code Organization Principles
+- **Blank Lines Between Paragraphs**: Always make a blank line between "paragraphs" within a code implementation. A paragraph is a series of lines that implement a single step within a function/method/code implementation
+- **DRY Principle**: Don't repeat yourself - eliminate code duplication
+- **RAII Principle**: Resource Acquisition Is Initialization - use for resource management (memory is also a resource)
+- **Single Responsibility**: Each function/method should have one clear purpose
+- **Separation of Concerns**: Clear boundaries between different layers and responsibilities
+- **Strong typing**: Always prefer explicit typing. For weak typing languages, use type hints.
+
+## Type Safety and Validation
+
+### Strict Typing Philosophy
+- **Pydantic Models**: Use Pydantic models for all data structures instead of dictionaries
+- **Compile-time Validation**: Prefer compile-time validation over runtime checks
+- **Type Annotations**: Always use proper type annotations
+- **Enum Usage**: Use enums directly instead of string literals, only extract `.value` when specifically needed
+- **No Type Casting**: Avoid type casting unless absolutely necessary
+
+### Data Structure Principles
+- **Self-Documenting Code**: Data structures should be self-documenting through type definitions
+- **Validation Rules**: Define clear validation rules in Pydantic models
+- **No Dictionary Usage**: Replace dictionary usage with strict schemas
+- **Clear Field Naming**: Use explicit field names that indicate content (e.g., `agent_id` not `agent`)
+
+## Architecture Patterns
+
+### Manager Pattern
+- **Global Registry**: Use global manager registry with centralized initialization
+- **Manager Aliases**: Provide direct function access (`agent_manager()`, `tool_manager()`) for current instances
+- **No Local Copies**: Never store manager instances locally, always access via aliases
+- **Centralized Initialization**: Single initialization point for all managers
+- **Manager Isolation**: Only managers access their respective configuration files
+
+### Message-Driven Architecture
+- **Pure Direct UI Communication**: Each handler is responsible for its own UI communication and history management
+- **No Return Values for UI**: UI communication methods should return `None`, not data
+- **Message Passing**: Use message passing for component communication
+- **Event-Driven**: Prefer event-driven over return-value orchestration
+
+### Active Object Pattern
+- **Agent-Level Queues**: Each agent has its own task queue for sequential processing
+- **Sequential Execution**: Ensure all operations on an object are processed in order
+- **Race Condition Prevention**: Use queues to prevent race conditions within an agent
+- **Concurrent Across Agents**: Allow concurrent processing across different agents
+
+## Error Handling
+
+### Exception Handling Philosophy
+- **Raise Don't Log**: Always raise exceptions instead of logging and continuing
+- **Proper HTTP Status Codes**: Use appropriate HTTP status codes (400 for validation, 500 for runtime errors)
+- **Detailed Error Context**: Include relevant context in error messages
+- **No Try-Catch Hiding**: Don't use try-catch to hide errors
+- **Fail-Fast Transport**: WebSocket methods should raise on missing/invalid connections
+
+### Error Recovery
+- **LLM Auto-Recovery**: Provide feedback to LLM for invalid requests to allow recovery
+- **User Guidance**: Give clear suggestions for fixing issues
+- **Graceful Degradation**: When possible, provide alternative paths
+- **Error Propagation**: Let errors bubble up to appropriate handling layers
+
+## Code Quality
+
+### Clean Code Principles
+- **Meaningful Names**: Use descriptive variable and function names
+- **Small Functions**: Keep functions small and focused
+- **No Dead Code**: Remove unused code, methods, and imports
+- **Consistent Formatting**: Maintain consistent code formatting
+- **Clear Comments**: Write comments that explain "why" not "what"
+
+### Code Organization
+- **Logical Grouping**: Group related methods together
+- **Public Before Private**: Order methods: constructor, properties, public methods, private methods
+- **Consistent Patterns**: Use consistent patterns throughout the codebase
+- **Modular Design**: Each component should be independent and testable
+ndle WebSocket disconnections gracefully
+
+## Data Management
+
+### Configuration Management
+- **YAML Configuration**: Use YAML for human-readable configuration
+- **Version Control**: Keep configuration files in version control
+- **Runtime Discovery**: Combine static configuration with runtime discovery
+- **No Hardcoding**: Avoid hardcoded values in code
+
+### State Management
+- **Thread Safety**: Use proper locking mechanisms for shared resources
+- **Immutable When Possible**: Prefer immutable data structures
+- **State Isolation**: Keep state isolated to appropriate components
+- **Clear State Transitions**: Make state transitions explicit and clear
+
+
+
+## Testing and Validation
+
+### Testing Philosophy
+- **Fail-Fast Testing**: Tests should fail fast and provide clear error messages
+- **Comprehensive Coverage**: Test all code paths
+- **Integration Testing**: Test component integration
+- **Validation Testing**: Test data validation thoroughly
+
+### Quality Assurance
+- **Type Checking**: Use strict type checking
+- **Linting**: Use linting tools to catch issues early
+- **Code Review**: Review code for adherence to principles
+- **Documentation**: Keep documentation up to date
+
+## User Experience
+
+### UI/UX Principles
+- **Responsive Design**: Design for different screen sizes
+- **Accessibility**: Ensure accessibility standards are met
+- **User Feedback**: Provide clear feedback for user actions
+- **Error Prevention**: Design to prevent user errors
+
+### Real-time Communication
+- **Immediate Feedback**: Provide immediate feedback for user actions
+- **Status Updates**: Show clear status updates
+- **Loading States**: Use appropriate loading states
+- **Error Recovery**: Provide clear error recovery paths
+
+## Security
+
+### Security Principles
+- **Input Validation**: Validate all inputs
+- **No Sensitive Data in Logs**: Never log sensitive information
+- **Proper Authentication**: Implement proper authentication when needed
+- **Secure Communication**: Use secure communication protocols
+
+## Development Workflow
+
+### Development Practices
+- **Single Server Approach**: Prefer single server over multiple servers
+- **Direct File Serving**: Serve files directly when possible
+- **Unified Scripts**: Use unified scripts for common tasks
+- **TypeScript Compilation**: Check TypeScript compilation for code quality
+
+### Version Control
+- **Clear Commit Messages**: Write clear, descriptive commit messages
+- **Feature Branches**: Use feature branches for development
+- **Code Review**: Require code review for all changes
+- **Continuous Integration**: Use CI/CD for automated testing
+
+## Specific Technical Patterns
+
+### Pydantic Usage
+- **Model Validation**: Use Pydantic for automatic validation
+- **Default Factories**: Use `default_factory` for auto-generating fields
+- **Field Types**: Use appropriate field types with validation
+- **Model Methods**: Add methods to Pydantic models when appropriate
+
+### Async Programming
+- **Proper Async/Await**: Use async/await correctly
+- **Task Scheduling**: Use proper task scheduling for background work
+- **Error Handling**: Handle async errors properly
+- **Resource Cleanup**: Ensure proper cleanup of async resources
+
+### WebSocket Patterns
+- **Connection Tracking**: Track connections properly
+- **Message Routing**: Route messages to appropriate handlers
+- **Error Recovery**: Handle WebSocket errors gracefully
+- **Reconnection Logic**: Implement proper reconnection logic
+
+## Code Review Checklist
+
+### Before Submitting Code
+- [ ] Follows fail-fast philosophy
+- [ ] Uses proper type annotations
+- [ ] No code duplication (DRY)
+- [ ] Proper error handling
+- [ ] Thread-safe when needed
+- [ ] No dead code
+- [ ] Clear and meaningful names
+- [ ] Proper documentation
+- [ ] Tests included
+- [ ] Follows established patterns
+
+### Code Quality Checks
+- [ ] Passes linting
+- [ ] Type checking passes
+- [ ] All tests pass
+- [ ] No performance regressions
+- [ ] Security review completed
+- [ ] Documentation updated
+- [ ] Code review completed
+
+## Anti-Patterns to Avoid
+
+### Common Mistakes
+- **Silent Failures**: Never hide errors or continue in invalid state
+- **Type Casting**: Avoid unnecessary type casting
+- **Global State**: Minimize global state usage
+- **Tight Coupling**: Avoid tight coupling between components
+- **Magic Numbers**: Use named constants instead of magic numbers
+- **Long Functions**: Avoid functions longer than 20-30 lines
+- **Nested Conditionals**: Avoid deeply nested conditionals
+- **Code Duplication**: Never duplicate code logic
+
+### Performance Anti-Patterns
+- **Premature Optimization**: Don't optimize before profiling
+- **Memory Leaks**: Ensure proper resource cleanup
+- **Blocking Operations**: Avoid blocking operations in async code
+- **Inefficient Algorithms**: Choose appropriate algorithms
+
+## Bug fixing and confidence
+- If you are not 100% confident in a bug fix you write, add logs that their output, or lack of output, would increase your confidence in the fix, or show you that the fix is incorrect
+
+This comprehensive list should serve as a pre-prompt for future sessions to ensure consistent adherence to your preferred programming styles and principles.

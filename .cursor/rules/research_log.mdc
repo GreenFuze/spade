@@ -1,0 +1,17 @@
+---
+alwaysApply: true
+---
+
+# research_log.md
+- Maintain `research_log.md` - a chronological log of our thinking process and research step.
+- This file logs the steps we're doing as we perform this research in concise manner.
+- If the file doesn't exist, log everything you know we did so far concisely
+- Append the steps we're doing and the reasons we do it in a conside manner.
+- `research_log.md` is not a programming or change log, but a research log.
+- format: "[current time] - [what we changes and why concisely]"
+
+
+# knowledgebase.md
+- Maintain `knowledgebase.md` - a change and programming log
+- This file contains comprehensive information of the project code, structure, features and bug fixes.
+- This file is used for every new session taht starts working on this project to be up to date
