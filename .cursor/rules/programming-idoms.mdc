@@ -208,6 +208,7 @@ ndle WebSocket disconnections gracefully
 - **Nested Conditionals**: Avoid deeply nested conditionals
 - **Code Duplication**: Never duplicate code logic
 
+
 ### Performance Anti-Patterns
 - **Premature Optimization**: Don't optimize before profiling
 - **Memory Leaks**: Ensure proper resource cleanup

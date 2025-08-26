@@ -1,0 +1,52 @@
+{
+  "inferred": {
+    "high_level_components": [
+      {
+        "name": "core_module",
+        "role": "Core code inferred from directory metadata.",
+        "dirs": [
+          "."
+        ],
+        "evidence": [
+          {
+            "type": "name",
+            "value": "."
+          }
+        ],
+        "confidence": 0.5
+      }
+    ],
+    "nodes": {
+      ".": {
+        "summary": ". appears to contain unknown code; metadata-only summary.",
+        "languages": [
+          "unknown"
+        ],
+        "tags": [
+          ".github/workflows/",
+          "dockerfile",
+          "package.json"
+        ],
+        "evidence": [
+          {
+            "type": "name",
+            "value": "."
+          }
+        ],
+        "confidence": 0.6
+      }
+    }
+  },
+  "nav": {
+    "descend_into": [
+      "tests",
+      "src"
+    ],
+    "descend_one_level_only": true,
+    "reasons": [
+      "tests: deterministic_scoring",
+      "src: deterministic_scoring"
+    ]
+  },
+  "open_questions_ranked": []
+}

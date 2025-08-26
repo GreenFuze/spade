@@ -1,0 +1,14 @@
+{
+  "test": {
+    "summary": "Test node",
+    "languages": [
+      "python"
+    ],
+    "tags": [
+      "test"
+    ],
+    "evidence": [],
+    "confidence": 0.8,
+    "last_updated_step": 5
+  }
+}

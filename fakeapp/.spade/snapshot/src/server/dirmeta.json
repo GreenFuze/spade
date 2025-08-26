@@ -1,0 +1,28 @@
+{
+  "path": "src/server",
+  "depth": 2,
+  "counts": {
+    "files": 1,
+    "dirs": 0
+  },
+  "ext_histogram": {
+    "py": 1
+  },
+  "markers": [],
+  "samples": {
+    "dirs": [],
+    "files": [
+      "server.py"
+    ]
+  },
+  "siblings": [],
+  "excluded_children": [],
+  "is_symlink": false,
+  "ignored_reason": null,
+  "staleness_fingerprint": {
+    "latest_modified_time": "2025-08-25T12:27:36.630141Z",
+    "total_entries": 1,
+    "name_hash": "bd733707dab18de475869acb30566c6803a77d7c"
+  },
+  "deterministic_scoring": {}
+}

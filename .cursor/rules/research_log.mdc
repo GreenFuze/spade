@@ -9,6 +9,7 @@ alwaysApply: true
 - Append the steps we're doing and the reasons we do it in a conside manner.
 - `research_log.md` is not a programming or change log, but a research log.
 - format: "[current time] - [what we changes and why concisely]"
+- to get the current date and time, use the terminal
 
 
 # knowledgebase.md

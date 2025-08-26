@@ -1,0 +1,28 @@
+{
+  "path": "src/web",
+  "depth": 2,
+  "counts": {
+    "files": 1,
+    "dirs": 0
+  },
+  "ext_histogram": {
+    "html": 1
+  },
+  "markers": [],
+  "samples": {
+    "dirs": [],
+    "files": [
+      "index.html"
+    ]
+  },
+  "siblings": [],
+  "excluded_children": [],
+  "is_symlink": false,
+  "ignored_reason": null,
+  "staleness_fingerprint": {
+    "latest_modified_time": "2025-08-25T12:27:36.633714Z",
+    "total_entries": 1,
+    "name_hash": "e457e356e5bbbb4b33c5ac0a6a123f3c5d1476f4"
+  },
+  "deterministic_scoring": {}
+}

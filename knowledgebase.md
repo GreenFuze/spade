@@ -2,346 +2,333 @@
 
 ## Project Overview
 
-**SPADE** (Software Program Architecture Discovery Engine) is a tool for inferring software architecture from codebases. **Phase 0 "Startup"** focuses on directory-based scaffold inference using LLMs.
+**SPADE** (Software Program Architecture Discovery Engine) is a tool for inferring software architecture from codebases. **Phase 0 "Directory-based Scaffold Inference"** focuses on using LLMs to infer architectural big blocks from repository directory structures.
 
 ### Core Philosophy
 - **No hardcoded language heuristics** - LLM infers everything from directory structure
-- **No AST/CPG analysis** - Only directory names and structure
+- **No AST/CPG analysis** - Only directory names and structure  
 - **No code execution** - Pure static analysis
 - **No web/RAG** - Self-contained operation
 - **Object-oriented design** - Clean separation of concerns
+- **Strict data validation** - Pydantic v2 for all schemas
+- **Centralized configuration** - Single source of truth for all settings
 
 ## Architecture
 
 ### File Structure
 ```
 spade/
-├── main.py              # CLI entry point
-├── agent.py             # Core OOP implementation
-├── logger.py            # Centralized logging
-├── prompts/
-│   ├── phase0_scaffold_system.md
-│   └── phase0_scaffold_user.md
+├── main.py              # CLI entry point with subcommands
+├── cli/                 # CLI command implementations
+├── models.py            # Pydantic v2 schemas (RunConfig, DirMeta, etc.)
+├── workspace.py         # Workspace management and configuration
+├── snapshot.py          # Directory snapshot and metadata generation
+├── ignore.py            # Skip logic using .spadeignore/.spadeallow
+├── markers.py           # Marker detection and rules
+├── languages.py         # Language mapping and aggregation
+├── scoring.py           # Deterministic scoring for children
+├── context.py           # Phase-0 context builder
+├── scaffold.py          # Scaffold store and merge semantics
+├── prompts.py           # Prompt loading and management
+├── llm.py               # LLM client with JSON repair
+├── nav.py               # Navigation guardrails and fallback
+├── phase0.py            # Phase-0 traversal loop and analysis
+├── learning.py          # Post-snapshot learning passes
+├── sanitize.py          # LLM output sanitization and guardrails
+├── worklist.py          # Worklist management and persistence
+├── report.py            # Report generation (JSON and Markdown)
+├── agent.py             # Legacy agent implementation
+├── logger.py            # Centralized logging singleton
+├── prompts/             # Prompt templates
+├── tests/               # Comprehensive test suite (83 tests)
+│   ├── conftest.py      # Test fixtures and helpers
+│   ├── test_*.py        # Unit and integration tests
+├── fakeapp/             # Test application for integration tests
 ├── requirements.txt     # Python dependencies
-├── README.md           # User documentation
-└── knowledgebase.md    # This file
+├── research_log.md      # Development process documentation
+└── knowledgebase.md     # This file
 ```
 
-### Core Classes (agent.py)
+### Core Components
 
-#### 1. `Telemetry`
-- **Purpose**: Capture and persist run statistics
-- **Key Features**:
-  - Run ID, timestamps, wall clock time
-  - Scan statistics (dir count, depth, entries, skipped)
-  - LLM statistics (attempts, chars, latency, retries)
-  - Scaffold statistics (blocks, confidence, questions)
-  - Success/failure tracking
-- **Output**: JSONL format for historical analysis
+#### 1. **Configuration System** (`models.py`, `workspace.py`)
+- **RunConfig**: Centralized configuration with Pydantic validation
+- **Caps**: Configurable limits for samples, navigation, context, sanitizer
+- **Policies**: Runtime policies for learning, telemetry, timestamps
+- **Workspace**: Configuration loading and management
 
-#### 2. `DirectorySnapshot`
-- **Purpose**: Scan directory tree and create structured entries
-- **Key Features**:
-  - Configurable depth and entry limits
-  - Noise filtering (`.git`, `.spade`, `node_modules`, etc.)
-  - Permission error handling
-  - Deterministic sorting
-  - Unlimited mode support (`0` = unlimited)
-- **Output**: List of directory entries with metadata
+#### 2. **Data Models** (`models.py`)
+- **DirMeta**: Directory metadata with counts, extensions, scoring
+- **ChildScore**: Deterministic scoring for directory children
+- **LLMResponse**: Structured LLM output with components and questions
+- **WorklistItem**: Traversal worklist items with state tracking
 
-#### 3. `PromptLoader`
-- **Purpose**: Load system and user prompt templates
-- **Key Features**:
-  - Template loading from `prompts/` directory
-  - UTF-8 encoding support
-  - Fail-fast on missing files
-- **Templates**: System instructions + user context injection
+#### 3. **Snapshot System** (`snapshot.py`)
+- **Directory scanning**: DFS traversal with depth limits
+- **Metadata generation**: File counts, extension histograms, timestamps
+- **Deterministic scoring**: Evidence-based scoring for children
+- **Extension rules**: Multi-dot extensions, hidden files, no-extension files
 
-#### 4. `LLMClient`
-- **Purpose**: Interface with LLM via `llm` Python package
-- **Key Features**:
-  - Configurable model selection
-  - Retry logic for JSON parsing failures
-  - Comprehensive logging of input/output
-  - Statistics collection
-- **Default Model**: `gpt-5-nano`
+#### 4. **Ignore Engine** (`ignore.py`)
+- **Pattern matching**: `pathspec` library with `gitwildmatch` patterns
+- **Allow overrides**: `.spadeallow` can override `.spadeignore`
+- **Symlink policy**: Configurable symlink handling
+- **Complex patterns**: Support for complex ignore/allow rules
 
-#### 5. `Phase0Context`
-- **Purpose**: Build LLM input context from directory snapshot
-- **Key Features**:
-  - Repository metadata (root path, git presence)
-  - Directory structure data
-  - Scan limits information
-- **Output**: Structured JSON for LLM consumption
+#### 5. **Navigation System** (`nav.py`)
+- **Guardrails**: Depth limits, safe names, ignore patterns
+- **Max children caps**: Configurable limits per navigation step
+- **Deterministic fallback**: Safe navigation when LLM fails
+- **Path validation**: Ensure updates only apply to current/ancestors
 
-#### 6. `ScaffoldWriter`
-- **Purpose**: Persist outputs to `.spade/` directory
-- **Key Features**:
-  - Context JSON output
-  - Scaffold JSON with version/timestamp
-  - Telemetry JSONL append
-  - Automatic directory creation
-- **Output Files**:
-  - `phase0_context.json`
-  - `scaffold.json`
-  - `telemetry.jsonl`
+#### 6. **Context Building** (`context.py`)
+- **Token-safe caps**: Configurable limits for context elements
+- **Ancestor information**: Build ancestor chain from scaffold data
+- **Context metadata**: Inform LLM about truncation
+- **Phase-0 context**: Exact schema for LLM consumption
 
-#### 7. `Phase0Agent`
-- **Purpose**: Main orchestrator for Phase 0 execution
-- **Key Features**:
-  - 8-step execution pipeline
-  - Exception handling and telemetry
-  - Component coordination
-  - Success/failure reporting
+#### 7. **LLM Integration** (`llm.py`)
+- **JSON repair**: One-shot repair for malformed JSON
+- **Strict validation**: Pydantic validation of LLM responses
+- **Retry logic**: Automatic retry on parse failures
+- **Transport abstraction**: Support for different LLM backends
+
+#### 8. **Sanitization** (`sanitize.py`)
+- **Output sanitization**: Post-process LLM responses
+- **Language canonicalization**: Map language names to canonical forms
+- **Confidence punishment**: Reduce confidence for insufficient evidence
+- **Configurable caps**: Limits on summaries, languages, tags, evidence
+
+#### 9. **Learning System** (`learning.py`)
+- **Marker learning**: Learn new markers from repository structure
+- **Language learning**: Learn new language mappings
+- **Post-snapshot passes**: Re-run learning after snapshot completion
+- **Re-scoring**: Update scores based on learned information
+
+#### 10. **Phase-0 Engine** (`phase0.py`)
+- **DFS traversal**: Depth-first search with worklist management
+- **Analysis persistence**: Save analysis results to scaffold
+- **Telemetry collection**: Comprehensive run statistics
+- **Resume capability**: Continue from worklist state
 
 ## Implementation Details
 
-### CLI Interface (main.py)
+### CLI Interface (`main.py`, `cli/`)
 
-#### Argument Parsing
-- **Command Format**: `python main.py <repo_path> [options]`
-- **Options**:
-  - `--model MODEL_ID`: LLM model (default: `gpt-5-nano`)
-  - `--max_depth N`: Scan depth (default: `3`, `0` = unlimited)
-  - `--max_entries N`: Entries per dir (default: `40`, `0` = unlimited)
-  - `--fresh`: Delete `.spade` directory before running
-  - `--help`: Show usage and exit
+#### Command Structure
+```bash
+python main.py <command> [options]
+```
+
+#### Commands
+- **`--init-workspace`**: Initialize .spade workspace directory
+- **`--clean`**: Clean .spade workspace directory
+- **`phase0 [options]`**: Run Phase-0 analysis
+- **`phase0 inspect <relpath>`**: Preview Phase-0 context for debugging
 
 #### Key Features
-- **Robust validation**: Type checking, range validation
-- **Help system**: Multiple `--help` locations supported
-- **Signal handling**: CTRL+C hard shutdown
-- **Resource management**: Logger file handle conflict resolution
+- **Subcommand architecture**: Clean separation of functionality
+- **Configuration-driven**: All settings via `run.json`
+- **Error handling**: Comprehensive error reporting and logging
+- **Telemetry**: Automatic collection of run statistics
+- **Safety features**: Lock management and graceful shutdown
+- **Debug tools**: Context inspection and preview generation
 
-### Logging System (logger.py)
+### Configuration System
 
-#### Configuration
-- **File Output**: `DEBUG` level to `.spade/spade.log`
-- **Console Output**: `INFO` level to stdout
-- **Format**: Timestamp, logger name, level, message
-- **Encoding**: UTF-8
-
-#### Special Logging
-- **LLM Input**: `------\nUser: {prompt}`
-- **LLM Output**: `-------\nAgent: {response}`
-- **Debug Level**: All operational details logged
-
-### Directory Scanning
-
-#### Unlimited Mode
-- **Depth**: `0` triggers `os.walk()` for unlimited depth
-- **Entries**: `0` removes list truncation
-- **Logging**: Shows "unlimited" instead of "0"
-
-#### Noise Filtering
+#### RunConfig Schema
 ```python
-SKIP_DIRS = {
-    ".git", ".spade", ".idea", ".vscode", "__pycache__",
-    "node_modules", "dist", "build", "target", "bin", "obj"
-}
+class RunConfig(BaseModel):
+    caps: Caps                    # Configurable limits
+    policies: Policies           # Runtime policies
+    llm: LLMConfig              # LLM settings
+    telemetry: TelemetryConfig  # Telemetry settings
 ```
 
-#### Error Handling
-- **Permission Errors**: Graceful handling with empty entries
-- **Path Resolution**: Skip non-relative paths
-- **Fail-Fast**: Unexpected errors raise exceptions
-
-### LLM Integration
-
-#### Model Configuration
-- **Default**: `gpt-5-nano`
-- **Configurable**: Via `--model` switch
-- **Library**: Uses `llm` Python package
-
-#### Retry Logic
-- **Attempts**: Maximum 2 attempts
-- **JSON Parsing**: Automatic retry on parse failure
-- **Strict Reminder**: "Output ONLY valid JSON" on retry
-
-#### Prompt Engineering
-- **System Prompt**: Instructions and JSON schema
-- **User Prompt**: Context injection with `{{PHASE0_CONTEXT_JSON}}`
-- **Schema**: Structured output with confidence scores
-
-### Output Schemas
-
-#### Phase 0 Context
-```json
-{
-  "repo": {
-    "root": "absolute/path",
-    "git_present": true
-  },
-  "dirs": [
-    {
-      "path": "relative/path",
-      "depth": 2,
-      "entry_count": 15,
-      "subdir_count": 3,
-      "sample_entries": ["file1.py", "dir1"]
-    }
-  ],
-  "limits": {
-    "max_depth": 3,
-    "max_entries_per_dir": 40
-  }
-}
+#### Caps Configuration
+```python
+class Caps(BaseModel):
+    samples: Samples            # Sample limits (max_dirs, max_files)
+    nav: Nav                   # Navigation limits (max_children_per_step)
+    context: Context           # Context limits (max_siblings, etc.)
+    sanitizer: Sanitizer       # Sanitizer limits (max_summary_chars, etc.)
 ```
 
-#### Scaffold Output
-```json
-{
-  "version": "0.1",
-  "ts": "2024-01-01T12:00:00Z",
-  "inferred": {
-    "big_blocks": [
-      {
-        "name": "Core Engine",
-        "description": "Main processing logic",
-        "confidence": 85,
-        "evidence": ["src/core/", "engine.py"]
-      }
-    ]
-  },
-  "open_questions_ranked": [
-    "What is the primary data flow?",
-    "How are components coupled?"
-  ],
-  "notes": "Phase 0 scaffold inferred from directory structure/names only."
-}
+### Data Validation
+
+#### Pydantic v2 Integration
+- **Strict validation**: All data structures validated at runtime
+- **Type safety**: Comprehensive type hints throughout
+- **Error messages**: Clear validation error messages
+- **Serialization**: Automatic JSON serialization/deserialization
+
+#### Schema Examples
+```python
+class DirMeta(BaseModel):
+    path: str
+    counts: DirCounts
+    ext_histogram: Optional[Dict[str, int]]
+    deterministic_scoring: Optional[Dict[str, ChildScore]]
+    timestamp: str
+
+class ChildScore(BaseModel):
+    score: float
+    reasons: List[str]
+    evidence: List[str]
 ```
 
-#### Telemetry
-```json
-{
-  "run_id": "uuid",
-  "repo_root": "path",
-  "model_id": "gpt-5-nano",
-  "started_at": "2024-01-01T12:00:00Z",
-  "finished_at": "2024-01-01T12:01:00Z",
-  "wall_ms": 60000.0,
-  "dir_count": 25,
-  "max_depth": 3,
-  "max_entries": 40,
-  "skipped_dirs": [".git", "node_modules"],
-  "llm_attempts": 1,
-  "llm_prompt_chars": 5000,
-  "llm_response_chars": 800,
-  "llm_latency_ms": 2500.0,
-  "llm_parse_retries": 0,
-  "scaffold_big_blocks_count": 4,
-  "scaffold_conf_min": 25,
-  "scaffold_conf_max": 90,
-  "scaffold_conf_avg": 65.5,
-  "scaffold_questions_count": 3,
-  "success": true,
-  "error_message": null
-}
+### Testing Framework
+
+#### Test Organization
+- **83 total tests**: Comprehensive coverage of all components
+- **Unit tests**: Isolated component testing with fixtures
+- **Integration tests**: End-to-end testing with fakeapp
+- **Pytest framework**: Modern Python testing with fixtures
+
+#### Test Categories
+- **Core mechanics**: Ignore engine, navigation, snapshot, scoring
+- **Context building**: Token-safe caps and context generation
+- **Sanitization**: Output processing and normalization
+- **Integration**: Full Phase-0 workflow testing
+
+#### Test Structure
 ```
-
-## Development Decisions
-
-### 1. Object-Oriented Design
-- **Rationale**: Clean separation of concerns, testability, maintainability
-- **Implementation**: 7 distinct classes with clear responsibilities
-- **Benefits**: Modular, extensible, easy to understand
-
-### 2. Command-Line Arguments vs Environment Variables
-- **Decision**: CLI switches for `max_depth` and `max_entries`
-- **Rationale**: More explicit, better user experience, easier debugging
-- **Implementation**: Robust argument parsing with validation
-
-### 3. Unlimited Mode Implementation
-- **Decision**: Use `0` for unlimited (not `-1`)
-- **Rationale**: More intuitive, non-negative validation
-- **Implementation**: Conditional logic in scanning methods
-
-### 4. Logging Strategy
-- **Decision**: Separate `logger.py` module
-- **Rationale**: Centralized configuration, reusability
-- **Implementation**: File + console handlers with different levels
-
-### 5. Resource Management
-- **Issue**: Logger file handle conflicts with `--fresh`
-- **Solution**: Initialize agent after directory deletion
-- **Rationale**: Prevent file handle conflicts during deletion
-
-### 6. Error Handling Philosophy
-- **Approach**: Fail-fast with clear error messages
-- **Implementation**: Comprehensive validation, graceful degradation
-- **Benefits**: Better debugging, user experience
+tests/
+├── conftest.py              # Shared fixtures and helpers
+├── test_ignore.py           # Ignore engine tests (8 tests)
+├── test_nav.py              # Navigation tests (5 tests)
+├── test_snapshot_exts.py    # Snapshot extension tests (4 tests)
+├── test_scoring.py          # Scoring tests (3 tests)
+├── test_sanitize.py         # Sanitization tests (4 tests)
+├── test_context_caps.py     # Context caps tests (4 tests)
+├── test_*.py                # Integration and acceptance tests
+```
 
 ## Current State
 
-### ✅ Completed Features
-1. **Core Architecture**: All 7 classes implemented and tested
-2. **CLI Interface**: Robust argument parsing with help system
-3. **Directory Scanning**: Configurable depth/entries with unlimited mode
-4. **LLM Integration**: Retry logic, comprehensive logging
-5. **Output Generation**: Context, scaffold, and telemetry files
-6. **Logging System**: File and console output with debug details
-7. **Error Handling**: Graceful degradation and clear error messages
-8. **Resource Management**: Fixed file handle conflicts
+### ✅ Completed Features (Tasks 1-23)
+
+#### Core Infrastructure
+1. **Configuration System**: Centralized `run.json` with Pydantic validation
+2. **Data Models**: Comprehensive Pydantic schemas for all data structures
+3. **Workspace Management**: Configuration loading and validation
+4. **Logging System**: Singleton logger with file and console output
+
+#### Phase-0 Core
+5. **Snapshot System**: Directory scanning with metadata generation
+6. **Ignore Engine**: Pattern-based skip logic with allow overrides
+7. **Marker Detection**: Configurable marker rules and detection
+8. **Language Mapping**: Seed and learned language mappings
+9. **Deterministic Scoring**: Evidence-based child scoring
+10. **Context Building**: Token-safe LLM context generation
+11. **Scaffold Store**: Persistent understanding with merge semantics
+12. **Prompt Management**: Template loading and context injection
+13. **LLM Client**: JSON repair and strict validation
+14. **Navigation Guardrails**: Safe navigation with fallbacks
+15. **Phase-0 Traversal**: DFS with worklist management
+16. **Learning Passes**: Post-snapshot marker and language learning
+17. **Output Sanitization**: LLM response processing and validation
+18. **Worklist Management**: Traversal state persistence
+19. **Report Generation**: JSON and Markdown report output
+20. **CLI Interface**: Subcommand architecture with configuration
+21. **Token Safety**: Configurable context caps and limits
+22. **Sanitizer Hardening**: Configurable output processing
+23. **Unit Testing**: Comprehensive test suite (83 tests)
 
 ### 🔧 Technical Specifications
 - **Python Version**: 3.8+
-- **Dependencies**: `llm` package for LLM integration
+- **Dependencies**: `pydantic`, `pathspec`, `pytest`
 - **File Encoding**: UTF-8 throughout
-- **Exit Codes**: 0 (success), 1 (error), 2 (usage error)
-- **Default Limits**: depth=3, entries=40, model=gpt-5-nano
+- **Configuration**: JSON-based with Pydantic validation
+- **Testing**: Pytest with fixtures and temporary directories
 
 ### 📁 Output Structure
 ```
 target_repo/
 └── .spade/
-    ├── phase0_context.json    # LLM input context
-    ├── scaffold.json          # LLM output with metadata
-    ├── telemetry.jsonl        # Run statistics (append)
-    └── spade.log             # Debug logs
+    ├── run.json              # Configuration file
+    ├── snapshot/             # Directory snapshots
+    │   ├── dirmeta.json      # Root directory metadata
+    │   └── <rel>/dirmeta.json # Subdirectory metadata
+    ├── scaffold/             # Scaffold data
+    │   └── repository_scaffold.json
+    ├── analysis/             # Analysis results
+    ├── reports/              # Generated reports
+    ├── worklist.json         # Traversal worklist
+    ├── summary.json          # Run summary
+    └── spade.log            # Debug logs
 ```
 
 ## Usage Examples
 
 ### Basic Usage
 ```bash
-# Scan current directory with defaults
-python main.py .
+# Analyze repository with default configuration
+python main.py analyze .
 
-# Scan specific repository
-python main.py /path/to/repo
+# Refresh analysis (reset worklist)
+python main.py refresh .
 
-# Show help
-python main.py --help
+# Generate reports from existing analysis
+python main.py report .
+
+# Run smoke test
+python main.py smoke .
 ```
 
-### Advanced Configuration
-```bash
-# Use different model
-python main.py . --model gpt-4o-mini
-
-# Unlimited depth and entries
-python main.py . --max_depth 0 --max_entries 0
-
-# Limited scan
-python main.py . --max_depth 2 --max_entries 20
-
-# Fresh start (delete existing .spade)
-python main.py . --fresh
+### Configuration
+```json
+{
+  "caps": {
+    "samples": {"max_dirs": 8, "max_files": 8},
+    "nav": {"max_children_per_step": 4},
+    "context": {"max_siblings": 10, "max_child_scores": 5},
+    "sanitizer": {"max_summary_chars": 200, "max_languages": 5}
+  },
+  "policies": {
+    "learned_markers": true,
+    "learned_languages": true,
+    "timestamps_utc": true
+  }
+}
 ```
 
-### Environment Variables
-- **SPADE_LLM_MODEL**: Default model (fallback to gpt-5-nano)
-- **Note**: CLI switches take precedence over environment variables
+## Development Decisions
 
-## Next Steps (Future Sessions)
+### 1. Pydantic v2 Integration
+- **Rationale**: Strict data validation, type safety, serialization
+- **Implementation**: All data structures use Pydantic models
+- **Benefits**: Runtime validation, clear error messages, JSON compatibility
+
+### 2. Configuration-Driven Design
+- **Rationale**: Single source of truth, runtime flexibility
+- **Implementation**: Centralized `run.json` with Pydantic validation
+- **Benefits**: Easy configuration changes, validation, documentation
+
+### 3. Token-Safe Context Building
+- **Rationale**: Prevent oversized LLM prompts
+- **Implementation**: Configurable caps on context elements
+- **Benefits**: Predictable prompt sizes, cost control
+
+### 4. Comprehensive Testing
+- **Rationale**: Ensure reliability and maintainability
+- **Implementation**: 83 tests covering all components
+- **Benefits**: Regression prevention, documentation, confidence
+
+### 5. Modular Architecture
+- **Rationale**: Clean separation of concerns, testability
+- **Implementation**: Separate modules for each major function
+- **Benefits**: Maintainability, extensibility, reusability
+
+## Next Steps
 
 ### Potential Enhancements
 1. **Phase 1**: File content analysis and AST parsing
 2. **Phase 2**: Code execution and dynamic analysis
 3. **Phase 3**: Web/RAG integration for external knowledge
-4. **Testing**: Unit tests for all classes
-5. **Performance**: Optimization for large repositories
-6. **UI**: Web interface or IDE integration
+4. **Performance**: Optimization for large repositories
+5. **UI**: Web interface or IDE integration
+6. **CI/CD**: Automated testing and deployment
 
 ### Known Limitations
 1. **Directory-only**: No file content analysis in Phase 0
@@ -352,36 +339,14 @@ python main.py . --fresh
 ## Troubleshooting
 
 ### Common Issues
-1. **Permission Errors**: Check directory access rights
-2. **LLM Failures**: Verify API key and internet connection
-3. **JSON Parse Errors**: Automatic retry with stricter instructions
-4. **File Handle Conflicts**: Fixed with proper initialization order
+1. **Configuration Errors**: Check `run.json` syntax and Pydantic validation
+2. **Permission Errors**: Verify directory access rights
+3. **LLM Failures**: Check API key and internet connection
+4. **Test Failures**: Run `python -m pytest tests/ -v` from parent directory
 
 ### Debug Information
 - **Logs**: Check `.spade/spade.log` for detailed debug information
-- **Telemetry**: Review `.spade/telemetry.jsonl` for run statistics
-- **Context**: Examine `.spade/phase0_context.json` for LLM input
-
-## Architecture Decisions Log
-
-### 2024-01-01: Initial Implementation
-- **Decision**: Object-oriented design with 7 core classes
-- **Rationale**: Clean separation, testability, maintainability
-- **Status**: ✅ Implemented and tested
-
-### 2024-01-01: CLI Design
-- **Decision**: Command-line switches over environment variables
-- **Rationale**: Better UX, explicit configuration
-- **Status**: ✅ Implemented with help system
-
-### 2024-01-01: Unlimited Mode
-- **Decision**: Use `0` for unlimited depth/entries
-- **Rationale**: Intuitive, non-negative validation
-- **Status**: ✅ Implemented with `os.walk()` and conditional logic
-
-### 2024-01-01: Resource Management
-- **Issue**: Logger file handle conflicts with `--fresh`
-- **Solution**: Initialize agent after directory deletion
-- **Status**: ✅ Fixed and tested
+- **Configuration**: Review `run.json` for settings
+- **Test Output**: Run tests with `-v` flag for verbose output
 
 This knowledge base captures the complete state of SPADE Phase 0 development and provides a foundation for future enhancements and maintenance.

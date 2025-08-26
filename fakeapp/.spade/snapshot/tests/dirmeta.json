@@ -1,0 +1,28 @@
+{
+  "path": "tests",
+  "depth": 1,
+  "counts": {
+    "files": 1,
+    "dirs": 0
+  },
+  "ext_histogram": {
+    "py": 1
+  },
+  "markers": [],
+  "samples": {
+    "dirs": [],
+    "files": [
+      "test_api.py"
+    ]
+  },
+  "siblings": [],
+  "excluded_children": [],
+  "is_symlink": false,
+  "ignored_reason": null,
+  "staleness_fingerprint": {
+    "latest_modified_time": "2025-08-25T12:27:36.634291Z",
+    "total_entries": 1,
+    "name_hash": "46ecef6a906e8e77d1ec9964a292526a595ad881"
+  },
+  "deterministic_scoring": {}
+}

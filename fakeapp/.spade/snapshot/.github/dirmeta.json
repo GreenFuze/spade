@@ -1,0 +1,35 @@
+{
+  "path": ".github",
+  "depth": 1,
+  "counts": {
+    "files": 0,
+    "dirs": 1
+  },
+  "ext_histogram": {},
+  "markers": [],
+  "samples": {
+    "dirs": [
+      "workflows"
+    ],
+    "files": []
+  },
+  "siblings": [
+    "workflows"
+  ],
+  "excluded_children": [],
+  "is_symlink": false,
+  "ignored_reason": null,
+  "staleness_fingerprint": {
+    "latest_modified_time": "2025-08-25T13:50:03.713943Z",
+    "total_entries": 1,
+    "name_hash": "93d7c4b8379b044a4f4d044d632200ac9ae24251"
+  },
+  "deterministic_scoring": {
+    "workflows": {
+      "score": 0.007,
+      "reasons": [
+        "size:dirs=0,files=1"
+      ]
+    }
+  }
+}

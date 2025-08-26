@@ -1,0 +1,66 @@
+{
+  "path": "src",
+  "depth": 1,
+  "counts": {
+    "files": 0,
+    "dirs": 4
+  },
+  "ext_histogram": {},
+  "markers": [],
+  "samples": {
+    "dirs": [
+      "api",
+      "cli",
+      "server",
+      "web"
+    ],
+    "files": []
+  },
+  "siblings": [
+    "api",
+    "cli",
+    "server",
+    "web"
+  ],
+  "excluded_children": [],
+  "is_symlink": false,
+  "ignored_reason": null,
+  "staleness_fingerprint": {
+    "latest_modified_time": "2025-08-25T12:15:04.507696Z",
+    "total_entries": 4,
+    "name_hash": "7d4fdce6800a3d8eba1d50cb95a587de8094abe7"
+  },
+  "deterministic_scoring": {
+    "api": {
+      "score": 0.407,
+      "reasons": [
+        "lang:python(1)",
+        "name:api",
+        "size:dirs=0,files=1"
+      ]
+    },
+    "cli": {
+      "score": 0.407,
+      "reasons": [
+        "lang:python(1)",
+        "name:cli",
+        "size:dirs=0,files=1"
+      ]
+    },
+    "server": {
+      "score": 0.407,
+      "reasons": [
+        "lang:python(1)",
+        "name:server",
+        "size:dirs=0,files=1"
+      ]
+    },
+    "web": {
+      "score": 0.157,
+      "reasons": [
+        "name:web",
+        "size:dirs=0,files=1"
+      ]
+    }
+  }
+}
