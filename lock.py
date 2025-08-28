@@ -3,17 +3,17 @@ SPADE Lock Manager
 Cross-platform, race-safe exclusive locking for Phase-0 runs
 """
 
-import os
 import json
+import os
 import socket
 import time
-from pathlib import Path
 from contextlib import contextmanager
+from pathlib import Path
 from typing import Optional
 
 from logger import get_logger
 
-logger = get_logger()
+# Use get_logger() directly instead of storing local copy
 
 LOCK_FILENAME = "phase0.lock"
 
@@ -21,22 +21,22 @@ LOCK_FILENAME = "phase0.lock"
 def acquire_lock(repo_root: Path, break_lock: bool = False) -> contextmanager:
     """
     Acquire an exclusive lock for Phase-0 analysis.
-    
+
     Args:
         repo_root: Root directory of the repository
         break_lock: If True, delete existing lock and proceed
-        
+
     Yields:
         None
-        
+
     Raises:
         SystemExit: If lock exists and break_lock is False
     """
     lock_path = repo_root / ".spade" / LOCK_FILENAME
-    
+
     # Ensure .spade directory exists
     lock_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     # Check if lock exists
     if lock_path.exists():
         if not break_lock:
@@ -46,56 +46,64 @@ def acquire_lock(repo_root: Path, break_lock: bool = False) -> contextmanager:
                 pid = lock_info.get("pid", "unknown")
                 host = lock_info.get("host", "unknown")
                 started_at = lock_info.get("started_at_utc", "unknown")
-                logger.error(f"[lock] phase0 lock found at {lock_path}")
-                logger.error(f"[lock] another run may be active (pid={pid}, host={host}, started={started_at})")
-                logger.error("[lock] Use --break-lock to override.")
+                get_logger().error(f"[lock] phase0 lock found at {lock_path}")
+                get_logger().error(
+                    f"[lock] another run may be active (pid={pid}, host={host}, started={started_at})"
+                )
+                get_logger().error("[lock] Use --break-lock to override.")
                 raise SystemExit(1)
             except Exception:
                 # If we can't read the lock file, still show the basic error
-                logger.error(f"[lock] phase0 lock found at {lock_path} — another run may be active.")
-                logger.error("[lock] Use --break-lock to override.")
+                get_logger().error(
+                    f"[lock] phase0 lock found at {lock_path} — another run may be active."
+                )
+                get_logger().error("[lock] Use --break-lock to override.")
                 raise SystemExit(1)
         else:
             # Break the lock
             try:
                 lock_path.unlink()
-                logger.info(f"[lock] removed existing lock at {lock_path}")
+                get_logger().info(f"[lock] removed existing lock at {lock_path}")
             except Exception as e:
-                logger.warning(f"[lock] failed to remove existing lock: {e}")
-    
+                get_logger().warning(f"[lock] failed to remove existing lock: {e}")
+
     # Create lock info
     lock_info = {
         "pid": os.getpid(),
         "host": socket.gethostname(),
         "started_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "command": "phase0",
-        "repo_root": str(repo_root.resolve())
+        "repo_root": str(repo_root.resolve()),
     }
-    
+
     @contextmanager
     def lock_context():
         try:
             # Create lock file with O_EXCL (exclusive create)
-            with open(lock_path, 'x', encoding='utf-8') as f:
+            with open(lock_path, "x", encoding="utf-8") as f:
                 json.dump(lock_info, f, ensure_ascii=False, indent=2)
-            
-            logger.debug(f"[lock] acquired lock at {lock_path}")
+
+            get_logger().debug(f"[lock] acquired lock at {lock_path}")
             yield
-            
+
         except FileExistsError:
             # Race condition - another process created the lock
-            logger.error(f"[lock] lock already exists at {lock_path} (race condition)")
+            get_logger().error(
+                f"[lock] lock already exists at {lock_path} (race condition)"
+            )
             raise SystemExit(1)
         except Exception as e:
-            logger.error(f"[lock] failed to acquire lock: {e}")
+            get_logger().error(f"[lock] failed to acquire lock: {e}")
             raise SystemExit(1)
         finally:
             # Always try to remove the lock file
             try:
                 if lock_path.exists():
                     lock_path.unlink()
-                    logger.debug(f"[lock] released lock at {lock_path}")
+                    get_logger().debug(f"[lock] released lock at {lock_path}")
             except Exception as e:
-                logger.warning(f"[lock] failed to remove lock file {lock_path}: {e}")
-    
+                get_logger().warning(
+                    f"[lock] failed to remove lock file {lock_path}: {e}"
+                )
+
     return lock_context()

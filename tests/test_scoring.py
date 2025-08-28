@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from snapshot import compute_deterministic_scoring
-from models import RunConfig, load_json
+from schemas import RunConfig, load_json
 from conftest import write_dirmeta
 
 
@@ -73,7 +73,7 @@ def test_scoring_reasons_and_ordering(repo_tmp):
     
     # Reload parent dirmeta
     parent_dirmeta_path = repo_tmp / ".spade" / "snapshot" / "src" / "dirmeta.json"
-    from models import DirMeta
+    from schemas import DirMeta
     parent_dirmeta = load_json(parent_dirmeta_path, DirMeta)
     
     # Assert
@@ -187,7 +187,7 @@ def test_name_signals_scoring(repo_tmp):
     
     # Reload parent dirmeta
     parent_dirmeta_path = repo_tmp / ".spade" / "snapshot" / "." / "dirmeta.json"
-    from models import DirMeta
+    from schemas import DirMeta
     parent_dirmeta = load_json(parent_dirmeta_path, DirMeta)
     
     # Assert
@@ -276,7 +276,7 @@ def test_size_scoring(repo_tmp):
     
     # Reload parent dirmeta
     parent_dirmeta_path = repo_tmp / ".spade" / "snapshot" / "src" / "dirmeta.json"
-    from models import DirMeta
+    from schemas import DirMeta
     parent_dirmeta = load_json(parent_dirmeta_path, DirMeta)
     
     # Assert

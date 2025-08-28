@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from snapshot import build_snapshot, enrich_markers_and_samples, compute_deterministic_scoring
 from workspace import Workspace
-from models import load_json, DirMeta
+from schemas import load_json, DirMeta
 
 def test_acceptance_criteria():
     """Test the exact acceptance criteria from the task."""

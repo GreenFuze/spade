@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from context import build_phase0_context
 from llm import LLMClient
 from dev.dummy_transport import echo_transport_valid_response
-from models import RunConfig
+from schemas import RunConfig
 
 
 def test_llm_with_real_context():

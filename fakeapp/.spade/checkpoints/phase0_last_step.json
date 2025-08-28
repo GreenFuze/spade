@@ -1,10 +1,7 @@
 {
-  "path": "src",
-  "depth": 1,
-  "finished_at_utc": "2025-08-26T08:30:56Z",
-  "json_valid": true,
-  "nav_kept": [
-    "api",
-    "cli"
-  ]
+  "path": ".",
+  "depth": 0,
+  "finished_at_utc": "2025-08-27T09:36:22Z",
+  "json_valid": false,
+  "nav_kept": []
 }

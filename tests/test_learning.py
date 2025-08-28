@@ -18,7 +18,7 @@ from learning import (
     learn_markers_once, learn_languages_once,
     post_snapshot_learning_and_rescore
 )
-from models import RunConfig, DirMeta, DirCounts, StalenessFingerprint
+from schemas import RunConfig, DirMeta, DirCounts, StalenessFingerprint
 from dev.dummy_transport import echo_transport_valid_response, echo_transport_markers_learning, echo_transport_languages_learning
 
 

@@ -12,62 +12,68 @@
 - **Object-oriented design** - Clean separation of concerns
 - **Strict data validation** - Pydantic v2 for all schemas
 - **Centralized configuration** - Single source of truth for all settings
+- **Workspace-centric architecture** - All filesystem operations through Workspace object
 
 ## Architecture
 
 ### File Structure
 ```
 spade/
-├── main.py              # CLI entry point with subcommands
-├── cli/                 # CLI command implementations
-├── models.py            # Pydantic v2 schemas (RunConfig, DirMeta, etc.)
+├── main.py              # CLI entry point with Click-based subcommands
+├── schemas.py           # Pydantic v2 schemas (RunConfig, SpadeStateEntry, etc.)
 ├── workspace.py         # Workspace management and configuration
-├── snapshot.py          # Directory snapshot and metadata generation
+├── spade_state.py       # Unified state management with SQLite backend
 ├── ignore.py            # Skip logic using .spadeignore/.spadeallow
 ├── markers.py           # Marker detection and rules
 ├── languages.py         # Language mapping and aggregation
-├── scoring.py           # Deterministic scoring for children
 ├── context.py           # Phase-0 context builder
 ├── scaffold.py          # Scaffold store and merge semantics
 ├── prompts.py           # Prompt loading and management
-├── llm.py               # LLM client with JSON repair
-├── nav.py               # Navigation guardrails and fallback
-├── phase0.py            # Phase-0 traversal loop and analysis
-├── learning.py          # Post-snapshot learning passes
+├── agent.py             # Abstract agent base class
+├── phase0_agent.py      # Phase-0 agent implementation
 ├── sanitize.py          # LLM output sanitization and guardrails
-├── worklist.py          # Worklist management and persistence
 ├── report.py            # Report generation (JSON and Markdown)
-├── agent.py             # Legacy agent implementation
+├── telemetry.py         # Telemetry collection and persistence
 ├── logger.py            # Centralized logging singleton
+├── default_run_phase0.yaml # Default configuration template
+├── default.spadeignore  # Default ignore patterns
 ├── prompts/             # Prompt templates
-├── tests/               # Comprehensive test suite (83 tests)
+├── tests/               # Comprehensive test suite
 │   ├── conftest.py      # Test fixtures and helpers
 │   ├── test_*.py        # Unit and integration tests
 ├── fakeapp/             # Test application for integration tests
 ├── requirements.txt     # Python dependencies
 ├── research_log.md      # Development process documentation
 └── knowledgebase.md     # This file
+
+# Note: learning.py, nav.py, scoring.py are temporarily commented out (LLM disabled)
 ```
 
 ### Core Components
 
-#### 1. **Configuration System** (`models.py`, `workspace.py`)
+#### 1. **Configuration System** (`schemas.py`, `workspace.py`)
 - **RunConfig**: Centralized configuration with Pydantic validation
 - **Caps**: Configurable limits for samples, navigation, context, sanitizer
 - **Policies**: Runtime policies for learning, telemetry, timestamps
-- **Workspace**: Configuration loading and management
+- **Workspace**: Single point of interaction for all filesystem operations
 
-#### 2. **Data Models** (`models.py`)
-- **DirMeta**: Directory metadata with counts, extensions, scoring
+#### 2. **Data Models** (`schemas.py`)
+- **SpadeStateEntryFile**: File entries with metadata, size, extension, confidence
+- **SpadeStateEntryDir**: Directory entries with children, counts, markers, scoring
+- **SpadeStateMetadata**: Database metadata with repo root, timestamps, version
 - **ChildScore**: Deterministic scoring for directory children
 - **LLMResponse**: Structured LLM output with components and questions
-- **WorklistItem**: Traversal worklist items with state tracking
 
-#### 3. **Snapshot System** (`snapshot.py`)
-- **Directory scanning**: DFS traversal with depth limits
-- **Metadata generation**: File counts, extension histograms, timestamps
-- **Deterministic scoring**: Evidence-based scoring for children
-- **Extension rules**: Multi-dot extensions, hidden files, no-extension files
+#### 3. **Unified State Management** (`spade_state.py`)
+- **SQLite backend**: ACID-compliant database for all state data
+- **Unified storage**: Files and directories in single table with type differentiation
+- **Upfront tree building**: Complete filesystem scan before traversal
+- **Metadata collection**: File counts, extensions, timestamps, markers, scoring
+- **Type-safe access**: Separate Pydantic models for files (`SpadeStateEntryFile`) and directories (`SpadeStateEntryDir`)
+- **Traversal methods**: `get_parent()`, `get_sub_directories()`, `get_files()` with visited filtering
+- **File content access**: `get_file_content()` reads from filesystem on demand
+- **Statistics on-demand**: Real-time SQL queries for comprehensive statistics
+- **Confidence tracking**: 0-100 confidence scores for all entries
 
 #### 4. **Ignore Engine** (`ignore.py`)
 - **Pattern matching**: `pathspec` library with `gitwildmatch` patterns
@@ -75,23 +81,24 @@ spade/
 - **Symlink policy**: Configurable symlink handling
 - **Complex patterns**: Support for complex ignore/allow rules
 
-#### 5. **Navigation System** (`nav.py`)
+#### 5. **Navigation System** (`nav.py`) - Temporarily Disabled
 - **Guardrails**: Depth limits, safe names, ignore patterns
 - **Max children caps**: Configurable limits per navigation step
 - **Deterministic fallback**: Safe navigation when LLM fails
 - **Path validation**: Ensure updates only apply to current/ancestors
 
-#### 6. **Context Building** (`context.py`)
+#### 6. **Context Building** (`context.py`) - Temporarily Disabled
 - **Token-safe caps**: Configurable limits for context elements
 - **Ancestor information**: Build ancestor chain from scaffold data
 - **Context metadata**: Inform LLM about truncation
 - **Phase-0 context**: Exact schema for LLM consumption
 
-#### 7. **LLM Integration** (`llm.py`)
-- **JSON repair**: One-shot repair for malformed JSON
-- **Strict validation**: Pydantic validation of LLM responses
-- **Retry logic**: Automatic retry on parse failures
-- **Transport abstraction**: Support for different LLM backends
+#### 7. **Agent System** (`agent.py`, `phase0_agent.py`)
+- **Abstract base class**: Common interface for all agents with workspace integration
+- **LLM integration**: JSON repair and strict validation
+- **Phase-0 agent**: DFS traversal with worklist management
+- **Telemetry collection**: Comprehensive run statistics
+- **Workspace encapsulation**: All agents interact with filesystem through Workspace object
 
 #### 8. **Sanitization** (`sanitize.py`)
 - **Output sanitization**: Post-process LLM responses
@@ -99,36 +106,40 @@ spade/
 - **Confidence punishment**: Reduce confidence for insufficient evidence
 - **Configurable caps**: Limits on summaries, languages, tags, evidence
 
-#### 9. **Learning System** (`learning.py`)
+#### 9. **Learning System** (`learning.py`) - Temporarily Disabled
 - **Marker learning**: Learn new markers from repository structure
 - **Language learning**: Learn new language mappings
 - **Post-snapshot passes**: Re-run learning after snapshot completion
 - **Re-scoring**: Update scores based on learned information
 
-#### 10. **Phase-0 Engine** (`phase0.py`)
-- **DFS traversal**: Depth-first search with worklist management
-- **Analysis persistence**: Save analysis results to scaffold
-- **Telemetry collection**: Comprehensive run statistics
-- **Resume capability**: Continue from worklist state
+#### 10. **Phase-0 Engine** (`phase0_agent.py`)
+- **DFS traversal**: Depth-first search with unified state management
+- **Analysis persistence**: Save analysis results to scaffold via workspace
+- **Telemetry collection**: Comprehensive run statistics via workspace
+- **Resume capability**: Continue from state database
+- **Workspace integration**: All filesystem operations delegated to workspace object
+- **LLM integration**: Currently commented out, focusing on filesystem tree building
 
 ## Implementation Details
 
-### CLI Interface (`main.py`, `cli/`)
+### CLI Interface (`main.py`)
 
 #### Command Structure
 ```bash
-python main.py <command> [options]
+python main.py <repo_path> <command> [options]
 ```
 
 #### Commands
-- **`--init-workspace`**: Initialize .spade workspace directory
-- **`--clean`**: Clean .spade workspace directory
-- **`phase0 [options]`**: Run Phase-0 analysis
-- **`phase0 inspect <relpath>`**: Preview Phase-0 context for debugging
+- **`init-workspace`**: Initialize .spade workspace directory
+- **`clean`**: Clean .spade workspace directory
+- **`refresh`**: Rebuild snapshot and reset worklist
+- **`phase0 [--break-lock]`**: Run Phase-0 analysis
+- **`inspect <phase> [relpath]`**: Preview context for debugging
 
 #### Key Features
-- **Subcommand architecture**: Clean separation of functionality
-- **Configuration-driven**: All settings via `run.json`
+- **Click-based CLI**: Modern command-line interface with automatic help generation
+- **Logical command structure**: `REPO_PATH` as first parameter, command-specific options
+- **Configuration-driven**: All settings via `run_phase0.yaml`
 - **Error handling**: Comprehensive error reporting and logging
 - **Telemetry**: Automatic collection of run statistics
 - **Safety features**: Lock management and graceful shutdown
@@ -139,10 +150,13 @@ python main.py <command> [options]
 #### RunConfig Schema
 ```python
 class RunConfig(BaseModel):
-    caps: Caps                    # Configurable limits
-    policies: Policies           # Runtime policies
-    llm: LLMConfig              # LLM settings
-    telemetry: TelemetryConfig  # Telemetry settings
+    model: str                   # LLM model to use
+    caps: Caps                   # Configurable limits
+    limits: Limits              # Runtime limits
+    scoring: Scoring            # Scoring weights and parameters
+    policies: Policies          # Runtime policies
+    learn_markers: bool         # Learning settings
+    marker_learning: MarkerLearning  # Learning parameters
 ```
 
 #### Caps Configuration
@@ -206,55 +220,58 @@ tests/
 
 ## Current State
 
-### ✅ Completed Features (Tasks 1-23)
+### ✅ Completed Features (Tasks 1-25)
 
 #### Core Infrastructure
-1. **Configuration System**: Centralized `run.json` with Pydantic validation
+1. **Configuration System**: Centralized `run_phase0.yaml` with Pydantic validation
 2. **Data Models**: Comprehensive Pydantic schemas for all data structures
-3. **Workspace Management**: Configuration loading and validation
+3. **Workspace Management**: Single point of interaction for all filesystem operations
 4. **Logging System**: Singleton logger with file and console output
 
 #### Phase-0 Core
-5. **Snapshot System**: Directory scanning with metadata generation
+5. **Unified State Management**: SQLite-based state management for files and directories
 6. **Ignore Engine**: Pattern-based skip logic with allow overrides
 7. **Marker Detection**: Configurable marker rules and detection
 8. **Language Mapping**: Seed and learned language mappings
-9. **Deterministic Scoring**: Evidence-based child scoring
+9. **Deterministic Scoring**: Evidence-based child scoring (temporarily disabled)
 10. **Context Building**: Token-safe LLM context generation
 11. **Scaffold Store**: Persistent understanding with merge semantics
 12. **Prompt Management**: Template loading and context injection
 13. **LLM Client**: JSON repair and strict validation
-14. **Navigation Guardrails**: Safe navigation with fallbacks
-15. **Phase-0 Traversal**: DFS with worklist management
-16. **Learning Passes**: Post-snapshot marker and language learning
-17. **Output Sanitization**: LLM response processing and validation
-18. **Worklist Management**: Traversal state persistence
-19. **Report Generation**: JSON and Markdown report output
-20. **CLI Interface**: Subcommand architecture with configuration
+14. **Navigation Guardrails**: Safe navigation with fallbacks (temporarily disabled)
+15. **Phase-0 Traversal**: DFS with unified state management
+16. **Learning Passes**: Post-snapshot marker and language learning (temporarily disabled)
+17. **Output Sanitization**: LLM response processing and validation (temporarily disabled)
+18. **State Persistence**: SQLite-based traversal state management
+19. **Report Generation**: JSON and Markdown report output (temporarily disabled)
+20. **CLI Interface**: Click-based subcommand architecture with configuration
 21. **Token Safety**: Configurable context caps and limits
 22. **Sanitizer Hardening**: Configurable output processing
 23. **Unit Testing**: Comprehensive test suite (83 tests)
+24. **Workspace-Centric Architecture**: Complete encapsulation of filesystem operations through Workspace object
+25. **Filesystem Tree Building**: Upfront scanning and metadata collection without LLM
 
 ### 🔧 Technical Specifications
 - **Python Version**: 3.8+
-- **Dependencies**: `pydantic`, `pathspec`, `pytest`
+- **Dependencies**: `pydantic`, `pathspec`, `pytest`, `click`
 - **File Encoding**: UTF-8 throughout
-- **Configuration**: JSON-based with Pydantic validation
+- **Configuration**: YAML-based with Pydantic validation
 - **Testing**: Pytest with fixtures and temporary directories
 
 ### 📁 Output Structure
 ```
 target_repo/
 └── .spade/
-    ├── run.json              # Configuration file
-    ├── snapshot/             # Directory snapshots
-    │   ├── dirmeta.json      # Root directory metadata
-    │   └── <rel>/dirmeta.json # Subdirectory metadata
+    ├── run_phase0.yaml       # Configuration file (YAML with comments)
+    ├── .spadeignore          # Ignore patterns
+    ├── .spadeallow           # Allow overrides
+    ├── spade.db              # Unified SQLite database (files, directories, telemetry)
     ├── scaffold/             # Scaffold data
-    │   └── repository_scaffold.json
+    │   ├── repository_scaffold.json
+    │   └── high_level_components.json
     ├── analysis/             # Analysis results
+    ├── checkpoints/          # Traversal checkpoints
     ├── reports/              # Generated reports
-    ├── worklist.json         # Traversal worklist
     ├── summary.json          # Run summary
     └── spade.log            # Debug logs
 ```
@@ -263,34 +280,50 @@ target_repo/
 
 ### Basic Usage
 ```bash
-# Analyze repository with default configuration
-python main.py analyze .
+# Initialize workspace with default configuration
+python main.py . init-workspace
 
-# Refresh analysis (reset worklist)
-python main.py refresh .
+# Run Phase-0 analysis
+python main.py . phase0
 
-# Generate reports from existing analysis
-python main.py report .
+# Run Phase-0 with lock override
+python main.py . phase0 --break-lock
 
-# Run smoke test
-python main.py smoke .
+# Refresh analysis (rebuild snapshot and reset worklist)
+python main.py . refresh
+
+# Preview context for debugging
+python main.py . inspect phase0
+
+# Clean workspace
+python main.py . clean
 ```
 
 ### Configuration
-```json
-{
-  "caps": {
-    "samples": {"max_dirs": 8, "max_files": 8},
-    "nav": {"max_children_per_step": 4},
-    "context": {"max_siblings": 10, "max_child_scores": 5},
-    "sanitizer": {"max_summary_chars": 200, "max_languages": 5}
-  },
-  "policies": {
-    "learned_markers": true,
-    "learned_languages": true,
-    "timestamps_utc": true
-  }
-}
+```yaml
+# SPADE Phase-0 Configuration
+model: gpt-5-nano # LLM model to use for analysis
+
+caps:
+  samples:
+    max_dirs: 8 # Maximum directories to sample per directory
+    max_files: 8 # Maximum files to sample per directory
+  nav:
+    max_children_per_step: 4 # Maximum children to navigate per step
+  context:
+    max_siblings_in_prompt: 200 # Maximum siblings in prompt
+
+limits:
+  max_depth: 0 # Maximum traversal depth (0 = unlimited)
+  max_nodes: 0 # Maximum nodes to visit (0 = unlimited)
+  max_llm_calls: 0 # Maximum LLM calls (0 = unlimited)
+
+scoring:
+  weights:
+    marker: 0.55 # Weight for marker-based evidence
+    lang: 0.25 # Weight for language-based evidence
+    name: 0.15 # Weight for name-based evidence
+    size: 0.05 # Weight for size-based evidence
 ```
 
 ## Development Decisions
@@ -302,8 +335,8 @@ python main.py smoke .
 
 ### 2. Configuration-Driven Design
 - **Rationale**: Single source of truth, runtime flexibility
-- **Implementation**: Centralized `run.json` with Pydantic validation
-- **Benefits**: Easy configuration changes, validation, documentation
+- **Implementation**: Centralized `run_phase0.yaml` with Pydantic validation and inline comments
+- **Benefits**: Easy configuration changes, validation, self-documenting configuration
 
 ### 3. Token-Safe Context Building
 - **Rationale**: Prevent oversized LLM prompts
@@ -319,6 +352,16 @@ python main.py smoke .
 - **Rationale**: Clean separation of concerns, testability
 - **Implementation**: Separate modules for each major function
 - **Benefits**: Maintainability, extensibility, reusability
+
+### 6. Workspace-Centric Design
+- **Rationale**: Single point of interaction for all filesystem operations
+- **Implementation**: Workspace object encapsulates all .spade directory operations
+- **Benefits**: Encapsulation, testability, consistency across phases, future extensibility
+
+### 7. Unified State Management
+- **Rationale**: Eliminate data fragmentation and provide ACID-compliant state management
+- **Implementation**: `SpadeState` class with SQLite backend manages all files, directories, and telemetry
+- **Benefits**: Unified API, better performance, data integrity, easier extension, clean separation of metadata and content
 
 ## Next Steps
 
@@ -339,14 +382,15 @@ python main.py smoke .
 ## Troubleshooting
 
 ### Common Issues
-1. **Configuration Errors**: Check `run.json` syntax and Pydantic validation
+1. **Configuration Errors**: Check `run_phase0.yaml` syntax and Pydantic validation
 2. **Permission Errors**: Verify directory access rights
 3. **LLM Failures**: Check API key and internet connection
 4. **Test Failures**: Run `python -m pytest tests/ -v` from parent directory
+5. **Corrupted Data**: Use `python main.py . clean` to reset workspace if dirmeta files are corrupted
 
 ### Debug Information
 - **Logs**: Check `.spade/spade.log` for detailed debug information
-- **Configuration**: Review `run.json` for settings
+- **Configuration**: Review `run_phase0.yaml` for settings
 - **Test Output**: Run tests with `-v` flag for verbose output
 
 This knowledge base captures the complete state of SPADE Phase 0 development and provides a foundation for future enhancements and maintenance.

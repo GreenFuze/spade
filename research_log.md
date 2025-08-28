@@ -328,7 +328,7 @@
 ## 2025-01-01 23:45:00 - Completed Task 25: Phase-0 "inspect" command (context preview)
 - Successfully implemented developer-facing inspect command for Phase-0 context debugging:
   * **Context Preview Function** (`spade/context.py`): `render_context_preview()` with concise human-readable output
-  * **CLI Integration** (`spade/cli/main.py`): Added `phase0 inspect <relpath>` subcommand with proper argument parsing
+  * **CLI Integration** (`spade/main.py`): Added `inspect <phase> [relpath]` command with proper argument parsing
   * **Artifact Generation**: Creates `.spade/inspect/<relpath>/context.json` and `preview.md` files
   * **Error Handling**: Clear messages when snapshot missing, helpful refresh instructions
 - Key features implemented:
@@ -351,3 +351,207 @@
   * Generated files contain correct JSON and formatted preview
   * CLI help shows inspect subcommand
 - Task 25 complete: Developers can now preview exactly what Phase-0 feeds to LLM for debugging
+
+## 2025-01-02 00:00:00 - Completed CLI consolidation and Click-based interface
+- Successfully consolidated CLI implementation and modernized with Click library:
+  * **CLI Consolidation**: Moved `spade/cli/main.py` content to root `spade/main.py`, removed `cli/` directory
+  * **Click Integration**: Replaced manual argument parsing with Click-based CLI for robust command handling
+  * **Logical Command Structure**: `REPO_PATH` as first parameter, command-specific options instead of global options
+  * **Automatic Help Generation**: Click provides comprehensive help with proper formatting and usage examples
+- Key improvements implemented:
+  * **Command Structure**: `python main.py <repo_path> <command> [options]` with clear separation
+  * **Option Placement**: `--break-lock` moved from global to phase0-specific option
+  * **Argument Validation**: Automatic validation of repo_path existence and command structure
+  * **Error Handling**: Clear error messages with proper exit codes and help integration
+  * **Help System**: Automatic help generation for all commands and subcommands
+- Command structure updated:
+  * **`init-workspace`**: Initialize .spade workspace directory
+  * **`clean`**: Clean .spade workspace directory  
+  * **`refresh`**: Rebuild snapshot and reset worklist
+  * **`phase0 [--break-lock]`**: Run Phase-0 analysis with optional lock override
+  * **`inspect <phase> [relpath]`**: Preview context for debugging (supports future phases)
+- Benefits achieved:
+  * **Simplified Project Structure**: Single entry point instead of multiple files
+  * **Better User Experience**: Intuitive command structure with automatic help
+  * **Robust Error Handling**: Click handles argument validation and provides clear error messages
+  * **Future Extensibility**: Easy to add new commands and options
+  * **Consistent Interface**: All commands follow same patterns and conventions
+- All functionality tested and verified:
+  * All existing commands work correctly with new structure
+  * Help system provides comprehensive usage information
+  * Error handling works for invalid paths and commands
+  * VSCode debugger configuration updated and working
+  * Command-specific options properly isolated (e.g., `--break-lock` only for phase0)
+- CLI consolidation complete: Modern, robust command-line interface with simplified project structure
+
+## 2025-01-02 00:00:00 - Refactored snapshot.py into DirMetaStore for centralized DirMeta management
+
+**Task**: Consolidated all DirMeta operations into a unified `DirMetaStore` class, eliminating the architectural flaw where `Phase0Agent` would skip directories with missing dirmeta files.
+
+**Changes**:
+- Created `spade/dirmeta_store.py` with comprehensive DirMeta management
+- Moved all functionality from `snapshot.py` into `DirMetaStore` class
+- Renamed `build_snapshot()` to `ensure_store()` for clarity
+- Added `get_dirmeta()` method that creates DirMeta on-demand if missing
+- Updated `Phase0Agent` to use `DirMetaStore` instance instead of direct dirmeta loading
+- Removed old `_load_dirmeta()` and `_dirmeta_path()` methods from `Phase0Agent`
+- Updated `workspace.py` to use `DirMetaStore` for refresh operations
+- Deleted `spade/snapshot.py` after successful migration
+- Added utility methods (`_get_file_extension`, `_iso8601_z_of`, `_sha1_of`) to `DirMetaStore`
+
+**Key Improvements**:
+- **Self-healing**: DirMeta created automatically when missing during traversal
+- **Centralized management**: All DirMeta operations in one place
+- **Object-oriented design**: Procedural `snapshot.py` becomes object-oriented `DirMetaStore`
+- **Better encapsulation**: Clear interface for DirMeta operations
+- **Eliminated architectural flaw**: No more "missing dirmeta" errors on first run
+
+**Benefits**:
+- Solves the chicken-and-egg problem where agent needed dirmeta but dirmeta wasn't created yet
+- Cleaner separation of concerns with dedicated DirMeta management
+- Easier to test and mock DirMeta operations
+- Better error handling and logging for DirMeta operations
+- Future extensibility for caching, validation, and other DirMeta features
+
+**Verification**:
+- `python main.py fakeapp init-workspace` works correctly
+- `python main.py fakeapp refresh` successfully rebuilds DirMeta store
+- `python main.py fakeapp phase0 --break-lock` runs without "missing dirmeta" errors
+- All DirMeta operations (creation, loading, saving, updating) work through `DirMetaStore`
+- Marker detection and deterministic scoring still function correctly
+
+## 2025-08-27 20:28:00 - Implementation of unified SpadeState system
+
+**Task**: Implemented unified SQLite-based state management system to replace fragmented data storage (DirMetaTree, WorklistStore, ScaffoldStore, individual JSON files).
+
+**Changes**:
+- Created `spade/spade_state.py` with comprehensive `SpadeState` class using SQLite backend
+- Added new Pydantic models to `schemas.py`: `SpadeStateEntryFile`, `SpadeStateEntryDir`, `SpadeStateMetadata`
+- Implemented SQLite schema with unified table for files and directories
+- Created filesystem tree building with upfront scanning and metadata collection
+- Added traversal methods: `get_parent()`, `get_sub_directories()`, `get_files()` with include_visited parameter
+- Added `get_file_content()` method that reads from filesystem (not stored in DB)
+- Added `save_entry()` method for persisting changes
+- Updated `Phase0Agent` to use `SpadeState` instead of `DirMetaTreeStore`
+- Commented out all LLM interaction methods in `Phase0Agent` as requested
+- Updated `workspace.py` to use `get_state_path()` for `spade.db`
+- Created and tested `test_spade_state.py` to verify implementation
+
+**Key Features**:
+- **Unified storage**: Files and directories in same SQLite table with type differentiation
+- **Metadata only**: No file content stored in database, reads from filesystem on demand
+- **Type-safe access**: Different Pydantic models for files vs directories
+- **Confidence tracking**: 0-100 confidence scores for all entries (default 0)
+- **Flexible traversal**: Include/exclude visited entries with parameter
+- **No LLM yet**: Pure filesystem scanning and storage as requested
+- **Statistics on-demand**: SQL queries for real-time statistics
+
+**Benefits**:
+- Eliminates data fragmentation across multiple JSON files
+- ACID properties from SQLite for data integrity
+- Better performance with indexed queries
+- Unified API for all state operations
+- Easier to extend with new fields and relationships
+- Clean separation between metadata and file content
+
+**Verification**:
+- `python test_spade_state.py` successfully builds tree and tests all functionality
+- `python main.py . phase0` runs without LLM calls, visits 19 directories
+- All traversal methods work: get_root_dir(), get_sub_directories(), get_files()
+- File content reading works from filesystem
+- Statistics computation works with SQL queries
+- Database schema properly stores both files and directories
+
+## 2025-08-27 20:36:57 - Completed cleanup of obsolete components
+
+**Task**: Removed all obsolete components and updated remaining files to use the new SpadeState system.
+
+**Changes**:
+- **Deleted obsolete files**: `dirmeta_store.py`, `dirmeta_tree.py`, `worklist.py`
+- **Removed obsolete schemas**: `DirMeta`, `DirMetaTree`, `Worklist` from `schemas.py`
+- **Updated imports**: Fixed imports in `context.py`, `phase0_agent.py`, `main.py`
+- **Commented out LLM files**: `learning.py`, `nav.py`, `scoring.py` (as requested)
+- **Updated SpadeState**: Disabled scoring functionality temporarily
+- **Preserved helper functions**: Kept `load_json`, `save_json`, `save_json_data` for remaining usage
+
+**Benefits**:
+- **Clean Architecture**: Removed all legacy code and dependencies
+- **Consistent State Management**: All components now use unified SpadeState
+- **Reduced Complexity**: Eliminated duplicate data structures and storage mechanisms
+- **Maintainable Codebase**: Single source of truth for all application state
+- **Future-Ready**: Clean foundation for LLM integration when needed
+
+**Verification**:
+- All obsolete components successfully removed
+- No broken imports or references
+- System maintains functionality with unified state management
+- Ready for next phase of development
+
+## 2025-08-27 20:57:00 - Fixed file structure - moved schemas.py and spade_state.py to root directory
+
+**Task**: Corrected file structure by moving core files from spade/ subdirectory to root directory.
+
+**Changes**:
+- **Moved `spade_state.py`**: From `spade/` subdirectory to root directory
+- **Removed duplicate**: Deleted empty `spade/schemas.py` file (duplicate of root `schemas.py`)
+- **Updated imports**: Changed `from spade.spade_state import SpadeState` to `from spade_state import SpadeState` in `main.py` and `phase0_agent.py`
+- **Cleaned up**: Removed empty `spade/` directory (now only contains `__pycache__`)
+
+**Benefits**:
+- **Correct Structure**: Core files now in root directory as expected
+- **Clean Imports**: No more subdirectory imports for core functionality
+- **Consistent Layout**: Matches standard Python project structure
+- **Eliminated Confusion**: No duplicate files or unclear file locations
+
+**Verification**:
+- `python main.py . inspect phase0` works correctly
+- `python main.py . phase0 --break-lock` runs successfully
+- All imports resolve correctly from root directory
+- System functionality maintained after file reorganization
+
+## 2025-08-27 21:00:57 - Refactored to single SpadeState instance managed by Workspace
+
+**Task**: Ensured single SpadeState instance by making Workspace the owner and provider of SpadeState.
+
+**Changes**:
+- **Added SpadeState import**: Imported SpadeState in workspace.py
+- **Added instance variable**: Added `_spade_state: Optional[SpadeState] = None` to Workspace class
+- **Added getter method**: Created `get_spade_state()` method that lazily initializes and returns the single instance
+- **Updated refresh method**: Modified `refresh()` to use `self.get_spade_state()` instead of creating new instance
+- **Updated Phase0Agent**: Removed `self.spade_state` instance variable and updated all calls to use `self.workspace.get_spade_state()`
+- **Updated main.py**: Removed direct SpadeState import and instantiation, now uses `workspace.get_spade_state()`
+
+**Benefits**:
+- **Single Instance**: Only one SpadeState instance exists per workspace
+- **Consistent State**: All components access the same state instance
+- **Memory Efficiency**: No duplicate database connections or in-memory state
+- **Clean Architecture**: Workspace is the single source of truth for SpadeState
+- **Lazy Initialization**: SpadeState is only created when first accessed
+
+**Verification**:
+- `python main.py . inspect phase0` works correctly with workspace-managed SpadeState
+- `python main.py . phase0 --break-lock` runs successfully with single instance
+- All SpadeState operations work through workspace.get_spade_state()
+- System maintains functionality with unified state management
+
+## 2025-08-27 21:06:15 - Fixed scoring error in _compute_deterministic_scoring method
+
+**Task**: Fixed `object of type 'NoneType' has no len()` error in scoring computation.
+
+**Problem**: When scoring functionality was disabled, the `_compute_deterministic_scoring` method was still trying to call `len(scoring)` on a `None` value, causing errors during refresh operations.
+
+**Changes**:
+- **Fixed scoring logging**: Moved the `len(scoring)` call inside the `if scoring:` block to prevent calling `len()` on `None`
+- **Added else clause**: Added proper logging for when scoring is disabled/skipped
+- **Improved error handling**: Now properly handles the case where scoring is disabled
+
+**Benefits**:
+- **Eliminates errors**: No more `NoneType` errors during refresh operations
+- **Clean logging**: Clear indication when scoring is disabled vs. when it's computed
+- **Robust handling**: Proper handling of disabled scoring functionality
+
+**Verification**:
+- `python main.py . refresh` runs without errors
+- Scoring computation completes successfully with disabled scoring
+- No more `object of type 'NoneType' has no len()` errors
+- System maintains functionality with unified state management

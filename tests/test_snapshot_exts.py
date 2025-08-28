@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from snapshot import build_snapshot
-from models import RunConfig, load_json
+from schemas import RunConfig, load_json
 from conftest import create_test_files
 
 
@@ -32,7 +32,7 @@ def test_extension_rules(repo_tmp):
     
     # Load root dirmeta
     dirmeta_path = repo_tmp / ".spade" / "snapshot" / "." / "dirmeta.json"
-    from models import DirMeta
+    from schemas import DirMeta
     dirmeta = load_json(dirmeta_path, DirMeta)
     
     # Assert
@@ -73,7 +73,7 @@ def test_multi_dot_extensions(repo_tmp):
     
     # Load root dirmeta
     dirmeta_path = repo_tmp / ".spade" / "snapshot" / "." / "dirmeta.json"
-    from models import DirMeta
+    from schemas import DirMeta
     dirmeta = load_json(dirmeta_path, DirMeta)
     
     # Assert
@@ -107,7 +107,7 @@ def test_hidden_files(repo_tmp):
     
     # Load root dirmeta
     dirmeta_path = repo_tmp / ".spade" / "snapshot" / "." / "dirmeta.json"
-    from models import DirMeta
+    from schemas import DirMeta
     dirmeta = load_json(dirmeta_path, DirMeta)
     
     # Assert
@@ -141,7 +141,7 @@ def test_no_extension_files(repo_tmp):
     
     # Load root dirmeta
     dirmeta_path = repo_tmp / ".spade" / "snapshot" / "." / "dirmeta.json"
-    from models import DirMeta
+    from schemas import DirMeta
     dirmeta = load_json(dirmeta_path, DirMeta)
     
     # Assert

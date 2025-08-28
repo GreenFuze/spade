@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from sanitize import sanitize_llm_output
-from models import LLMResponse, LLMInferred, NodeUpdate, Evidence, Nav, DirMeta, RunConfig
+from schemas import LLMResponse, LLMInferred, NodeUpdate, Evidence, Nav, DirMeta, RunConfig
 from conftest import write_dirmeta
 
 
@@ -67,7 +67,7 @@ def test_sanitizer_trims_and_normalization(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     sanitized, was_trimmed, trim_notes = sanitize_llm_output(repo_tmp, cfg, current_dirmeta_obj, resp)
     
@@ -155,7 +155,7 @@ def test_sanitizer_no_trimming_needed(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     sanitized, was_trimmed, trim_notes = sanitize_llm_output(repo_tmp, cfg, current_dirmeta_obj, resp)
     
@@ -225,7 +225,7 @@ def test_sanitizer_component_evidence(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     sanitized, was_trimmed, trim_notes = sanitize_llm_output(repo_tmp, cfg, current_dirmeta_obj, resp)
     
@@ -319,7 +319,7 @@ def test_sanitizer_path_filtering(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     sanitized, was_trimmed, trim_notes = sanitize_llm_output(repo_tmp, cfg, current_dirmeta_obj, resp)
     

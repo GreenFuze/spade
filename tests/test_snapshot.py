@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from snapshot import build_snapshot, get_file_extension, iso8601_z_of, sha1_of
 from workspace import Workspace
-from models import load_json, DirMeta
+from schemas import load_json, DirMeta
 
 
 def test_extension_rules():

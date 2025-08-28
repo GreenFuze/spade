@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from typing import List, Dict
 
-from models import RunConfig
+from schemas import RunConfig
 
 
 # Conservative core seed markers

@@ -1,103 +1,110 @@
-from __future__ import annotations
-from pathlib import Path
-import json, collections, datetime
-from typing import Dict, List, Tuple
-from logger import get_logger
-from models import RunConfig, DirMeta
-from models import load_json, save_json_data
-from languages import active_map, aggregate_languages
+"""
+SPADE Report Generation
+Generates JSON and Markdown reports from Phase-0 analysis results
 
-def _utc_now_iso() -> str:
-    return datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+NOTE: This file is temporarily commented out as LLM interactions are disabled.
+"""
 
-def _load_summary(repo_root: Path) -> dict:
-    p = repo_root/".spade/summary.json"
-    if p.exists():
-        try: return json.loads(p.read_text(encoding="utf-8"))
-        except Exception: pass
-    return {}
+# from __future__ import annotations
+# from pathlib import Path
+# import json, collections, datetime
+# from typing import Dict, List, Tuple
+# from logger import get_logger
+# from schemas import RunConfig, DirMeta
+# from schemas import load_json, save_json_data
+# from languages import active_map, aggregate_languages
 
-def _iter_dirmeta(repo_root: Path):
-    for dm in (repo_root/".spade/snapshot").rglob("dirmeta.json"):
-        try:
-            yield load_json(dm, DirMeta)
-        except Exception:
-            continue
+# def _utc_now_iso() -> str:
+#     return datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
-def _ignored_stats(dirmetas: List[DirMeta]) -> Dict[str,int]:
-    c = collections.Counter()
-    total = 0
-    for dm in dirmetas:
-        if dm.ignored_reason:
-            total += 1
-            c[dm.ignored_reason] += 1
-    return {"total_ignored": total, "reasons": dict(c.most_common())}
+# def _load_summary(repo_root: Path) -> dict:
+#     p = repo_root/".spade/summary.json"
+#     if p.exists():
+#         try: return json.loads(p.read_text(encoding="utf-8"))
+#         except Exception: pass
+#     return {}
 
-def _deterministic_language_inventory(repo_root: Path, cfg: RunConfig, dirmetas: List[DirMeta]) -> List[Tuple[str,int]]:
-    ext2lang = active_map(cfg, repo_root)
-    lang_counts = collections.Counter()
-    for dm in dirmetas:
-        for lang, n in aggregate_languages(dm.ext_histogram or {}, ext2lang):
-            lang_counts[lang] += int(n)
-    return lang_counts.most_common()
+# def _iter_dirmeta(repo_root: Path):
+#     for dm in (repo_root/".spade/snapshot").rglob("dirmeta.json"):
+#         try:
+#             yield load_json(dm, DirMeta)
+#         except Exception:
+#             continue
 
-def _llm_language_inventory(repo_root: Path) -> List[Tuple[str,int]]:
-    p = repo_root/".spade/scaffold/repository_scaffold.json"
-    counts = collections.Counter()
-    if p.exists():
-        try:
-            data = json.loads(p.read_text(encoding="utf-8"))
-            for nd in (data or {}).values():
-                for lang in (nd.get("languages") or []):
-                    counts[str(lang).lower()] += 1
-        except Exception:
-            pass
-    return counts.most_common()
+# def _ignored_stats(dirmetas: List[DirMeta]) -> Dict[str,int]:
+#     c = collections.Counter()
+#     total = 0
+#     for dm in dirmetas:
+#         if dm.ignored_reason:
+#             total += 1
+#             c[dm.ignored_reason] += 1
+#     return {"total_ignored": total, "reasons": dict(c.most_common())}
 
-def _components_snapshot(repo_root: Path) -> List[dict]:
-    p = repo_root/".spade/scaffold/high_level_components.json"
-    if not p.exists(): return []
-    try:
-        comps = json.loads(p.read_text(encoding="utf-8"))
-        # keep concise evidence
-        for c in comps:
-            ev = c.get("evidence") or []
-            c["evidence"] = ev[:3]
-            # show at most 5 dirs
-            c["dirs"] = (c.get("dirs") or [])[:5]
-        return comps
-    except Exception:
-        return []
+# def _deterministic_language_inventory(repo_root: Path, cfg: RunConfig, dirmetas: List[DirMeta]) -> List[Tuple[str,int]]:
+#     ext2lang = active_map(cfg, repo_root)
+#     lang_counts = collections.Counter()
+#     for dm in dirmetas:
+#         for lang, n in aggregate_languages(dm.ext_histogram or {}, ext2lang):
+#             lang_counts[lang] += int(n)
+#     return lang_counts.most_common()
 
-def _node_summaries(repo_root: Path, k: int = 15) -> List[dict]:
-    nodes_path = repo_root/".spade/scaffold/repository_scaffold.json"
-    if not nodes_path.exists(): return []
-    try:
-        nodes = json.loads(nodes_path.read_text(encoding="utf-8"))
-    except Exception:
-        return []
-    # Gather depth from dirmeta and use last_updated_step for recency
-    dm_index = {}
-    for dm in (repo_root/".spade/snapshot").rglob("dirmeta.json"):
-        try:
-            obj = json.loads(dm.read_text(encoding="utf-8"))
-            dm_index[obj.get("path",".")] = obj.get("depth", 0)
-        except Exception:
-            continue
-    items = []
-    for path, nd in nodes.items():
-        items.append({
-            "path": path,
-            "depth": dm_index.get(path, 0),
-            "summary": nd.get("summary"),
-            "languages": nd.get("languages") or [],
-            "confidence": nd.get("confidence", 0.0),
-            "last_updated_step": nd.get("last_updated_step", -1)
-        })
-    items.sort(key=lambda x: (-int(x["last_updated_step"]), x["depth"], x["path"]))
-    return items[:k]
+# def _llm_language_inventory(repo_root: Path) -> List[Tuple[str,int]]:
+#     p = repo_root/".spade/scaffold/repository_scaffold.json"
+#     counts = collections.Counter()
+#     if p.exists():
+#         try:
+#             data = json.loads(p.read_text(encoding="utf-8"))
+#             for nd in (data or {}).values():
+#                 for lang in (nd.get("languages") or []):
+#                     counts[str(lang).lower()] += 1
+#         except Exception:
+#             pass
+#     return counts.most_common()
 
-def _det_scoring_coverage(repo_root: Path, dirmetas: List[DirMeta]) -> dict:
+# def _components_snapshot(repo_root: Path) -> List[dict]:
+#     p = repo_root/".spade/scaffold/high_level_components.json"
+#     if not p.exists(): return []
+#     try:
+#         comps = json.loads(p.read_text(encoding="utf-8"))
+#         # keep concise evidence
+#         for c in comps:
+#             ev = c.get("evidence") or []
+#             c["evidence"] = ev[:3]
+#             # show at most 5 dirs
+#             c["dirs"] = (c.get("dirs") or [])[:5]
+#         return comps
+#     except Exception:
+#         return []
+
+# def _node_summaries(repo_root: Path, k: int = 15) -> List[dict]:
+#     nodes_path = repo_root/".spade/scaffold/repository_scaffold.json"
+#     if not nodes_path.exists(): return []
+#     try:
+#         nodes = json.loads(nodes_path.read_text(encoding="utf-8"))
+#     else:
+#         return []
+#     # Gather depth from dirmeta and use last_updated_step for recency
+#     dm_index = {}
+#     for dm in (repo_root/".spade/snapshot").rglob("dirmeta.json"):
+#         try:
+#             obj = json.loads(dm.read_text(encoding="utf-8"))
+#             return []
+#         except Exception:
+#             continue
+#     items = []
+#     for path, nd in nodes.items():
+#         items.append({
+#             "path": path,
+#             "depth": dm_index.get(path, 0),
+#             "summary": nd.get("summary"),
+#             "languages": nd.get("languages") or [],
+#             "confidence": nd.get("confidence", 0.0),
+#             "last_updated_step": nd.get("last_updated_step", -1)
+#         })
+#     items.sort(key=lambda x: (-int(x["last_updated_step"]), x["depth"], x["path"]))
+#     return items[:k]
+
+# def _det_scoring_coverage(repo_root: Path, dirmetas: List[DirMeta]) -> dict:
     total = 0; with_scores = 0; children_scored = 0
     reason_counts = collections.Counter()
     for dm in dirmetas:

@@ -6,7 +6,7 @@ Validates load_json and save_json functionality
 
 import tempfile
 from pathlib import Path
-from models import RunConfig, load_json, save_json
+from schemas import RunConfig, load_json, save_json
 
 
 def test_json_helpers():

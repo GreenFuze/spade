@@ -6,7 +6,7 @@ Loads system and user prompt files from the prompts directory
 from pathlib import Path
 from logger import get_logger
 
-logger = get_logger()
+# Use get_logger() directly instead of storing local copy
 
 PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
 
@@ -17,7 +17,7 @@ def load_system(name: str) -> str:
     try:
         return p.read_text(encoding="utf-8")
     except Exception as e:
-        logger.error(f"[prompts] failed to load system prompt {p}: {e}")
+        get_logger().error(f"[prompts] failed to load system prompt {p}: {e}")
         raise
 
 
@@ -27,5 +27,5 @@ def load_user(name: str) -> str:
     try:
         return p.read_text(encoding="utf-8")
     except Exception as e:
-        logger.error(f"[prompts] failed to load user prompt {p}: {e}")
+        get_logger().error(f"[prompts] failed to load user prompt {p}: {e}")
         raise

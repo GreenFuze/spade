@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from nav import filter_nav
-from models import Nav, DirMeta
+from schemas import Nav, DirMeta
 from conftest import write_dirmeta, write_ignore
 
 
@@ -32,7 +32,7 @@ def test_nav_guardrails(repo_tmp):
     
     # Load config
     cfg_path = repo_tmp / ".spade" / "run.json"
-    from models import RunConfig
+    from schemas import RunConfig
     cfg = RunConfig(**json.loads(cfg_path.read_text(encoding="utf-8")))
     cfg.limits.max_depth = 3  # Set max_depth to 3
     
@@ -48,7 +48,7 @@ def test_nav_guardrails(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     import pathspec
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     # Create empty PathSpec objects for testing
@@ -96,7 +96,7 @@ def test_depth_limits(repo_tmp):
     
     # Load config with max_depth=3
     cfg_path = repo_tmp / ".spade" / "run.json"
-    from models import RunConfig
+    from schemas import RunConfig
     cfg = RunConfig(**json.loads(cfg_path.read_text(encoding="utf-8")))
     cfg.limits.max_depth = 3
     
@@ -109,7 +109,7 @@ def test_depth_limits(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     import pathspec
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     # Create empty PathSpec objects for testing
@@ -150,7 +150,7 @@ def test_safe_names(repo_tmp):
     
     # Load config
     cfg_path = repo_tmp / ".spade" / "run.json"
-    from models import RunConfig
+    from schemas import RunConfig
     cfg = RunConfig(**json.loads(cfg_path.read_text(encoding="utf-8")))
     
     # Create nav request with unsafe names
@@ -162,7 +162,7 @@ def test_safe_names(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     import pathspec
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     # Create empty PathSpec objects for testing
@@ -216,7 +216,7 @@ def test_ignore_patterns_in_nav(repo_tmp):
     
     # Load config
     cfg_path = repo_tmp / ".spade" / "run.json"
-    from models import RunConfig
+    from schemas import RunConfig
     cfg = RunConfig(**json.loads(cfg_path.read_text(encoding="utf-8")))
     
     # Create nav request
@@ -228,7 +228,7 @@ def test_ignore_patterns_in_nav(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     import pathspec
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     # Load actual ignore specs for testing
@@ -270,7 +270,7 @@ def test_max_children_per_step(repo_tmp):
     
     # Load config with max_children_per_step=2
     cfg_path = repo_tmp / ".spade" / "run.json"
-    from models import RunConfig
+    from schemas import RunConfig
     cfg = RunConfig(**json.loads(cfg_path.read_text(encoding="utf-8")))
     cfg.caps.nav.max_children_per_step = 2
     
@@ -283,7 +283,7 @@ def test_max_children_per_step(repo_tmp):
     
     # Act
     # Convert dict to DirMeta object
-    from models import DirMeta
+    from schemas import DirMeta
     import pathspec
     current_dirmeta_obj = DirMeta(**current_dirmeta)
     # Create empty PathSpec objects for testing

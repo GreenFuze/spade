@@ -8,10 +8,10 @@ from pathlib import Path
 import json
 from typing import Dict, List, Tuple
 
-from models import RunConfig
+from schemas import RunConfig
 from logger import get_logger
 
-logger = get_logger()
+# Use get_logger() directly instead of storing local copy
 
 # Minimal but useful seed mapping (extensions → canonical language)
 SEED_EXT2LANG: Dict[str, str] = {
@@ -47,10 +47,10 @@ def load_learned(repo_root: Path) -> Dict[str, str]:
             lang = str(item.get("language", "")).strip().lower()
             if ext and lang:
                 out[ext] = lang
-        logger.info(f"[languages] loaded {len(out)} learned mappings")
+        get_logger().info(f"[languages] loaded {len(out)} learned mappings")
         return out
     except Exception as e:
-        logger.warning(f"[languages] failed to load learned mapping: {e}")
+        get_logger().warning(f"[languages] failed to load learned mapping: {e}")
         return {}
 
 

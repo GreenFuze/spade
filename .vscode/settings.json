@@ -2,11 +2,25 @@
 	"python.analysis.typeCheckingMode": "basic",
 	"terminal.integrated.profiles.windows": {
 		"Git Bash": {
-		"path": "C:\\Program Files\\Git\\bin\\bash.exe",
-		"args": ["--login", "-i"],
-		"icon": "terminal-bash"
+			"path": "C:\\Program Files\\Git\\bin\\bash.exe",
+			"args": [
+				"--login",
+				"-i"
+			],
+			"icon": "terminal-bash"
 		}
 	},
-	"terminal.integrated.defaultProfile.windows": "Git Bash",
-	"python.languageServer": "None"
+	"python.defaultInterpreterPath": "${env:APPDATA}\\Local\\Programs\\Python\\Python312\\python.exe",
+	"python.terminal.activateEnvironment": true,
+	"python.terminal.activateEnvInCurrentTerminal": true,
+	"python.testing.pytestEnabled": true,
+	"black-formatter.args": [
+		"--skip-magic-trailing-comma",
+		"--line-length",
+		"256"
+	],
+	"python.testing.pytestArgs": [
+		"spade/tests"
+	],
+	"editor.formatOnSave": true,
 }

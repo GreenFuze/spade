@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from markers import SEED_MARKERS, load_learned_markers, active_rules, detect_markers_for_dir
 from snapshot import build_snapshot, enrich_markers_and_samples
 from workspace import Workspace
-from models import load_json, DirMeta
+from schemas import load_json, DirMeta
 
 
 def test_seed_markers():

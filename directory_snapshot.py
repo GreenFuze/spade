@@ -21,13 +21,13 @@ class DirectorySnapshot:
         self.root = root
         self.max_depth = max_depth
         self.max_entries = max_entries
-        self.logger = logger or get_logger()
+        # Use get_logger() directly instead of storing local copy
     
     def scan(self) -> List[Dict]:
         """Scans directory tree and returns structured entries."""
         max_depth_str = "unlimited" if self.max_depth == 0 else str(self.max_depth)
         max_entries_str = "unlimited" if self.max_entries == 0 else str(self.max_entries)
-        self.logger.debug(f"Starting directory scan of {self.root} (max_depth={max_depth_str}, max_entries={max_entries_str})")
+        get_logger().debug(f"Starting directory scan of {self.root} (max_depth={max_depth_str}, max_entries={max_entries_str})")
         entries = []
         skipped_dirs = []
         
@@ -36,7 +36,7 @@ class DirectorySnapshot:
         
         if scan_depth is None:
             # Unlimited depth scan
-            self.logger.debug("Performing unlimited depth scan")
+            get_logger().debug("Performing unlimited depth scan")
             for root, dirnames, _ in os.walk(self.root):
                 try:
                     current_depth = len(Path(root).relative_to(self.root).parts)
@@ -44,30 +44,30 @@ class DirectorySnapshot:
                         dir_path = Path(root) / dirname
                         if self._should_skip_dir(dir_path):
                             skipped_dirs.append(str(dir_path.relative_to(self.root)))
-                            self.logger.debug(f"Skipping directory: {dir_path}")
+                            get_logger().debug(f"Skipping directory: {dir_path}")
                             continue
                         
                         entry = self._create_entry(dir_path, current_depth + 1)
                         entries.append(entry)
-                        self.logger.debug(f"Added directory entry: {entry['path']} (depth={current_depth + 1}, entries={entry['entry_count']})")
+                        get_logger().debug(f"Added directory entry: {entry['path']} (depth={current_depth + 1}, entries={entry['entry_count']})")
                 except ValueError:
                     # Skip if path is not relative to root
                     continue
         else:
             # Limited depth scan
             for depth in range(scan_depth + 1):
-                self.logger.debug(f"Scanning directories at depth {depth}")
+                get_logger().debug(f"Scanning directories at depth {depth}")
                 for dir_path in self._get_dirs_at_depth(depth):
                     if self._should_skip_dir(dir_path):
                         skipped_dirs.append(str(dir_path.relative_to(self.root)))
-                        self.logger.debug(f"Skipping directory: {dir_path}")
+                        get_logger().debug(f"Skipping directory: {dir_path}")
                         continue
                     
                     entry = self._create_entry(dir_path, depth)
                     entries.append(entry)
-                    self.logger.debug(f"Added directory entry: {entry['path']} (depth={depth}, entries={entry['entry_count']})")
+                    get_logger().debug(f"Added directory entry: {entry['path']} (depth={depth}, entries={entry['entry_count']})")
         
-        self.logger.debug(f"Directory scan complete: {len(entries)} directories found, {len(skipped_dirs)} skipped")
+        get_logger().debug(f"Directory scan complete: {len(entries)} directories found, {len(skipped_dirs)} skipped")
         return entries
     
     def _get_dirs_at_depth(self, depth: int) -> List[Path]:
@@ -90,7 +90,7 @@ class DirectorySnapshot:
                     continue
         except Exception as e:
             # Fail fast on unexpected errors
-            self.logger.error(f"Failed to scan directories at depth {depth}: {e}")
+            get_logger().error(f"Failed to scan directories at depth {depth}: {e}")
             raise RuntimeError(f"Failed to scan directories at depth {depth}: {e}")
         
         return sorted(dirs)
@@ -124,7 +124,7 @@ class DirectorySnapshot:
             }
         except PermissionError:
             # Handle permission errors gracefully
-            self.logger.warning(f"Permission denied accessing directory: {dir_path}")
+            get_logger().warning(f"Permission denied accessing directory: {dir_path}")
             return {
                 "path": str(dir_path.relative_to(self.root)) if dir_path != self.root else ".",
                 "depth": depth,

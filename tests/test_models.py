@@ -4,7 +4,7 @@ Test script for SPADE Pydantic models
 Validates that models can be instantiated with defaults and work as expected
 """
 
-from models import (
+from schemas import (
     RunConfig, DirMeta, DirCounts, StalenessFingerprint, DirSamples,
     LLMResponse, LLMInferred, Nav, HighLevelComponent, NodeUpdate, Evidence
 )

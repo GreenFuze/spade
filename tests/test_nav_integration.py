@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from nav import filter_nav, fallback_children
-from models import RunConfig, Nav, load_json, DirMeta
+from schemas import RunConfig, Nav, load_json, DirMeta
 from ignore import load_specs
 
 

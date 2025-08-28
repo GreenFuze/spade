@@ -6,9 +6,9 @@
     "dirs": 6
   },
   "ext_histogram": {
-    "json": 1,
-    "md": 1,
-    "txt": 1
+    ".json": 1,
+    ".md": 1,
+    ".txt": 1
   },
   "markers": [
     ".github/workflows/",
@@ -26,8 +26,8 @@
     ],
     "files": [
       "Dockerfile",
-      "package.json",
       "README.md",
+      "package.json",
       "requirements.txt"
     ]
   },
@@ -40,44 +40,15 @@
     "tests"
   ],
   "excluded_children": [
-    ".spade",
-    "node_modules"
+    ".github",
+    ".spade"
   ],
   "is_symlink": false,
   "ignored_reason": null,
   "staleness_fingerprint": {
-    "latest_modified_time": "2025-08-26T08:30:56.437293Z",
+    "latest_modified_time": "2025-08-27T09:35:48Z",
     "total_entries": 10,
-    "name_hash": "ffdb221437d5cd53f5f087db60051df5dc638a00"
+    "name_hash": "34319bf1b6f9995f80943e7cdc5b2d2ed44cf86a"
   },
-  "deterministic_scoring": {
-    ".github": {
-      "score": 0.007,
-      "reasons": [
-        "size:dirs=1,files=0"
-      ]
-    },
-    "docs": {
-      "score": 0.157,
-      "reasons": [
-        "name:docs",
-        "size:dirs=0,files=1"
-      ]
-    },
-    "src": {
-      "score": 0.165,
-      "reasons": [
-        "name:src",
-        "size:dirs=4,files=0"
-      ]
-    },
-    "tests": {
-      "score": 0.407,
-      "reasons": [
-        "lang:python(1)",
-        "name:tests",
-        "size:dirs=0,files=1"
-      ]
-    }
-  }
+  "deterministic_scoring": {}
 }

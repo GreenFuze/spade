@@ -1,16 +1,16 @@
 {
   "repo": "fakeapp",
-  "timestamp_utc": "2025-08-26T08:30:57Z",
+  "timestamp_utc": "2025-08-27T09:36:22Z",
   "run": {
-    "visited": 5,
-    "descended": 4,
-    "components": 2,
-    "avg_confidence": 0.65,
-    "duration_ms": 390,
+    "visited": 1,
+    "descended": 0,
+    "components": 0,
+    "avg_confidence": 0.0,
+    "duration_ms": 34388,
     "limits": {
-      "max_depth": 6,
-      "max_nodes": 2000,
-      "max_llm_calls": 300,
+      "max_depth": 0,
+      "max_nodes": 0,
+      "max_llm_calls": 0,
       "nav_cap": 4
     }
   },
@@ -19,107 +19,15 @@
     "reasons": {}
   },
   "languages": {
-    "deterministic_exts": [
-      [
-        "python",
-        4
-      ]
-    ],
-    "llm_inferred": [
-      [
-        "python",
-        2
-      ],
-      [
-        "unknown",
-        2
-      ]
-    ],
-    "reconciled_order": [
-      "python",
-      "unknown"
-    ]
+    "deterministic_exts": [],
+    "llm_inferred": [],
+    "reconciled_order": []
   },
-  "components": [
-    {
-      "name": "Test Component",
-      "role": "Updated Role",
-      "dirs": [
-        "dir1",
-        "dir2"
-      ],
-      "evidence": [
-        {
-          "type": "marker",
-          "value": "test1"
-        },
-        {
-          "type": "marker",
-          "value": "test2"
-        }
-      ],
-      "confidence": 0.9
-    },
-    {
-      "name": "core_module",
-      "role": "Core code inferred from directory metadata.",
-      "dirs": [
-        "."
-      ],
-      "evidence": [
-        {
-          "type": "name",
-          "value": "."
-        }
-      ],
-      "confidence": 0.5
-    }
-  ],
-  "node_summaries": [
-    {
-      "path": "test",
-      "depth": 0,
-      "summary": "Test node",
-      "languages": [
-        "python"
-      ],
-      "confidence": 0.8,
-      "last_updated_step": 5
-    },
-    {
-      "path": "src",
-      "depth": 1,
-      "summary": "src appears to contain unknown code; metadata-only summary.",
-      "languages": [
-        "unknown"
-      ],
-      "confidence": 0.6,
-      "last_updated_step": 2
-    },
-    {
-      "path": "tests",
-      "depth": 1,
-      "summary": "tests appears to contain py code; metadata-only summary.",
-      "languages": [
-        "python"
-      ],
-      "confidence": 0.6,
-      "last_updated_step": 1
-    },
-    {
-      "path": ".",
-      "depth": 0,
-      "summary": ". appears to contain unknown code; metadata-only summary.",
-      "languages": [
-        "unknown"
-      ],
-      "confidence": 0.6,
-      "last_updated_step": 0
-    }
-  ],
+  "components": [],
+  "node_summaries": [],
   "deterministic_scoring": {
-    "nodes_with_scores": 3,
-    "avg_children_scored": 3.0,
+    "nodes_with_scores": 0,
+    "avg_children_scored": 0.0,
     "top_reason_types": {}
   },
   "open_questions": [],

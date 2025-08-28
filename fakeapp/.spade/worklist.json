@@ -1,10 +1,6 @@
 {
   "queue": [],
   "visited": [
-    "C:/src/github.com/GreenFuze/spade/fakeapp",
-    "C:/src/github.com/GreenFuze/spade/fakeapp/tests",
-    "C:/src/github.com/GreenFuze/spade/fakeapp/src",
-    "C:/src/github.com/GreenFuze/spade/fakeapp/api",
-    "C:/src/github.com/GreenFuze/spade/fakeapp/cli"
+    "C:/src/github.com/GreenFuze/spade/fakeapp"
   ]
 }
