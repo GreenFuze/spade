@@ -1,0 +1,603 @@
+Repo=MetaFFI  Root=C:\src\github.com\MetaFFI
+BuildSystem=CMake              # e.g., cmake | bazel | gradle | custom_script
+Scope=['./']                     # e.g., ["./"] or ["./", "subproj/ui"]
+DetectionMode=configure_only            # e.g., no_exec | configure_only | build
+Commands={                                # optional hints; empty if not applicable
+  "configure": "cmake -B C:\src\github.com\MetaFFI\cmake-build-debug",
+  "test_discovery": "ctest --test-dir C:\src\github.com\MetaFFI\cmake-build-debug"
+}
+
+{
+  "repo": {
+    "name": "MetaFFI",
+    "root": "C:\\src\\github.com\\MetaFFI"
+  },
+  "build": {
+    "system": "CMake",
+    "generator": null,
+    "type": null,
+    "configure_cmd": "cmake -B C:\\src\\github.com\\MetaFFI\\cmake-build-debug",
+    "test_cmd": "ctest --test-dir C:\\src\\github.com\\MetaFFI\\cmake-build-debug",
+    "limits": {
+      "max_list": 10
+    }
+  },
+  "components": [
+    {
+      "id": 0,
+      "name": "cdts_test",
+      "type": "executable",
+      "language": "cxx",
+      "runtime": "Runtime.VS_CPP",
+      "output": "cdts_test",
+      "output_path": "cdts_test.exe",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "metaffi",
+      "type": "executable",
+      "language": "cxx",
+      "runtime": "Runtime.VS_CPP",
+      "output": "metaffi",
+      "output_path": "metaffi.exe",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "metaffi.compiler.go",
+      "type": "shared_library",
+      "language": "go",
+      "runtime": "Runtime.GO",
+      "output": "metaffi.compiler.go",
+      "output_path": "go\\metaffi.compiler.go.dll",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "metaffi.compiler.openjdk",
+      "type": "shared_library",
+      "language": "go",
+      "runtime": "Runtime.GO",
+      "output": "metaffi.compiler.openjdk",
+      "output_path": "openjdk\\metaffi.compiler.openjdk.dll",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "metaffi.compiler.python311",
+      "type": "shared_library",
+      "language": "go",
+      "runtime": "Runtime.GO",
+      "output": "metaffi.compiler.python311",
+      "output_path": "python311\\metaffi.compiler.python311.dll",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "metaffi.idl.go",
+      "type": "shared_library",
+      "language": "go",
+      "runtime": "Runtime.GO",
+      "output": "metaffi.idl.go",
+      "output_path": "go\\metaffi.idl.go.dll",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "metaffi.idl.openjdk",
+      "type": "shared_library",
+      "language": "cxx",
+      "runtime": "Runtime.VS_CPP",
+      "output": "metaffi.idl.openjdk",
+      "output_path": "openjdk\\metaffi.idl.openjdk.dll",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "metaffi.idl.python311",
+      "type": "shared_library",
+      "language": "cxx",
+      "runtime": "Runtime.VS_CPP",
+      "output": "metaffi.idl.python311",
+      "output_path": "python311\\metaffi.idl.python311.dll",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "openjdk_idl_extractor",
+      "type": "vm",
+      "language": "java",
+      "runtime": "Runtime.JVM",
+      "output": "openjdk_idl_extractor",
+      "output_path": "openjdk\\openjdk_idl_extractor.jar",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "xllr",
+      "type": "shared_library",
+      "language": "cxx",
+      "runtime": "Runtime.VS_CPP",
+      "output": "xllr",
+      "output_path": "xllr.dll",
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    }
+  ],
+  "aggregators": [
+    {
+      "id": 0,
+      "name": "MetaFFI",
+      "depends_on": [
+        "metaffi-core",
+        "python311",
+        "openjdk",
+        "go"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "build_go_guest",
+      "depends_on": [],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "go",
+      "depends_on": [
+        "xllr.go",
+        "go_api_test",
+        "metaffi.idl.go",
+        "metaffi.compiler.go"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "metaffi-core",
+      "depends_on": [
+        "cdts_test",
+        "xllr_capi_test",
+        "metaffi",
+        "xllr"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "metaffi.api",
+      "depends_on": [
+        "xllr.openjdk.bridge"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "openjdk",
+      "depends_on": [
+        "metaffi.idl.openjdk",
+        "metaffi.compiler.openjdk",
+        "cdts_java_test",
+        "xllr.openjdk",
+        "openjdk_api_test",
+        "xllr.openjdk.bridge",
+        "xllr.openjdk.jni.bridge",
+        "metaffi.api"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "python311",
+      "depends_on": [
+        "xllr.python311",
+        "python_runtime_test",
+        "python311_idl_plugin_test",
+        "metaffi.idl.python311",
+        "metaffi.compiler.python311"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "python311.publish",
+      "depends_on": [
+        "xllr.python311"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "xllr.openjdk.bridge",
+      "depends_on": [
+        "xllr.openjdk.jni.bridge"
+      ],
+      "evidence": [
+        {
+          "file": "CMakeLists.txt",
+          "start": 1,
+          "end": 1
+        }
+      ]
+    }
+  ],
+  "runners": [],
+  "tests": [
+    {
+      "id": 0,
+      "name": "cdts_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\metaffi-core\\plugin-sdk\\run_sdk_tests.cmake",
+          "start": 11,
+          "end": 11
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "xllr_capi_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\metaffi-core\\plugin-sdk\\run_sdk_tests.cmake",
+          "start": 20,
+          "end": 20
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "python_runtime_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-python311\\runtime\\CMakeLists.txt",
+          "start": 35,
+          "end": 35
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "python3_api_unitest",
+      "framework": "Python unittest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-python311\\api\\CMakeLists.txt",
+          "start": 5,
+          "end": 5
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "python3_api_cross_pl_tests",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-python311\\api\\CMakeLists.txt",
+          "start": 12,
+          "end": 12
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "idl_plugin_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-python311\\idl\\CMakeLists.txt",
+          "start": 32,
+          "end": 32
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "metaffi_compiler_python311_test",
+      "framework": "Go Test",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-python311\\compiler\\CMakeLists.txt",
+          "start": 19,
+          "end": 19
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "openjdk_idl_plugin_java_tests",
+      "framework": "JUnit",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-openjdk\\idl\\CMakeLists.txt",
+          "start": 78,
+          "end": 78
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "(go test) openjdk_compiler_go_tests",
+      "framework": "Go Test",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\cmake\\Go.cmake",
+          "start": 74,
+          "end": 74
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "cdts_java_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-openjdk\\runtime\\CMakeLists.txt",
+          "start": 25,
+          "end": 25
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "openjdk_api_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-openjdk\\runtime\\CMakeLists.txt",
+          "start": 34,
+          "end": 34
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "openjdk_api_cross_pl_tests",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-openjdk\\api\\CMakeLists.txt",
+          "start": 23,
+          "end": 23
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "go_api_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-go\\runtime\\CMakeLists.txt",
+          "start": 40,
+          "end": 40
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "go_runtime_test",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-go\\go-runtime\\CMakeLists.txt",
+          "start": 7,
+          "end": 7
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "metaffi_idl_go_test",
+      "framework": "Go Test",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-go\\idl\\CMakeLists.txt",
+          "start": 16,
+          "end": 16
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "metaffi_compiler_go_test",
+      "framework": "Go Test",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-go\\compiler\\CMakeLists.txt",
+          "start": 21,
+          "end": 21
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "go_api_cross_pl_tests",
+      "framework": "CTest",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "file": "C:\\src\\github.com\\MetaFFI\\lang-plugin-go\\api\\CMakeLists.txt",
+          "start": 7,
+          "end": 7
+        }
+      ]
+    }
+  ],
+  "gaps": {
+    "missing_sources": [],
+    "missing_outputs": [],
+    "orphans": {
+      "aggregators": [],
+      "tests": []
+    },
+    "risky_runners": []
+  }
+}

@@ -10,6 +10,7 @@
 			"icon": "terminal-bash"
 		}
 	},
+	"terminal.integrated.defaultProfile.windows": "Git Bash",
 	"python.defaultInterpreterPath": "${env:APPDATA}\\Local\\Programs\\Python\\Python312\\python.exe",
 	"python.terminal.activateEnvironment": true,
 	"python.terminal.activateEnvInCurrentTerminal": true,
@@ -20,7 +21,8 @@
 		"256"
 	],
 	"python.testing.pytestArgs": [
-		"spade/tests"
+		"build_detector"
 	],
 	"editor.formatOnSave": true,
+	"python.testing.unittestEnabled": false,
 }
