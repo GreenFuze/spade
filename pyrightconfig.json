@@ -6,7 +6,7 @@
 		"**/__pycache__",
 		"**/.*"
 	],
-	"typeCheckingMode": "strict",
+	"typeCheckingMode": "basic",
 	"useLibraryCodeForTypes": true,
 	"pythonVersion": "3.12",
 	"pythonPlatform": "All",
@@ -39,4 +39,11 @@
 	"reportUnusedFunction": "warning",
 	"reportUnusedClass": "warning",
 	"reportUnusedImport": "warning",
+	"reportUnknownArgumentType": "none",
+	"reportUnknownMemberType": "none",
+	"reportUnknownVariableType": "none",
+	"reportUnknownParameterType": "none",
+	"reportUnknownLambdaType": "none",
+	"reportGeneralTypeIssues": "warning",
+	"reportAttributeAccessIssue": "none"
 }

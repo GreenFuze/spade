@@ -7,9 +7,9 @@ SQL-friendly for future SQLite storage.
 """
 
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Tuple
+from typing import List, Optional, Dict, Any, Tuple, Set, Iterable
 
-from schemas import Component, Aggregator, Runner, Test, ComponentType, Runtime, Evidence, ComponentLocation, ExternalPackage, PackageManager, BuildNode, RepositoryInfo, BuildSystemInfo, ValidationSeverity, ValidationError, RIGValidationError
+from schemas import Component, Aggregator, Runner, Utility, Test, ComponentType, Runtime, Evidence, ComponentLocation, ExternalPackage, PackageManager, BuildNode, RepositoryInfo, BuildSystemInfo, ValidationSeverity, ValidationError, RIGValidationError
 
 
 class RIG:
@@ -21,12 +21,9 @@ class RIG:
     suitable for future SQLite storage and graph visualization.
     """
 
-    def __init__(self, custom_build_artifact_patterns: Optional[List[str]] = None) -> None:
+    def __init__(self) -> None:
         """
         Initialize an empty RIG.
-
-        Args:
-            custom_build_artifact_patterns: Project-specific patterns to skip as build artifacts
         """
         # Repository-level information
         self.repository: Optional[RepositoryInfo] = None
@@ -38,10 +35,8 @@ class RIG:
         self.components: List[Component] = []
         self.aggregators: List[Aggregator] = []
         self.runners: List[Runner] = []
+        self.utilities: List[Utility] = []
         self.tests: List[Test] = []
-
-        # Custom build artifact patterns for project-specific filtering
-        self.custom_build_artifact_patterns: Optional[List[str]] = custom_build_artifact_patterns
 
         # Supporting data (also flat for SQL)
         self.evidence: List[Evidence] = []
@@ -53,10 +48,18 @@ class RIG:
         self._components_by_name: Dict[str, Component] = {}
         self._aggregators_by_name: Dict[str, Aggregator] = {}
         self._runners_by_name: Dict[str, Runner] = {}
+        self._utilities_by_name: Dict[str, Utility] = {}
         self._tests_by_name: Dict[str, Test] = {}
 
     def add_component(self, component: Component) -> None:
         """Add a component to the RIG."""
+        # Check if this component is a test and populate test link fields
+        if self._is_test_component(component):
+            test_node = self._find_corresponding_test(component)
+            if test_node:
+                component.test_link_id = test_node.id if test_node.id is not None else len(self.tests)
+                component.test_link_name = test_node.name
+        
         self.components.append(component)
         self._components_by_name[component.name] = component
 
@@ -81,11 +84,23 @@ class RIG:
         self._runners_by_name[runner.name] = runner
         self.evidence.append(runner.evidence)
 
+    def add_utility(self, utility: Utility) -> None:
+        """Add a utility to the RIG."""
+        self.utilities.append(utility)
+        self._utilities_by_name[utility.name] = utility
+        self.evidence.append(utility.evidence)
+
     def add_test(self, test: Test) -> None:
         """Add a test to the RIG."""
         self.tests.append(test)
         self._tests_by_name[test.name] = test
         self.evidence.append(test.evidence)
+        
+        # Update any existing components that might be linked to this test
+        for component in self.components:
+            if component.name == test.name and component.test_link_id is None:
+                component.test_link_id = test.id if test.id is not None else len(self.tests)
+                component.test_link_name = test.name
 
     def set_repository_info(self, repo_info: RepositoryInfo) -> None:
         """Set repository-level information."""
@@ -108,17 +123,24 @@ class RIG:
         """Get a runner by name."""
         return self._runners_by_name.get(name)
 
+    def get_utility_by_name(self, name: str) -> Optional[Utility]:
+        """Get a utility by name."""
+        return self._utilities_by_name.get(name)
+
     def get_test_by_name(self, name: str) -> Optional[Test]:
         """Get a test by name."""
         return self._tests_by_name.get(name)
 
     def get_all_build_nodes(self) -> List[Any]:
-        """Get all build nodes (components, aggregators, runners) as a flat list."""
-        return self.components + self.aggregators + self.runners
+        """Get all build nodes (components, aggregators, runners, utilities) as a flat list."""
+        return self.components + self.aggregators + self.runners + self.utilities
 
     def get_build_node_by_name(self, name: str) -> Optional[Any]:
-        """Get any build node (component, aggregator, or runner) by name."""
-        return self.get_component_by_name(name) or self.get_aggregator_by_name(name) or self.get_runner_by_name(name)
+        """Get any build node (component, aggregator, runner, or utility) by name."""
+        return (self.get_component_by_name(name) or 
+                self.get_aggregator_by_name(name) or 
+                self.get_runner_by_name(name) or 
+                self.get_utility_by_name(name))
 
     # Statistics and analysis methods
     def get_component_count_by_type(self) -> Dict[ComponentType, int]:
@@ -188,6 +210,7 @@ class RIG:
                 "components": len(self.components),
                 "aggregators": len(self.aggregators),
                 "runners": len(self.runners),
+                "utilities": len(self.utilities),
                 "tests": len(self.tests),
                 "evidence": len(self.evidence),
                 "component_locations": len(self.component_locations),
@@ -203,7 +226,7 @@ class RIG:
     def __str__(self) -> str:
         """String representation of the RIG."""
         summary = self.get_summary()
-        return f"RIG({summary['counts']['components']} components, {summary['counts']['tests']} tests, {summary['counts']['aggregators']} aggregators, {summary['counts']['runners']} runners)"
+        return f"RIG({summary['counts']['components']} components, {summary['counts']['tests']} tests, {summary['counts']['aggregators']} aggregators, {summary['counts']['runners']} runners, {summary['counts']['utilities']} utilities)"
 
     def __repr__(self) -> str:
         """Detailed representation of the RIG."""
@@ -232,39 +255,32 @@ class RIG:
 
         return errors
 
-    def _is_cmake_build_artifact(self, source_file: Path, custom_patterns: Optional[List[str]] = None) -> bool:
+    def _is_cmake_build_artifact(self, source_file: Path) -> bool:
         """
         Check if a source file is a CMake build artifact that should be skipped.
+        Uses generic, evidence-based detection.
 
         Args:
             source_file: The source file path to check
-            custom_patterns: Additional patterns to check (project-specific)
 
         Returns:
             True if the file should be skipped as a build artifact
         """
-        source_str = str(source_file)
-
-        # Standard CMake build artifact patterns
-        standard_patterns = [
-            "CMakeFiles/",
-            "CMakeFiles\\",  # Windows path separator
-            ".rule",
-            ".dll.rule",  # Windows
-            ".so.rule",  # Linux
-            ".dylib.rule",  # macOS
-            ".exe.rule",  # Windows
-            ".lib.rule",  # Windows
-            ".a.rule",  # Linux/macOS static library
-            ".jar.rule",
-        ]
-
-        # Combine standard and custom patterns
-        all_patterns = standard_patterns
-        if custom_patterns:
-            all_patterns.extend(custom_patterns)
-
-        return any(skip_pattern in source_str for skip_pattern in all_patterns)
+        if not self.repository:
+            return False
+            
+        # Use generic build artifact detection
+        build_dir = self.repository.build_directory
+        known_artifacts: List[Path] = []
+        
+        # Collect known artifacts from components
+        for component in self.components:
+            if component.output_path:
+                known_artifacts.append(component.output_path)
+        
+        # Import the utility function
+        from cmake_entrypoint import ResearchBackedUtilities
+        return ResearchBackedUtilities.is_build_artifact(source_file, build_dir, known_artifacts)
 
     def _validate_missing_source_files(self) -> List[ValidationError]:
         """Validate that all referenced source files exist."""
@@ -278,7 +294,7 @@ class RIG:
         for component in self.components:
             for source_file in component.source_files:
                 # Skip CMake build artifacts and generated files
-                if self._is_cmake_build_artifact(source_file, self.custom_build_artifact_patterns):
+                if self._is_cmake_build_artifact(source_file):
                     continue
 
                 # Handle both relative and absolute paths
@@ -335,6 +351,15 @@ class RIG:
                 if location.action == "build":
                     full_path = output_root / location.path
                     if not full_path.exists():
+                        # Skip validation for components that are expected to be missing until built:
+                        # 1. Test executables
+                        # 2. All executables (they need to be built)
+                        # 3. Library files that are part of the build system but not yet built
+                        if ("test" in component.name.lower() or 
+                            component.type == ComponentType.EXECUTABLE or
+                            self._is_likely_unbuilt_component(component)):
+                            continue
+                            
                         errors.append(
                             ValidationError(
                                 severity=ValidationSeverity.WARNING,
@@ -347,6 +372,20 @@ class RIG:
                         )
 
         return errors
+    
+    def _is_likely_unbuilt_component(self, component: Component) -> bool:
+        """Check if a component is likely to be unbuilt based on explicit evidence."""
+        # Check if this is a library component that's part of the build system
+        if component.type in [ComponentType.SHARED_LIBRARY, ComponentType.STATIC_LIBRARY]:
+            # If it has source files, it's likely a build target that needs to be built
+            if component.source_files:
+                return True
+        
+        # Check if output path exists - if not, component is likely unbuilt
+        if component.output_path and not component.output_path.exists():
+            return True
+        
+        return False
 
     def _validate_orphaned_nodes(self) -> List[ValidationError]:
         """Validate that all nodes are connected to the graph."""
@@ -439,7 +478,7 @@ class RIG:
 
             for source_file in component.source_files:
                 # Skip CMake build artifacts
-                if self._is_cmake_build_artifact(source_file, self.custom_build_artifact_patterns):
+                if self._is_cmake_build_artifact(source_file):
                     continue
 
                 file_ext = source_file.suffix.lower()
@@ -667,21 +706,29 @@ class RIG:
         # Determine build roots (for now, just use repo root)
         build_roots = ["./"]
 
-        # Generate header section
-        header = f"""Repo={repo_name}  Root={repo_root}
-BuildSystem={build_system}              # e.g., cmake | bazel | gradle | custom_script
-Scope={build_roots}                     # e.g., ["./"] or ["./", "subproj/ui"]
-DetectionMode=configure_only            # e.g., no_exec | configure_only | build
-Commands={{                                # optional hints; empty if not applicable
-  "configure": "{configure_cmd}",
-  "test_discovery": "{test_cmd}"
-}}"""
+        # Generate header section in Markdown format
+        header = f"""# Repository Build Analysis
+
+## Repository Information
+- **Repository**: {repo_name}
+- **Root Path**: {repo_root}
+- **Build System**: {build_system}
+- **Scope**: {build_roots}
+- **Detection Mode**: configure_only
+- **Configure Command**: {configure_cmd}
+- **Test Discovery Command**: {test_cmd}
+
+## Build Data
+
+The following JSON contains the complete build analysis data:
+
+```json"""
 
         # Generate JSON data section
         json_data = self._generate_prompts_json_data(limit)
 
-        # Combine header and JSON data
-        full_prompt = f"{header}\n\n{json_data}"
+        # Combine header and JSON data in Markdown format
+        full_prompt = f"{header}\n{json_data}\n```"
 
         # Write to file if filename is provided
         if filename:
@@ -743,20 +790,41 @@ Commands={{                                # optional hints; empty if not applic
                 "runtime": str(component.runtime) if component.runtime else "native",
                 "output": component.output,
                 "output_path": str(component.output_path),
+                "source_files": [str(src) for src in component.source_files],
                 "depends_on": [dep.name for dep in component.depends_on],
                 "externals": [{"mgr": ext.package_manager.name, "pkg": ext.package_manager.package_name} for ext in component.external_packages],
-                "evidence": [{"file": str(ev.file), "start": ev.start_line, "end": ev.end_line} for ev in [component.evidence]],  # Main evidence
+                "evidence": [{"call_stack": component.evidence.call_stack}] if component.evidence else [],  # Main evidence
+                "test_link_id": component.test_link_id,
+                "test_link_name": component.test_link_name,
             }
+            
+            
             components.append(comp_data)
 
         return components
+
+    def _is_test_component(self, component: Component) -> bool:
+        """Check if a component is actually a test component."""
+        # Check if the component name indicates it's a test
+        name_lower = component.name.lower()
+        return (name_lower.endswith('_test') or 
+                name_lower.startswith('test_') or 
+                'test' in name_lower)
+
+    def _find_corresponding_test(self, component: Component) -> Optional[Test]:
+        """Find the corresponding test node for a test component."""
+        # Look for a test with the same name as the component
+        for test in self.tests:
+            if test.name == component.name:
+                return test
+        return None
 
     def _generate_prompts_aggregators(self) -> List[Dict[str, Any]]:
         """Generate aggregator data for prompts."""
         aggregators: List[Dict[str, Any]] = []
 
         for i, agg in enumerate(self.aggregators):
-            agg_data: Dict[str, Any] = {"id": agg.id or i, "name": agg.name, "depends_on": [dep.name for dep in agg.depends_on], "evidence": [{"file": str(agg.evidence.file), "start": agg.evidence.start_line, "end": agg.evidence.end_line}]}
+            agg_data: Dict[str, Any] = {"id": agg.id or i, "name": agg.name, "depends_on": [dep.name for dep in agg.depends_on], "evidence": [{"call_stack": agg.evidence.call_stack}]}
             aggregators.append(agg_data)
 
         return aggregators
@@ -766,10 +834,10 @@ Commands={{                                # optional hints; empty if not applic
         runners: List[Dict[str, Any]] = []
 
         for i, runner in enumerate(self.runners):
-            # Extract command hint from evidence text
-            command_hint = runner.evidence.text[:100] if runner.evidence.text else "No command info"
+            # Use first call stack entry as command hint
+            command_hint = runner.evidence.call_stack[0] if runner.evidence.call_stack else "No command info"
 
-            runner_data: Dict[str, Any] = {"id": runner.id or i, "name": runner.name, "hint": command_hint, "evidence": [{"file": str(runner.evidence.file), "start": runner.evidence.start_line, "end": runner.evidence.end_line}]}
+            runner_data: Dict[str, Any] = {"id": runner.id or i, "name": runner.name, "hint": command_hint, "evidence": [{"call_stack": runner.evidence.call_stack}]}
             runners.append(runner_data)
 
         return runners
@@ -785,7 +853,7 @@ Commands={{                                # optional hints; empty if not applic
                 "framework": test.test_framework,
                 "exe_component": test.test_executable.name if test.test_executable else None,
                 "components": [comp.name for comp in test.components_being_tested],
-                "evidence": [{"file": str(test.evidence.file), "start": test.evidence.start_line, "end": test.evidence.end_line}],
+                "evidence": [{"call_stack": test.evidence.call_stack}],
             }
             tests.append(test_data)
 
@@ -940,7 +1008,7 @@ Commands={{                                # optional hints; empty if not applic
         
         #cy {{
             width: 100%;
-            height: calc(100vh - 140px);
+            height: calc(100vh - 200px);
             background-color: #fafafa;
         }}
         
@@ -980,6 +1048,106 @@ Commands={{                                # optional hints; empty if not applic
             background-color: #f39c12;
             color: white;
         }}
+        
+        #legend {{
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        
+        #legend h3 {{
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 16px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }}
+        
+        .legend-section {{
+            margin-bottom: 15px;
+        }}
+        
+        .legend-section h4 {{
+            margin: 0 0 8px 0;
+            color: #34495e;
+            font-size: 14px;
+            font-weight: bold;
+        }}
+        
+        .legend-items {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }}
+        
+        .legend-item {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }}
+        
+        .legend-node {{
+            width: 20px;
+            height: 20px;
+            border: 2px solid;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }}
+        
+        .legend-edge {{
+            width: 30px;
+            height: 3px;
+            border: 2px solid;
+            border-radius: 1px;
+            flex-shrink: 0;
+        }}
+        
+        .legend-edge.dashed {{
+            border-style: dashed;
+        }}
+        
+        .legend-label {{
+            font-size: 12px;
+            color: #555;
+            font-weight: 500;
+        }}
+        
+        .legend-description {{
+            font-size: 11px;
+            color: #777;
+            margin-left: 28px;
+            margin-top: 2px;
+        }}
+        
+        .legend-toggle {{
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }}
+        
+        .legend-toggle:hover {{
+            background-color: #2980b9;
+        }}
+        
+        .legend-content {{
+            display: block;
+        }}
+        
+        .legend-content.collapsed {{
+            display: none;
+        }}
     </style>
 </head>
 <body>
@@ -989,7 +1157,8 @@ Commands={{                                # optional hints; empty if not applic
            Components: {len(self.components)} | 
            Tests: {len(self.tests)} | 
            Aggregators: {len(self.aggregators)} | 
-           Runners: {len(self.runners)}</p>
+           Runners: {len(self.runners)} | 
+           Utilities: {len(self.utilities)}</p>
     </div>
     
     <div id="controls">
@@ -1006,6 +1175,7 @@ Commands={{                                # optional hints; empty if not applic
                 <option value="test">Tests</option>
                 <option value="aggregator">Aggregators</option>
                 <option value="runner">Runners</option>
+                <option value="utility">Utilities</option>
                 <option value="source">Source Files</option>
             </select>
         </div>
@@ -1033,6 +1203,103 @@ Commands={{                                # optional hints; empty if not applic
             <button onclick="resetView()">Reset View</button>
             <button onclick="fitToScreen()">Fit to Screen</button>
             <button onclick="exportGraph()">Export Graph</button>
+        </div>
+    </div>
+    
+    <div id="legend">
+        <button class="legend-toggle" onclick="toggleLegend()">Toggle Legend</button>
+        <div id="legend-content" class="legend-content">
+            <h3>Graph Legend</h3>
+            
+            <div class="legend-section">
+                <h4>Node Types</h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-node" style="background-color: #3498db; border-color: #2980b9; border-radius: 4px;"></div>
+                        <span class="legend-label">Component</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-node" style="background-color: #e74c3c; border-color: #c0392b; transform: rotate(45deg);"></div>
+                        <span class="legend-label">Test</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-node" style="background-color: #2ecc71; border-color: #27ae60; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div>
+                        <span class="legend-label">Aggregator</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-node" style="background-color: #f39c12; border-color: #e67e22; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+                        <span class="legend-label">Runner</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-node" style="background-color: #95a5a6; border-color: #7f8c8d; border-radius: 4px;"></div>
+                        <span class="legend-label">Utility</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-node" style="background-color: #95a5a6; border-color: #7f8c8d; border-radius: 50%; width: 15px; height: 15px;"></div>
+                        <span class="legend-label">Source File</span>
+                    </div>
+                </div>
+                <div class="legend-description">
+                    Components are buildable artifacts (executables, libraries). Tests verify functionality. 
+                    Aggregators group related targets. Runners execute commands. Utilities provide helper functions.
+                </div>
+            </div>
+            
+            <div class="legend-section">
+                <h4>Edge Types</h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-edge" style="border-color: #2c3e50;"></div>
+                        <span class="legend-label">Aggregation</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-edge dashed" style="border-color: #e74c3c;"></div>
+                        <span class="legend-label">Tests</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-edge" style="border-color: #f39c12;"></div>
+                        <span class="legend-label">Builds</span>
+                    </div>
+                </div>
+                <div class="legend-description">
+                    Aggregation edges show dependency relationships. Test edges show which components are tested. 
+                    Build edges show source-to-component relationships.
+                </div>
+            </div>
+            
+            <div class="legend-section">
+                <h4>Node Information</h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <span class="badge badge-language">Language</span>
+                        <span class="legend-label">Programming Language</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="badge badge-runtime">Runtime</span>
+                        <span class="legend-label">Runtime Environment</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="badge badge-type">Type</span>
+                        <span class="legend-label">Component Type</span>
+                    </div>
+                </div>
+                <div class="legend-description">
+                    Hover over nodes to see detailed information including language, runtime, and type badges.
+                </div>
+            </div>
+            
+            <div class="legend-section">
+                <h4>Controls</h4>
+                <div class="legend-description">
+                    • <strong>Show Sources:</strong> Toggle visibility of source file nodes<br>
+                    • <strong>Node Type Filter:</strong> Show only specific node types<br>
+                    • <strong>Language/Runtime Filters:</strong> Filter by programming language or runtime<br>
+                    • <strong>Search:</strong> Find nodes by name<br>
+                    • <strong>Reset View:</strong> Reset all filters and zoom<br>
+                    • <strong>Fit to Screen:</strong> Zoom to show all nodes<br>
+                    • <strong>Export Graph:</strong> Download graph as image
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1119,6 +1386,15 @@ Commands={{                                # optional hints; empty if not applic
                             'background-color': '#f39c12',
                             'border-color': '#e67e22',
                             'shape': 'triangle'
+                        }}
+                    }},
+                    
+                    {{
+                        selector: 'node[type="utility"]',
+                        style: {{
+                            'background-color': '#95a5a6',
+                            'border-color': '#7f8c8d',
+                            'shape': 'round-rectangle'
                         }}
                     }},
                     
@@ -1239,6 +1515,12 @@ Commands={{                                # optional hints; empty if not applic
             filterNodes();
         }}
         
+        // Toggle legend visibility
+        function toggleLegend() {{
+            const legendContent = document.getElementById('legend-content');
+            legendContent.classList.toggle('collapsed');
+        }}
+        
         // Filter nodes based on controls
         function filterNodes() {{
             const nodeTypeFilter = document.getElementById('node-type-filter').value;
@@ -1348,6 +1630,197 @@ Commands={{                                # optional hints; empty if not applic
 
         return html_template
 
+    def analyze(self) -> None:
+        """
+        Deterministic, evidence-only closure over unknowns.
+        Mutates self.* in place; never guesses; leaves fields unknown if evidence is
+        absent or ambiguous. Returns None.
+        """
+        # ---------- indices (all deterministic) ----------
+        comps: List[Any] = list(getattr(self, "components", []))
+        tests: List[Any] = list(getattr(self, "tests", []))
+        runners: List[Any] = list(getattr(self, "runners", []))
+        utilities: List[Any] = list(getattr(self, "utilities", []))
+
+        name_idx: Dict[str, object] = {getattr(c, "name", ""): c for c in comps if getattr(c, "name", None)}
+        # Artifact index by basename/stem (lowercased), across all components with output_path
+        artifact_idx: Dict[str, object] = {}
+        plugin_dirs: Dict[Path, object] = {}
+
+        for c in comps:
+            outp = getattr(c, "output_path", None)
+            if outp:
+                p = Path(str(outp))
+                base = p.name.lower()
+                stem = p.stem.lower()
+                # allow lookup by "foo", "foo.exe", "foo.dll", etc. (basenames/stems only)
+                artifact_idx.setdefault(base, c)
+                artifact_idx.setdefault(stem, c)
+                if stem + ".exe" not in artifact_idx:
+                    artifact_idx[stem + ".exe"] = c
+                # for plugin components, remember their directories for ENV dir equality
+                # Check if this is a plugin target by looking for runtime tokens in name
+                cname = getattr(c, "name", "")
+                if any(token in cname.lower() for token in ["openjdk", "python311", "go"]) and getattr(c, "runtime", None):
+                    plugin_dirs.setdefault(p.parent, c)
+
+        # Dependency graph by component name -> set(component names)
+        dep_graph: Dict[str, Set[str]] = {}
+        for c in comps:
+            cname = getattr(c, "name", None)
+            if not cname:
+                continue
+            deps: Set[str] = set()
+
+            # Try common fields that may encode deps as component names or ids
+            cand_lists: Iterable[Any] = [
+                getattr(c, "dependencies", None),
+                getattr(c, "depends_on", None),
+                getattr(c, "links_to", None),
+            ]
+            for L in cand_lists:
+                if not L:
+                    continue
+                for d in L:
+                    # accept both name strings and objects with a 'name'
+                    if isinstance(d, str):
+                        if d in name_idx:
+                            deps.add(d)
+                    else:
+                        dname = getattr(d, "name", None)
+                        if dname:
+                            deps.add(dname)
+
+            dep_graph[cname] = deps
+
+        # Helper: transitive closure of deps (by names)
+        def transitive_deps(cname: str) -> Set[str]:
+            seen: Set[str] = set()
+            stack: list[str] = [cname]
+            out: Set[str] = set()
+            while stack:
+                cur = stack.pop()
+                for nxt in dep_graph.get(cur, set()):
+                    if nxt not in seen:
+                        seen.add(nxt)
+                        out.add(nxt)
+                        stack.append(nxt)
+            return out
+
+        # ---------- pass 1: runtime via transitive linkage ----------
+        def resolve_runtime_via_linkage(obj: Any) -> None:
+            # mutate obj.runtime if (a) currently unknown/None, and (b) exactly one plugin runtime reachable
+            r_now = getattr(obj, "runtime", None)
+            if r_now:
+                return  # never overwrite
+            # obtain the "component name" for this object, if it is a component
+            if obj in comps:
+                root = getattr(obj, "name", None)
+                if not root:
+                    return
+                reach = transitive_deps(root)
+                runtimes = {
+                    getattr(name_idx[n], "runtime", None)
+                    for n in reach
+                    if n in name_idx
+                    and any(token in n.lower() for token in ["openjdk", "python311", "go"])
+                    and getattr(name_idx[n], "runtime", None)
+                }
+                runtimes.discard(None)
+                if len(runtimes) == 1:
+                    setattr(obj, "runtime", next(iter(runtimes)))
+                return
+
+            # for non-component objects, try to see if they reference a component they launch
+            # e.g., runner.target_name or runner.launches_name
+            for ref_attr in ("component_name", "target_name", "launches_component", "launches_name"):
+                ref = getattr(obj, ref_attr, None)
+                if isinstance(ref, str) and ref in name_idx:
+                    cand = getattr(name_idx[ref], "runtime", None)
+                    if cand:
+                        setattr(obj, "runtime", cand)
+                        return
+
+        for c in comps:
+            resolve_runtime_via_linkage(c)
+        for r in runners:
+            resolve_runtime_via_linkage(r)
+        for u in utilities:
+            resolve_runtime_via_linkage(u)
+
+        # ---------- helpers for tests ----------
+        def set_test_component(t: Any, comp_obj: object) -> None:
+            # prefer setting by name if present
+            _ = getattr(comp_obj, "name", None)  # cname not used
+            if hasattr(t, "components_being_tested"):
+                if not getattr(t, "components_being_tested", None):
+                    setattr(t, "components_being_tested", [comp_obj])
+                elif comp_obj not in getattr(t, "components_being_tested", []):
+                    getattr(t, "components_being_tested", []).append(comp_obj)
+
+        def test_already_mapped(t: Any) -> bool:
+            return bool(getattr(t, "components_being_tested", None))
+
+        # Extract possible tokens (without parsing free-form strings)
+        def test_tokens(t: Any) -> List[str]:
+            toks: List[str] = []
+            # Look for test_executable or similar fields
+            texe = getattr(t, "test_executable", None)
+            if texe:
+                toks.append(str(texe))
+            return toks
+
+        # ---------- pass 2: test → component via artifact basenames / genex expansions ----------
+        for t in tests:
+            if test_already_mapped(t):
+                continue
+
+            candidates: Set[object] = set()
+
+            # a) explicit test_executable field (exact path)
+            texe = getattr(t, "test_executable", None)
+            if texe:
+                base = Path(str(texe)).name.lower()
+                if base in artifact_idx:
+                    candidates.add(artifact_idx[base])
+
+            # b) command tokens that look like filenames → basename match
+            for tok in test_tokens(t):
+                base = Path(str(tok)).name.lower()
+                if base in artifact_idx:
+                    candidates.add(artifact_idx[base])
+
+            if len(candidates) == 1:
+                set_test_component(t, next(iter(candidates)))
+                continue
+            # otherwise: leave unmapped here; other passes may help
+
+        # ---------- pass 3: inherit runtime from mapped component (runners/utilities/tests) ----------
+        def inherit_runtime_from_component(obj: Any) -> None:
+            if getattr(obj, "runtime", None):
+                return
+            # try to find a referenced component this object launches/targets
+            ref_names: List[str] = []
+            for attr in ("component_name", "target_name", "component"):
+                v = getattr(obj, attr, None)
+                if isinstance(v, str):
+                    ref_names.append(v)
+            for rn in ref_names:
+                if rn in name_idx:
+                    cand = getattr(name_idx[rn], "runtime", None)
+                    if cand:
+                        setattr(obj, "runtime", cand)
+                        return
+
+        for t in tests:
+            inherit_runtime_from_component(t)
+        for r in runners:
+            inherit_runtime_from_component(r)
+        for u in utilities:
+            inherit_runtime_from_component(u)
+
+        # Done. All ambiguous cases intentionally remain unknown.
+
     def _generate_graph_data(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
         """Generate nodes and edges data for the graph visualization."""
         nodes: List[Dict[str, Any]] = []
@@ -1386,7 +1859,7 @@ Commands={{                                # optional hints; empty if not applic
         node_type = type(node).__name__.lower()
 
         # Determine color based on type
-        color_map = {"component": "#3498db", "aggregator": "#2ecc71", "runner": "#f39c12"}
+        color_map = {"component": "#3498db", "aggregator": "#2ecc71", "runner": "#f39c12", "utility": "#95a5a6"}
         color = color_map.get(node_type, "#95a5a6")
 
         # Use plain text label (no HTML)

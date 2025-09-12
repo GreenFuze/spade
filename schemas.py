@@ -50,10 +50,7 @@ class Evidence(BaseModel):
     """Evidence with location and text information."""
 
     id: Optional[int] = Field(None, description="Database ID")
-    file: Path = Field(..., description="File path relative to repo root")
-    start_line: int = Field(..., description="Start line number")
-    end_line: int = Field(..., description="End line number")
-    text: str = Field(..., description="Actual text content of the evidence")
+    call_stack: List[str] = Field(..., description="List of GitHub-style line references in call stack order (leaf first)")
 
 
 class ComponentLocation(BaseModel):
@@ -71,7 +68,7 @@ class BuildNode(BaseModel):
 
     id: Optional[int] = Field(None, description="Database ID")
     name: str = Field(..., description="Node name")
-    depends_on: List[Union["Component", "Aggregator", "Runner"]] = Field(default_factory=list, description="Dependencies")
+    depends_on: List[Union["Component", "Aggregator", "Runner", "Utility"]] = Field(default_factory=list, description="Dependencies")
     evidence: Evidence = Field(..., description="Location evidence in CMake files")
 
 
@@ -86,6 +83,8 @@ class Component(BuildNode):
     source_files: List[Path] = Field(..., description="Source files relative to repo root")
     external_packages: List[ExternalPackage] = Field(default_factory=list, description="External package dependencies")
     locations: List[ComponentLocation] = Field(default_factory=list, description="All locations where this component exists")
+    test_link_id: Optional[int] = Field(None, description="ID of corresponding test node (if this component is a test)")
+    test_link_name: Optional[str] = Field(None, description="Name of corresponding test node (if this component is a test)")
 
 
 class Aggregator(BuildNode):
@@ -96,6 +95,12 @@ class Aggregator(BuildNode):
 
 class Runner(BuildNode):
     """Build runner (executes commands)."""
+
+    pass
+
+
+class Utility(BuildNode):
+    """Build utility (UTILITY targets with no artifacts or dependencies)."""
 
     pass
 

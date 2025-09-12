@@ -2,16 +2,203 @@
 CMakeEntrypoint class for parsing CMake configuration and extracting build information.
 Uses the cmake-file-api package to extract all build system information.
 """
-
+import sys
 import json
 import re
 import subprocess
+import os
 from pathlib import Path
 from typing import List, Optional, Dict, Tuple, Any, Union, Set
 
 from cmake_file_api import CMakeProject, ObjectKind
-from schemas import Component, ComponentType, Runtime, ExternalPackage, PackageManager, Test, Evidence, ComponentLocation, Aggregator, Runner, RepositoryInfo, BuildSystemInfo
+from schemas import Component, ComponentType, Runtime, ExternalPackage, PackageManager, Test, Evidence, ComponentLocation, Aggregator, Runner, Utility, RepositoryInfo, BuildSystemInfo
 from rig import RIG
+
+
+class BuildOutputFinder:
+    """
+    Generator-aware build output finder that reads CMake's generated build files
+    where variables have already been expanded, avoiding the need to parse CMake source.
+    Handles all non-C/C++ languages (Go, Java, Python, C#, Rust, etc.).
+    """
+    
+    def __init__(self, build_dir: Path):
+        self.build_dir = Path(build_dir)
+        self.cache = self._read_cache()
+        
+        # Language-specific build command patterns
+        self.language_patterns = {
+            "go": {
+                "ninja": r'go\.exe.*?build.*?-o\s+([^\s"]+)',
+                "msvc": r"go(?:\.exe)?\s+build\s+[^<]*?-buildmode=c-shared[^<]*?-o\s+([^\s<]+)",
+                "makefile": r"go(?:\.exe)?\s+build\s+[^#\n]*?-buildmode=c-shared[^#\n]*?-o\s+([^\s#]+)",
+                "extensions": [".dll", ".so", ".dylib"]
+            },
+            "java": {
+                "ninja": r'javac.*?-d\s+([^\s"]+)|jar.*?-cf\s+([^\s"]+)',
+                "msvc": r"javac[^<]*?-d\s+([^\s<]+)|jar[^<]*?-cf\s+([^\s<]+)",
+                "makefile": r"javac[^#\n]*?-d\s+([^\s#]+)|jar[^#\n]*?-cf\s+([^\s#]+)",
+                "extensions": [".jar", ".class"]
+            },
+            "python": {
+                "ninja": r'python.*?-m\s+py_compile.*?-o\s+([^\s"]+)|python.*?-c.*?-o\s+([^\s"]+)',
+                "msvc": r"python[^<]*?-m\s+py_compile[^<]*?-o\s+([^\s<]+)|python[^<]*?-c[^<]*?-o\s+([^\s<]+)",
+                "makefile": r"python[^#\n]*?-m\s+py_compile[^#\n]*?-o\s+([^\s#]+)|python[^#\n]*?-c[^#\n]*?-o\s+([^\s#]+)",
+                "extensions": [".pyc", ".pyo", ".py"]
+            },
+            "csharp": {
+                "ninja": r'csc.*?-out:([^\s"]+)|dotnet.*?build.*?-o\s+([^\s"]+)',
+                "msvc": r"csc[^<]*?-out:([^\s<]+)|dotnet[^<]*?build[^<]*?-o\s+([^\s<]+)",
+                "makefile": r"csc[^#\n]*?-out:([^\s#]+)|dotnet[^#\n]*?build[^#\n]*?-o\s+([^\s#]+)",
+                "extensions": [".exe", ".dll"]
+            },
+            "rust": {
+                "ninja": r'cargo.*?build.*?--target-dir\s+([^\s"]+)|rustc.*?-o\s+([^\s"]+)',
+                "msvc": r"cargo[^<]*?build[^<]*?--target-dir\s+([^\s<]+)|rustc[^<]*?-o\s+([^\s<]+)",
+                "makefile": r"cargo[^#\n]*?build[^#\n]*?--target-dir\s+([^\s#]+)|rustc[^#\n]*?-o\s+([^\s#]+)",
+                "extensions": [".exe", ".so", ".dll", ".dylib", ".rlib"]
+            }
+        }
+
+    def _read_cache(self) -> dict:
+        """Read CMakeCache.txt to get generator and other variables."""
+        cache_file = self.build_dir / "CMakeCache.txt"
+        cache = {}
+        if cache_file.exists():
+            for line in cache_file.read_text(errors="ignore").splitlines():
+                if line.startswith(("#", "//")) or "=" not in line:
+                    continue
+                # NAME:TYPE=VALUE
+                k, v = line.split("=", 1)
+                name = k.split(":", 1)[0].strip()
+                cache[name] = v.strip()
+        return cache
+
+    @property
+    def generator(self) -> str:
+        """Get the CMake generator name."""
+        return self.cache.get("CMAKE_GENERATOR", "").lower()
+
+    def find_output(self, target_hint: Optional[str] = None, language: str = "go") -> Optional[Path]:
+        """Find output path for any language from generated build files."""
+        if language not in self.language_patterns:
+            return None
+            
+        g = self.generator
+        if "ninja" in g:
+            p = self._from_ninja(target_hint, language)
+            if p: return p
+        if "visual studio" in g or "msbuild" in g:
+            p = self._from_msvc(target_hint, language)
+            if p: return p
+        if "unix makefiles" in g or "mingw makefiles" in g or "nmake makefiles" in g:
+            p = self._from_makefiles(target_hint, language)
+            if p: return p
+        # last-ditch fallback: scan everything for language-specific build commands
+        return self._scan_any_build_files(target_hint, language)
+
+    def _from_ninja(self, target_hint: Optional[str], language: str) -> Optional[Path]:
+        """Extract output from Ninja build.ninja file for specified language."""
+        ninja = self.build_dir / "build.ninja"
+        if not ninja.exists():
+            return None
+        text = ninja.read_text(errors="ignore")
+        pattern_str = self.language_patterns[language]["ninja"]
+        pattern = re.compile(pattern_str, re.IGNORECASE | re.DOTALL)
+        hits = pattern.findall(text)
+        # Flatten hits if pattern has multiple groups
+        hits = [hit for sublist in hits for hit in (sublist if isinstance(sublist, tuple) else [sublist]) if hit]
+        hits = self._filter_hits_by_target(hits, text, target_hint)
+        return self._first_existing_or_best(hits, language)
+
+    def _from_msvc(self, target_hint: Optional[str], language: str) -> Optional[Path]:
+        """Extract output from Visual Studio .vcxproj files for specified language."""
+        projs = list(self.build_dir.glob("**/*.vcxproj"))
+        if not projs:
+            projs = list(self.build_dir.glob("*.vcxproj"))
+        cmd_re = re.compile(self.language_patterns[language]["msvc"], re.IGNORECASE)
+        out_re = re.compile(r"<Outputs>([^<]+)</Outputs>", re.IGNORECASE)
+        best: List[str] = []
+        for p in projs:
+            t = p.read_text(errors="ignore")
+            # Prefer matching projects whose ItemGroup mentions the target hint
+            if target_hint and target_hint.lower() not in t.lower():
+                continue
+            hits = cmd_re.findall(t)
+            # Flatten hits if pattern has multiple groups
+            best += [hit for sublist in hits for hit in (sublist if isinstance(sublist, tuple) else [sublist]) if hit]
+            # Secondary: explicit Outputs XML
+            outs = out_re.findall(t)
+            for o in outs:
+                # Often semicolon-separated
+                for token in re.split(r"[;,\s]+", o.strip()):
+                    if any(token.lower().endswith(ext) for ext in self.language_patterns[language]["extensions"]):
+                        best.append(token)
+        return self._first_existing_or_best(best, language)
+
+    def _from_makefiles(self, target_hint: Optional[str], language: str) -> Optional[Path]:
+        """Extract output from Makefile for specified language."""
+        mk = self.build_dir / "Makefile"
+        if not mk.exists(): 
+            return None
+        t = mk.read_text(errors="ignore")
+        # Recipes may be split with backslashes; drop them to ease regex:
+        t = t.replace("\\\n", " ")
+        pattern = re.compile(self.language_patterns[language]["makefile"], re.IGNORECASE)
+        hits = pattern.findall(t)
+        # Flatten hits if pattern has multiple groups
+        hits = [hit for sublist in hits for hit in (sublist if isinstance(sublist, tuple) else [sublist]) if hit]
+        return self._first_existing_or_best(hits, language)
+
+    def _scan_any_build_files(self, target_hint: Optional[str], language: str) -> Optional[Path]:
+        """Search common generator files for language-specific build commands."""
+        candidates = list(self.build_dir.glob("**/*"))
+        paths: List[str] = []
+        extensions = "|".join(self.language_patterns[language]["extensions"])
+        rx = re.compile(r"-o\s+([^\s\\<>\"]*\.(?:{})|\S+\.(?:{}))".format(extensions, extensions), re.IGNORECASE)
+        for p in candidates:
+            if not p.is_file(): 
+                continue
+            if p.suffix.lower() not in (".ninja", ".vcxproj", ".mak", ".make", ".txt", ".rule"):
+                continue
+            try:
+                data = p.read_text(errors="ignore")
+            except Exception:
+                continue
+            for m in rx.finditer(data):
+                paths.append(m.group(1))
+        return self._first_existing_or_best(paths, language)
+
+    def _filter_hits_by_target(self, hits: List[str], text: str, target_hint: Optional[str]) -> List[str]:
+        """Filter hits by target hint if provided."""
+        if not target_hint:
+            return hits
+        # keep hits that occur in a section mentioning the target
+        keep: List[str] = []
+        for h in hits:
+            idx = text.find(h)
+            window = text[max(0, idx-300): idx+300] if idx >= 0 else ""
+            if target_hint.lower() in window.lower():
+                keep.append(h)
+        return keep or hits
+
+    def _first_existing_or_best(self, tokens: List[str], language: str) -> Optional[Path]:
+        """Return the first existing file or best candidate for the specified language."""
+        # Resolve env vars just in case and normalize to absolute
+        cleaned: List[Path] = []
+        for tok in tokens:
+            p = Path(os.path.expandvars(tok.strip('"')))
+            cleaned.append(p)
+        # Prefer an existing file (if already built)
+        for p in cleaned:
+            if p.exists():
+                return p
+        # else return the first plausible path with language-specific extensions
+        extensions = self.language_patterns[language]["extensions"]
+        for p in cleaned:
+            if p.suffix.lower() in extensions:
+                return p
+        return cleaned[0] if cleaned else None
 
 
 class ResearchBackedUtilities:
@@ -22,6 +209,26 @@ class ResearchBackedUtilities:
     
     # Regex for variable expansion
     VAR_RX = re.compile(r"\$\{(\w+)\}")
+    
+    # CMake target types that produce artifacts (per CMake File API spec)
+    ARTIFACT_KINDS = {"EXECUTABLE", "STATIC_LIBRARY", "SHARED_LIBRARY", "MODULE_LIBRARY", "OBJECT_LIBRARY"}
+    
+    # Data-driven runtime detection tables (evidence-only)
+    ARTIFACT_EXT_TO_RUNTIME = {".jar": Runtime.JVM}
+    LANG_TO_RUNTIME = {"csharp": Runtime.DOTNET}
+    COMPILER_ID_TO_RUNTIME = {
+        "MSVC": Runtime.VS_CPP,
+        "Clang": Runtime.CLANG_C,
+        "AppleClang": Runtime.CLANG_C,
+        "GNU": Runtime.CLANG_C,
+        "Intel": Runtime.CLANG_C,
+        "IntelLLVM": Runtime.CLANG_C,
+        "ARMClang": Runtime.CLANG_C,
+        "NVHPC": Runtime.CLANG_C,
+    }
+    
+    # Allowed compile definition keys for runtime detection (evidence-only)
+    ALLOWED_DEFINE_KEYS = {"RIG_RUNTIME"}  # empty by default, can be extended via project JSON
     
     @staticmethod
     def expand_vars(s: str, cache: Dict[str, str]) -> str:
@@ -74,10 +281,18 @@ class ResearchBackedUtilities:
                     # Expand variables in path
                     expanded_path = ResearchBackedUtilities.expand_vars(str(artifact_path), cache)
                     return Path(expanded_path)
+                elif isinstance(artifact, dict) and 'path' in artifact:
+                    artifact_path = Path(artifact['path'])
+                    # Expand variables in path
+                    expanded_path = ResearchBackedUtilities.expand_vars(str(artifact_path), cache)
+                    return Path(expanded_path)
         
         # Priority 2: nameOnDisk
         if hasattr(target, 'nameOnDisk') and target.nameOnDisk:
             expanded_path = ResearchBackedUtilities.expand_vars(target.nameOnDisk, cache)
+            return Path(expanded_path)
+        elif isinstance(target, dict) and 'nameOnDisk' in target:
+            expanded_path = ResearchBackedUtilities.expand_vars(target['nameOnDisk'], cache)
             return Path(expanded_path)
         
         return None
@@ -160,6 +375,186 @@ class ResearchBackedUtilities:
             return f"{stripped} [Use File API resolved value for {context}]"
         
         return raw_value
+    
+    @staticmethod
+    def should_expect_artifacts(target_type: str) -> bool:
+        """
+        Determine if a target type should have artifacts based on CMake File API spec.
+        
+        Args:
+            target_type: CMake target type (e.g., "EXECUTABLE", "UTILITY", etc.)
+            
+        Returns:
+            True if target type should have artifacts, False otherwise
+        """
+        return target_type in ResearchBackedUtilities.ARTIFACT_KINDS
+    
+    @staticmethod
+    def is_build_artifact(p: Path, build_dir: Path, known_artifacts: List[Path]) -> bool:
+        """
+        Generic, evidence-based build artifact detection.
+        No project-specific hints, no name parsing, no guesses.
+        """
+        p = p.resolve()
+        
+        # Treat anything under the configured CMake build directory as generated
+        if build_dir in p.parents or p == build_dir:
+            return True
+            
+        # Treat anything under the parent directories of known artifacts as generated
+        known_dirs = {a.resolve().parent for a in known_artifacts}
+        if any(d == p or d in p.parents for d in known_dirs):
+            return True
+            
+        # Include standard CMake internals (pure convention, not project hints)
+        parts = {q.name for q in p.parents}
+        if "CMakeFiles" in parts or ".cmake" in parts or "Testing" in parts:
+            return True
+            
+        # Standard CMake files
+        if p.name in {"CTestTestfile.cmake", "install_manifest.txt", "CMakeCache.txt"}:
+            return True
+            
+        return False
+    
+    @staticmethod
+    def detect_runtime_evidence_based(target: Any, toolchains_obj: Any = None) -> Optional[Runtime]:
+        """
+        Generic, evidence-based runtime detection.
+        No name parsing, no project-specific hints, no guesses.
+        """
+        # 1. Artifact type → runtime (exact)
+        for art in getattr(target, "artifacts", []) or []:
+            if hasattr(art, "path") and art.path:
+                rt = ResearchBackedUtilities.ARTIFACT_EXT_TO_RUNTIME.get(Path(art.path).suffix.lower())
+                if rt:
+                    return rt
+        
+        # 2. Compile groups language / Toolchains compiler.id (exact)
+        for cg in getattr(target, "compileGroups", []) or []:
+            lang = cg.get("language") or getattr(cg, "language", None)
+            if lang:
+                rt = ResearchBackedUtilities.LANG_TO_RUNTIME.get(lang.lower())
+                if rt:
+                    return rt
+                    
+                # Exact compiler.id mapping
+                if toolchains_obj:
+                    for tc in getattr(toolchains_obj, "toolchains", []) or []:
+                        if str(getattr(tc, "language", "")).lower() == lang.lower():
+                            cid = str(getattr(getattr(tc, "compiler", None), "id", "")).strip()
+                            if cid in ResearchBackedUtilities.COMPILER_ID_TO_RUNTIME:
+                                return ResearchBackedUtilities.COMPILER_ID_TO_RUNTIME[cid]
+                            break
+        
+        # 3. Transitive linkage to a target that already has a runtime
+        deps_runtimes = {getattr(d, "runtime", None)
+                        for d in getattr(target, "depends_on", []) or [] 
+                        if getattr(d, "runtime", None)}
+        if len(deps_runtimes) == 1:
+            return next(iter(deps_runtimes))
+        
+        # 4. Else → UNKNOWN (no evidence)
+        return None
+    
+    @staticmethod
+    def runtime_from_defines(compile_groups: List[Any]) -> Optional[Runtime]:
+        """
+        Generic compile definition parsing for runtime detection.
+        Only accepts explicit, pre-declared contracts.
+        """
+        kv = {}
+        for g in compile_groups or []:
+            for d in g.get("defines", []):
+                if "=" in d:
+                    k, v = d.split("=", 1)
+                    kv[k.strip()] = v.strip()
+            for frag in g.get("compileCommandFragments", []):
+                frag_text = frag.get("fragment") or ""
+                # exact -DKEY=VALUE extraction
+                for tok in frag_text.split():
+                    if tok.startswith("-D") and "=" in tok:
+                        k, v = tok[2:].split("=", 1)
+                        kv[k.strip()] = v.strip()
+        
+        for k in ResearchBackedUtilities.ALLOWED_DEFINE_KEYS:
+            if k in kv:
+                # Try to map to Runtime enum
+                try:
+                    return Runtime(kv[k])
+                except (ValueError, TypeError):
+                    # Unknown runtime value, leave as None
+                    pass
+        return None
+    
+    @staticmethod
+    def classify_target_evidence_based(target: Any) -> str:
+        """
+        Generic, evidence-based target classification.
+        No name parsing, no project-specific hints, no guesses.
+        Uses File-API target type + properties only.
+        """
+        ttype = getattr(target, "type", "").upper()
+        
+        # Standard CMake target types
+        if ttype in {"EXECUTABLE", "STATIC_LIBRARY", "SHARED_LIBRARY", "MODULE_LIBRARY", "OBJECT_LIBRARY"}:
+            return "COMPONENT"
+        if ttype == "INTERFACE_LIBRARY":
+            return "INTERFACE"
+        if ttype == "IMPORTED_LIBRARY" or getattr(target, "isImported", False):
+            return "EXTERNAL"
+        
+        # Custom/Utility targets - classify by properties
+        if ttype in {"UTILITY", "CUSTOM"}:
+            # Has BYPRODUCTS/OUTPUTS → Component
+            byp = getattr(target, "byproducts", None) or getattr(target, "outputs", None)
+            if byp:
+                return "COMPONENT"
+            
+            # Has COMMAND and no byproducts → Runner
+            cmd = getattr(target, "command", None) or getattr(target, "commands", None)
+            if cmd:
+                return "RUNNER"
+            
+            # Has DEPENDS and no command → Aggregator
+            deps = getattr(target, "depends_on", None)
+            if deps:
+                return "AGGREGATOR"
+            
+            # Empty custom target → Aggregator (default)
+            return "AGGREGATOR"
+        
+        # Fallback: if it has artifacts → Component, else Unknown
+        arts = getattr(target, "artifacts", None)
+        return "COMPONENT" if arts else "UNKNOWN"
+    
+    @staticmethod
+    def validate_target_artifacts(target: Any, unknown_errors: Set[str]) -> None:
+        """
+        Validate target artifacts only for artifact-producing target types.
+        
+        Args:
+            target: CMake target object
+            unknown_errors: Set to collect unknown errors
+        """
+        target_type = getattr(target, "type", None)
+        target_name = getattr(target, "name", "<unnamed>")
+        
+        # Only expect artifacts for artifact-producing target types
+        if not ResearchBackedUtilities.should_expect_artifacts(str(target_type)):
+            return  # UTILITY/INTERFACE/ALIAS/IMPORTED can legitimately lack artifacts
+        
+        # Check for artifacts only for artifact-producing types
+        has_artifacts = bool(getattr(target, "artifacts", None))
+        has_name_on_disk = bool(getattr(target, "nameOnDisk", None))
+        
+        if not (has_artifacts or has_name_on_disk):
+            ResearchBackedUtilities.unknown_field(
+                "artifact_name",
+                context=f"target_{target_name}",
+                evidence={"has_artifacts": has_artifacts, "has_nameOnDisk": has_name_on_disk},
+                errors=unknown_errors
+            )
 
 
 class CMakeParser:
@@ -414,15 +809,14 @@ class CMakeEntrypoint:
         self.repo_root = self._find_repo_root()
 
         # Create RIG instance to hold all extracted data
-        # MetaFFI-specific build artifact patterns
-        metaFFI_patterns = ["cmake-build-", "build/", "build\\", "output/", "output\\"]
-        self._rig = RIG(custom_build_artifact_patterns=metaFFI_patterns)
+        self._rig = RIG()
 
         # Temporary storage for extracted data (will be moved to RIG)
         self._temp_project_name: str = ""
         self._temp_components: List[Component] = []
         self._temp_aggregators: List[Aggregator] = []
         self._temp_runners: List[Runner] = []
+        self._temp_utilities: List[Utility] = []
         self._temp_tests: List[Test] = []
         self._temp_build_directory: Path = Path()
         self._temp_output_directory: Path = Path()
@@ -439,19 +833,26 @@ class CMakeEntrypoint:
         # Research-backed upgrades: evidence tracking
         self._temp_cache_dict: Dict[str, str] = {}  # Cache as dict for variable expansion
         self._temp_unknown_errors: Set[str] = set()  # Track UNKNOWN_* errors
-        self._temp_compile_commands: Optional[Dict[str, Any]] = None  # compile_commands.json
+        self._temp_compile_commands: Optional[Dict[str, Any]] = None
+        self._parsing_completed: bool = False  # Track if parsing has been completed  # compile_commands.json
         self._temp_graphviz_deps: Optional[Dict[str, Set[str]]] = None  # Graphviz dependencies
+        
+        # Unified toolchains tracking
+        self._toolchains_info: Dict[str, Any] = {}  # language -> details
+        self._toolchains_obj: Any = None  # toolchains object from File API
         
         # Initialize CMake parser for evidence-based detection
         self._cmake_parser: Optional[CMakeParser] = None
         if parse_cmake:
             try:
-                # Find source directory (parent of cmake_config_dir)
-                source_dir = self.cmake_config_dir.parent
-                self._cmake_parser = CMakeParser(source_dir)
+                # Use the repository root as the source directory
+                self._cmake_parser = CMakeParser(self.repo_root)
                 self._cmake_parser.parse_all_cmake_files()
             except Exception as e:
                 raise ValueError(f"Failed to parse CMakeLists.txt files: {e}")
+
+        # Initialize build output finder for generator-aware detection of all non-C/C++ languages
+        self._build_output_finder = BuildOutputFinder(self.cmake_config_dir)
 
         # Parse CMake information using the file API (optional)
         if parse_cmake:
@@ -469,6 +870,10 @@ class CMakeEntrypoint:
 
     def parse_cmake_info(self) -> None:
         """Parse CMake configuration using the file API."""
+        # Prevent duplicate parsing
+        if self._parsing_completed:
+            return
+            
         try:
             # Create CMakeProject instance
             proj = CMakeProject(build_path=self.cmake_config_dir, source_path=self.repo_root, api_version=1)
@@ -498,7 +903,7 @@ class CMakeEntrypoint:
     def _extract_from_replies(self, replies: Dict[ObjectKind, Dict[int, Any]]) -> None:
         """Extract all information from CMake API replies."""
         # Load toolchains information first for language detection
-        self._temp_toolchains_info = self._load_toolchains_info()
+        self._toolchains_info = self._load_toolchains_info()
         
         # Extract from codemodel v2 (the build graph)
         if ObjectKind.CODEMODEL in replies and 2 in replies[ObjectKind.CODEMODEL]:
@@ -537,6 +942,9 @@ class CMakeEntrypoint:
         
         # Load graphviz dependencies for direct vs transitive distinction
         self._load_graphviz_dependencies()
+        
+        # Mark parsing as completed
+        self._parsing_completed = True
 
     def _extract_from_codemodel(self, codemodel: Any) -> None:
         """Extract information from codemodel v2."""
@@ -561,22 +969,27 @@ class CMakeEntrypoint:
         if hasattr(cfg, "targets"):
             # First pass: Create all nodes without resolving dependencies
             for target in cfg.targets:
-                build_node = self._create_build_node_from_target(target)
+                build_node: Optional[Union[Component, Aggregator, Runner, Utility]] = self._create_build_node_from_target(target)
                 if build_node:
                     if isinstance(build_node, Component):
                         self._temp_components.append(build_node)
                     elif isinstance(build_node, Aggregator):
                         self._temp_aggregators.append(build_node)
-                    else:  # Runner
+                    elif isinstance(build_node, Runner):
                         self._temp_runners.append(build_node)
+                    else:  # Must be Utility
+                        self._temp_utilities.append(build_node)
 
             # Second pass: Resolve all dependencies
             self._resolve_all_dependencies(cfg.targets)
+            
+            # Third pass: Update runtime detection after dependencies are resolved
+            self._update_runtime_after_dependencies()
 
     def _resolve_all_dependencies(self, targets: List[Any]) -> None:
         """Resolve all dependencies for all nodes in a second pass."""
         # Create a mapping of target names to nodes
-        name_to_node: Dict[str, Union[Component, Aggregator, Runner]] = {}
+        name_to_node: Dict[str, Union[Component, Aggregator, Runner, Utility]] = {}
 
         for comp in self._temp_components:
             name_to_node[comp.name] = comp
@@ -584,6 +997,8 @@ class CMakeEntrypoint:
             name_to_node[agg.name] = agg
         for runner in self._temp_runners:
             name_to_node[runner.name] = runner
+        for utility in self._temp_utilities:
+            name_to_node[utility.name] = utility
 
         # Resolve dependencies for each target
         for target in targets:
@@ -594,9 +1009,9 @@ class CMakeEntrypoint:
                 # Update the node's dependencies
                 node.depends_on = dependencies
 
-    def _extract_dependencies_from_target_with_mapping(self, target: Any, name_to_node: Dict[str, Union[Component, Aggregator, Runner]]) -> List[Union[Component, Aggregator, Runner]]:
+    def _extract_dependencies_from_target_with_mapping(self, target: Any, name_to_node: Dict[str, Union[Component, Aggregator, Runner, Utility]]) -> List[Union[Component, Aggregator, Runner, Utility]]:
         """Extract dependencies from target using the name mapping."""
-        dependencies: List[Union[Component, Aggregator, Runner]] = []
+        dependencies: List[Union[Component, Aggregator, Runner, Utility]] = []
 
         # Get the actual target object from the wrapper
         actual_target = getattr(target, "target", target)
@@ -610,8 +1025,148 @@ class CMakeEntrypoint:
 
         return dependencies
 
-    def _create_build_node_from_target(self, target: Any) -> Optional[Union[Component, Aggregator, Runner]]:
-        """Create appropriate build node from CMake target using detection logic."""
+    def _update_runtime_after_dependencies(self) -> None:
+        """Update runtime detection for all components after dependencies are resolved."""
+        for component in self._temp_components:
+            # Skip if runtime is already detected (e.g., from target name or compile definitions)
+            if component.runtime is not None:
+                continue
+            
+            # Try linkage-based runtime detection for test executables
+            if component.name.endswith("_test") or "test" in component.name.lower():
+                runtime = self._detect_runtime_via_linkage(component)
+                if runtime is not None:
+                    component.runtime = runtime
+                    # Remove from unknown errors if it was there
+                    self._temp_unknown_errors.discard(f"unknown_runtime: context=target_{component.name}")
+        
+        # Clean up any remaining runtime unknown errors for components that now have runtime
+        errors_to_remove: List[str] = []
+        for error in self._temp_unknown_errors:
+            if error.startswith("unknown_runtime: context=target_"):
+                # Extract target name from error
+                target_name = error.split("context=target_")[1].split(",")[0]
+                # Check if this component now has a runtime
+                for component in self._temp_components:
+                    if component.name == target_name and component.runtime is not None:
+                        errors_to_remove.append(error)
+                        break
+        
+        # Remove the errors
+        for error in errors_to_remove:
+            self._temp_unknown_errors.discard(error)
+
+    def _classify_utility_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner, Utility]]) -> Union[Component, Aggregator, Runner, Utility]:
+        """
+        Classify UTILITY targets deterministically based on File API evidence.
+        
+        Args:
+            target: CMake target object
+            evidence: Evidence for this target
+            dependencies: List of dependencies (will be populated later)
+            
+        Returns:
+            Component if custom target with OUTPUT, Aggregator if has dependencies, Runner if has commands, Utility otherwise
+        """
+        target_name = getattr(target, "name", "")
+        
+        # Check if this is a custom target with OUTPUT/BYPRODUCTS (evidence-based)
+        # First check File API data for OUTPUT/BYPRODUCTS
+        has_output = bool(getattr(target, "outputs", None))
+        has_byproducts = bool(getattr(target, "byproducts", None))
+        has_commands = bool(getattr(target, "command", None) or getattr(target, "commands", None))
+        
+        # If File API shows OUTPUT/BYPRODUCTS -> Component (produces artifacts)
+        if has_output or has_byproducts:
+            return self._create_component_from_custom_target(target, evidence, dependencies)
+        
+        # If File API shows COMMAND but no OUTPUT -> Runner (executes commands)
+        elif has_commands and not has_output and not has_byproducts:
+            runner = Runner(id=None, name=target_name, depends_on=dependencies, evidence=evidence)
+            return runner
+        
+        # Fallback to CMake parser for additional evidence
+        if self._cmake_parser:
+            custom_target_info = self._cmake_parser.get_custom_target_info(target_name)
+            if custom_target_info:
+                has_output_cmake = custom_target_info.get('has_output', False)
+                has_byproducts_cmake = custom_target_info.get('has_byproducts', False)
+                has_commands_cmake = custom_target_info.get('has_commands', False)
+                has_depends_cmake = custom_target_info.get('has_depends', False)
+                
+                # Custom target with OUTPUT/BYPRODUCTS -> Component (produces artifacts)
+                if has_output_cmake or has_byproducts_cmake:
+                    return self._create_component_from_custom_target(target, evidence, dependencies)
+                
+                # Custom target with COMMAND but no OUTPUT -> Runner (executes commands)
+                elif has_commands_cmake and not has_output_cmake and not has_byproducts_cmake:
+                    # Check if this is a risky runner
+                    is_risky = self._is_risky_runner(custom_target_info, target_name)
+                    runner = Runner(id=None, name=target_name, depends_on=dependencies, evidence=evidence)
+                    
+                    # Add risky runner validation error if needed
+                    if is_risky:
+                        ResearchBackedUtilities.unknown_field(
+                            "risky_runner",
+                            f"target_{target_name}",
+                            {
+                                "has_commands": has_commands_cmake,
+                                "has_depends": has_depends_cmake,
+                                "command": custom_target_info.get('parameters', {}).get('COMMAND', []),
+                                "working_directory": custom_target_info.get('parameters', {}).get('WORKING_DIRECTORY', '')
+                            },
+                            self._temp_unknown_errors
+                        )
+                    
+                    return runner
+                
+                # Custom target with DEPENDS but no COMMAND/OUTPUT -> Aggregator (groups dependencies)
+                elif has_depends_cmake and not has_commands_cmake and not has_output_cmake:
+                    return Aggregator(id=None, name=target_name, depends_on=dependencies, evidence=evidence)
+        
+        # Check for evidence that this UTILITY target should be a component
+        # Look for custom commands with OUTPUT and build commands (evidence-based)
+        should_be_component = False
+        
+        # Check if this target has evidence of being a custom command with OUTPUT
+        # This is evidence-based detection from CMake File API data
+        if hasattr(target, "sources") and target.sources:
+            # Look for generated rule files that indicate custom commands
+            for source in target.sources:
+                if hasattr(source, "path"):
+                    source_path = str(source.path)
+                    # Check for .rule files that indicate custom commands with OUTPUT
+                    if source_path.endswith(".rule") and ("output" in source_path or "build" in source_path):
+                        should_be_component = True
+                        break
+        
+        # Check backtrace evidence for add_custom_target (evidence-based from JSON)
+        if not should_be_component and hasattr(target, "backtraceGraph") and target.backtraceGraph:
+            backtrace = target.backtraceGraph
+            if isinstance(backtrace, dict) and "commands" in backtrace:
+                commands = backtrace["commands"]
+                # Look for evidence of add_custom_target (generic, not macro-specific)
+                if "add_custom_target" in commands:
+                    should_be_component = True
+        
+        if should_be_component:
+            # This UTILITY target should be a component based on evidence
+            return self._create_component_from_custom_target(target, evidence, dependencies)
+        
+        # Fallback to File API evidence for non-custom targets
+        # Get dependencies from File API (evidence-based)
+        target_deps = getattr(target, "dependencies", []) or []
+        has_dependencies = len(target_deps) > 0
+        
+        if has_dependencies:
+            # UTILITY with dependencies -> Aggregator (orchestrates other targets)
+            return Aggregator(id=None, name=target_name, depends_on=dependencies, evidence=evidence)
+        else:
+            # UTILITY without dependencies -> Utility (no artifacts, no deps)
+            return Utility(id=None, name=target_name, depends_on=dependencies, evidence=evidence)
+
+    def _create_build_node_from_target(self, target: Any) -> Optional[Union[Component, Aggregator, Runner, Utility]]:
+        """Create appropriate build node from CMake target using evidence-first approach."""
         try:
             # Get the actual target object from the wrapper
             actual_target = getattr(target, "target", target)
@@ -623,22 +1178,27 @@ class CMakeEntrypoint:
 
             # Create evidence for this target
             evidence = self._create_evidence_from_target(target)
+            if evidence is None:
+                # No evidence available - return None
+                return None
 
             # Don't resolve dependencies yet - will be done in second pass
-            dependencies: List[Union[Component, Aggregator, Runner]] = []
+            dependencies: List[Union[Component, Aggregator, Runner, Utility]] = []
 
-            # Detection logic based on target type and properties
-            # Handle both string and enum types
+            # Evidence-first classification based on CMake File API spec
             target_type_str = str(target_type)
 
-            if target_type_str in ["EXECUTABLE", "TargetType.EXECUTABLE", "SHARED_LIBRARY", "STATIC_LIBRARY", "MODULE_LIBRARY"]:
-                # Standard CMake target types -> Component
+            # 1. Artifact-producing target types -> Component
+            if target_type_str in ["EXECUTABLE", "TargetType.EXECUTABLE", "SHARED_LIBRARY", "STATIC_LIBRARY", "MODULE_LIBRARY", "OBJECT_LIBRARY"]:
+                # Validate artifacts only for artifact-producing types
+                ResearchBackedUtilities.validate_target_artifacts(actual_target, self._temp_unknown_errors)
                 return self._create_component_from_standard_target(target, evidence, dependencies)
 
+            # 2. UTILITY targets -> Classify based on dependencies (evidence-first)
             elif target_type_str in ["UTILITY", "TargetType.UTILITY"]:
-                # UTILITY targets are typically custom targets - need to determine if it's Component, Runner, or Aggregator
-                return self._create_node_from_custom_target(target, evidence, dependencies)
+                return self._classify_utility_target(actual_target, evidence, dependencies)
 
+            # 3. Other target types -> Utility (no artifacts expected)
             elif target_type_str in ["SHARED", "TargetType.SHARED"]:
                 # SHARED targets are shared libraries -> Component
                 return self._create_component_from_standard_target(target, evidence, dependencies)
@@ -652,57 +1212,34 @@ class CMakeEntrypoint:
             print(f"Warning: Failed to create build node for target '{getattr(target, 'name', 'unknown')}': {e}")
             return None
 
-    def _create_evidence_from_target(self, target: Any) -> Evidence:
-        """Create Evidence from target's backtrace information."""
-        # Get the actual target data (target.target contains the real data)
-        target_data = target.target if hasattr(target, 'target') else target
-        target_name = getattr(target_data, 'name', 'unknown')
-        
-        # Try to get line numbers from backtrace
-        if hasattr(target_data, 'backtrace') and target_data.backtrace is not None:
-            backtrace = target_data.backtrace
-            
-            # Check if backtrace has file and line information directly
-            if hasattr(backtrace, 'file') and hasattr(backtrace, 'line'):
-                file_path = backtrace.file
-                line = backtrace.line
-                return Evidence(
-                    id=None, 
-                    file=Path(file_path), 
-                    start_line=line, 
-                    end_line=line, 
-                    text=f"Target definition for {target_name}"
-                )
-            
-            # If backtrace is an index, try to resolve it through backtraceGraph
-            elif isinstance(backtrace, int) and self._temp_backtrace_graph:
-                # Resolve backtrace index using the stored backtraceGraph
-                file_path, line = self._resolve_backtrace(backtrace, self._temp_backtrace_graph)
-                if file_path and line:
-                    return Evidence(
-                        id=None, 
-                        file=Path(file_path), 
-                        start_line=line, 
-                        end_line=line, 
-                        text=f"Target definition for {target_name}"
-                    )
-                else:
-                    return Evidence(
-                        id=None, 
-                        file=Path("CMakeLists.txt"), 
-                        start_line=1, 
-                        end_line=1, 
-                        text=f"Target definition for {target_name} (backtrace index: {backtrace})"
-                    )
+    def _create_evidence_from_target(self, target: Any) -> Optional[Evidence]:
+        """Create Evidence from target's backtrace information with full call stack."""
+        tgt = target.target if hasattr(target, 'target') else target
 
-        # Fallback
-        return Evidence(
-            id=None, 
-            file=Path("CMakeLists.txt"), 
-            start_line=1, 
-            end_line=1, 
-            text=f"Target definition for {target_name}"
-        )
+        # Hydrate to ensure backtrace + backtraceGraph are present
+        dt = self._load_detailed_target_info(tgt)
+        if hasattr(dt, 'backtrace') and hasattr(dt, 'backtraceGraph') and dt.backtraceGraph:
+            # Find the actual target definition in project files
+            target_file, target_line = self._find_target_definition_in_backtrace(
+                int(getattr(dt, 'backtrace', 0) or 0), 
+                dt.backtraceGraph
+            )
+            
+            if target_file and target_line:
+                # Build the full call stack from the target definition
+                frames = self._build_call_stack_from_backtrace(
+                    leaf_idx=int(getattr(dt, 'backtrace', 0) or 0),
+                    backtrace_graph=dt.backtraceGraph,
+                    order="leaf-first",
+                    repo_root=self.repo_root,
+                    trim_non_project=True,  # Only include project files
+                )
+                if frames:
+                    files_list = [f"{p}#L{ln}-L{ln}" for (p, ln, _cmd) in frames]
+                    return Evidence(id=None, call_stack=files_list)
+
+        # No evidence available - return None to indicate failure
+        return None
 
     def _extract_dependencies_from_target(self, target: Any) -> List[Union[Component, Aggregator, Runner]]:
         """Extract dependencies using research-backed approach with direct vs transitive distinction."""
@@ -748,7 +1285,7 @@ class CMakeEntrypoint:
 
         return dependencies
 
-    def _create_component_from_standard_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner]]) -> Component:
+    def _create_component_from_standard_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner, Utility]]) -> Component:
         """Create Component from standard CMake target (EXECUTABLE, LIBRARY, etc.)."""
         # Get the actual target object from the wrapper
         actual_target = getattr(target, "target", target)
@@ -761,10 +1298,22 @@ class CMakeEntrypoint:
 
         # Extract source files
         source_files: List[Path] = []
-        if hasattr(hydrated_target, "sources"):
+        if hasattr(hydrated_target, "sources") and hydrated_target.sources:
             for source in hydrated_target.sources:
-                if hasattr(source, "path"):
-                    source_path = Path(source.path)
+                if isinstance(source, dict) and "path" in source:
+                    source_path = Path(str(source["path"]))
+                    if source_path.is_absolute():
+                        source_path = source_path.relative_to(self.repo_root)
+                    source_files.append(source_path)
+                elif hasattr(source, "path"):
+                    source_path = Path(str(source.path))
+                    if source_path.is_absolute():
+                        source_path = source_path.relative_to(self.repo_root)
+                    source_files.append(source_path)
+        elif isinstance(hydrated_target, dict) and "sources" in hydrated_target:
+            for source in hydrated_target["sources"]:
+                if isinstance(source, dict) and "path" in source:
+                    source_path = Path(str(source["path"]))
                     if source_path.is_absolute():
                         source_path = source_path.relative_to(self.repo_root)
                     source_files.append(source_path)
@@ -780,6 +1329,10 @@ class CMakeEntrypoint:
 
         # Detect runtime environment
         runtime = self._detect_runtime_from_target(hydrated_target, source_files)
+        
+        # Logical constraint: if programming language is UNKNOWN, runtime must also be UNKNOWN
+        if programming_language == "UNKNOWN":
+            runtime = None
 
         # Create component location for the build action
         build_location = ComponentLocation(id=None, path=output_path, action="build", source_location=None, evidence=evidence)
@@ -812,9 +1365,11 @@ class CMakeEntrypoint:
             depends_on=dependencies,
             evidence=evidence,
             locations=[build_location],
+            test_link_id=None,
+            test_link_name=None,
         )
 
-    def _create_node_from_custom_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner]]) -> Union[Component, Aggregator, Runner]:
+    def _create_node_from_custom_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner, Utility]]) -> Union[Component, Aggregator, Runner]:
         """Create appropriate node from custom target using evidence-based classification."""
         target_name = getattr(target, "name", "")
         
@@ -824,8 +1379,15 @@ class CMakeEntrypoint:
         
         custom_target_info = self._cmake_parser.get_custom_target_info(target_name)
         if not custom_target_info:
+            # No evidence available - fail fast with UNKNOWN
+            ResearchBackedUtilities.unknown_field(
+                "custom_target_classification",
+                f"target_{target_name}",
+                {"has_cmake_evidence": False},
+                self._temp_unknown_errors
+            )
             raise ValueError(f"No CMakeLists.txt evidence found for custom target '{target_name}'. " +
-                           f"Cannot determine target classification without evidence.")
+                           f"Cannot perform evidence-based classification without CMakeLists.txt data.")
         
         # Evidence-based classification using parsed CMakeLists.txt data
         has_commands = custom_target_info['has_commands']
@@ -866,10 +1428,22 @@ class CMakeEntrypoint:
         
         # 4. No clear evidence -> fail fast
         else:
+            ResearchBackedUtilities.unknown_field(
+                "custom_target_classification",
+                f"target_{target_name}",
+                {
+                    "has_commands": has_commands,
+                    "has_depends": has_depends,
+                    "has_output": has_output,
+                    "has_byproducts": has_byproducts
+                },
+                self._temp_unknown_errors
+            )
             raise ValueError(f"Custom target '{target_name}' has ambiguous classification. " +
                            f"Evidence: commands={has_commands}, depends={has_depends}, " +
                            f"output={has_output}, byproducts={has_byproducts}. " +
                            f"Cannot determine target type without clear evidence.")
+    
 
     def _has_output_or_byproduct(self, target: Any) -> bool:
         """Check if custom target has OUTPUT or BYPRODUCT using evidence-based detection."""
@@ -936,7 +1510,7 @@ class CMakeEntrypoint:
         raise ValueError(f"No CMakeLists.txt evidence found for target '{target_name}'. " +
                        f"Cannot determine if target has DEPENDS without evidence.")
 
-    def _create_component_from_custom_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner]]) -> Component:
+    def _create_component_from_custom_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner, Utility]]) -> Component:
         """Create Component from custom target that produces output."""
         target_name = getattr(target, "name", "")
         # Get the actual target object from the wrapper
@@ -944,35 +1518,71 @@ class CMakeEntrypoint:
 
         # Extract source files (may be empty for custom targets)
         source_files: List[Path] = []
-        if hasattr(actual_target, "sources"):
+        if hasattr(actual_target, "sources") and actual_target.sources:
             for source in actual_target.sources:
                 if hasattr(source, "path"):
-                    source_path = Path(source.path)
+                    source_path = Path(str(source.path))
+                    if source_path.is_absolute():
+                        source_path = source_path.relative_to(self.repo_root)
+                    source_files.append(source_path)
+        elif isinstance(actual_target, dict) and "sources" in actual_target:
+            for source in actual_target["sources"]:
+                if isinstance(source, dict) and "path" in source:
+                    source_path = Path(str(source["path"]))
                     if source_path.is_absolute():
                         source_path = source_path.relative_to(self.repo_root)
                     source_files.append(source_path)
 
         # Get output path from artifacts
-        output_path = self._extract_output_path_from_target(actual_target)
+        # For non-C/C++ components, use BuildOutputFinder to get the correct output path
+        programming_language = self._extract_programming_language_from_custom_target(actual_target)
+        if programming_language and programming_language not in ["c", "cpp", "cxx"]:
+            # Use BuildOutputFinder for all non-C/C++ languages
+            build_output_path = self._extract_build_output_path_from_target(actual_target, programming_language)
+            if build_output_path:
+                output_path = build_output_path
+            else:
+                # Fallback if BuildOutputFinder fails
+                output_path = self._extract_output_path_from_target(actual_target)
+        else:
+            output_path = self._extract_output_path_from_target(actual_target)
 
         # Determine component type based on output (evidence-based)
         component_type = self._detect_component_type_from_output(output_path)
+        if component_type is None:
+            # Try to detect component type from build command evidence
+            component_type = self._detect_component_type_from_build_command(actual_target)
+            if component_type is None:
+                # Unknown component type - report UNKNOWN
+                ResearchBackedUtilities.unknown_field(
+                    "component_type",
+                    f"target_{target_name}",
+                    {"output_path": str(output_path), "extension": output_path.suffix},
+                    self._temp_unknown_errors
+                )
+                component_type = ComponentType.EXECUTABLE  # Fallback for schema compliance
 
-        # Get programming language from custom commands
-        programming_language = self._extract_programming_language_from_custom_target(actual_target)
+        # Programming language was already detected above for output path extraction
 
         # Detect runtime environment
         runtime = self._detect_runtime_from_custom_target(actual_target, source_files)
+        
+        # Logical constraint: if programming language is UNKNOWN, runtime must also be UNKNOWN
+        if programming_language == "UNKNOWN":
+            runtime = None
 
         # Create component location for the build action
         build_location = ComponentLocation(id=None, path=output_path, action="build", source_location=None, evidence=evidence)
 
+        # Extract the actual output filename from the output path
+        output_filename = output_path.name if output_path else target_name
+        
         return Component(
             id=None,
             name=target_name,
             type=component_type,
             runtime=runtime,
-            output=target_name,
+            output=output_filename,
             output_path=output_path,
             programming_language=programming_language,
             source_files=source_files,
@@ -980,10 +1590,12 @@ class CMakeEntrypoint:
             depends_on=dependencies,
             evidence=evidence,
             locations=[build_location],
+            test_link_id=None,
+            test_link_name=None,
         )
 
-    def _detect_component_type_from_output(self, output_path: Path) -> ComponentType:
-        """Detect component type from output file extension."""
+    def _detect_component_type_from_output(self, output_path: Path) -> Optional[ComponentType]:
+        """Detect component type from output file extension using evidence-based approach."""
         ext = output_path.suffix.lower()
         if ext in [".exe", ""]:  # Empty extension often means executable
             return ComponentType.EXECUTABLE
@@ -994,15 +1606,136 @@ class CMakeEntrypoint:
         elif ext in [".jar"]:
             return ComponentType.VM
         else:
-            return ComponentType.EXECUTABLE  # Default
+            # Unknown extension - return None instead of defaulting
+            return None
+
+    def _detect_component_type_from_build_command(self, target: Any) -> Optional[ComponentType]:
+        """Detect component type from build command evidence using generator-aware parsing."""
+        target_name = getattr(target, "name", "")
+        
+        # For non-C/C++ components, use the BuildOutputFinder to detect type from build files
+        programming_language = self._extract_programming_language_from_custom_target(target)
+        if programming_language and programming_language not in ["c", "cpp", "cxx"]:
+            # Check if we can find evidence of build commands in generated build files
+            build_output_path = self._build_output_finder.find_output(target_hint=target_name, language=programming_language)
+            if build_output_path and build_output_path.suffix.lower() in ['.dll', '.so', '.dylib']:
+                return ComponentType.SHARED_LIBRARY
+            elif build_output_path:
+                return ComponentType.EXECUTABLE
+            # If no output found, check rule files as fallback
+            return self._detect_component_type_from_rule_files(target, programming_language)
+        
+        # For C/C++ components, use the original rule file approach
+        return self._detect_component_type_from_rule_files(target, "c")
+    
+    def _detect_component_type_from_rule_files(self, target: Any, language: str) -> Optional[ComponentType]:
+        """Detect component type from rule files as fallback for any language."""
+        if hasattr(target, "sources") and target.sources:
+            for source in target.sources:
+                if hasattr(source, "path"):
+                    source_path = str(source.path)
+                    if source_path.endswith(".rule"):
+                        try:
+                            with open(source_path, 'r', encoding='utf-8') as f:
+                                rule_content = f.read()
+                                # Check if rule file is empty (only contains comments)
+                                if rule_content.strip() in ["# generated from CMake", "# generated from CMake\n"]:
+                                    return None
+                                
+                                rule_content_lower = rule_content.lower()
+                                
+                                # Language-specific type detection
+                                if language == "go":
+                                    if ("go build" in rule_content_lower or "go.exe build" in rule_content_lower):
+                                        if "-buildmode=c-shared" in rule_content_lower:
+                                            return ComponentType.SHARED_LIBRARY
+                                        else:
+                                            return ComponentType.EXECUTABLE
+                                elif language == "java":
+                                    # Check for JAR creation (library) vs javac (executable/class files)
+                                    if "jar -cf" in rule_content_lower or "jar -c" in rule_content_lower:
+                                        return ComponentType.SHARED_LIBRARY
+                                    elif "javac" in rule_content_lower:
+                                        return ComponentType.EXECUTABLE
+                                elif language == "python":
+                                    # Python components are typically executables or modules
+                                    if "py_compile" in rule_content_lower:
+                                        return ComponentType.EXECUTABLE
+                                elif language == "csharp":
+                                    # Check for DLL vs EXE compilation
+                                    if "-target:library" in rule_content_lower or "-out:.dll" in rule_content_lower:
+                                        return ComponentType.SHARED_LIBRARY
+                                    elif "csc" in rule_content_lower or "dotnet build" in rule_content_lower:
+                                        return ComponentType.EXECUTABLE
+                                elif language == "rust":
+                                    # Check for library vs binary compilation
+                                    if "--crate-type lib" in rule_content_lower or ".rlib" in rule_content_lower:
+                                        return ComponentType.SHARED_LIBRARY
+                                    elif "cargo build" in rule_content_lower or "rustc" in rule_content_lower:
+                                        return ComponentType.EXECUTABLE
+                                        
+                        except (IOError, UnicodeDecodeError):
+                            continue
+        return None
+    
+
 
     def _extract_programming_language_from_custom_target(self, target: Any) -> str:
         """Extract programming language from custom target using evidence-based detection."""
+        target_name = getattr(target, "name", "")
+        
+        # Check for evidence of build commands in generated rule files
+        if hasattr(target, "sources") and target.sources:
+            for source in target.sources:
+                if hasattr(source, "path"):
+                    source_path = str(source.path)
+                    # Look for .rule files that contain build commands
+                    if source_path.endswith(".rule"):
+                        try:
+                            with open(source_path, 'r', encoding='utf-8') as f:
+                                rule_content = f.read().lower()
+                                # Look for Go build commands
+                                if "go build" in rule_content or "go.exe build" in rule_content:
+                                    return "go"
+                                # Look for Java build commands
+                                elif "javac" in rule_content or "java" in rule_content:
+                                    return "java"
+                                # Look for Python build commands
+                                elif "python" in rule_content or "pip" in rule_content:
+                                    return "python"
+                                # Look for C# build commands
+                                elif "csc" in rule_content or "dotnet" in rule_content:
+                                    return "csharp"
+                                # Look for C/C++ build commands
+                                elif "gcc" in rule_content or "g++" in rule_content or "clang" in rule_content:
+                                    return "cpp"
+                        except (IOError, UnicodeDecodeError):
+                            # If we can't read the file, continue to next source
+                            continue
+        
+        # Check backtrace evidence for build commands (evidence-based from JSON)
+        if hasattr(target, "backtraceGraph") and target.backtraceGraph:
+            backtrace = target.backtraceGraph
+            if isinstance(backtrace, dict) and "commands" in backtrace:
+                commands = backtrace["commands"]
+                # Look for evidence of build commands in the backtrace
+                # This is generic evidence, not macro-specific
+                for command in commands:
+                    if "go" in command.lower() and "build" in command.lower():
+                        return "go"
+                    elif "java" in command.lower() and "build" in command.lower():
+                        return "java"
+                    elif "python" in command.lower() and "build" in command.lower():
+                        return "python"
+                    elif "csharp" in command.lower() and "build" in command.lower():
+                        return "csharp"
+                    elif "cpp" in command.lower() and "build" in command.lower():
+                        return "cpp"
+        
         # Use CMakeParser for evidence-based detection
         if not self._cmake_parser:
             raise ValueError("CMakeParser not available. Cannot perform evidence-based language detection.")
         
-        target_name = getattr(target, "name", "")
         custom_target_info = self._cmake_parser.get_custom_target_info(target_name)
         
         if custom_target_info:
@@ -1023,56 +1756,165 @@ class CMakeEntrypoint:
                     return "csharp"
             
             # If no clear language indicators in command, fail fast
-            raise ValueError(f"No programming language evidence found in COMMAND for target '{target_name}'. " +
-                           f"Command: {command_params}. Cannot determine language without evidence.")
+            ResearchBackedUtilities.unknown_field(
+                "programming_language",
+                f"target_{target_name}",
+                {"has_command_evidence": bool(command_params), "command": command_params},
+                self._temp_unknown_errors
+            )
+            return "UNKNOWN"
         
-        # If no evidence found, fail fast
-        raise ValueError(f"No CMakeLists.txt evidence found for target '{target_name}'. " +
-                       f"Cannot determine programming language without evidence.")
+        # No evidence available - fail fast with UNKNOWN
+        ResearchBackedUtilities.unknown_field(
+            "programming_language",
+            f"target_{target_name}",
+            {"has_cmake_evidence": False},
+            self._temp_unknown_errors
+        )
+        return "UNKNOWN"
+    
 
     def _detect_runtime_from_custom_target(self, target: Any, source_files: List[Path]) -> Optional[Runtime]:
         """Detect runtime environment from custom target using evidence-based detection."""
+        target_name = getattr(target, "name", "")
+        
+        # Check for evidence of build commands in generated rule files
+        if hasattr(target, "sources") and target.sources:
+            for source in target.sources:
+                if hasattr(source, "path"):
+                    source_path = str(source.path)
+                    # Look for .rule files that contain build commands
+                    if source_path.endswith(".rule"):
+                        try:
+                            with open(source_path, 'r', encoding='utf-8') as f:
+                                rule_content = f.read().lower()
+                                # Look for Go build commands
+                                if "go build" in rule_content or "go.exe build" in rule_content:
+                                    return Runtime.GO
+                                # Look for Java build commands
+                                elif "javac" in rule_content or "java" in rule_content:
+                                    return Runtime.JVM
+                                # Look for Python build commands
+                                elif "python" in rule_content or "pip" in rule_content:
+                                    return Runtime.PYTHON
+                                # Look for C# build commands
+                                elif "csc" in rule_content or "dotnet" in rule_content:
+                                    return Runtime.DOTNET
+                        except (IOError, UnicodeDecodeError):
+                            # If we can't read the file, continue to next source
+                            continue
+        
+        # Check backtrace evidence for build commands (evidence-based from JSON)
+        if hasattr(target, "backtraceGraph") and target.backtraceGraph:
+            backtrace = target.backtraceGraph
+            if isinstance(backtrace, dict) and "commands" in backtrace:
+                commands = backtrace["commands"]
+                # Look for evidence of build commands in the backtrace
+                # This is generic evidence, not macro-specific
+                for command in commands:
+                    if "go" in command.lower() and "build" in command.lower():
+                        return Runtime.GO
+                    elif "java" in command.lower() and "build" in command.lower():
+                        return Runtime.JVM
+                    elif "python" in command.lower() and "build" in command.lower():
+                        return Runtime.PYTHON
+                    elif "csharp" in command.lower() and "build" in command.lower():
+                        return Runtime.DOTNET
+        
         # Use CMakeParser for evidence-based detection
         if not self._cmake_parser:
-            raise ValueError("CMakeParser not available. Cannot perform evidence-based runtime detection.")
+            ResearchBackedUtilities.unknown_field(
+                "runtime",
+                f"target_{target_name}",
+                {"has_cmake_parser": False},
+                self._temp_unknown_errors
+            )
+            return None
         
-        target_name = getattr(target, "name", "")
         custom_target_info = self._cmake_parser.get_custom_target_info(target_name)
         
         if custom_target_info:
-            # Try to extract runtime from COMMAND parameters
-            command_params = custom_target_info.get('parameters', {}).get('COMMAND', [])
-            if command_params:
-                # Look for runtime indicators in the command
-                command_str = " ".join(command_params).lower()
-                if "go" in command_str or "go build" in command_str:
-                    return Runtime.GO
-                elif "java" in command_str or "javac" in command_str:
-                    return Runtime.JVM
-                elif "python" in command_str or "py" in command_str:
-                    return Runtime.CLANG_C  # Python extensions are typically C/C++
-                elif "gcc" in command_str or "g++" in command_str or "clang" in command_str:
-                    return Runtime.CLANG_C
-                elif "csc" in command_str or "dotnet" in command_str:
-                    return Runtime.DOTNET
+            runtime = None
+            params = custom_target_info.get("parameters", {})
+            cmd_tokens = params.get("COMMAND", [])
             
-            # If no clear runtime indicators in command, fail fast
-            raise ValueError(f"No runtime evidence found in COMMAND for target '{target_name}'. " +
-                           f"Command: {command_params}. Cannot determine runtime without evidence.")
+            # 1) Resolve genex and see if it points to a known component
+            by_name = {comp.name: comp for comp in self._temp_components}
+            for tok in cmd_tokens:
+                resolved = self._expand_genexpr(str(tok), by_name)
+                if resolved != tok:
+                    # find component with this output_path
+                    for comp in self._temp_components:
+                        if hasattr(comp, 'output_path') and comp.output_path and str(comp.output_path) == resolved:
+                            # Use evidence-based runtime detection
+                            runtime = comp.runtime or ResearchBackedUtilities.detect_runtime_evidence_based(comp)
+                            break
+                if runtime: 
+                    break
+            
+            # 2) Or infer from DEPENDS -> plugin targets (deterministic)
+            if not runtime and custom_target_info.get('has_depends'):
+                for dep in self._cmake_parser.get_target_dependencies(target_name):
+                    # Find the dependency component and use evidence-based runtime detection
+                    dep_comp = self._find_component_by_name(dep)
+                    if dep_comp:
+                        runtime = ResearchBackedUtilities.detect_runtime_evidence_based(dep_comp)
+                        if runtime:
+                            break
+            
+            if runtime:
+                return runtime
+            
+            # If no clear runtime indicators found, report UNKNOWN
+            ResearchBackedUtilities.unknown_field(
+                "runtime",
+                f"target_{target_name}",
+                {"has_command_evidence": bool(cmd_tokens), "has_depends": custom_target_info.get('has_depends', False)},
+                self._temp_unknown_errors
+            )
+            return None
         
-        # If no evidence found, fail fast
-        raise ValueError(f"No CMakeLists.txt evidence found for target '{target_name}'. " +
-                       f"Cannot determine runtime without evidence.")
+        # No evidence found - report UNKNOWN
+        ResearchBackedUtilities.unknown_field(
+            "runtime",
+            f"target_{target_name}",
+            {"has_cmake_evidence": False},
+            self._temp_unknown_errors
+        )
+        return None
 
     def _extract_programming_language_from_target(self, target: Any) -> str:
         """Extract programming language using research-backed toolchains approach."""
         target_name = getattr(target, "name", "")
         
         # Research-backed approach: Use toolchains first
-        language = self._detect_programming_language_from_toolchains(target, self._temp_toolchains_info)
+        language = self._detect_programming_language_from_toolchains(target, self._toolchains_info)
         
         if language:
             return language
+        
+        # Try source files using toolchains as secondary evidence
+        if hasattr(target, "sources") and target.sources:
+            source_files_list: List[Path] = []
+            for source in target.sources:
+                if hasattr(source, "path"):
+                    source_path = Path(str(source.path))
+                    if source_path.is_absolute():
+                        source_path = source_path.relative_to(self.repo_root)
+                    source_files_list.append(source_path)
+        elif isinstance(target, dict) and "sources" in target:
+            source_files_list2: List[Path] = []
+            for source in target["sources"]:
+                if isinstance(source, dict) and "path" in source:
+                    source_path = Path(str(source["path"]))
+                    if source_path.is_absolute():
+                        source_path = source_path.relative_to(self.repo_root)
+                    source_files_list2.append(source_path)
+            
+            if source_files_list2:
+                language = self._detect_programming_language_from_files_with_toolchains(source_files_list2)
+                if language:
+                    return language
         
         # If no evidence found, report UNKNOWN
         ResearchBackedUtilities.unknown_field(
@@ -1081,24 +1923,23 @@ class CMakeEntrypoint:
             {
                 "has_compileGroups": hasattr(target, "compileGroups") and bool(target.compileGroups),
                 "has_sources": hasattr(target, "sources") and bool(target.sources),
-                "has_toolchains": bool(self._temp_toolchains_info)
+                "has_toolchains": bool(self._toolchains_info)
             },
             self._temp_unknown_errors
         )
         
-        # Final fallback - return a default
-        return "UNKNOWN"
+        return "unknown"
 
     def _detect_programming_language_from_files_with_toolchains(self, source_files: List[Path]) -> Optional[str]:
         """Detect programming language from source files using toolchain extensions."""
-        if not source_files or not self._temp_toolchains:
+        if not source_files or not self._toolchains_obj:
             return None
         
         # Get file extensions
         extensions = [f.suffix.lower() for f in source_files]
         
         # Check each toolchain for matching extensions
-        for tc in self._temp_toolchains.toolchains:
+        for tc in self._toolchains_obj.toolchains:
             if hasattr(tc, 'language') and hasattr(tc, 'sourceFileExtensions'):
                 language = tc.language.lower()
                 toolchain_extensions = tc.sourceFileExtensions
@@ -1109,59 +1950,38 @@ class CMakeEntrypoint:
         
         return None
 
-    def _detect_programming_language_from_files(self, source_files: List[Path]) -> str:
-        """Detect programming language from source file extensions."""
-        if not source_files:
-            return "cpp"  # Default
-
-        # Count file extensions
-        extensions: Dict[str, int] = {}
-        for source_file in source_files:
-            ext = source_file.suffix.lower()
-            extensions[ext] = extensions.get(ext, 0) + 1
-
-        # Determine primary language
-        if ".cpp" in extensions or ".cc" in extensions or ".cxx" in extensions:
-            return "cpp"
-        elif ".c" in extensions:
-            return "c"
-        elif ".py" in extensions:
-            return "python"
-        elif ".java" in extensions:
-            return "java"
-        elif ".go" in extensions:
-            return "go"
-        elif ".cs" in extensions:
-            return "csharp"
-        else:
-            return "cpp"  # Default
 
     def _extract_output_path_from_target(self, target: Any) -> Path:
         """Extract output path from target using research-backed File API approach."""
         target_name = getattr(target, "name", "")
         
-        # Research-backed approach: Prefer artifacts[].path, fall back to nameOnDisk
-        if hasattr(target, "artifacts") and target.artifacts:
-            # Use first artifact path
-            artifact_path = target.artifacts[0].get("path", "") if isinstance(target.artifacts[0], dict) else getattr(target.artifacts[0], "path", "")
-            if artifact_path:
-                output_path = Path(artifact_path)
-                # Make relative to repo root if absolute
-                if output_path.is_absolute():
-                    try:
-                        return output_path.relative_to(self.repo_root)
-                    except ValueError:
-                        return output_path
-                return output_path
+        # First, check if this is a Go component using the same logic as programming language detection
+        # This ensures consistency between language detection and output path extraction
+        programming_language = self._extract_programming_language_from_custom_target(target)
+        if programming_language and programming_language not in ["c", "cpp", "cxx"]:
+            build_output_path = self._extract_build_output_path_from_target(target, programming_language)
+            if build_output_path:
+                return build_output_path
         
-        # Fallback to nameOnDisk
-        if hasattr(target, "nameOnDisk") and target.nameOnDisk:
-            return Path(target.nameOnDisk)
+        # Use the research-backed utility for output path extraction
+        output_path = ResearchBackedUtilities.get_output_path_from_target(target, self._temp_cache_dict)
         
-        # Check if this is a UTILITY/INTERFACE target (legitimately has no artifacts)
+        if output_path:
+            # Make relative to repo root if absolute
+            if output_path.is_absolute():
+                try:
+                    return output_path.relative_to(self.repo_root)
+                except ValueError:
+                    return output_path
+            else:
+                # Path is relative to build directory, make it relative to repo root
+                build_dir_relative = self.cmake_config_dir.relative_to(self.repo_root)
+                return build_dir_relative / output_path
+            return output_path
+        
+        # Check if this is an INTERFACE target (legitimately has no artifacts)
         target_type = getattr(target, "type", "")
-        if target_type in ["UTILITY", "INTERFACE"]:
-            # These targets legitimately have no artifacts
+        if target_type == "INTERFACE":
             return Path(target_name)
         
         # If no evidence found, report UNKNOWN
@@ -1178,126 +1998,131 @@ class CMakeEntrypoint:
         # Final fallback
         return Path(target_name)
 
-    def _construct_output_path_evidence_based(self, target_name: str, target: Any) -> Path:
-        """Construct output path using evidence from CMakeLists.txt and cache."""
-        if not self._cmake_parser:
-            raise ValueError("CMakeParser not available. Cannot perform evidence-based output path construction.")
+    def _extract_build_output_path_from_target(self, target: Any, language: str) -> Optional[Path]:
+        """Extract output path for non-C/C++ components using generator-aware build file parsing."""
+        target_name = getattr(target, "name", "")
         
-        # Get target type to determine output directory type
-        target_type = getattr(target, "type", "")
-        target_type_str = str(target_type).lower()
+        # Use the BuildOutputFinder to find the actual output path from generated build files
+        # This will return None if the target is not a component of the specified language
+        build_output_path = self._build_output_finder.find_output(target_hint=target_name, language=language)
+        if build_output_path:
+            # Convert absolute path to relative path from repo root
+            try:
+                relative_path = build_output_path.relative_to(self.repo_root)
+                return relative_path
+            except ValueError:
+                # If path is not under repo root, return the filename as a Path
+                return Path(build_output_path.name)
         
-        # Map CMake target types to output directory types
-        if target_type_str in ["executable", "targettype.executable"]:
-            directory_type = "RUNTIME"
-        elif target_type_str in ["shared_library", "shared", "targettype.shared", "module_library", "targettype.module_library"]:
-            directory_type = "LIBRARY"
-        elif target_type_str in ["static_library", "static", "targettype.static"]:
-            directory_type = "ARCHIVE"
-        else:
-            # For custom targets, try to determine from CMakeLists.txt
-            custom_target_info = self._cmake_parser.get_custom_target_info(target_name)
-            if custom_target_info and custom_target_info.get('has_output'):
-                # Custom target with OUTPUT parameter - use RUNTIME as default
-                directory_type = "RUNTIME"
-            else:
-                raise ValueError(f"Cannot determine output directory type for target '{target_name}' " +
-                               f"with type '{target_type_str}'. No evidence available.")
-        
-        # Get output directory from CMakeLists.txt or cache
-        output_dir = self._cmake_parser.get_output_directory(directory_type)
-        if not output_dir:
-            # Try to get from cache entries
-            for entry in self._temp_cache_entries:
-                if hasattr(entry, 'name') and entry.name == f"CMAKE_{directory_type}_OUTPUT_DIRECTORY":
-                    output_dir = str(entry.value)
-                    break
-        
-        if not output_dir:
-            raise ValueError(f"No output directory found for type '{directory_type}' for target '{target_name}'. " +
-                           f"Cannot construct output path without evidence.")
-        
-        # Construct the full path
-        if target_type_str in ["executable", "targettype.executable"]:
-            # Executables typically have .exe extension on Windows
-            if self._is_windows():
-                output_path = Path(output_dir) / f"{target_name}.exe"
-            else:
-                output_path = Path(output_dir) / target_name
-        else:
-            # Libraries - determine extension from target type
-            if target_type_str in ["shared_library", "shared", "targettype.shared", "module_library", "targettype.module_library"]:
-                if self._is_windows():
-                    ext = ".dll"
-                elif self._is_macos():
-                    ext = ".dylib"
-                else:
-                    ext = ".so"
-            else:  # static library
-                if self._is_windows():
-                    ext = ".lib"
-                else:
-                    ext = ".a"
-            
-            output_path = Path(output_dir) / f"lib{target_name}{ext}"
-        
-        return output_path
+        # No evidence found for output path
+        return None
 
-    def _is_windows(self) -> bool:
-        """Check if running on Windows."""
-        import platform
-        return platform.system() == "Windows"
-    
-    def _is_macos(self) -> bool:
-        """Check if running on macOS."""
-        import platform
-        return platform.system() == "Darwin"
 
-    def _construct_output_path_from_target_name(self, target_name: str, target: Any) -> Path:
-        """Construct output path using evidence-based detection from CMakeLists.txt and cache."""
-        # Use evidence-based path construction instead of heuristics
-        return self._construct_output_path_evidence_based(target_name, target)
-
-    def _create_snippet_from_target(self, target: Any) -> Evidence:
+    def _create_snippet_from_target(self, target: Any) -> Optional[Evidence]:
         """Create Evidence with proper line numbers from target's backtrace."""
-        # Try to get line numbers from backtrace
-        if hasattr(target, "backtraceGraph"):
-            # Look for backtrace indices in dependencies or other fields
-            # For now, use a placeholder - this would need more complex backtrace resolution
-            return Evidence(id=None, file=Path("CMakeLists.txt"), start_line=1, end_line=1, text=f"Target definition for {getattr(target, 'name', 'unknown')}")  # Will be updated if we can find the actual file
-
-        # Fallback
-        return Evidence(id=None, file=Path("CMakeLists.txt"), start_line=1, end_line=1, text=f"Target definition for {getattr(target, 'name', 'unknown')}")
+        # This method should use the same logic as _create_evidence_from_target
+        # For now, delegate to the proper evidence creation method
+        return self._create_evidence_from_target(target)
 
     def _extract_external_packages_from_target(self, target: Any) -> List[ExternalPackage]:
-        """Extract external package dependencies from target's link command fragments and cache entries."""
+        """Extract external package dependencies using evidence-based detection from CMake File API."""
         packages: List[ExternalPackage] = []
+        seen_packages = set()  # To avoid duplicates
 
-        # First, try to extract from link command fragments
-        if hasattr(target, "link") and hasattr(target.link, "commandFragments"):
-            for frag in target.link.commandFragments:
-                if hasattr(frag, "role") and frag.role in ("libraries", "flags", "libraryPath", "frameworkPath", "linker"):
-                    # Extract package information from fragment
-                    fragment_text = getattr(frag, "fragment", "")
-                    if fragment_text:
-                        # Try to identify package manager from fragment
-                        package_manager = self._identify_package_manager_from_fragment(fragment_text)
-                        if package_manager:
-                            packages.append(ExternalPackage(id=None, package_manager=package_manager))
+        # 1) From CMake cache (toolchain selection) → package manager
+        pm = ResearchBackedUtilities.detect_package_manager_from_cache(self._temp_cache_entries)
+        if pm:
+            packages.append(ExternalPackage(id=None, package_manager=PackageManager(id=None, name=pm, package_name="unknown")))
 
-        # Add global external packages from cache (vcpkg, conan, etc.)
-        packages.extend(self._temp_global_external_packages)
+        # 2) From CMake File API link command fragments (evidence-based)
+        if hasattr(target, 'link') and target.link:
+            link_data = target.link
+            if isinstance(link_data, dict) and 'commandFragments' in link_data and link_data['commandFragments']:
+                for fragment in link_data['commandFragments']:
+                    if isinstance(fragment, dict) and 'fragment' in fragment and fragment['fragment']:
+                        # Extract package names from link fragments
+                        fragment_text = fragment['fragment']
+                        package_name = self._extract_package_name_from_link_fragment(fragment_text)
+                        if package_name and package_name not in seen_packages:
+                            seen_packages.add(package_name)
+                            packages.append(ExternalPackage(
+                                id=None,
+                                package_manager=PackageManager(id=None, name=pm or "system", package_name=package_name)
+                            ))
+
+        # 3) From CMake File API include directories (evidence-based)
+        if hasattr(target, 'compileGroups') and target.compileGroups:
+            for group in target.compileGroups:
+                if isinstance(group, dict) and 'includes' in group and group['includes']:
+                    for include in group['includes']:
+                        if isinstance(include, dict) and 'path' in include and include['path']:
+                            include_path = include['path']
+                            package_name = self._extract_package_name_from_include_path(include_path)
+                            if package_name and package_name not in seen_packages:
+                                seen_packages.add(package_name)
+                                packages.append(ExternalPackage(
+                                    id=None,
+                                    package_manager=PackageManager(id=None, name=pm or "system", package_name=package_name)
+                                ))
 
         return packages
 
-    def _identify_package_manager_from_fragment(self, fragment: str) -> Optional[PackageManager]:
-        """Identify package manager from link fragment."""
-        # This is a simplified approach - in practice, you'd need more sophisticated parsing
-        if "vcpkg" in fragment.lower():
-            return PackageManager(id=None, name="vcpkg", package_name="unknown")
-        elif "conan" in fragment.lower():
-            return PackageManager(id=None, name="conan", package_name="unknown")
+    def _extract_package_name_from_link_fragment(self, fragment_text: str) -> Optional[str]:
+        """Extract package name from link command fragment."""
+        fragment_lower = fragment_text.lower()
+        
+        # Skip compiler flags and system paths - these are not external libraries
+        if (fragment_lower.startswith('/') or  # MSVC flags like /DWIN32, /machine:x64
+            fragment_lower.startswith('-') or  # GCC flags like -l, -L, -I
+            fragment_lower.startswith('"') or  # Quoted paths
+            'libpath:' in fragment_lower or  # MSVC library paths
+            fragment_lower in ['/subsystem:console', '/subsystem:windows']):  # MSVC subsystem flags
+            return None
+        
+        # Everything else is evidence of an external library - return as-is
+        return fragment_lower
+
+    def _extract_package_name_from_include_path(self, include_path: str) -> Optional[str]:
+        """Extract package name from include directory path."""
+        path_lower = include_path.lower()
+        
+        # Check for vcpkg paths
+        if 'vcpkg' in path_lower:
+            # Extract package name from vcpkg path
+            # Example: C:/src/vcpkg/installed/x64-windows/include/boost
+            path_obj = Path(include_path)
+            parts = path_obj.parts
+            for i, part in enumerate(parts):
+                if part.lower() == 'include' and i + 1 < len(parts):
+                    package_name = parts[i + 1]
+                    # Return the actual package name as evidence - no hardcoded recognition
+                    return package_name.lower()
+        
+        # Check for Conan paths
+        elif 'conan' in path_lower and 'data' in path_lower:
+            # Extract package name from Conan path
+            # Example: ~/.conan/data/package/version/user/channel/package_id/include/boost
+            path_obj = Path(include_path)
+            parts = path_obj.parts
+            for i, part in enumerate(parts):
+                if part.lower() == 'include' and i + 1 < len(parts):
+                    package_name = parts[i + 1]
+                    # Return the actual package name as evidence
+                    return package_name.lower()
+        
+        # Check for system paths
+        # Only extract from system include paths on non-Windows platforms
+        if sys.platform != "win32" and (path_lower.startswith('/usr/include/') or path_lower.startswith('/usr/local/include/')):
+            # Extract package name from system path
+            # Example: /usr/include/boost, /usr/local/include/opencv2
+            path_obj = Path(include_path)
+            if len(path_obj.parts) >= 4:  # /usr/include/package or /usr/local/include/package
+                package_name = path_obj.name  # Last part is the package name
+                # Return the actual package name as evidence
+                return package_name.lower()
+        
         return None
+
 
     def _extract_external_packages_from_cache(self) -> List[ExternalPackage]:
         """Extract external package dependencies from CMake cache entries and CMakeLists.txt files."""
@@ -1425,81 +2250,145 @@ class CMakeEntrypoint:
     def _update_components_with_global_packages(self) -> None:
         """Update existing components with global external packages from cache."""
         for component in self._temp_components:
-            # Add global packages to each component
-            component.external_packages.extend(self._temp_global_external_packages)
+            # Add global packages to each component, avoiding duplicates
+            seen = {(p.package_manager.name, p.package_manager.package_name)
+                    for p in component.external_packages}
+            for pkg in self._temp_global_external_packages:
+                key = (pkg.package_manager.name, pkg.package_manager.package_name)
+                if key not in seen:
+                    component.external_packages.append(pkg)
+                    seen.add(key)
 
     def _detect_runtime_from_target(self, target: Any, source_files: List[Path]) -> Optional[Runtime]:
         """Detect runtime environment using evidence from CMake data."""
-        # Check for C# (first-class language in CMake)
+        # Use generic, evidence-based runtime detection
+        runtime = ResearchBackedUtilities.detect_runtime_evidence_based(target, self._toolchains_obj)
+        if runtime:
+            return runtime
+        
+        # Try compile definitions as fallback (evidence-based)
         if hasattr(target, "compileGroups"):
-            for cg in target.compileGroups:
-                if hasattr(cg, "language") and cg.language == "CSharp":
-                    return Runtime.DOTNET
+            runtime = ResearchBackedUtilities.runtime_from_defines(target.compileGroups)
+            if runtime:
+                return runtime
+        
+        # Try linkage-based detection for test executables
+        target_name = getattr(target, "name", "")
+        if target_name.endswith("_test") or "test" in target_name.lower():
+            runtime = self._detect_runtime_via_linkage(target)
+            if runtime is not None:
+                return runtime
 
-        # Check for Java - use evidence from artifacts
-        if hasattr(target, "artifacts"):
-            for artifact in target.artifacts:
-                if hasattr(artifact, "path") and str(artifact.path).endswith(".jar"):
-                    return Runtime.JVM
-
-        # Check for Go - use evidence from artifacts and source files
-        if hasattr(target, "artifacts"):
-            for artifact in target.artifacts:
-                if hasattr(artifact, "path"):
-                    path_str = str(artifact.path)
-                    if path_str.endswith(".a") or "go" in path_str.lower():
-                        return Runtime.GO
-
-        # Check for Go source files
-        if any(".go" in str(f) for f in source_files):
-            return Runtime.GO
-
-        # Check for Python extensions - use evidence from source files
-        if any(".py" in str(f) for f in source_files):
-            return Runtime.CLANG_C  # Python extensions are typically C/C++
-
-        # Use compiler information from toolchains if available
-        if hasattr(self, '_temp_toolchains') and self._temp_toolchains:
-            return self._detect_runtime_from_toolchains(target)
-
-        # Default to VS-CPP for C++ projects
-        return Runtime.VS_CPP
+        # No evidence found - report UNKNOWN
+        ResearchBackedUtilities.unknown_field(
+            "runtime",
+            f"target_{target_name}",
+            {
+                "has_compileGroups": hasattr(target, "compileGroups") and bool(target.compileGroups),
+                "has_artifacts": hasattr(target, "artifacts") and bool(target.artifacts),
+                "has_source_files": bool(source_files),
+                "has_toolchains": self._has_toolchains()
+            },
+            self._temp_unknown_errors
+        )
+        
+        return None
 
     def _detect_runtime_from_toolchains(self, target: Any) -> Optional[Runtime]:
         """Detect runtime from toolchain information."""
-        if not hasattr(self, '_temp_toolchains') or not self._temp_toolchains:
+        if not self._has_toolchains():
             return None
             
         # Get the primary language from compileGroups
         primary_language = None
         if hasattr(target, "compileGroups"):
             for cg in target.compileGroups:
-                if hasattr(cg, "language") and cg.language:
-                    primary_language = cg.language.lower()
+                # Handle both dict and object formats
+                if isinstance(cg, dict):
+                    language = cg.get('language')
+                else:
+                    language = getattr(cg, 'language', None)
+                
+                if language:
+                    primary_language = language.lower()
                     break
         
         if not primary_language:
             return None
             
         # Map language to runtime based on toolchain
-        for tc in self._temp_toolchains.toolchains:
-            if hasattr(tc, "language") and tc.language.lower() == primary_language:
-                if hasattr(tc, "compiler") and hasattr(tc.compiler, "id"):
-                    compiler_id = str(tc.compiler.id).lower()
-                    if "msvc" in compiler_id or "cl" in compiler_id:
-                        return Runtime.VS_CPP
-                    elif "gcc" in compiler_id or "g++" in compiler_id:
-                        return Runtime.CLANG_C
-                    elif "clang" in compiler_id:
-                        return Runtime.CLANG_C
-                break
+        if self._toolchains_obj and hasattr(self._toolchains_obj, 'toolchains'):
+            for tc in self._toolchains_obj.toolchains:
+                if hasattr(tc, "language") and tc.language.lower() == primary_language.lower():
+                    if hasattr(tc, "compiler") and hasattr(tc.compiler, "id"):
+                        compiler_id = str(tc.compiler.id).lower()
+                        if "msvc" in compiler_id or "cl" in compiler_id:
+                            return Runtime.VS_CPP
+                        elif "gcc" in compiler_id or "g++" in compiler_id:
+                            return Runtime.CLANG_C
+                        elif "clang" in compiler_id:
+                            return Runtime.CLANG_C
+                    break
                 
+        return None
+
+    def _detect_runtime_via_linkage(self, target: Any) -> Optional[Runtime]:
+        """Detect runtime via linkage to plugin targets (deterministic)."""
+        _ = getattr(target, "name", "")  # target_name not used
+        
+        # Get known plugin targets with their runtimes
+        known_plugins = {}
+        for comp in self._temp_components:
+            if hasattr(comp, 'runtime') and comp.runtime is not None:
+                # Check if this is a plugin target (has runtime token in name)
+                runtime = ResearchBackedUtilities.detect_runtime_evidence_based(comp)
+                if runtime:
+                    known_plugins[comp.name] = runtime
+        
+        # Check transitive dependencies for plugin targets
+        if hasattr(target, "depends_on"):
+            plugin_runtimes = set()
+            for dep in target.depends_on:
+                if hasattr(dep, "name"):
+                    dep_name = dep.name
+                    if dep_name in known_plugins:
+                        plugin_runtimes.add(known_plugins[dep_name])
+            
+            # If exactly one plugin runtime is linked, use it
+            if len(plugin_runtimes) == 1:
+                return plugin_runtimes.pop()
+        
+        # Check link command fragments for plugin artifacts
+        if hasattr(target, "link") and hasattr(target.link, "commandFragments"):
+            link_paths = set()
+            for frag in target.link.commandFragments:
+                if hasattr(frag, "path") and frag.path:
+                    link_paths.add(str(frag.path))
+                if hasattr(frag, "fragment") and frag.fragment:
+                    frag_str = str(frag.fragment)
+                    if frag_str.startswith("/") or (":" in frag_str and "\\" in frag_str):
+                        link_paths.add(frag_str.strip())
+            
+            # Check if any link paths match plugin artifacts
+            plugin_runtimes = set()
+            for comp in self._temp_components:
+                if hasattr(comp, 'output_path') and comp.output_path:
+                    artifact_path = str(comp.output_path)
+                    if artifact_path in link_paths:
+                        runtime = ResearchBackedUtilities.detect_runtime_evidence_based(comp)
+                        if runtime:
+                            plugin_runtimes.add(runtime)
+            
+            if len(plugin_runtimes) == 1:
+                return plugin_runtimes.pop()
+        
         return None
 
     def _get_component_type_from_cmake_target(self, target: Any) -> ComponentType:
         """Get component type from CMake target type (evidence-based)."""
         target_type = getattr(target, "type", "")
         target_type_str = str(target_type)
+        target_name = getattr(target, "name", "")
 
         # Map CMake target types to component types
         if target_type_str in ["EXECUTABLE", "TargetType.EXECUTABLE"]:
@@ -1513,12 +2402,28 @@ class CMakeEntrypoint:
         else:
             # Research-backed approach: Use artifacts for Windows-specific detection
             if hasattr(target, "artifacts") and target.artifacts:
-                return self._detect_component_type_from_artifacts(target.artifacts)
+                component_type = self._detect_component_type_from_artifacts(target.artifacts)
+                if component_type is not None:
+                    return component_type
             elif hasattr(target, "nameOnDisk") and target.nameOnDisk:
-                return self._detect_component_type_from_output(Path(target.nameOnDisk))
-            return ComponentType.EXECUTABLE  # Default
+                component_type = self._detect_component_type_from_output(Path(target.nameOnDisk))
+                if component_type is not None:
+                    return component_type
+            
+            # No evidence found - report UNKNOWN
+            ResearchBackedUtilities.unknown_field(
+                "component_type",
+                f"target_{target_name}",
+                {
+                    "target_type": target_type_str,
+                    "has_artifacts": hasattr(target, "artifacts") and bool(target.artifacts),
+                    "has_nameOnDisk": hasattr(target, "nameOnDisk") and bool(target.nameOnDisk)
+                },
+                self._temp_unknown_errors
+            )
+            return ComponentType.EXECUTABLE  # Fallback for schema compliance
 
-    def _detect_component_type_from_artifacts(self, artifacts: List[Any]) -> ComponentType:
+    def _detect_component_type_from_artifacts(self, artifacts: List[Any]) -> Optional[ComponentType]:
         """Detect component type from artifacts with Windows-specific handling."""
         for artifact in artifacts:
             if hasattr(artifact, "path"):
@@ -1551,7 +2456,7 @@ class CMakeEntrypoint:
         if artifacts and hasattr(artifacts[0], "path"):
             return self._detect_component_type_from_output(Path(artifacts[0].path))
         
-        return ComponentType.EXECUTABLE
+        return None
 
     def _is_risky_runner(self, custom_target_info: Dict[str, Any], target_name: str) -> bool:
         """Determine if a runner is risky based on evidence-based criteria."""
@@ -1581,11 +2486,241 @@ class CMakeEntrypoint:
         
         return False
 
+    def _extract_candidate_exe_from_command(self, cmd: List[str]) -> Optional[str]:
+        """Return likely test executable basename by scanning the full CTest command (right-to-left).
+        Ignores chain operators like &&, ;, | and filters out obvious launchers (python/go/java/ctest)."""
+        chain_ops = {"&&", ";", "|"}
+        for token in reversed(cmd):
+            t = str(token).strip()
+            if not t or t in chain_ops:
+                continue
+            try:
+                name = Path(t).name or t
+            except Exception:
+                name = t
+            base = name.lower()
+            if base in {"python", "python3", "py", "go", "java", "ctest"}:
+                continue
+            return name
+        return None
+
+    def _has_toolchains(self) -> bool:
+        """Check if toolchains information is available."""
+        return bool(self._toolchains_obj) or bool(self._toolchains_info)
+
+
+
+
+    def _build_artifact_index(self, codemodel_targets: List[Any]) -> Dict[str, Any]:
+        """
+        Build an artifact index by basename for deterministic test-to-component mapping.
+        Cross-configuration: indexes all configurations for stem and basename matching.
+        key: lowercase basename/stem (e.g., 'idl_plugin_test.exe', 'idl_plugin_test')
+        val: target dict
+        """
+        idx = {}
+        for t in codemodel_targets:
+            if hasattr(t, "artifacts") and t.artifacts:
+                for art in t.artifacts:
+                    if hasattr(art, "path"):
+                        p = Path(str(art.path))
+                        base = p.name.lower()
+                        stem = p.stem.lower()
+                        idx[base] = t
+                        # Also allow mapping by stem
+                        idx[stem] = t
+                        # Handle .exe extension
+                        if not base.endswith('.exe'):
+                            idx[stem + '.exe'] = t
+            elif isinstance(t, dict) and "artifacts" in t:
+                for art in t["artifacts"]:
+                    if isinstance(art, dict) and "path" in art:
+                        p = Path(art["path"])
+                        base = p.name.lower()
+                        stem = p.stem.lower()
+                        idx[base] = t
+                        idx[stem] = t
+                        if not base.endswith('.exe'):
+                            idx[stem + '.exe'] = t
+        return idx
+
+    def _build_component_artifact_index(self) -> Dict[str, Any]:
+        """
+        Build an artifact index from components for deterministic test-to-component mapping.
+        Cross-configuration: indexes all components for stem and basename matching.
+        key: lowercase basename/stem (e.g., 'idl_plugin_test.exe', 'idl_plugin_test')
+        val: component object
+        """
+        idx = {}
+        for comp in self._temp_components:
+            if hasattr(comp, 'output') and comp.output:
+                # Use the output name as the artifact name
+                artifact_name = comp.output
+                p = Path(artifact_name)
+                base = p.name.lower()
+                stem = p.stem.lower()
+                idx[base] = comp
+                # Also allow mapping by stem
+                idx[stem] = comp
+                # Handle .exe extension
+                if not base.endswith('.exe'):
+                    idx[stem + '.exe'] = comp
+            elif hasattr(comp, 'output_path') and comp.output_path:
+                # Use the output path as the artifact path
+                p = comp.output_path
+                base = p.name.lower()
+                stem = p.stem.lower()
+                idx[base] = comp
+                idx[stem] = comp
+                if not base.endswith('.exe'):
+                    idx[stem + '.exe'] = comp
+        return idx
+
+    def _expand_genexpr(self, token: str, by_name: Dict[str, Any]) -> str:
+        """Expand $<TARGET_FILE:...> generator expressions."""
+        import re
+        GEN_RE = re.compile(r"\$<TARGET_FILE:([A-Za-z0-9_.+-]+)>")
+        m = GEN_RE.fullmatch(token)
+        if not m:
+            return token
+        tgt = by_name.get(m.group(1))
+        if not tgt:
+            return token
+        
+        # Get artifacts from target
+        artifacts = []
+        if hasattr(tgt, "artifacts") and tgt.artifacts:
+            artifacts = tgt.artifacts
+        elif isinstance(tgt, dict) and "artifacts" in tgt:
+            artifacts = tgt["artifacts"]
+        
+        if artifacts:
+            if hasattr(artifacts[0], "path"):
+                return str(artifacts[0].path)
+            elif isinstance(artifacts[0], dict) and "path" in artifacts[0]:
+                return artifacts[0]["path"]
+        return token
+
+    def _segment_command(self, cmd: List[str]) -> List[List[str]]:
+        """Segment command by shell operators."""
+        SHELL_SPLIT = {"&&", ";", "||"}
+        segs, cur = [], []
+        for tok in cmd:
+            if tok in SHELL_SPLIT:
+                if cur: 
+                    segs.append(cur)
+                    cur = []
+            else:
+                cur.append(tok)
+        if cur: 
+            segs.append(cur)
+        return segs
+
+    def _resolve_test_components(self, test: Dict[str, Any], art_by_base: Dict[str, Any], tgt_by_name: Dict[str, Any]) -> List[str]:
+        """
+        Returns a list of target names (components) this test exercises.
+        Deterministic: artifacts or explicit labels only.
+        """
+        cmd = test.get("command", [])[:]  # list[str]
+        # Expand $<TARGET_FILE:...>
+        cmd = [self._expand_genexpr(tok, tgt_by_name) for tok in cmd]
+        segs = self._segment_command(cmd)
+
+        components: List[str] = []
+
+        # 1) Direct artifact presence
+        for seg in segs:
+            lowered = [Path(x.strip('"')).name.lower() for x in seg]
+            for base in lowered:
+                if base in art_by_base:
+                    target = art_by_base[base]
+                    if hasattr(target, "name"):
+                        components.append(target.name)
+                    elif isinstance(target, dict) and "name" in target:
+                        components.append(target["name"])
+                    else:
+                        # Handle component objects directly
+                        components.append(str(target))
+
+        if components:
+            return components
+
+        # 2/3/4) Labels contract (see Patch C)
+        labels = {l.lower() for l in test.get("labels", [])}
+        comp_labels = [l.split(":", 1)[1] for l in labels if l.startswith("component:")]
+        if comp_labels:
+            return comp_labels
+
+        # 3) Environment path mapping (deterministic)
+        env_components = self._map_via_env_paths(test, art_by_base, tgt_by_name)
+        if env_components:
+            return env_components
+
+        # If no mapping found, this will be reported as UNKNOWN
+        return []
+
+    def _get_cmake_file_from_backtrace(self, backtrace_graph: Optional[Dict[str, Any]]) -> Optional[str]:
+        """Extract CMake file path from backtrace graph."""
+        if not backtrace_graph:
+            return None
+        
+        # Try to get the file path from backtrace
+        if "file" in backtrace_graph:
+            return str(backtrace_graph["file"])
+        elif "nodes" in backtrace_graph:
+            # Look for file information in nodes
+            for node in backtrace_graph["nodes"]:
+                if isinstance(node, dict) and "file" in node:
+                    return str(node["file"])
+        return None
+
+    def _map_via_env_paths(self, test: Dict[str, Any], art_by_base: Dict[str, Any], tgt_by_name: Dict[str, Any]) -> List[str]:
+        """Map test to components via environment paths (deterministic)."""
+        import os
+        
+        # Get environment from test properties
+        properties = test.get("properties", [])
+        env = ""
+        for prop in properties:
+            if isinstance(prop, dict) and prop.get("name") == "ENVIRONMENT":
+                env = prop.get("value", "")
+                break
+        
+        if not env:
+            return []
+        
+        # Extract paths from environment
+        dirs = set()
+        for line in env.splitlines():
+            if "=" not in line:
+                continue
+            _, v = line.split("=", 1)
+            for e in v.split(os.pathsep):
+                e = e.strip()
+                if e:
+                    dirs.add(Path(e))
+        
+        # Build plugin directories map
+        plugin_dirs = {}
+        for comp in self._temp_components:
+            if hasattr(comp, 'output_path') and comp.output_path:
+                # Check if this is a plugin target
+                runtime = ResearchBackedUtilities.detect_runtime_evidence_based(comp)
+                if runtime:  # This is a plugin target
+                    plugin_dirs[comp.output_path.parent] = comp.name
+        
+        # Check for exact directory matches
+        hits = set()
+        for d in dirs:
+            if d in plugin_dirs:
+                hits.add(plugin_dirs[d])
+        
+        # Return exactly one component if found
+        return [hits.pop()] if len(hits) == 1 else []
+
     def _load_detailed_target_info(self, target: Any) -> Any:
         """Load detailed target information from separate JSON file if available."""
-        # For now, just return the target as-is to avoid hanging
-        # The cmake-file-api package should already provide the necessary information
-        return target
+        return self._load_target_info_research_backed(target)
 
     def _load_target_info_research_backed(self, target: Any) -> Any:
         """Load target information using the research-backed approach."""
@@ -1594,18 +2729,15 @@ class CMakeEntrypoint:
             if not target_name:
                 return target
             
-            print(f"DEBUG: Loading target info for {target_name}")
-            
             # Step 1: Read reply/index-*.json to find codemodel path
             reply_dir = self.cmake_config_dir / ".cmake" / "api" / "v1" / "reply"
-            print(f"DEBUG: Looking for index files in {reply_dir}")
             index_files = list(reply_dir.glob("index-*.json"))
             if not index_files:
-                print(f"DEBUG: No index files found for {target_name}")
                 return target
             
-            # Load index to find codemodel path
-            with open(index_files[0], 'r', encoding='utf-8') as f:
+            # Load the latest index file to find codemodel path
+            latest_index = max(index_files, key=lambda p: p.stat().st_mtime)
+            with open(latest_index, 'r', encoding='utf-8') as f:
                 index_data = json.load(f)
             
             # Step 2: Find codemodel v2 in index
@@ -1661,12 +2793,18 @@ class CMakeEntrypoint:
                                     self.paths = data.get('paths', {})
                                     self.backtrace = data.get('backtrace', 0)
                                     self.backtraceGraph = data.get('backtraceGraph', [])
+                                    
+                                    # Add support for custom command outputs
+                                    self.byproducts = data.get('byproducts', [])
+                                    self.outputs = data.get('outputs', [])
+                                    self.command = data.get('command', [])
+                                    self.commands = data.get('commands', [])
                             
                             detailed_target = DetailedTarget(target_data)
                             return detailed_target
                     break
             
-        except Exception as e:
+        except Exception as _:
             # If loading fails, continue with original target
             pass
         
@@ -1699,7 +2837,7 @@ class CMakeEntrypoint:
                         'version': toolchain.get('version', '')
                     }
             
-        except Exception as e:
+        except Exception as _:
             # If loading fails, return empty dict
             pass
         
@@ -1711,8 +2849,15 @@ class CMakeEntrypoint:
             # First, try to get language from compile groups
             if hasattr(target, 'compileGroups') and target.compileGroups:
                 for compile_group in target.compileGroups:
-                    if hasattr(compile_group, 'language') and compile_group.language:
-                        return compile_group.language
+                    # Handle both dict and object formats
+                    if isinstance(compile_group, dict):
+                        language = compile_group.get('language')
+                    else:
+                        language = getattr(compile_group, 'language', None)
+                    
+                    if language:
+                        # Convert to lowercase for consistency
+                        return language.lower()
             
             # Fallback: use source file extensions
             if hasattr(target, 'sources') and target.sources:
@@ -1724,21 +2869,19 @@ class CMakeEntrypoint:
                         # Check each language's source file extensions
                         for language, info in toolchains_info.items():
                             if extension in info.get('sourceFileExtensions', []):
-                                return language
+                                return language.lower()
             
-        except Exception as e:
+        except Exception as _:
             pass
         
         return None
 
     def _extract_from_codemodel_fallback(self) -> None:
         """Fallback: Load codemodel directly from JSON files when cmake-file-api fails."""
-        print("DEBUG: _extract_from_codemodel_fallback called")
         try:
             # Step 1: Read reply/index-*.json → find the "codemodel" object (v2)
             reply_dir = self.cmake_config_dir / ".cmake" / "api" / "v1" / "reply"
             if not reply_dir.exists():
-                print(f"DEBUG: Reply directory not found: {reply_dir}")
                 ResearchBackedUtilities.unknown_field(
                     "codemodel_fallback",
                     "reply_directory_missing",
@@ -1750,7 +2893,6 @@ class CMakeEntrypoint:
             # Find index file
             index_files = list(reply_dir.glob("index-*.json"))
             if not index_files:
-                print(f"DEBUG: No index files found in {reply_dir}")
                 ResearchBackedUtilities.unknown_field(
                     "codemodel_fallback",
                     "index_file_missing",
@@ -1772,7 +2914,6 @@ class CMakeEntrypoint:
                         break
             
             if not codemodel_path:
-                print(f"DEBUG: No codemodel v2 found in index")
                 ResearchBackedUtilities.unknown_field(
                     "codemodel_fallback",
                     "codemodel_v2_not_in_index",
@@ -1784,7 +2925,6 @@ class CMakeEntrypoint:
             # Step 2: Open codemodel.json (path in index)
             codemodel_file = reply_dir / codemodel_path
             if not codemodel_file.exists():
-                print(f"DEBUG: Codemodel file not found: {codemodel_file}")
                 ResearchBackedUtilities.unknown_field(
                     "codemodel_fallback",
                     "codemodel_file_missing",
@@ -1793,7 +2933,6 @@ class CMakeEntrypoint:
                 )
                 return
             
-            print(f"DEBUG: Found codemodel file: {codemodel_file}")
             # Load the codemodel JSON
             with open(codemodel_file, 'r', encoding='utf-8') as f:
                 codemodel_data = json.load(f)
@@ -1872,12 +3011,9 @@ class CMakeEntrypoint:
                             self.paths = target_data.get('paths', {})
                             self.backtrace = target_data.get('backtrace', 0)
                             self.backtraceGraph = target_data.get('backtraceGraph', [])
-                            
-                            print(f"DEBUG: Loaded detailed info for {self.name}: type={self.type}, nameOnDisk={self.nameOnDisk}, artifacts={len(self.artifacts)}")
-                        else:
-                            print(f"DEBUG: Target JSON file not found: {target_json_path}")
-                    except Exception as e:
-                        print(f"DEBUG: Failed to load detailed target info for {self.name}: {e}")
+                    except Exception as _:
+                        # If we can't load detailed info, continue with basic info
+                        pass
             
             codemodel = CodemodelFallback(codemodel_data, codemodel_file)
             self._extract_from_codemodel(codemodel)
@@ -2030,7 +3166,7 @@ class CMakeEntrypoint:
     def _extract_from_toolchains(self, toolchains: Any) -> None:
         """Extract information from toolchains v1."""
         # Store toolchains for runtime detection
-        self._temp_toolchains = toolchains
+        self._toolchains_obj = toolchains
         
         if hasattr(toolchains, "toolchains"):
             for tc in toolchains.toolchains:
@@ -2090,14 +3226,14 @@ class CMakeEntrypoint:
                 test_properties = test.get("properties", [])
                 
                 # Extract working directory
-                workdir = None
+                _ = None  # workdir not used
                 for prop in test_properties:
                     if prop.get("name") == "WORKING_DIRECTORY":
-                        workdir = prop.get("value")
+                        _ = prop.get("value")  # workdir not used
                         break
                 
                 # Get test provenance from backtrace
-                cmake_file, cmake_line = self._get_test_provenance(test, backtrace_graph)
+                cmake_file, _ = self._get_test_provenance(test, backtrace_graph)  # cmake_line not used
                 
                 # Map test to components using two-source approach
                 component_refs = self._map_test_to_components(
@@ -2106,6 +3242,9 @@ class CMakeEntrypoint:
                 
                 # Create evidence from CTest backtrace
                 evidence = self._create_snippet_from_ctest(test, backtrace_graph)
+                if evidence is None:
+                    # No evidence available - skip this test
+                    continue
                 
                 # Create test object with ComponentRef
                 test_obj = Test(
@@ -2114,6 +3253,7 @@ class CMakeEntrypoint:
                     test_framework=self._detect_test_framework_from_ctest(test),
                     components_being_tested=component_refs,
                     test_executable=None,  # Will be determined from components
+                    test_runner=None,  # Will be determined from components
                     source_files=[],  # Tests don't have source files in the traditional sense
                     evidence=evidence
                 )
@@ -2133,8 +3273,14 @@ class CMakeEntrypoint:
         by_artifact_basename = {}
         
         for component in self._temp_components:
+            # Check output attribute
             if hasattr(component, 'output') and component.output:
                 basename = Path(component.output).name
+                by_artifact_basename[basename] = component.name
+            
+            # Check output_path attribute (Component has output_path, not artifacts)
+            if hasattr(component, 'output_path') and component.output_path:
+                basename = Path(component.output_path).name
                 by_artifact_basename[basename] = component.name
         
         return by_artifact_basename
@@ -2178,7 +3324,7 @@ class CMakeEntrypoint:
     def _map_test_to_components(self, test_name: str, test_command: List[str], 
                                cmake_file: Optional[str], by_artifact_basename: Dict[str, str], 
                                by_source_dir: Dict[str, List[str]]) -> List[Component]:
-        """Map test to components using two-source approach."""
+        """Map test to components using evidence-based approaches only."""
         component_refs = []
         
         # Source 1: Executable artifact match (strongest)
@@ -2192,7 +3338,7 @@ class CMakeEntrypoint:
                     component = self._find_component_by_name(component_name)
                     if component:
                         component_refs.append(component)
-                    return component_refs
+                        return component_refs
         
         # Source 2: Backtrace directory → owning target
         if cmake_file:
@@ -2203,8 +3349,24 @@ class CMakeEntrypoint:
                     component = self._find_component_by_name(candidate_name)
                     if component:
                         component_refs.append(component)
+                if component_refs:
+                    return component_refs
+        
+        # No evidence found - report UNKNOWN
+        ResearchBackedUtilities.unknown_field(
+            "test_component_mapping",
+            f"test_{test_name}",
+            {
+                "has_command": bool(test_command),
+                "has_cmake_file": bool(cmake_file),
+                "command": test_command,
+                "cmake_file": cmake_file
+            },
+            self._temp_unknown_errors
+        )
         
         return component_refs
+    
 
     def _find_component_by_name(self, name: str) -> Optional[Component]:
         """Find component by name."""
@@ -2234,20 +3396,42 @@ class CMakeEntrypoint:
 
             # Get line numbers from backtrace
             evidence = self._create_snippet_from_ctest(test, backtrace_graph)
+            if evidence is None:
+                # No evidence available - skip this test
+                return None
 
             # Get test source files by mapping to target
             source_files = self._get_test_source_files(test)
             
-            # Get components being tested using evidence-based detection
-            components_being_tested_names = self._get_components_being_tested_evidence_based(test_name)
+            # Use deterministic test-to-component mapping
+            # Build artifact index from all components (cross-configuration)
+            art_by_base = self._build_component_artifact_index()
+            tgt_by_name = {comp.name: comp for comp in self._temp_components}
+            
+            # Resolve components using deterministic approach
+            component_names = self._resolve_test_components(test, art_by_base, tgt_by_name)
             
             # Convert component names to actual Component objects
             components_being_tested: List[Component] = []
-            for comp_name in components_being_tested_names:
+            for comp_name in component_names:
                 for component in self._temp_components:
                     if component.name == comp_name:
                         components_being_tested.append(component)
                         break
+            
+            # If no components found, report UNKNOWN
+            if not components_being_tested:
+                ResearchBackedUtilities.unknown_field(
+                    "test_component_mapping",
+                    f"test_{test_name}",
+                    {
+                        "has_command": bool(test.get("command")),
+                        "has_cmake_file": bool(backtrace_graph),
+                        "command": test.get("command", []),
+                        "cmake_file": self._get_cmake_file_from_backtrace(backtrace_graph) if backtrace_graph else None
+                    },
+                    self._temp_unknown_errors
+                )
 
             return Test(
                 id=None,
@@ -2273,7 +3457,7 @@ class CMakeEntrypoint:
             if isinstance(prop, dict) and prop.get("name") == "LABELS":
                 labels_value: Any = prop.get("value", [])
                 if isinstance(labels_value, list):
-                    labels: List[Any] = labels_value
+                    labels = labels_value
                 break
 
         # Check labels for framework indicators
@@ -2386,12 +3570,17 @@ class CMakeEntrypoint:
                     self._temp_unknown_errors
                 )
         else:
-            ResearchBackedUtilities.unknown_field(
-                "compile_commands_json",
-                "file_missing",
-                {"path": str(compile_commands_path)},
-                self._temp_unknown_errors
-            )
+            # Only report missing file if CMAKE_EXPORT_COMPILE_COMMANDS is enabled and generator supports it
+            export_compile_commands = self._temp_cache_dict.get("CMAKE_EXPORT_COMPILE_COMMANDS", "").upper()
+            generator = self._temp_cache_dict.get("CMAKE_GENERATOR", "")
+            
+            if export_compile_commands in ["ON", "TRUE", "1"] and generator in ["Ninja", "Unix Makefiles", "MinGW Makefiles"]:
+                ResearchBackedUtilities.unknown_field(
+                    "compile_commands_json",
+                    "file_missing",
+                    {"path": str(compile_commands_path), "generator": generator, "export_enabled": True},
+                    self._temp_unknown_errors
+                )
 
     def _load_graphviz_dependencies(self) -> None:
         """Load graphviz dependencies for direct vs transitive distinction."""
@@ -2460,17 +3649,97 @@ class CMakeEntrypoint:
                 self._temp_unknown_errors
             )
 
-    def _create_snippet_from_ctest(self, test: Dict[str, Any], backtrace_graph: Optional[Dict[str, Any]]) -> Evidence:
+    def _create_snippet_from_ctest(self, test: Dict[str, Any], backtrace_graph: Optional[Dict[str, Any]]) -> Optional[Evidence]:
         """Create Evidence with line numbers from CTest backtrace."""
         if backtrace_graph and test.get("backtrace") is not None:
             backtrace_idx = test["backtrace"]
             # Resolve backtrace to get file and line
             file_path, line = self._resolve_backtrace(backtrace_idx, backtrace_graph)
             if file_path:
-                return Evidence(id=None, file=Path(file_path), start_line=line or 1, end_line=line or 1, text=f"Test definition for {test.get('name', 'unknown')}")
+                return Evidence(id=None, call_stack=[f"{file_path}#L{line or 1}-L{line or 1}"])
 
-        # Fallback
-        return Evidence(id=None, file=Path("CMakeLists.txt"), start_line=1, end_line=1, text=f"Test definition for {test.get('name', 'unknown')}")
+        # No evidence available - return None to indicate failure
+        return None
+
+    def _build_call_stack_from_backtrace(
+        self,
+        leaf_idx: Optional[int],
+        backtrace_graph: dict,
+        order: str = "leaf-first",
+        repo_root: Optional[Path] = None,
+        trim_non_project: bool = False,
+    ) -> List[Tuple[str, int, Optional[str]]]:
+        """
+        Build the full CMake call stack using the File API graph.
+
+        Returns a list of frames as (file_path, line, command) where the first item
+        is the leaf frame (target/test definition) when order='leaf-first'.
+        """
+        if not backtrace_graph or leaf_idx is None:
+            return []
+
+        nodes = backtrace_graph.get("nodes") or []
+        files = backtrace_graph.get("files") or []
+        commands = backtrace_graph.get("commands") or []
+
+        def get_cmd(i: Optional[int]) -> Optional[str]:
+            return commands[i] if isinstance(i, int) and 0 <= i < len(commands) else None
+
+        frames: List[Tuple[str, int, Optional[str]]] = []
+        seen = set()
+        i = leaf_idx
+
+        while isinstance(i, int) and 0 <= i < len(nodes) and i not in seen:
+            seen.add(i)
+            n = nodes[i] or {}
+            fidx = n.get("file")
+            line = int(n.get("line") or 1)
+            cmd = get_cmd(n.get("command"))
+            if isinstance(fidx, int) and 0 <= fidx < len(files):
+                path = files[fidx]
+                frames.append((path, line, cmd))
+                i = n.get("parent")
+            else:
+                break  # corrupted node
+        # frames are leaf-first by construction
+        if order == "origin-first":
+            frames.reverse()
+
+        if trim_non_project and repo_root:
+            # Keep frames that are inside the project (relative paths) or under repo_root
+            norm_root = str(repo_root.as_posix()).lower()
+            def in_project(p: str) -> bool:
+                # File API uses forward slashes; relative => inside top-level source dir
+                return not Path(p).is_absolute() or p.lower().startswith(norm_root)
+            frames = [fr for fr in frames if in_project(fr[0])]
+
+        return frames
+
+    def _find_target_definition_in_backtrace(self, backtrace_idx: int, backtrace_graph: Dict[str, Any]) -> Tuple[Optional[str], Optional[int]]:
+        """Find the actual target definition (add_executable, add_library, etc.) in project files."""
+        frames = self._build_call_stack_from_backtrace(backtrace_idx, backtrace_graph)
+        
+        # Look for target definition commands in project files (not vcpkg or system files)
+        target_commands = {"add_executable", "add_library", "add_custom_target", "add_custom_command"}
+        
+        for file_path, line, command in frames:
+            # Skip vcpkg and system files
+            if "vcpkg" in file_path.lower() or "cmake" in file_path.lower() and "scripts" in file_path:
+                continue
+                
+            # Check if this is a target definition command
+            if command and any(cmd in command.lower() for cmd in target_commands):
+                return file_path, line
+        
+        # If no target definition found, return the first project file
+        for file_path, line, command in frames:
+            if "vcpkg" not in file_path.lower() and "cmake" not in file_path.lower():
+                return file_path, line
+                
+        # Fallback to first frame
+        if frames:
+            return frames[0][0], frames[0][1]
+        return None, None
 
     def _resolve_backtrace(self, backtrace_idx: int, backtrace_graph: Dict[str, Any]) -> Tuple[Optional[str], Optional[int]]:
         """Resolve backtrace index to file path and line number."""
@@ -2598,16 +3867,32 @@ class CMakeEntrypoint:
 
         # Add all components, aggregators, runners, and tests
         for component in self._temp_components:
-            self._rig.add_component(component)
+            # Check for duplicates before adding
+            if not self._rig.get_component_by_name(component.name):
+                self._rig.add_component(component)
 
         for aggregator in self._temp_aggregators:
-            self._rig.add_aggregator(aggregator)
+            # Check for duplicates before adding
+            if not self._rig.get_aggregator_by_name(aggregator.name):
+                self._rig.add_aggregator(aggregator)
 
         for runner in self._temp_runners:
-            self._rig.add_runner(runner)
+            # Check for duplicates before adding
+            if not self._rig.get_runner_by_name(runner.name):
+                self._rig.add_runner(runner)
+
+        for utility in self._temp_utilities:
+            # Check for duplicates before adding
+            if not self._rig.get_utility_by_name(utility.name):
+                self._rig.add_utility(utility)
 
         for test in self._temp_tests:
-            self._rig.add_test(test)
+            # Check for duplicates before adding
+            if not self._rig.get_test_by_name(test.name):
+                self._rig.add_test(test)
+        
+        # Run deterministic analysis to resolve unknowns using cross-component relationships
+        self._rig.analyze()
 
     @property
     def rig(self) -> RIG:
