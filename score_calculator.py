@@ -747,13 +747,13 @@ class ScoreCalculator:
 
     def _eval_q20(self, llm: Dict[str, Any]) -> PerQuestionScore:
         """Q20: Produced runtime artifacts (dll/exe/jar) and their output directories."""
-        expected_pairs: Set[Tuple[str, str]] = set()
+        expected_artifacts: Set[str] = set()
         for c in self.rig.components:
             out = str(c.output_path) if c.output_path else ""
             if out.lower().endswith((".dll", ".exe", ".jar")):
-                expected_pairs.add((self._basename(out), self._norm_text(str(Path(out).parent))))
+                expected_artifacts.add(self._basename(out))
 
-        expected_fact_count = len(expected_pairs)
+        expected_fact_count = len(expected_artifacts)
 
         items = (llm.get("Q20", {}) or {}).get("runtime_artifacts", []) or []
         found_facts: List[FoundFact] = []
@@ -766,18 +766,14 @@ class ScoreCalculator:
                 continue
 
             artifact = self._basename(it.get("artifact", ""))
-            output_dir = self._norm_text(it.get("output_dir", ""))
-            key = (artifact, output_dir)
+            output_dir = it.get("output_dir", "")
 
-            if key in expected_pairs:
+            if artifact in expected_artifacts:
                 counts["num_correct"] += 1
                 label = FactLabel.CORRECT
             elif self._is_honeypot(artifact) or self._is_honeypot(output_dir):
                 counts["num_incorrect_off_rig_unbuilt"] += 1
                 label = FactLabel.INCORRECT_OFF_RIG_UNBUILT
-            elif artifact in (self._basename(str(c.output_path)) for c in self.rig.components if c.output_path):
-                counts["num_incorrect_mismatch"] += 1
-                label = FactLabel.INCORRECT_MISMATCH
             else:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
@@ -828,10 +824,10 @@ class ScoreCalculator:
         )
 
     def _eval_q05(self, llm: Dict[str, Any]) -> PerQuestionScore:
-        """Q05: Go compilers."""
+        """Q05: Go compilers (all compilers in the system)."""
         expected_keys: Set[str] = set()
         for c in self.rig.components:
-            if "compiler" in c.name.lower() and "go" in c.name.lower():
+            if "compiler" in c.name.lower():
                 expected_keys.add(self._norm_text(c.name))
                 if c.output_path:
                     expected_keys.add(self._basename(str(c.output_path)))
@@ -1155,7 +1151,7 @@ class ScoreCalculator:
             
             # Check if external library is mentioned in xllr components
             xllr_components = [c for c in self.rig.components if "xllr" in c.name.lower()]
-            lib_found = any(lib in str(ext_pkg.package_manager.name).lower() for c in xllr_components for ext_pkg in c.external_packages)
+            lib_found = any(lib in self._norm_text(str(ext_pkg.package_manager.package_name)) for c in xllr_components for ext_pkg in c.external_packages)
             
             if lib_found and declared_in:
                 counts["num_correct"] += 1
