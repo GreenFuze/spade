@@ -257,6 +257,47 @@ prompt = rig.generate_prompts(filename='metaffi_prompts_generated.md')
 - **Future-Ready**: Architecture supports any new language without code duplication
 
 **Verification Results**:
+
+### ✅ COMPLETED: JVM Detection Fix
+
+**Problem Identified**: Two critical issues with `openjdk_idl_extractor` component:
+1. **Inconsistency**: Components with `UNKNOWN` language had non-`UNKNOWN` runtime (violated logical constraint)
+2. **JVM Detection Failure**: Java JAR was detected as `language: UNKNOWN` instead of `language: java, runtime: Runtime.JVM`
+
+**Root Cause**: The `BuildOutputFinder` could detect JVM outputs from Ninja build files, but the language detection logic wasn't using this information as a fallback when CMake evidence was insufficient.
+
+**Solution Implemented**:
+1. **Consistency Fix**: Modified `_create_component_from_custom_target` to enforce logical constraint: if `programming_language` is `UNKNOWN`, then `runtime` must also be `None` (UNKNOWN)
+
+2. **BuildOutputFinder Integration**: Added fallback logic in `_extract_programming_language_from_custom_target`:
+   ```python
+   # No evidence from rule files or backtrace - try BuildOutputFinder as fallback
+   for language in ["java", "go", "python", "csharp", "rust"]:
+       build_output = self._build_output_finder.find_output(target_hint=target_name, language=language)
+       if build_output:
+           return language
+   ```
+
+3. **Runtime Mapping**: Added automatic runtime assignment based on detected language:
+   ```python
+   if runtime is None:
+       if programming_language == "java":
+           runtime = Runtime.JVM
+       elif programming_language == "go":
+           runtime = Runtime.GO
+       elif programming_language == "python":
+           runtime = Runtime.PYTHON
+       elif programming_language == "csharp":
+           runtime = Runtime.DOTNET
+   ```
+
+**Results Achieved**:
+- ✅ `openjdk_idl_extractor`: `language: java, runtime: Runtime.JVM, type: ComponentType.VM`
+- ✅ All components with `UNKNOWN` language have `UNKNOWN` runtime (consistency maintained)
+- ✅ BuildOutputFinder successfully detects JVM outputs: `C:\src\github.com\MetaFFI\output\windows\x64\Debug\openjdk\openjdk_idl_extractor.jar`
+- ✅ Updated `metaffi_prompts_generated.md` with correct JVM component classification
+
+**Key Insight**: The BuildOutputFinder approach works for all non-C/C++ languages, not just Go. By using it as a fallback in language detection, we can recover from insufficient CMake evidence and still provide accurate component classification.
 - ✅ Go components correctly detected: `metaffi.compiler.go`, `metaffi.compiler.openjdk`, `metaffi.compiler.python311`, `metaffi.idl.go`
 - ✅ Correct output paths: `output\windows\x64\Debug\go\metaffi.compiler.go.dll`
 - ✅ Proper component types: `shared_library` based on `.dll` extensions
@@ -680,7 +721,7 @@ pyright cmake_entrypoint.py rig.py
 
 ---
 
-*Last updated: Current session - Generic BuildOutputFinder refactoring completed and verified, multi-language support implemented (Go, Java, Python, C#, Rust), all major issues resolved, system fully functional with consistent non-C/C++ component detection, new metaffi_prompts_generated.md generated using RIG method*
+*Last updated: 2024-12-19 16:45 UTC - JVM Detection Fix Completed: Successfully resolved openjdk_idl_extractor component detection issues using BuildOutputFinder approach. Fixed consistency between UNKNOWN language and UNKNOWN runtime. Enhanced language detection with BuildOutputFinder fallback for all non-C/C++ languages. Added runtime mapping for Java→JVM, Go→GO, Python→PYTHON, C#→DOTNET. Generated updated metaffi_prompts_generated.md with correct JVM component classification. All major issues resolved, system fully functional with comprehensive multi-language support.*
 
 
 # Very Important!

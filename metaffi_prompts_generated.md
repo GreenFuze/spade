@@ -37,7 +37,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "cdts_test.exe",
-      "output_path": "cmake-build-debug\\metaffi-core\\cdts_test.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "metaffi-core\\plugin-sdk\\runtime\\cdts_test.cpp",
         "metaffi-core\\plugin-sdk\\runtime\\cdt.cpp",
@@ -54,16 +54,16 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -87,7 +87,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "metaffi.exe",
-      "output_path": "cmake-build-debug\\metaffi-core\\CLI\\metaffi.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "metaffi-core\\CLI\\cli_executor.cpp",
         "metaffi-core\\CLI\\compiler.cpp",
@@ -111,24 +111,24 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_program_options-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_program_options-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_container-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_container-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -242,15 +242,15 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "metaffi.idl.openjdk.dll",
-      "output_path": "cmake-build-debug\\lang-plugin-openjdk\\idl\\metaffi.idl.openjdk.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-openjdk\\idl\\openjdk_idl_plugin.cpp"
       ],
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -272,7 +272,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "metaffi.idl.python311.dll",
-      "output_path": "cmake-build-debug\\lang-plugin-python311\\idl\\metaffi.idl.python311.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-python311\\plugin-sdk\\runtime\\cdt.cpp",
         "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
@@ -289,16 +289,16 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -316,11 +316,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 8,
       "name": "openjdk_idl_extractor",
-      "type": "executable",
-      "language": "UNKNOWN",
-      "runtime": "native",
-      "output": "openjdk_idl_extractor",
-      "output_path": "openjdk_idl_extractor",
+      "type": "vm",
+      "language": "java",
+      "runtime": "Runtime.JVM",
+      "output": "openjdk_idl_extractor.jar",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -343,7 +343,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.dll",
-      "output_path": "cmake-build-debug\\metaffi-core\\XLLR\\xllr.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
       "source_files": [
         "metaffi-core\\XLLR\\cdts_alloc.cpp",
         "metaffi-core\\XLLR\\runtime_plugin.cpp",
@@ -364,40 +364,40 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_thread-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_thread-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_atomic-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_atomic-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "synchronization.lib"
+          "package_manager": "system",
+          "package": "synchronization.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_chrono-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_chrono-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_date_time-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_date_time-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_container-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_container-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -419,7 +419,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.go.dll",
-      "output_path": "cmake-build-debug\\lang-plugin-go\\runtime\\xllr.go.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-go\\runtime\\functions_repository.cpp",
         "lang-plugin-go\\runtime\\go_api.cpp",
@@ -438,16 +438,16 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -469,7 +469,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.openjdk.dll",
-      "output_path": "cmake-build-debug\\lang-plugin-openjdk\\runtime\\xllr.openjdk.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
       "source_files": [
         "lang-plugin-openjdk\\runtime\\api.cpp",
         "lang-plugin-openjdk\\runtime\\argument_definition.cpp",
@@ -506,16 +506,16 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -537,7 +537,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.python311.dll",
-      "output_path": "cmake-build-debug\\lang-plugin-python311\\runtime\\xllr.python311.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-python311\\runtime\\call_xcall.cpp",
         "lang-plugin-python311\\runtime\\cdts_python3.cpp",
@@ -570,16 +570,16 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -601,7 +601,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr_capi_test.exe",
-      "output_path": "cmake-build-debug\\metaffi-core\\xllr_capi_test.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "metaffi-core\\plugin-sdk\\runtime\\xllr_capi_test.cpp",
         "metaffi-core\\plugin-sdk\\runtime\\cdt.cpp",
@@ -618,16 +618,16 @@ The following JSON contains the complete build analysis data:
       "depends_on": [],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -651,7 +651,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "python311_idl_plugin_test.exe",
-      "output_path": "cmake-build-debug\\lang-plugin-python311\\idl\\python311_idl_plugin_test.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-python311\\idl\\idl_plugin_test.cpp",
         "lang-plugin-python311\\idl\\python_idl_plugin.cpp",
@@ -663,16 +663,16 @@ The following JSON contains the complete build analysis data:
       ],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -694,7 +694,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "go_api_test.exe",
-      "output_path": "cmake-build-debug\\lang-plugin-go\\runtime\\go_api_test.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-go\\plugin-sdk\\runtime\\cdt.cpp",
         "lang-plugin-go\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
@@ -714,20 +714,20 @@ The following JSON contains the complete build analysis data:
       ],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "lang-plugin-go\\runtime\\xllr.go.lib"
+          "package_manager": "system",
+          "package": "lang-plugin-go\\runtime\\xllr.go.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -749,7 +749,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "cdts_java_test.exe",
-      "output_path": "cmake-build-debug\\lang-plugin-openjdk\\runtime\\cdts_java_test.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-openjdk\\runtime\\api.cpp",
         "lang-plugin-openjdk\\runtime\\argument_definition.cpp",
@@ -789,16 +789,16 @@ The following JSON contains the complete build analysis data:
       ],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -820,7 +820,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "openjdk_api_test.exe",
-      "output_path": "cmake-build-debug\\lang-plugin-openjdk\\runtime\\openjdk_api_test.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-openjdk\\runtime\\api.cpp",
         "lang-plugin-openjdk\\runtime\\argument_definition.cpp",
@@ -860,16 +860,16 @@ The following JSON contains the complete build analysis data:
       ],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -891,7 +891,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.openjdk.jni.bridge.dll",
-      "output_path": "cmake-build-debug\\lang-plugin-openjdk\\xllr-openjdk-bridge\\xllr.openjdk.jni.bridge.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
       "source_files": [
         "lang-plugin-openjdk\\xllr-openjdk-bridge\\metaffi_bridge.cpp",
         "lang-plugin-openjdk\\plugin-sdk\\runtime\\cdt.cpp",
@@ -910,20 +910,20 @@ The following JSON contains the complete build analysis data:
       ],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "lang-plugin-openjdk\\runtime\\xllr.openjdk.lib"
+          "package_manager": "system",
+          "package": "lang-plugin-openjdk\\runtime\\xllr.openjdk.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -941,11 +941,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 19,
       "name": "python311.publish",
-      "type": "executable",
-      "language": "UNKNOWN",
-      "runtime": "native",
-      "output": "python311.publish",
-      "output_path": "python311.publish",
+      "type": "vm",
+      "language": "java",
+      "runtime": "Runtime.JVM",
+      "output": "openjdk_idl_extractor.jar",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [],
       "depends_on": [
         "xllr.python311"
@@ -969,7 +969,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "python_runtime_test.exe",
-      "output_path": "cmake-build-debug\\lang-plugin-python311\\runtime\\python_runtime_test.exe",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [
         "lang-plugin-python311\\runtime\\call_xcall.cpp",
         "lang-plugin-python311\\runtime\\cdts_python3.cpp",
@@ -1005,16 +1005,16 @@ The following JSON contains the complete build analysis data:
       ],
       "externals": [
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
+          "package_manager": "system",
+          "package": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib"
         },
         {
-          "mgr": "system",
-          "pkg": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+          "package_manager": "system",
+          "package": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
         }
       ],
       "evidence": [
@@ -1032,11 +1032,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 21,
       "name": "xllr.openjdk.bridge",
-      "type": "executable",
-      "language": "UNKNOWN",
-      "runtime": "native",
-      "output": "xllr.openjdk.bridge",
-      "output_path": "xllr.openjdk.bridge",
+      "type": "vm",
+      "language": "java",
+      "runtime": "Runtime.JVM",
+      "output": "xllr.openjdk.bridge.jar",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
       "source_files": [],
       "depends_on": [
         "xllr.openjdk.jni.bridge"
@@ -1057,11 +1057,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 22,
       "name": "metaffi.api",
-      "type": "executable",
-      "language": "UNKNOWN",
-      "runtime": "native",
-      "output": "metaffi.api",
-      "output_path": "metaffi.api",
+      "type": "vm",
+      "language": "java",
+      "runtime": "Runtime.JVM",
+      "output": "metaffi.api.jar",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\metaffi.api.jar",
       "source_files": [],
       "depends_on": [
         "xllr.openjdk.bridge"
@@ -1118,8 +1118,8 @@ The following JSON contains the complete build analysis data:
       "depends_on": [
         "xllr.go",
         "go_api_test",
-        "metaffi.compiler.go",
-        "metaffi.idl.go"
+        "metaffi.idl.go",
+        "metaffi.compiler.go"
       ],
       "evidence": [
         {
@@ -1134,8 +1134,8 @@ The following JSON contains the complete build analysis data:
       "id": 3,
       "name": "metaffi-core",
       "depends_on": [
-        "cdts_test",
         "xllr_capi_test",
+        "cdts_test",
         "xllr",
         "metaffi"
       ],
@@ -1157,8 +1157,8 @@ The following JSON contains the complete build analysis data:
         "xllr.openjdk",
         "cdts_java_test",
         "openjdk_api_test",
-        "xllr.openjdk.jni.bridge",
         "xllr.openjdk.bridge",
+        "xllr.openjdk.jni.bridge",
         "metaffi.api"
       ],
       "evidence": [

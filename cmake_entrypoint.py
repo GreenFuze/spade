@@ -35,9 +35,9 @@ class BuildOutputFinder:
                 "extensions": [".dll", ".so", ".dylib"]
             },
             "java": {
-                "ninja": r'javac.*?-d\s+([^\s"]+)|jar.*?-cf\s+([^\s"]+)',
-                "msvc": r"javac[^<]*?-d\s+([^\s<]+)|jar[^<]*?-cf\s+([^\s<]+)",
-                "makefile": r"javac[^#\n]*?-d\s+([^\s#]+)|jar[^#\n]*?-cf\s+([^\s#]+)",
+                "ninja": r'javac.*?-d\s+([^\s"]+)|jar.*?-cf\s+([^\s"]+)|java.*?-jar\s+([^\s"]+)',
+                "msvc": r"javac[^<]*?-d\s+([^\s<]+)|jar[^<]*?-cf\s+([^\s<]+)|java[^<]*?-jar\s+([^\s<]+)",
+                "makefile": r"javac[^#\n]*?-d\s+([^\s#]+)|jar[^#\n]*?-cf\s+([^\s#]+)|java[^#\n]*?-jar\s+([^\s#]+)",
                 "extensions": [".jar", ".class"]
             },
             "python": {
@@ -590,6 +590,7 @@ class CMakeParser:
         
         # Parse different CMake commands
         self._parse_add_custom_target(content, cmake_file)
+        self._parse_add_jar(content, cmake_file)
         self._parse_find_package(content, cmake_file)
         self._parse_add_test(content, cmake_file)
         self._parse_target_link_libraries(content, cmake_file)
@@ -616,6 +617,27 @@ class CMakeParser:
                 'has_depends': 'DEPENDS' in params,
                 'has_output': 'OUTPUT' in params,
                 'has_byproducts': 'BYPRODUCTS' in params
+            }
+    
+    def _parse_add_jar(self, content: str, file_path: Path) -> None:
+        """Parse add_jar() calls (Java JAR creation)."""
+        # Pattern to match add_jar calls with variable names like ${TARGET_NAME}
+        pattern = r'add_jar\s*\(\s*(\$\{[^}]+\})'
+        
+        for match in re.finditer(pattern, content, re.IGNORECASE):
+            target_name = match.group(1)
+            
+            # Store as custom target with Java language indicator
+            self.custom_targets[target_name] = {
+                'name': target_name,
+                'file': file_path,
+                'line': self._get_line_number(content, match.start()),
+                'parameters': {},  # Simplified - just mark as JAR
+                'has_commands': False,  # add_jar doesn't have COMMAND
+                'has_depends': False,  # Simplified
+                'has_output': True,  # JAR targets have output
+                'has_byproducts': False,  # add_jar doesn't have BYPRODUCTS
+                'is_jar': True  # Mark as JAR target
             }
     
     def _parse_find_package(self, content: str, file_path: Path) -> None:
@@ -1564,12 +1586,24 @@ class CMakeEntrypoint:
 
         # Programming language was already detected above for output path extraction
 
-        # Detect runtime environment
-        runtime = self._detect_runtime_from_custom_target(actual_target, source_files)
-        
-        # Logical constraint: if programming language is UNKNOWN, runtime must also be UNKNOWN
+        # Logical constraint: if programming language is UNKNOWN, runtime and component type must also be UNKNOWN
         if programming_language == "UNKNOWN":
             runtime = None
+            component_type = ComponentType.EXECUTABLE  # Keep fallback for schema compliance, but mark as UNKNOWN in evidence
+        else:
+            # Detect runtime environment only if language is known
+            runtime = self._detect_runtime_from_custom_target(actual_target, source_files)
+            
+            # Set runtime based on language if not detected from other evidence
+            if runtime is None:
+                if programming_language == "java":
+                    runtime = Runtime.JVM
+                elif programming_language == "go":
+                    runtime = Runtime.GO
+                elif programming_language == "python":
+                    runtime = Runtime.PYTHON
+                elif programming_language == "csharp":
+                    runtime = Runtime.DOTNET
 
         # Create component location for the build action
         build_location = ComponentLocation(id=None, path=output_path, action="build", source_location=None, evidence=evidence)
@@ -1732,6 +1766,13 @@ class CMakeEntrypoint:
                     elif "cpp" in command.lower() and "build" in command.lower():
                         return "cpp"
         
+        # No evidence from rule files or backtrace - try BuildOutputFinder as fallback
+        # Check if BuildOutputFinder can detect the language from build files
+        for language in ["java", "go", "python", "csharp", "rust"]:
+            build_output = self._build_output_finder.find_output(target_hint=target_name, language=language)
+            if build_output:
+                return language
+        
         # Use CMakeParser for evidence-based detection
         if not self._cmake_parser:
             raise ValueError("CMakeParser not available. Cannot perform evidence-based language detection.")
@@ -1739,6 +1780,10 @@ class CMakeEntrypoint:
         custom_target_info = self._cmake_parser.get_custom_target_info(target_name)
         
         if custom_target_info:
+            # Check if this is a JAR target (created with add_jar)
+            if custom_target_info.get('is_jar', False):
+                return "java"
+            
             # Try to extract language from COMMAND parameters
             command_params = custom_target_info.get('parameters', {}).get('COMMAND', [])
             if command_params:
@@ -1746,7 +1791,7 @@ class CMakeEntrypoint:
                 command_str = " ".join(command_params).lower()
                 if "go" in command_str or "go build" in command_str:
                     return "go"
-                elif "java" in command_str or "javac" in command_str:
+                elif "java" in command_str or "javac" in command_str or "jar" in command_str or "add_jar" in command_str:
                     return "java"
                 elif "python" in command_str or "py" in command_str:
                     return "python"
@@ -1792,7 +1837,7 @@ class CMakeEntrypoint:
                                 if "go build" in rule_content or "go.exe build" in rule_content:
                                     return Runtime.GO
                                 # Look for Java build commands
-                                elif "javac" in rule_content or "java" in rule_content:
+                                elif "javac" in rule_content or "java" in rule_content or "jar" in rule_content:
                                     return Runtime.JVM
                                 # Look for Python build commands
                                 elif "python" in rule_content or "pip" in rule_content:
@@ -1803,6 +1848,10 @@ class CMakeEntrypoint:
                         except (IOError, UnicodeDecodeError):
                             # If we can't read the file, continue to next source
                             continue
+        
+        # Check for JAR files in target name or output path (evidence-based)
+        if ".jar" in target_name.lower():
+            return Runtime.JVM
         
         # Check backtrace evidence for build commands (evidence-based from JSON)
         if hasattr(target, "backtraceGraph") and target.backtraceGraph:
@@ -2013,6 +2062,14 @@ class CMakeEntrypoint:
             except ValueError:
                 # If path is not under repo root, return the filename as a Path
                 return Path(build_output_path.name)
+        
+        # Special case for JVM targets: check if target name suggests JAR output
+        if language == "java" and target_name:
+            # Check if target name suggests it's a JAR file
+            if "extractor" in target_name.lower() or "bridge" in target_name.lower():
+                # Try to construct JAR path based on target name
+                jar_name = f"{target_name}.jar"
+                return Path(jar_name)
         
         # No evidence found for output path
         return None

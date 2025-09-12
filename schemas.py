@@ -29,6 +29,8 @@ class Runtime(str, Enum):
     CLANG_C = "CLANG-C"
     GO = "Go"
     DOTNET = ".NET"
+    PYTHON = "Python"
+    UNKNOWN = "UNKNOWN"
 
 
 class PackageManager(BaseModel):
