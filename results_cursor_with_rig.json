@@ -1,0 +1,809 @@
+{
+	"Q01": {
+		"components": [
+			{
+				"name": "MetaFFI",
+				"kind": "aggregator",
+				"defining_files": [
+					"CMakeLists.txt"
+				],
+				"dirs": [
+					"./"
+				]
+			},
+			{
+				"name": "metaffi-core",
+				"kind": "aggregator",
+				"defining_files": [
+					"metaffi-core/CMakeLists.txt"
+				],
+				"dirs": [
+					"metaffi-core/"
+				]
+			},
+			{
+				"name": "go",
+				"kind": "aggregator",
+				"defining_files": [
+					"lang-plugin-go/CMakeLists.txt"
+				],
+				"dirs": [
+					"lang-plugin-go/"
+				]
+			},
+			{
+				"name": "openjdk",
+				"kind": "aggregator",
+				"defining_files": [
+					"lang-plugin-openjdk/CMakeLists.txt"
+				],
+				"dirs": [
+					"lang-plugin-openjdk/"
+				]
+			},
+			{
+				"name": "python311",
+				"kind": "aggregator",
+				"defining_files": [
+					"lang-plugin-python311/CMakeLists.txt"
+				],
+				"dirs": [
+					"lang-plugin-python311/"
+				]
+			},
+			{
+				"name": "build_go_guest",
+				"kind": "aggregator",
+				"defining_files": [
+					"lang-plugin-go/runtime/CMakeLists.txt"
+				],
+				"dirs": [
+					"lang-plugin-go/runtime/"
+				]
+			}
+		]
+	},
+	"Q02": {
+		"runtimes": [
+			{
+				"target": "xllr",
+				"artifact": "xllr.dll",
+				"defining_files": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "xllr.go",
+				"artifact": "xllr.go.dll",
+				"defining_files": [
+					"lang-plugin-go/runtime/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "xllr.openjdk",
+				"artifact": "xllr.openjdk.dll",
+				"defining_files": [
+					"lang-plugin-openjdk/runtime/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "xllr.python311",
+				"artifact": "xllr.python311.dll",
+				"defining_files": [
+					"lang-plugin-python311/runtime/CMakeLists.txt"
+				]
+			}
+		]
+	},
+	"Q03": {
+		"executables": [
+			{
+				"target": "metaffi",
+				"artifact": "metaffi.exe",
+				"defining_files": [
+					"metaffi-core/CLI/CMakeLists.txt"
+				]
+			}
+		]
+	},
+	"Q04": {
+		"idl_plugins": [
+			{
+				"target": "metaffi.idl.go",
+				"artifact": "metaffi.idl.go.dll",
+				"defining_files": [
+					"lang-plugin-go/idl/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "metaffi.idl.openjdk",
+				"artifact": "metaffi.idl.openjdk.dll",
+				"defining_files": [
+					"lang-plugin-openjdk/idl/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "metaffi.idl.python311",
+				"artifact": "metaffi.idl.python311.dll",
+				"defining_files": [
+					"lang-plugin-python311/idl/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "openjdk_idl_extractor",
+				"artifact": "openjdk_idl_extractor.jar",
+				"defining_files": [
+					"lang-plugin-openjdk/idl/CMakeLists.txt"
+				]
+			}
+		]
+	},
+	"Q05": {
+		"go_compilers": [
+			{
+				"target": "metaffi.compiler.go",
+				"artifact": "metaffi.compiler.go.dll",
+				"defining_files": [
+					"lang-plugin-go/compiler/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "metaffi.compiler.openjdk",
+				"artifact": "metaffi.compiler.openjdk.dll",
+				"defining_files": [
+					"lang-plugin-openjdk/compiler/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "metaffi.compiler.python311",
+				"artifact": "metaffi.compiler.python311.dll",
+				"defining_files": [
+					"lang-plugin-python311/compiler/CMakeLists.txt"
+				]
+			}
+		]
+	},
+	"Q06": {
+		"native": [
+			{
+				"target": "cdts_test",
+				"kind": "executable",
+				"artifact": "cdts_test.exe"
+			},
+			{
+				"target": "metaffi",
+				"kind": "executable",
+				"artifact": "metaffi.exe"
+			},
+			{
+				"target": "metaffi.compiler.go",
+				"kind": "shared_library",
+				"artifact": "metaffi.compiler.go.dll"
+			},
+			{
+				"target": "metaffi.compiler.openjdk",
+				"kind": "shared_library",
+				"artifact": "metaffi.compiler.openjdk.dll"
+			},
+			{
+				"target": "metaffi.compiler.python311",
+				"kind": "shared_library",
+				"artifact": "metaffi.compiler.python311.dll"
+			},
+			{
+				"target": "metaffi.idl.go",
+				"kind": "shared_library",
+				"artifact": "metaffi.idl.go.dll"
+			},
+			{
+				"target": "metaffi.idl.openjdk",
+				"kind": "shared_library",
+				"artifact": "metaffi.idl.openjdk.dll"
+			},
+			{
+				"target": "metaffi.idl.python311",
+				"kind": "shared_library",
+				"artifact": "metaffi.idl.python311.dll"
+			},
+			{
+				"target": "xllr",
+				"kind": "shared_library",
+				"artifact": "xllr.dll"
+			},
+			{
+				"target": "xllr.go",
+				"kind": "shared_library",
+				"artifact": "xllr.go.dll"
+			},
+			{
+				"target": "xllr.openjdk",
+				"kind": "shared_library",
+				"artifact": "xllr.openjdk.dll"
+			},
+			{
+				"target": "xllr.openjdk.jni.bridge",
+				"kind": "shared_library",
+				"artifact": "xllr.openjdk.jni.bridge.dll"
+			},
+			{
+				"target": "xllr.python311",
+				"kind": "shared_library",
+				"artifact": "xllr.python311.dll"
+			},
+			{
+				"target": "xllr_capi_test",
+				"kind": "executable",
+				"artifact": "xllr_capi_test.exe"
+			},
+			{
+				"target": "python311_idl_plugin_test",
+				"kind": "executable",
+				"artifact": "python311_idl_plugin_test.exe"
+			},
+			{
+				"target": "go_api_test",
+				"kind": "executable",
+				"artifact": "go_api_test.exe"
+			},
+			{
+				"target": "cdts_java_test",
+				"kind": "executable",
+				"artifact": "cdts_java_test.exe"
+			},
+			{
+				"target": "openjdk_api_test",
+				"kind": "executable",
+				"artifact": "openjdk_api_test.exe"
+			},
+			{
+				"target": "python_runtime_test",
+				"kind": "executable",
+				"artifact": "python_runtime_test.exe"
+			}
+		]
+	},
+	"Q07": {
+		"vm_artifacts": [
+			{
+				"target": "openjdk_idl_extractor",
+				"artifact": "openjdk_idl_extractor.jar",
+				"defining_files": [
+					"lang-plugin-openjdk/idl/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "python311.publish",
+				"artifact": "openjdk_idl_extractor.jar",
+				"defining_files": [
+					"lang-plugin-python311/api/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "xllr.openjdk.bridge",
+				"artifact": "xllr.openjdk.bridge.jar",
+				"defining_files": [
+					"lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "metaffi.api",
+				"artifact": "metaffi.api.jar",
+				"defining_files": [
+					"lang-plugin-openjdk/api/CMakeLists.txt"
+				]
+			}
+		]
+	},
+	"Q08": {
+		"dependency_chain": [
+			"MetaFFI",
+			"metaffi-core",
+			"metaffi",
+			"metaffi-core/CLI/CMakeLists.txt"
+		]
+	},
+	"Q09": {
+		"tests": [
+			{
+				"name": "cdts_test",
+				"launcher": "C:/src/github.com/MetaFFI/output/windows/x64/Debug/cdts_test.exe",
+				"artifact": "cdts_test.exe",
+				"defining_files": [
+					"metaffi-core/plugin-sdk/run_sdk_tests.cmake"
+				]
+			},
+			{
+				"name": "xllr_capi_test",
+				"launcher": "C:/src/github.com/MetaFFI/output/windows/x64/Debug/xllr_capi_test.exe",
+				"artifact": "xllr_capi_test.exe",
+				"defining_files": [
+					"metaffi-core/plugin-sdk/run_sdk_tests.cmake"
+				]
+			},
+			{
+				"name": "python_runtime_test",
+				"launcher": "C:/src/github.com/MetaFFI/output/windows/x64/Debug/python_runtime_test.exe",
+				"artifact": "python_runtime_test.exe",
+				"defining_files": [
+					"lang-plugin-python311/runtime/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "python3_api_unitest",
+				"launcher": "C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-python311/api/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "python3_api_cross_pl_tests",
+				"launcher": "C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-python311/api/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "idl_plugin_test",
+				"launcher": "C:/src/github.com/MetaFFI/output/windows/x64/Debug/idl_plugin_test.exe",
+				"artifact": "python311_idl_plugin_test.exe",
+				"defining_files": [
+					"lang-plugin-python311/idl/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "metaffi_compiler_python311_test",
+				"launcher": "C:/Program Files/Go/bin/go.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-python311/compiler/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "openjdk_idl_plugin_java_tests",
+				"launcher": "JUnit",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-openjdk/idl/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "(go test) openjdk_compiler_go_tests",
+				"launcher": "C:/Program Files/Go/bin/go.exe",
+				"artifact": "",
+				"defining_files": [
+					"cmake/Go.cmake"
+				]
+			},
+			{
+				"name": "cdts_java_test",
+				"launcher": "C:/src/github.com/MetaFFI/output/windows/x64/Debug/cdts_java_test.exe",
+				"artifact": "cdts_java_test.exe",
+				"defining_files": [
+					"lang-plugin-openjdk/runtime/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "openjdk_api_test",
+				"launcher": "C:/src/github.com/MetaFFI/output/windows/x64/Debug/openjdk_api_test.exe",
+				"artifact": "openjdk_api_test.exe",
+				"defining_files": [
+					"lang-plugin-openjdk/runtime/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "openjdk_api_cross_pl_tests",
+				"launcher": "C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-openjdk/api/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "go_api_test",
+				"launcher": "C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
+				"artifact": "go_api_test.exe",
+				"defining_files": [
+					"lang-plugin-go/runtime/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "go_runtime_test",
+				"launcher": "C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-go/go-runtime/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "metaffi_idl_go_test",
+				"launcher": "C:/Program Files/Go/bin/go.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-go/idl/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "metaffi_compiler_go_test",
+				"launcher": "C:/Program Files/Go/bin/go.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-go/compiler/CMakeLists.txt"
+				]
+			},
+			{
+				"name": "go_api_cross_pl_tests",
+				"launcher": "C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
+				"artifact": "",
+				"defining_files": [
+					"lang-plugin-go/api/CMakeLists.txt"
+				]
+			}
+		]
+	},
+	"Q10": {
+		"test_to_components": [
+			{
+				"test": "cdts_test",
+				"targets": [
+					"cdts_test"
+				]
+			},
+			{
+				"test": "xllr_capi_test",
+				"targets": [
+					"xllr_capi_test"
+				]
+			},
+			{
+				"test": "python_runtime_test",
+				"targets": [
+					"python_runtime_test"
+				]
+			},
+			{
+				"test": "idl_plugin_test",
+				"targets": []
+			},
+			{
+				"test": "cdts_java_test",
+				"targets": [
+					"cdts_java_test"
+				]
+			},
+			{
+				"test": "openjdk_api_test",
+				"targets": [
+					"openjdk_api_test"
+				]
+			},
+			{
+				"test": "go_api_test",
+				"targets": [
+					"go_api_test"
+				]
+			}
+		]
+	},
+	"Q11": {
+		"go_api_test": {
+			"dependencies": [
+				"xllr.go",
+				"build_go_guest"
+			],
+			"externals": [
+				"lang-plugin-go\\runtime\\xllr.go.lib",
+				"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib",
+				"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib",
+				"kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+			]
+		}
+	},
+	"Q12": {
+		"openjdk_jni_bridge": {
+			"depends_on": [
+				"xllr.openjdk"
+			],
+			"artifact": "xllr.openjdk.jni.bridge.dll",
+			"defining_files": [
+				"lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt"
+			]
+		}
+	},
+	"Q13": {
+		"python_tests": [
+			{
+				"name": "python311_idl_plugin_test",
+				"depends_on": [
+					"metaffi.idl.python311"
+				]
+			},
+			{
+				"name": "python_runtime_test",
+				"depends_on": [
+					"xllr.python311"
+				]
+			}
+		]
+	},
+	"Q14": {
+		"runtime_source_roots": [
+			{
+				"target": "xllr.go",
+				"dirs": [
+					"lang-plugin-go/runtime/",
+					"lang-plugin-go/plugin-sdk/"
+				]
+			},
+			{
+				"target": "xllr.openjdk",
+				"dirs": [
+					"lang-plugin-openjdk/runtime/",
+					"lang-plugin-openjdk/plugin-sdk/"
+				]
+			},
+			{
+				"target": "xllr.python311",
+				"dirs": [
+					"lang-plugin-python311/runtime/",
+					"lang-plugin-python311/plugin-sdk/"
+				]
+			},
+			{
+				"target": "xllr",
+				"dirs": [
+					"metaffi-core/XLLR/",
+					"metaffi-core/plugin-sdk/"
+				]
+			}
+		]
+	},
+	"Q15": {
+		"xllr_external_links": [
+			{
+				"lib": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_thread-vc143-mt-gd-x64-1_87.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_atomic-vc143-mt-gd-x64-1_87.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "synchronization.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_chrono-vc143-mt-gd-x64-1_87.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_date_time-vc143-mt-gd-x64-1_87.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_container-vc143-mt-gd-x64-1_87.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			},
+			{
+				"lib": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+				"declared_in": [
+					"metaffi-core/XLLR/CMakeLists.txt"
+				]
+			}
+		]
+	},
+	"Q16": {
+		"cli_and_cdts_externals": [
+			{
+				"target": "metaffi",
+				"libs": [
+					"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib",
+					"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_program_options-vc143-mt-gd-x64-1_87.lib",
+					"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib",
+					"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_container-vc143-mt-gd-x64-1_87.lib",
+					"kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+				],
+				"declared_in": [
+					"metaffi-core/CLI/CMakeLists.txt"
+				]
+			},
+			{
+				"target": "cdts_test",
+				"libs": [
+					"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib",
+					"c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib",
+					"kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+				],
+				"declared_in": [
+					"metaffi-core/plugin-sdk/run_sdk_tests.cmake"
+				]
+			}
+		]
+	},
+	"Q17": {
+		"commands": {
+			"configure": [
+				"cmake -B C:\\src\\github.com\\MetaFFI\\cmake-build-debug"
+			],
+			"test": [
+				"ctest --test-dir C:\\src\\github.com\\MetaFFI\\cmake-build-debug"
+			]
+		}
+	},
+	"Q18": {
+		"cdts_test_call_stack": [
+			{
+				"file": "cmake/CPP.cmake",
+				"line": 73
+			},
+			{
+				"file": "metaffi-core/plugin-sdk/run_sdk_tests.cmake",
+				"line": 6
+			},
+			{
+				"file": "metaffi-core/plugin-sdk/run_sdk_tests.cmake",
+				"line": 1
+			},
+			{
+				"file": "metaffi-core/CMakeLists.txt",
+				"line": 12
+			},
+			{
+				"file": "metaffi-core/CMakeLists.txt",
+				"line": 1
+			}
+		]
+	},
+	"Q19": {
+		"vm_example": {
+			"target": "openjdk_idl_extractor",
+			"artifact": "openjdk_idl_extractor.jar",
+			"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+		}
+	},
+	"Q20": {
+		"runtime_artifacts": [
+			{
+				"artifact": "cdts_test.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "metaffi.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "metaffi.compiler.go.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\go\\"
+			},
+			{
+				"artifact": "metaffi.compiler.openjdk.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "metaffi.compiler.python311.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\python311\\"
+			},
+			{
+				"artifact": "metaffi.idl.go.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\go\\"
+			},
+			{
+				"artifact": "metaffi.idl.openjdk.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "metaffi.idl.python311.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "xllr.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "xllr.go.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "xllr.openjdk.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "xllr.openjdk.jni.bridge.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "xllr.python311.dll",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "xllr_capi_test.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "python311_idl_plugin_test.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "go_api_test.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "cdts_java_test.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "openjdk_api_test.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "python_runtime_test.exe",
+				"output_dir": "output\\windows\\x64\\Debug\\"
+			},
+			{
+				"artifact": "openjdk_idl_extractor.jar",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "xllr.openjdk.bridge.jar",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			},
+			{
+				"artifact": "metaffi.api.jar",
+				"output_dir": "output\\windows\\x64\\Debug\\openjdk\\"
+			}
+		]
+	},
+	"E1": {
+		"answer": "Only CMake build system is evidenced in the build data. No other build systems (MSBuild, Gradle, Maven, etc.) are present.",
+		"paths": []
+	},
+	"E2": {
+		"answer": "Windows-specific build configuration with x64 architecture. Uses Windows-specific libraries (kernel32.lib, user32.lib, etc.) and vcpkg package manager paths. No evidence of Linux/macOS/ARM specific conditions in the provided build data.",
+		"files": [
+			"cmake/Environment.cmake"
+		]
+	},
+	"E3": {
+		"answer": "No code generation steps are evidenced in the provided build data. The build appears to compile existing source files without IDL-to-source generation.",
+		"paths": [],
+		"files": []
+	},
+	"E4": {
+		"answer": "No environment variables are explicitly referenced in the provided build data. The build uses hardcoded paths to vcpkg and system libraries.",
+		"symbols": [],
+		"files": []
+	},
+	"E5": {
+		"answer": "No CI workflow files are evidenced in the provided build data or project structure.",
+		"files": []
+	},
+	"E6": {
+		"answer": "No Dockerfiles are evidenced in the provided build data or project structure.",
+		"files": []
+	}
+}

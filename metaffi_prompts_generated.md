@@ -6,8 +6,8 @@
 - **Build System**: CMake
 - **Scope**: ['./']
 - **Detection Mode**: configure_only
-- **Configure Command**: cmake -B C:\src\github.com\MetaFFI\cmake-build-debug
-- **Test Discovery Command**: ctest --test-dir C:\src\github.com\MetaFFI\cmake-build-debug
+- **Configure Command**: cmake -B C:\src\github.com\MetaFFI\cmake-build-debug\CMakeFiles
+- **Test Discovery Command**: ctest --test-dir C:\src\github.com\MetaFFI\cmake-build-debug\CMakeFiles
 
 ## Build Data
 
@@ -23,8 +23,8 @@ The following JSON contains the complete build analysis data:
     "system": "CMake",
     "generator": null,
     "type": null,
-    "configure_cmd": "cmake -B C:\\src\\github.com\\MetaFFI\\cmake-build-debug",
-    "test_cmd": "ctest --test-dir C:\\src\\github.com\\MetaFFI\\cmake-build-debug",
+    "configure_cmd": "cmake -B C:\\src\\github.com\\MetaFFI\\cmake-build-debug\\CMakeFiles",
+    "test_cmd": "ctest --test-dir C:\\src\\github.com\\MetaFFI\\cmake-build-debug\\CMakeFiles",
     "limits": {
       "max_list": 50
     }
@@ -37,7 +37,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "cdts_test.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\metaffi-core\\Debug\\cdts_test.exe",
       "source_files": [
         "metaffi-core\\plugin-sdk\\runtime\\cdts_test.cpp",
         "metaffi-core\\plugin-sdk\\runtime\\cdt.cpp",
@@ -77,7 +77,7 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ],
-      "test_link_id": 1,
+      "test_link_id": 2,
       "test_link_name": "cdts_test"
     },
     {
@@ -87,7 +87,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "metaffi.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\metaffi-core\\CLI\\Debug\\metaffi.exe",
       "source_files": [
         "metaffi-core\\CLI\\cli_executor.cpp",
         "metaffi-core\\CLI\\compiler.cpp",
@@ -146,11 +146,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 2,
       "name": "metaffi.compiler.go",
-      "type": "shared_library",
+      "type": "executable",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.compiler.go.dll",
-      "output_path": "output\\windows\\x64\\Debug\\go\\metaffi.compiler.go.dll",
+      "output": "metaffi.compiler.go",
+      "output_path": "metaffi.compiler.go",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -169,11 +169,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 3,
       "name": "metaffi.compiler.openjdk",
-      "type": "shared_library",
+      "type": "executable",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.compiler.openjdk.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\metaffi.compiler.openjdk.dll",
+      "output": "metaffi.compiler.openjdk",
+      "output_path": "metaffi.compiler.openjdk",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -192,11 +192,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 4,
       "name": "metaffi.compiler.python311",
-      "type": "shared_library",
+      "type": "executable",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.compiler.python311.dll",
-      "output_path": "output\\windows\\x64\\Debug\\python311\\metaffi.compiler.python311.dll",
+      "output": "metaffi.compiler.python311",
+      "output_path": "metaffi.compiler.python311",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -215,11 +215,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 5,
       "name": "metaffi.idl.go",
-      "type": "shared_library",
+      "type": "executable",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.idl.go.dll",
-      "output_path": "output\\windows\\x64\\Debug\\go\\metaffi.idl.go.dll",
+      "output": "metaffi.idl.go",
+      "output_path": "metaffi.idl.go",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -242,7 +242,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "metaffi.idl.openjdk.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\idl\\Debug\\metaffi.idl.openjdk.dll",
       "source_files": [
         "lang-plugin-openjdk\\idl\\openjdk_idl_plugin.cpp"
       ],
@@ -272,7 +272,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "metaffi.idl.python311.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-python311\\idl\\Debug\\metaffi.idl.python311.dll",
       "source_files": [
         "lang-plugin-python311\\plugin-sdk\\runtime\\cdt.cpp",
         "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
@@ -316,11 +316,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 8,
       "name": "openjdk_idl_extractor",
-      "type": "vm",
+      "type": "executable",
       "language": "java",
       "runtime": "Runtime.JVM",
-      "output": "openjdk_idl_extractor.jar",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output": "openjdk_idl_extractor.dir",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\idl\\CMakeFiles\\openjdk_idl_extractor.dir",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -343,7 +343,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\metaffi-core\\XLLR\\Debug\\xllr.dll",
       "source_files": [
         "metaffi-core\\XLLR\\cdts_alloc.cpp",
         "metaffi-core\\XLLR\\runtime_plugin.cpp",
@@ -419,7 +419,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.go.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-go\\runtime\\Debug\\xllr.go.dll",
       "source_files": [
         "lang-plugin-go\\runtime\\functions_repository.cpp",
         "lang-plugin-go\\runtime\\go_api.cpp",
@@ -469,7 +469,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.openjdk.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\runtime\\Debug\\xllr.openjdk.dll",
       "source_files": [
         "lang-plugin-openjdk\\runtime\\api.cpp",
         "lang-plugin-openjdk\\runtime\\argument_definition.cpp",
@@ -537,7 +537,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.python311.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-python311\\runtime\\Debug\\xllr.python311.dll",
       "source_files": [
         "lang-plugin-python311\\runtime\\call_xcall.cpp",
         "lang-plugin-python311\\runtime\\cdts_python3.cpp",
@@ -601,7 +601,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr_capi_test.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\metaffi-core\\Debug\\xllr_capi_test.exe",
       "source_files": [
         "metaffi-core\\plugin-sdk\\runtime\\xllr_capi_test.cpp",
         "metaffi-core\\plugin-sdk\\runtime\\cdt.cpp",
@@ -641,7 +641,7 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ],
-      "test_link_id": 2,
+      "test_link_id": 7,
       "test_link_name": "xllr_capi_test"
     },
     {
@@ -651,7 +651,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "python311_idl_plugin_test.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-python311\\idl\\Debug\\python311_idl_plugin_test.exe",
       "source_files": [
         "lang-plugin-python311\\idl\\idl_plugin_test.cpp",
         "lang-plugin-python311\\idl\\python_idl_plugin.cpp",
@@ -684,8 +684,8 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ],
-      "test_link_id": null,
-      "test_link_name": null
+      "test_link_id": 5,
+      "test_link_name": "python311_idl_plugin_test"
     },
     {
       "id": 15,
@@ -694,7 +694,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "go_api_test.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-go\\runtime\\Debug\\go_api_test.exe",
       "source_files": [
         "lang-plugin-go\\plugin-sdk\\runtime\\cdt.cpp",
         "lang-plugin-go\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
@@ -715,7 +715,7 @@ The following JSON contains the complete build analysis data:
       "externals": [
         {
           "package_manager": "system",
-          "package": "lang-plugin-go\\runtime\\xllr.go.lib"
+          "package": "debug\\xllr.go.lib"
         },
         {
           "package_manager": "system",
@@ -739,7 +739,7 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ],
-      "test_link_id": 13,
+      "test_link_id": 3,
       "test_link_name": "go_api_test"
     },
     {
@@ -749,7 +749,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "cdts_java_test.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\runtime\\Debug\\cdts_java_test.exe",
       "source_files": [
         "lang-plugin-openjdk\\runtime\\api.cpp",
         "lang-plugin-openjdk\\runtime\\argument_definition.cpp",
@@ -810,7 +810,7 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ],
-      "test_link_id": 10,
+      "test_link_id": 1,
       "test_link_name": "cdts_java_test"
     },
     {
@@ -820,7 +820,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "openjdk_api_test.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\runtime\\Debug\\openjdk_api_test.exe",
       "source_files": [
         "lang-plugin-openjdk\\runtime\\api.cpp",
         "lang-plugin-openjdk\\runtime\\argument_definition.cpp",
@@ -881,7 +881,7 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ],
-      "test_link_id": 11,
+      "test_link_id": 4,
       "test_link_name": "openjdk_api_test"
     },
     {
@@ -891,7 +891,7 @@ The following JSON contains the complete build analysis data:
       "language": "cxx",
       "runtime": "native",
       "output": "xllr.openjdk.jni.bridge.dll",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\xllr-openjdk-bridge\\Debug\\xllr.openjdk.jni.bridge.dll",
       "source_files": [
         "lang-plugin-openjdk\\xllr-openjdk-bridge\\metaffi_bridge.cpp",
         "lang-plugin-openjdk\\plugin-sdk\\runtime\\cdt.cpp",
@@ -915,7 +915,7 @@ The following JSON contains the complete build analysis data:
         },
         {
           "package_manager": "system",
-          "package": "lang-plugin-openjdk\\runtime\\xllr.openjdk.lib"
+          "package": "..\\runtime\\debug\\xllr.openjdk.lib"
         },
         {
           "package_manager": "system",
@@ -940,36 +940,12 @@ The following JSON contains the complete build analysis data:
     },
     {
       "id": 19,
-      "name": "python311.publish",
-      "type": "vm",
-      "language": "java",
-      "runtime": "Runtime.JVM",
-      "output": "openjdk_idl_extractor.jar",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
-      "source_files": [],
-      "depends_on": [
-        "xllr.python311"
-      ],
-      "externals": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "lang-plugin-python311/api/CMakeLists.txt#L19-L19",
-            "lang-plugin-python311/api/CMakeLists.txt#L1-L1"
-          ]
-        }
-      ],
-      "test_link_id": null,
-      "test_link_name": null
-    },
-    {
-      "id": 20,
       "name": "python_runtime_test",
       "type": "executable",
       "language": "cxx",
       "runtime": "native",
       "output": "python_runtime_test.exe",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-python311\\runtime\\Debug\\python_runtime_test.exe",
       "source_files": [
         "lang-plugin-python311\\runtime\\call_xcall.cpp",
         "lang-plugin-python311\\runtime\\cdts_python3.cpp",
@@ -1026,17 +1002,17 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ],
-      "test_link_id": 3,
+      "test_link_id": 6,
       "test_link_name": "python_runtime_test"
     },
     {
-      "id": 21,
+      "id": 20,
       "name": "xllr.openjdk.bridge",
-      "type": "vm",
+      "type": "executable",
       "language": "java",
       "runtime": "Runtime.JVM",
-      "output": "xllr.openjdk.bridge.jar",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
+      "output": "metaffi.api.dir",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\api\\CMakeFiles\\metaffi.api.dir",
       "source_files": [],
       "depends_on": [
         "xllr.openjdk.jni.bridge"
@@ -1055,13 +1031,13 @@ The following JSON contains the complete build analysis data:
       "test_link_name": null
     },
     {
-      "id": 22,
+      "id": 21,
       "name": "metaffi.api",
-      "type": "vm",
+      "type": "executable",
       "language": "java",
       "runtime": "Runtime.JVM",
-      "output": "metaffi.api.jar",
-      "output_path": "output\\windows\\x64\\Debug\\openjdk\\metaffi.api.jar",
+      "output": "metaffi.api.dir",
+      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\api\\CMakeFiles\\metaffi.api.dir",
       "source_files": [],
       "depends_on": [
         "xllr.openjdk.bridge"
@@ -1134,9 +1110,9 @@ The following JSON contains the complete build analysis data:
       "id": 3,
       "name": "metaffi-core",
       "depends_on": [
-        "xllr_capi_test",
-        "cdts_test",
         "xllr",
+        "cdts_test",
+        "xllr_capi_test",
         "metaffi"
       ],
       "evidence": [
@@ -1152,13 +1128,13 @@ The following JSON contains the complete build analysis data:
       "id": 4,
       "name": "openjdk",
       "depends_on": [
-        "metaffi.idl.openjdk",
         "metaffi.compiler.openjdk",
-        "xllr.openjdk",
-        "cdts_java_test",
         "openjdk_api_test",
-        "xllr.openjdk.bridge",
+        "xllr.openjdk",
+        "metaffi.idl.openjdk",
+        "cdts_java_test",
         "xllr.openjdk.jni.bridge",
+        "xllr.openjdk.bridge",
         "metaffi.api"
       ],
       "evidence": [
@@ -1169,13 +1145,17 @@ The following JSON contains the complete build analysis data:
           ]
         }
       ]
-    }
-  ],
-  "runners": [
+    },
     {
-      "id": 0,
+      "id": 5,
       "name": "python311",
-      "hint": "lang-plugin-python311/CMakeLists.txt#L18-L18",
+      "depends_on": [
+        "xllr.python311",
+        "python_runtime_test",
+        "metaffi.idl.python311",
+        "python311_idl_plugin_test",
+        "metaffi.compiler.python311"
+      ],
       "evidence": [
         {
           "call_stack": [
@@ -1186,251 +1166,148 @@ The following JSON contains the complete build analysis data:
       ]
     }
   ],
+  "runners": [
+    {
+      "id": 0,
+      "name": "python311.publish",
+      "hint": "lang-plugin-python311/api/CMakeLists.txt#L19-L19",
+      "evidence": [
+        {
+          "call_stack": [
+            "lang-plugin-python311/api/CMakeLists.txt#L19-L19",
+            "lang-plugin-python311/api/CMakeLists.txt#L1-L1"
+          ]
+        }
+      ]
+    }
+  ],
   "tests": [
     {
       "id": 0,
-      "name": "cdts_test",
-      "framework": "Test executable: C:/src/github.com/MetaFFI/output/windows/x64/Debug/cdts_test.exe",
-      "exe_component": null,
-      "components": [
-        "cdts_test"
-      ],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/metaffi-core/plugin-sdk/run_sdk_tests.cmake#L11-L11"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 1,
-      "name": "xllr_capi_test",
-      "framework": "Test executable: C:/src/github.com/MetaFFI/output/windows/x64/Debug/xllr_capi_test.exe",
-      "exe_component": null,
-      "components": [
-        "xllr_capi_test"
-      ],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/metaffi-core/plugin-sdk/run_sdk_tests.cmake#L20-L20"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "python_runtime_test",
-      "framework": "Test executable: C:/src/github.com/MetaFFI/output/windows/x64/Debug/python_runtime_test.exe",
-      "exe_component": null,
-      "components": [
-        "python_runtime_test"
-      ],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-python311/runtime/CMakeLists.txt#L35-L35"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "name": "python3_api_unitest",
-      "framework": "Test executable: C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-python311/api/CMakeLists.txt#L5-L5"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "name": "python3_api_cross_pl_tests",
-      "framework": "Test executable: C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-python311/api/CMakeLists.txt#L12-L12"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "name": "idl_plugin_test",
-      "framework": "Test executable: C:/src/github.com/MetaFFI/output/windows/x64/Debug/idl_plugin_test.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-python311/idl/CMakeLists.txt#L32-L32"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "name": "metaffi_compiler_python311_test",
-      "framework": "Test executable: C:/Program Files/Go/bin/go.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-python311/compiler/CMakeLists.txt#L19-L19"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "name": "openjdk_idl_plugin_java_tests",
-      "framework": "JUnit",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-openjdk/idl/CMakeLists.txt#L78-L78"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 8,
-      "name": "(go test) openjdk_compiler_go_tests",
-      "framework": "Test executable: C:/Program Files/Go/bin/go.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/cmake/Go.cmake#L74-L74"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 9,
       "name": "cdts_java_test",
-      "framework": "Test executable: C:/src/github.com/MetaFFI/output/windows/x64/Debug/cdts_java_test.exe",
-      "exe_component": null,
+      "framework": "CTest",
+      "exe_component": "cdts_java_test",
       "components": [
         "cdts_java_test"
       ],
       "evidence": [
         {
           "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-openjdk/runtime/CMakeLists.txt#L25-L25"
+            "cmake/CPP.cmake#L73-L73",
+            "lang-plugin-openjdk/runtime/CMakeLists.txt#L19-L19",
+            "lang-plugin-openjdk/runtime/CMakeLists.txt#L1-L1"
           ]
         }
       ]
     },
     {
-      "id": 10,
+      "id": 1,
+      "name": "cdts_test",
+      "framework": "CTest",
+      "exe_component": "cdts_test",
+      "components": [
+        "cdts_test"
+      ],
+      "evidence": [
+        {
+          "call_stack": [
+            "cmake/CPP.cmake#L73-L73",
+            "metaffi-core/plugin-sdk/run_sdk_tests.cmake#L6-L6",
+            "metaffi-core/plugin-sdk/run_sdk_tests.cmake#L1-L1",
+            "metaffi-core/CMakeLists.txt#L12-L12",
+            "metaffi-core/CMakeLists.txt#L1-L1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "go_api_test",
+      "framework": "CTest",
+      "exe_component": "go_api_test",
+      "components": [
+        "go_api_test"
+      ],
+      "evidence": [
+        {
+          "call_stack": [
+            "cmake/CPP.cmake#L73-L73",
+            "lang-plugin-go/runtime/CMakeLists.txt#L29-L29",
+            "lang-plugin-go/runtime/CMakeLists.txt#L1-L1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
       "name": "openjdk_api_test",
-      "framework": "Test executable: C:/src/github.com/MetaFFI/output/windows/x64/Debug/openjdk_api_test.exe",
-      "exe_component": null,
+      "framework": "CTest",
+      "exe_component": "openjdk_api_test",
       "components": [
         "openjdk_api_test"
       ],
       "evidence": [
         {
           "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-openjdk/runtime/CMakeLists.txt#L34-L34"
+            "cmake/CPP.cmake#L73-L73",
+            "lang-plugin-openjdk/runtime/CMakeLists.txt#L28-L28",
+            "lang-plugin-openjdk/runtime/CMakeLists.txt#L1-L1"
           ]
         }
       ]
     },
     {
-      "id": 11,
-      "name": "openjdk_api_cross_pl_tests",
-      "framework": "Test executable: C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
-      "exe_component": null,
-      "components": [],
+      "id": 4,
+      "name": "python311_idl_plugin_test",
+      "framework": "CTest",
+      "exe_component": "python311_idl_plugin_test",
+      "components": [
+        "python311_idl_plugin_test"
+      ],
       "evidence": [
         {
           "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-openjdk/api/CMakeLists.txt#L23-L23"
+            "cmake/CPP.cmake#L73-L73",
+            "lang-plugin-python311/idl/CMakeLists.txt#L22-L22",
+            "lang-plugin-python311/idl/CMakeLists.txt#L1-L1"
           ]
         }
       ]
     },
     {
-      "id": 12,
-      "name": "go_api_test",
-      "framework": "Test executable: C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
-      "exe_component": null,
-      "components": [],
+      "id": 5,
+      "name": "python_runtime_test",
+      "framework": "CTest",
+      "exe_component": "python_runtime_test",
+      "components": [
+        "python_runtime_test"
+      ],
       "evidence": [
         {
           "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-go/runtime/CMakeLists.txt#L40-L40"
+            "cmake/CPP.cmake#L73-L73",
+            "lang-plugin-python311/runtime/CMakeLists.txt#L19-L19",
+            "lang-plugin-python311/runtime/CMakeLists.txt#L1-L1"
           ]
         }
       ]
     },
     {
-      "id": 13,
-      "name": "go_runtime_test",
-      "framework": "Test executable: C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
-      "exe_component": null,
-      "components": [],
+      "id": 6,
+      "name": "xllr_capi_test",
+      "framework": "CTest",
+      "exe_component": "xllr_capi_test",
+      "components": [
+        "xllr_capi_test"
+      ],
       "evidence": [
         {
           "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-go/go-runtime/CMakeLists.txt#L7-L7"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 14,
-      "name": "metaffi_idl_go_test",
-      "framework": "Test executable: C:/Program Files/Go/bin/go.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-go/idl/CMakeLists.txt#L16-L16"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 15,
-      "name": "metaffi_compiler_go_test",
-      "framework": "Test executable: C:/Program Files/Go/bin/go.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-go/compiler/CMakeLists.txt#L21-L21"
-          ]
-        }
-      ]
-    },
-    {
-      "id": 16,
-      "name": "go_api_cross_pl_tests",
-      "framework": "Test executable: C:/Users/green/AppData/Local/Programs/Python/Python311/python3.exe",
-      "exe_component": null,
-      "components": [],
-      "evidence": [
-        {
-          "call_stack": [
-            "C:/src/github.com/MetaFFI/lang-plugin-go/api/CMakeLists.txt#L7-L7"
+            "cmake/CPP.cmake#L73-L73",
+            "metaffi-core/plugin-sdk/run_sdk_tests.cmake#L15-L15",
+            "metaffi-core/plugin-sdk/run_sdk_tests.cmake#L1-L1",
+            "metaffi-core/CMakeLists.txt#L12-L12",
+            "metaffi-core/CMakeLists.txt#L1-L1"
           ]
         }
       ]

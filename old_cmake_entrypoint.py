@@ -274,24 +274,25 @@ class ResearchBackedUtilities:
     def get_output_path_from_target(target: Any, cache: Dict[str, str]) -> Optional[Path]:
         """Get output path from target using File API evidence."""
         # Priority 1: artifacts array (most authoritative)
-        artifacts = getattr(target, 'artifacts', None) or (target.get('artifacts') if isinstance(target, dict) else None)
-        if artifacts:
-            for artifact in artifacts:
-                artifact_path = None
+        if hasattr(target, 'artifacts') and target.artifacts:
+            for artifact in target.artifacts:
                 if hasattr(artifact, 'path') and artifact.path:
                     artifact_path = Path(artifact.path)
+                    # Expand variables in path
+                    expanded_path = ResearchBackedUtilities.expand_vars(str(artifact_path), cache)
+                    return Path(expanded_path)
                 elif isinstance(artifact, dict) and 'path' in artifact:
                     artifact_path = Path(artifact['path'])
-                
-                if artifact_path:
                     # Expand variables in path
                     expanded_path = ResearchBackedUtilities.expand_vars(str(artifact_path), cache)
                     return Path(expanded_path)
         
         # Priority 2: nameOnDisk
-        name_on_disk = getattr(target, 'nameOnDisk', None) or (target.get('nameOnDisk') if isinstance(target, dict) else None)
-        if name_on_disk:
-            expanded_path = ResearchBackedUtilities.expand_vars(name_on_disk, cache)
+        if hasattr(target, 'nameOnDisk') and target.nameOnDisk:
+            expanded_path = ResearchBackedUtilities.expand_vars(target.nameOnDisk, cache)
+            return Path(expanded_path)
+        elif isinstance(target, dict) and 'nameOnDisk' in target:
+            expanded_path = ResearchBackedUtilities.expand_vars(target['nameOnDisk'], cache)
             return Path(expanded_path)
         
         return None
@@ -597,8 +598,8 @@ class CMakeParser:
     
     def _parse_add_custom_target(self, content: str, file_path: Path) -> None:
         """Parse add_custom_target() calls."""
-        # Pattern to match add_custom_target with various parameters (including hyphens and dots in target names)
-        pattern = r'add_custom_target\s*\(\s*([\w.-]+)\s*(.*?)\)'
+        # Pattern to match add_custom_target with various parameters (including hyphens in target names)
+        pattern = r'add_custom_target\s*\(\s*([\w-]+)\s*(.*?)\)'
         
         for match in re.finditer(pattern, content, re.DOTALL | re.IGNORECASE):
             target_name = match.group(1)
@@ -990,11 +991,6 @@ class CMakeEntrypoint:
         if hasattr(cfg, "targets"):
             # First pass: Create all nodes without resolving dependencies
             for target in cfg.targets:
-                target_name = getattr(target, "name", "")
-                # Skip CMake internal targets
-                if self._is_cmake_internal_target(target_name):
-                    continue
-                    
                 build_node: Optional[Union[Component, Aggregator, Runner, Utility]] = self._create_build_node_from_target(target)
                 if build_node:
                     if isinstance(build_node, Component):
@@ -1011,71 +1007,20 @@ class CMakeEntrypoint:
             
             # Third pass: Update runtime detection after dependencies are resolved
             self._update_runtime_after_dependencies()
-            
-            # Fourth pass: Detect test targets from CMake targets
-            self._detect_test_targets_from_components()
-
-    def _is_cmake_internal_target(self, target_name: str) -> bool:
-        """Check if a target is a CMake internal target that should be filtered out."""
-        cmake_internal_targets = {
-            "ZERO_CHECK",
-            "ALL_BUILD", 
-            "INSTALL",
-            "PACKAGE",
-            "PACKAGE_SOURCE",
-            "PACKAGE_DEBUG",
-            "PACKAGE_SOURCE_DEBUG",
-            "RUN_TESTS",
-            "NIGHTLY",
-            "NIGHTLY_MEMORYCHECK",
-            "NIGHTLY_START",
-            "NIGHTLY_UPDATE",
-            "NIGHTLY_CONFIGURE",
-            "NIGHTLY_BUILD",
-            "NIGHTLY_TEST",
-            "NIGHTLY_COVERAGE",
-            "NIGHTLY_SUBMIT",
-            "NIGHTLY_END",
-            "EXPERIMENTAL",
-            "EXPERIMENTAL_MEMORYCHECK",
-            "EXPERIMENTAL_START",
-            "EXPERIMENTAL_UPDATE",
-            "EXPERIMENTAL_CONFIGURE",
-            "EXPERIMENTAL_BUILD",
-            "EXPERIMENTAL_TEST",
-            "EXPERIMENTAL_COVERAGE",
-            "EXPERIMENTAL_SUBMIT",
-            "EXPERIMENTAL_END",
-            "CONTINUOUS",
-            "CONTINUOUS_MEMORYCHECK",
-            "CONTINUOUS_START",
-            "CONTINUOUS_UPDATE",
-            "CONTINUOUS_CONFIGURE",
-            "CONTINUOUS_BUILD",
-            "CONTINUOUS_TEST",
-            "CONTINUOUS_COVERAGE",
-            "CONTINUOUS_SUBMIT",
-            "CONTINUOUS_END"
-        }
-        return target_name in cmake_internal_targets
 
     def _resolve_all_dependencies(self, targets: List[Any]) -> None:
         """Resolve all dependencies for all nodes in a second pass."""
-        # Create a mapping of target names to nodes (excluding CMake internal targets)
+        # Create a mapping of target names to nodes
         name_to_node: Dict[str, Union[Component, Aggregator, Runner, Utility]] = {}
 
         for comp in self._temp_components:
-            if not self._is_cmake_internal_target(comp.name):
-                name_to_node[comp.name] = comp
+            name_to_node[comp.name] = comp
         for agg in self._temp_aggregators:
-            if not self._is_cmake_internal_target(agg.name):
-                name_to_node[agg.name] = agg
+            name_to_node[agg.name] = agg
         for runner in self._temp_runners:
-            if not self._is_cmake_internal_target(runner.name):
-                name_to_node[runner.name] = runner
+            name_to_node[runner.name] = runner
         for utility in self._temp_utilities:
-            if not self._is_cmake_internal_target(utility.name):
-                name_to_node[utility.name] = utility
+            name_to_node[utility.name] = utility
 
         # Resolve dependencies for each target
         for target in targets:
@@ -1097,8 +1042,7 @@ class CMakeEntrypoint:
             for dep in actual_target.dependencies:
                 if hasattr(dep, "target") and hasattr(dep.target, "name"):
                     dep_name = dep.target.name
-                    # Filter out CMake internal targets
-                    if not self._is_cmake_internal_target(dep_name) and dep_name in name_to_node:
+                    if dep_name in name_to_node:
                         dependencies.append(name_to_node[dep_name])
 
         return dependencies
@@ -1117,91 +1061,22 @@ class CMakeEntrypoint:
                     component.runtime = runtime
                     # Remove from unknown errors if it was there
                     self._temp_unknown_errors.discard(f"unknown_runtime: context=target_{component.name}")
-
-    def _detect_test_targets_from_components(self) -> None:
-        """Detect test targets from CMake components based on naming patterns."""
-        test_components = []
         
-        # Find components that look like tests based on naming patterns
-        for component in self._temp_components:
-            if self._is_test_target_name(component.name):
-                test_components.append(component)
+        # Clean up any remaining runtime unknown errors for components that now have runtime
+        errors_to_remove: List[str] = []
+        for error in self._temp_unknown_errors:
+            if error.startswith("unknown_runtime: context=target_"):
+                # Extract target name from error
+                target_name = error.split("context=target_")[1].split(",")[0]
+                # Check if this component now has a runtime
+                for component in self._temp_components:
+                    if component.name == target_name and component.runtime is not None:
+                        errors_to_remove.append(error)
+                        break
         
-        # Convert test components to Test objects
-        for component in test_components:
-            try:
-                # Create test object
-                test_obj = Test(
-                    id=None,
-                    name=component.name,
-                    test_framework=self._detect_test_framework_from_name(component.name),
-                    components_being_tested=[component],  # Test exercises itself
-                    test_executable=component,  # Pass the component itself as test_executable
-                    test_runner=None,
-                    source_files=component.source_files,
-                    external_packages=component.external_packages,
-                    depends_on=component.depends_on,
-                    evidence=component.evidence,
-                    locations=component.locations
-                )
-                
-                # Add to tests
-                self._temp_tests.append(test_obj)
-                
-                # Update component to link to test
-                component.test_link_id = None  # No CTest ID
-                component.test_link_name = component.name
-                
-            except Exception as e:
-                ResearchBackedUtilities.unknown_field(
-                    "test_target_detection",
-                    f"test_{component.name}",
-                    {"error": str(e), "component_name": component.name},
-                    self._temp_unknown_errors
-                )
-
-    def _is_test_target_name(self, target_name: str) -> bool:
-        """Check if a target name indicates it's a test (evidence-based)."""
-        name_lower = target_name.lower()
-        
-        # Common test naming patterns
-        test_patterns = [
-            "_test",      # cdts_test, go_api_test
-            "_tests",     # multiple tests
-            "test_",      # test_metaffi
-            "_spec",      # specification tests
-            "_specs",     # multiple specs
-            "_check",     # check targets
-            "_verify",    # verification targets
-        ]
-        
-        # Check for test patterns
-        for pattern in test_patterns:
-            if pattern in name_lower:
-                return True
-        
-        # Check for exact matches
-        if name_lower in ["test", "tests", "check", "verify"]:
-            return True
-            
-        return False
-
-    def _detect_test_framework_from_name(self, test_name: str) -> str:
-        """Detect test framework from test name (evidence-based)."""
-        name_lower = test_name.lower()
-        
-        # Framework-specific patterns
-        if "gtest" in name_lower or "googletest" in name_lower:
-            return "Google Test"
-        elif "catch" in name_lower or "catch2" in name_lower:
-            return "Catch2"
-        elif "boost" in name_lower:
-            return "Boost.Test"
-        elif "ctest" in name_lower:
-            return "CTest"
-        else:
-            # Default to CTest for CMake targets
-            return "CTest"
+        # Remove the errors
+        for error in errors_to_remove:
+            self._temp_unknown_errors.discard(error)
 
     def _classify_utility_target(self, target: Any, evidence: Evidence, dependencies: List[Union[Component, Aggregator, Runner, Utility]]) -> Union[Component, Aggregator, Runner, Utility]:
         """
@@ -1891,27 +1766,7 @@ class CMakeEntrypoint:
                     elif "cpp" in command.lower() and "build" in command.lower():
                         return "cpp"
         
-        # Check if this is a C/C++ target based on CMake File API evidence first
-        # This prevents C++ targets from being misclassified as other languages
-        artifacts = getattr(target, "artifacts", None) or (target.get("artifacts") if isinstance(target, dict) else None)
-        if artifacts:
-            for artifact in artifacts:
-                artifact_path = None
-                if hasattr(artifact, "path") and artifact.path:
-                    artifact_path = str(artifact.path).lower()
-                elif isinstance(artifact, dict) and "path" in artifact:
-                    artifact_path = str(artifact["path"]).lower()
-                
-                if artifact_path and artifact_path.endswith(('.exe', '.dll', '.so', '.dylib', '.a', '.lib')):
-                    return "cpp"  # C/C++ target based on artifact extension
-        
-        name_on_disk = getattr(target, "nameOnDisk", None) or (target.get("nameOnDisk") if isinstance(target, dict) else None)
-        if name_on_disk:
-            name_on_disk = str(name_on_disk).lower()
-            if name_on_disk.endswith(('.exe', '.dll', '.so', '.dylib', '.a', '.lib')):
-                return "cpp"  # C/C++ target based on name on disk
-        
-        # No evidence from rule files, backtrace, or CMake File API - try BuildOutputFinder as fallback
+        # No evidence from rule files or backtrace - try BuildOutputFinder as fallback
         # Check if BuildOutputFinder can detect the language from build files
         for language in ["java", "go", "python", "csharp", "rust"]:
             build_output = self._build_output_finder.find_output(target_hint=target_name, language=language)

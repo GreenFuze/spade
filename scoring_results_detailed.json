@@ -1,0 +1,591 @@
+{
+  "totals": {
+    "correct": 29,
+    "incorrect": 3,
+    "incorrect_off_rig_unbuilt": 0,
+    "incorrect_mismatch": 3,
+    "hallucinated": 16,
+    "score": 25.0,
+    "normalized_score": 3.5211267605633805,
+    "percentage": 35.2112676056338,
+    "expected_count": 71,
+    "weights": {
+      "correct": 1.0,
+      "incorrect_off_rig_unbuilt": -0.5,
+      "incorrect_mismatch": -1.0,
+      "hallucinated": -2.0
+    },
+    "included_questions": [
+      "Q02",
+      "Q03",
+      "Q06",
+      "Q07",
+      "Q12",
+      "Q20"
+    ]
+  },
+  "per_question": {
+    "Q02": {
+      "question_id": "Q02",
+      "found_facts": [
+        {
+          "claim": "Q02:xllr",
+          "label": "correct",
+          "raw": {
+            "target": "xllr",
+            "artifact": "xllr.dll",
+            "defining_files": [
+              "metaffi-core/XLLR/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q02:xllr.go",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.go",
+            "artifact": "xllr.go.dll",
+            "defining_files": [
+              "lang-plugin-go/runtime/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q02:xllr.openjdk",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.openjdk",
+            "artifact": "xllr.openjdk.dll",
+            "defining_files": [
+              "lang-plugin-openjdk/runtime/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q02:xllr.python311",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.python311",
+            "artifact": "xllr.python311.dll",
+            "defining_files": [
+              "lang-plugin-python311/runtime/CMakeLists.txt"
+            ]
+          }
+        }
+      ],
+      "correct": 4,
+      "incorrect": 0,
+      "hallucinated": 0,
+      "score": 4.0,
+      "normalized_score": 5.714285714285714,
+      "percentage": 57.142857142857146,
+      "expected_count": 7,
+      "breakdown": {
+        "incorrect_off_rig_unbuilt": 0,
+        "incorrect_mismatch": 0
+      }
+    },
+    "Q03": {
+      "question_id": "Q03",
+      "found_facts": [
+        {
+          "claim": "Q03:metaffi",
+          "label": "correct",
+          "raw": {
+            "target": "metaffi",
+            "artifact": "metaffi.exe",
+            "defining_files": [
+              "metaffi-core/CLI/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:cdts_test",
+          "label": "correct",
+          "raw": {
+            "target": "cdts_test",
+            "artifact": "cdts_test.exe",
+            "defining_files": [
+              "metaffi-core/plugin-sdk/run_sdk_tests.cmake"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:xllr_capi_test",
+          "label": "correct",
+          "raw": {
+            "target": "xllr_capi_test",
+            "artifact": "xllr_capi_test.exe",
+            "defining_files": [
+              "metaffi-core/plugin-sdk/run_sdk_tests.cmake"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:go_api_test",
+          "label": "correct",
+          "raw": {
+            "target": "go_api_test",
+            "artifact": "go_api_test.exe",
+            "defining_files": [
+              "lang-plugin-go/runtime/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:cdts_java_test",
+          "label": "correct",
+          "raw": {
+            "target": "cdts_java_test",
+            "artifact": "cdts_java_test.exe",
+            "defining_files": [
+              "lang-plugin-openjdk/runtime/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:openjdk_api_test",
+          "label": "correct",
+          "raw": {
+            "target": "openjdk_api_test",
+            "artifact": "openjdk_api_test.exe",
+            "defining_files": [
+              "lang-plugin-openjdk/runtime/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:python_runtime_test",
+          "label": "correct",
+          "raw": {
+            "target": "python_runtime_test",
+            "artifact": "python_runtime_test.exe",
+            "defining_files": [
+              "lang-plugin-python311/runtime/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:python311_idl_plugin_test",
+          "label": "correct",
+          "raw": {
+            "target": "python311_idl_plugin_test",
+            "artifact": "python311_idl_plugin_test.exe",
+            "defining_files": [
+              "lang-plugin-python311/idl/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q03:openjdk_idl_plugin_test",
+          "label": "hallucinated",
+          "raw": {
+            "target": "openjdk_idl_plugin_test",
+            "artifact": "openjdk_idl_plugin_test.exe",
+            "defining_files": [
+              "lang-plugin-openjdk/idl/CMakeLists.txt"
+            ]
+          }
+        }
+      ],
+      "correct": 8,
+      "incorrect": 0,
+      "hallucinated": 1,
+      "score": 6.0,
+      "normalized_score": 6.666666666666667,
+      "percentage": 66.66666666666667,
+      "expected_count": 9,
+      "breakdown": {
+        "incorrect_off_rig_unbuilt": 0,
+        "incorrect_mismatch": 0
+      }
+    },
+    "Q06": {
+      "question_id": "Q06",
+      "found_facts": [
+        {
+          "claim": "Q06:metaffi",
+          "label": "correct",
+          "raw": {
+            "target": "metaffi",
+            "kind": "executable",
+            "artifact": "metaffi.exe"
+          }
+        },
+        {
+          "claim": "Q06:cdts_test",
+          "label": "correct",
+          "raw": {
+            "target": "cdts_test",
+            "kind": "executable",
+            "artifact": "cdts_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:xllr_capi_test",
+          "label": "correct",
+          "raw": {
+            "target": "xllr_capi_test",
+            "kind": "executable",
+            "artifact": "xllr_capi_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:go_api_test",
+          "label": "correct",
+          "raw": {
+            "target": "go_api_test",
+            "kind": "executable",
+            "artifact": "go_api_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:cdts_java_test",
+          "label": "correct",
+          "raw": {
+            "target": "cdts_java_test",
+            "kind": "executable",
+            "artifact": "cdts_java_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:openjdk_api_test",
+          "label": "correct",
+          "raw": {
+            "target": "openjdk_api_test",
+            "kind": "executable",
+            "artifact": "openjdk_api_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:python_runtime_test",
+          "label": "correct",
+          "raw": {
+            "target": "python_runtime_test",
+            "kind": "executable",
+            "artifact": "python_runtime_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:python311_idl_plugin_test",
+          "label": "correct",
+          "raw": {
+            "target": "python311_idl_plugin_test",
+            "kind": "executable",
+            "artifact": "python311_idl_plugin_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:openjdk_idl_plugin_test",
+          "label": "hallucinated",
+          "raw": {
+            "target": "openjdk_idl_plugin_test",
+            "kind": "executable",
+            "artifact": "openjdk_idl_plugin_test.exe"
+          }
+        },
+        {
+          "claim": "Q06:xllr",
+          "label": "correct",
+          "raw": {
+            "target": "xllr",
+            "kind": "shared_library",
+            "artifact": "xllr.dll"
+          }
+        },
+        {
+          "claim": "Q06:xllr.go",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.go",
+            "kind": "shared_library",
+            "artifact": "xllr.go.dll"
+          }
+        },
+        {
+          "claim": "Q06:xllr.openjdk",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.openjdk",
+            "kind": "shared_library",
+            "artifact": "xllr.openjdk.dll"
+          }
+        },
+        {
+          "claim": "Q06:xllr.python311",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.python311",
+            "kind": "shared_library",
+            "artifact": "xllr.python311.dll"
+          }
+        },
+        {
+          "claim": "Q06:xllr.openjdk.jni.bridge",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.openjdk.jni.bridge",
+            "kind": "shared_library",
+            "artifact": "xllr.openjdk.jni.bridge.dll"
+          }
+        },
+        {
+          "claim": "Q06:metaffi.idl.openjdk",
+          "label": "correct",
+          "raw": {
+            "target": "metaffi.idl.openjdk",
+            "kind": "shared_library",
+            "artifact": "metaffi.idl.openjdk.dll"
+          }
+        },
+        {
+          "claim": "Q06:metaffi.idl.python311",
+          "label": "correct",
+          "raw": {
+            "target": "metaffi.idl.python311",
+            "kind": "shared_library",
+            "artifact": "metaffi.idl.python311.dll"
+          }
+        }
+      ],
+      "correct": 15,
+      "incorrect": 0,
+      "hallucinated": 1,
+      "score": 13.0,
+      "normalized_score": 5.2,
+      "percentage": 52.0,
+      "expected_count": 25,
+      "breakdown": {
+        "incorrect_off_rig_unbuilt": 0,
+        "incorrect_mismatch": 0
+      }
+    },
+    "Q07": {
+      "question_id": "Q07",
+      "found_facts": [
+        {
+          "claim": "Q07:xllr.openjdk.bridge",
+          "label": "correct",
+          "raw": {
+            "target": "xllr.openjdk.bridge",
+            "artifact": "xllr.openjdk.bridge.jar",
+            "defining_files": [
+              "lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt"
+            ]
+          }
+        },
+        {
+          "claim": "Q07:openjdk_idl_extractor",
+          "label": "correct",
+          "raw": {
+            "target": "openjdk_idl_extractor",
+            "artifact": "openjdk_idl_extractor.jar",
+            "defining_files": [
+              "lang-plugin-openjdk/idl/CMakeLists.txt"
+            ]
+          }
+        }
+      ],
+      "correct": 2,
+      "incorrect": 0,
+      "hallucinated": 0,
+      "score": 2.0,
+      "normalized_score": 0.9090909090909091,
+      "percentage": 9.090909090909092,
+      "expected_count": 22,
+      "breakdown": {
+        "incorrect_off_rig_unbuilt": 0,
+        "incorrect_mismatch": 0
+      }
+    },
+    "Q12": {
+      "question_id": "Q12",
+      "found_facts": [
+        {
+          "claim": "Q12:xllr.openjdk.jni.bridge depends_on xllr.openjdk; artifact matches",
+          "label": "incorrect.mismatch",
+          "raw": {
+            "depends_on": [
+              "xllr.openjdk"
+            ],
+            "artifact": "xllr.openjdk.jni.bridge.dll",
+            "defining_files": [
+              "lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt"
+            ]
+          }
+        }
+      ],
+      "correct": 0,
+      "incorrect": 1,
+      "hallucinated": 0,
+      "score": 0.0,
+      "normalized_score": 0.0,
+      "percentage": 0.0,
+      "expected_count": 1,
+      "breakdown": {
+        "incorrect_off_rig_unbuilt": 0,
+        "incorrect_mismatch": 1
+      }
+    },
+    "Q20": {
+      "question_id": "Q20",
+      "found_facts": [
+        {
+          "claim": "Q20:xllr.dll@cmake-build-debug/metaffi-core/xllr",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "xllr.dll",
+            "output_dir": "cmake-build-debug/metaffi-core/XLLR"
+          }
+        },
+        {
+          "claim": "Q20:xllr.go.dll@cmake-build-debug/lang-plugin-go/runtime",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "xllr.go.dll",
+            "output_dir": "cmake-build-debug/lang-plugin-go/runtime"
+          }
+        },
+        {
+          "claim": "Q20:xllr.openjdk.dll@cmake-build-debug/lang-plugin-openjdk/runtime",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "xllr.openjdk.dll",
+            "output_dir": "cmake-build-debug/lang-plugin-openjdk/runtime"
+          }
+        },
+        {
+          "claim": "Q20:xllr.python311.dll@cmake-build-debug/lang-plugin-python311/runtime",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "xllr.python311.dll",
+            "output_dir": "cmake-build-debug/lang-plugin-python311/runtime"
+          }
+        },
+        {
+          "claim": "Q20:xllr.openjdk.jni.bridge.dll@cmake-build-debug/lang-plugin-openjdk/xllr-openjdk-bridge",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "xllr.openjdk.jni.bridge.dll",
+            "output_dir": "cmake-build-debug/lang-plugin-openjdk/xllr-openjdk-bridge"
+          }
+        },
+        {
+          "claim": "Q20:metaffi.exe@cmake-build-debug/metaffi-core/cli",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "metaffi.exe",
+            "output_dir": "cmake-build-debug/metaffi-core/CLI"
+          }
+        },
+        {
+          "claim": "Q20:cdts_test.exe@cmake-build-debug/metaffi-core",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "cdts_test.exe",
+            "output_dir": "cmake-build-debug/metaffi-core"
+          }
+        },
+        {
+          "claim": "Q20:xllr_capi_test.exe@cmake-build-debug/metaffi-core",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "xllr_capi_test.exe",
+            "output_dir": "cmake-build-debug/metaffi-core"
+          }
+        },
+        {
+          "claim": "Q20:go_api_test.exe@cmake-build-debug/lang-plugin-go/runtime",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "go_api_test.exe",
+            "output_dir": "cmake-build-debug/lang-plugin-go/runtime"
+          }
+        },
+        {
+          "claim": "Q20:cdts_java_test.exe@cmake-build-debug/lang-plugin-openjdk/runtime",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "cdts_java_test.exe",
+            "output_dir": "cmake-build-debug/lang-plugin-openjdk/runtime"
+          }
+        },
+        {
+          "claim": "Q20:openjdk_api_test.exe@cmake-build-debug/lang-plugin-openjdk/runtime",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "openjdk_api_test.exe",
+            "output_dir": "cmake-build-debug/lang-plugin-openjdk/runtime"
+          }
+        },
+        {
+          "claim": "Q20:python_runtime_test.exe@cmake-build-debug/lang-plugin-python311/runtime",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "python_runtime_test.exe",
+            "output_dir": "cmake-build-debug/lang-plugin-python311/runtime"
+          }
+        },
+        {
+          "claim": "Q20:metaffi.idl.openjdk.dll@cmake-build-debug/lang-plugin-openjdk/idl",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "metaffi.idl.openjdk.dll",
+            "output_dir": "cmake-build-debug/lang-plugin-openjdk/idl"
+          }
+        },
+        {
+          "claim": "Q20:metaffi.idl.python311.dll@cmake-build-debug/lang-plugin-python311/idl",
+          "label": "hallucinated",
+          "raw": {
+            "artifact": "metaffi.idl.python311.dll",
+            "output_dir": "cmake-build-debug/lang-plugin-python311/idl"
+          }
+        },
+        {
+          "claim": "Q20:xllr.openjdk.bridge.jar@cmake-build-debug/lang-plugin-openjdk/xllr-openjdk-bridge",
+          "label": "incorrect.mismatch",
+          "raw": {
+            "artifact": "xllr.openjdk.bridge.jar",
+            "output_dir": "cmake-build-debug/lang-plugin-openjdk/xllr-openjdk-bridge"
+          }
+        },
+        {
+          "claim": "Q20:openjdk_idl_extractor.jar@cmake-build-debug/lang-plugin-openjdk/idl",
+          "label": "incorrect.mismatch",
+          "raw": {
+            "artifact": "openjdk_idl_extractor.jar",
+            "output_dir": "cmake-build-debug/lang-plugin-openjdk/idl"
+          }
+        }
+      ],
+      "correct": 0,
+      "incorrect": 2,
+      "hallucinated": 14,
+      "score": 0.0,
+      "normalized_score": 0.0,
+      "percentage": 0.0,
+      "expected_count": 7,
+      "breakdown": {
+        "incorrect_off_rig_unbuilt": 0,
+        "incorrect_mismatch": 2
+      }
+    }
+  },
+  "skipped_questions": [
+    "Q01",
+    "Q04",
+    "Q05",
+    "Q08",
+    "Q09",
+    "Q10",
+    "Q11",
+    "Q13",
+    "Q14",
+    "Q15",
+    "Q16",
+    "Q17",
+    "Q18",
+    "Q19"
+  ]
+}
