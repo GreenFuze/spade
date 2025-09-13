@@ -35,9 +35,9 @@ class BuildOutputFinder:
                 "extensions": [".dll", ".so", ".dylib"]
             },
             "java": {
-                "ninja": r'javac.*?-d\s+([^\s"]+)|jar.*?-cf\s+([^\s"]+)|java.*?-jar\s+([^\s"]+)',
-                "msvc": r"javac[^<]*?-d\s+([^\s<]+)|jar[^<]*?-cf\s+([^\s<]+)|java[^<]*?-jar\s+([^\s<]+)",
-                "makefile": r"javac[^#\n]*?-d\s+([^\s#]+)|jar[^#\n]*?-cf\s+([^\s#]+)|java[^#\n]*?-jar\s+([^\s#]+)",
+                "ninja": r'jar.*?-cf\s+([^\s"]+\.jar)|javac.*?-d\s+([^\s"]+)|java.*?-jar\s+([^\s"]+\.jar)|build\s+([^\s:]+\.jar):',
+                "msvc": r"jar[^<]*?-cf\s+([^\s<]+\.jar)|javac[^<]*?-d\s+([^\s<]+)|java[^<]*?-jar\s+([^\s<]+\.jar)",
+                "makefile": r"jar[^#\n]*?-cf\s+([^\s#]+\.jar)|javac[^#\n]*?-d\s+([^\s#]+)|java[^#\n]*?-jar\s+([^\s#]+\.jar)",
                 "extensions": [".jar", ".class"]
             },
             "python": {
@@ -62,7 +62,12 @@ class BuildOutputFinder:
 
     def _read_cache(self) -> dict:
         """Read CMakeCache.txt to get generator and other variables."""
+        # Look for CMakeCache.txt in the build directory and parent directory
         cache_file = self.build_dir / "CMakeCache.txt"
+        if not cache_file.exists():
+            # Try parent directory (common case where CMakeFiles is a subdirectory)
+            cache_file = self.build_dir.parent / "CMakeCache.txt"
+        
         cache = {}
         if cache_file.exists():
             for line in cache_file.read_text(errors="ignore").splitlines():
@@ -99,7 +104,11 @@ class BuildOutputFinder:
 
     def _from_ninja(self, target_hint: Optional[str], language: str) -> Optional[Path]:
         """Extract output from Ninja build.ninja file for specified language."""
+        # Look for build.ninja in the build directory and parent directory
         ninja = self.build_dir / "build.ninja"
+        if not ninja.exists():
+            # Try parent directory (common case where CMakeFiles is a subdirectory)
+            ninja = self.build_dir.parent / "build.ninja"
         if not ninja.exists():
             return None
         text = ninja.read_text(errors="ignore")
@@ -873,7 +882,9 @@ class CMakeEntrypoint:
                 raise ValueError(f"Failed to parse CMakeLists.txt files: {e}")
 
         # Initialize build output finder for generator-aware detection of all non-C/C++ languages
-        self._build_output_finder = BuildOutputFinder(self.cmake_config_dir)
+        # Use parent directory where build.ninja and CMakeCache.txt are located
+        build_dir = self.cmake_config_dir.parent if self.cmake_config_dir.name == "CMakeFiles" else self.cmake_config_dir
+        self._build_output_finder = BuildOutputFinder(build_dir)
 
         # Parse CMake information using the file API (optional)
         if parse_cmake:

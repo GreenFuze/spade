@@ -68,9 +68,39 @@ class PerQuestionScore:
 
 
 @dataclass
+class ScoreTotals:
+    correct: int
+    incorrect_off_rig_unbuilt: int
+    incorrect_mismatch: int
+    hallucinated: int
+    expected_fact_count: int
+    score: float
+    normalized_score: float  # 0..10
+    percentage: float        # 0..100
+    accuracy: float          # 0..100
+
+    @property
+    def incorrect(self) -> int:
+        return self.incorrect_off_rig_unbuilt + self.incorrect_mismatch
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "correct": self.correct,
+            "incorrect_off_rig_unbuilt": self.incorrect_off_rig_unbuilt,
+            "incorrect_mismatch": self.incorrect_mismatch,
+            "hallucinated": self.hallucinated,
+            "expected_fact_count": self.expected_fact_count,
+            "score": self.score,
+            "normalized_score": self.normalized_score,
+            "percentage": self.percentage,
+            "accuracy": self.accuracy,
+        }
+
+
+@dataclass
 class Scores:
-    per_question: Dict[str, Dict[str, Any]]
-    totals: Dict[str, Any]
+    per_question: Dict[str, PerQuestionScore]
+    totals: ScoreTotals
     skipped_questions: List[str]
 
     def __str__(self) -> str:
@@ -82,53 +112,42 @@ class Scores:
         
         # Summary section
         lines.append(f"\nSUMMARY:")
-        lines.append(f"  Overall Performance: {self.totals['percentage']:.1f}%")
-        lines.append(f"  Normalized Score (0-10): {self.totals['normalized_score']:.2f}")
-        lines.append(f"  Raw Score: {self.totals['score']:.2f}")
+        lines.append(f"  Overall Performance: {self.totals.percentage:.1f}%")
+        lines.append(f"  Normalized Score (0-10): {self.totals.normalized_score:.2f}")
+        lines.append(f"  Raw Score: {self.totals.score:.2f}")
         
         # Detailed counts
         lines.append(f"\nDETAILED COUNTS:")
-        lines.append(f"  Correct: {self.totals['correct']}")
-        lines.append(f"  Incorrect (off RIG/unbuilt): {self.totals['incorrect_off_rig_unbuilt']}")
-        lines.append(f"  Incorrect (mismatch): {self.totals['incorrect_mismatch']}")
-        lines.append(f"  Hallucinated: {self.totals['hallucinated']}")
-        lines.append(f"  Expected Count: {self.totals['expected_count']}")
-        
-        # Calculate accuracy
-        total_facts = self.totals['correct'] + self.totals['incorrect'] + self.totals['hallucinated']
-        accuracy = self.totals['correct'] / max(1, total_facts) * 100
-        lines.append(f"  Accuracy: {accuracy:.1f}%")
-        
-        # Weights used
-        lines.append(f"\nWEIGHTS USED:")
-        weights = self.totals['weights']
-        lines.append(f"  Correct: {weights['correct']}")
-        lines.append(f"  Incorrect (off RIG/unbuilt): {weights['incorrect_off_rig_unbuilt']}")
-        lines.append(f"  Incorrect (mismatch): {weights['incorrect_mismatch']}")
-        lines.append(f"  Hallucinated: {weights['hallucinated']}")
+        lines.append(f"  Correct: {self.totals.correct}")
+        lines.append(f"  Incorrect (off RIG/unbuilt): {self.totals.incorrect_off_rig_unbuilt}")
+        lines.append(f"  Incorrect (mismatch): {self.totals.incorrect_mismatch}")
+        lines.append(f"  Hallucinated: {self.totals.hallucinated}")
+        lines.append(f"  Expected Count: {self.totals.expected_fact_count}")
+        lines.append(f"  Accuracy: {self.totals.accuracy:.1f}%")
         
         # Questions included/skipped
         lines.append(f"\nQUESTIONS:")
-        lines.append(f"  Included: {', '.join(self.totals['included_questions'])}")
+        included_questions = [qid for qid in self.per_question.keys()]
+        lines.append(f"  Included: {', '.join(included_questions)}")
         lines.append(f"  Skipped: {', '.join(self.skipped_questions)}")
         
         # Per-question breakdown
         lines.append(f"\nPER-QUESTION BREAKDOWN:")
         for qid, result in self.per_question.items():
             lines.append(f"\n  {qid}:")
-            lines.append(f"    Score: {result['score']:.2f} (normalized: {result['normalized_score']:.2f}, {result['percentage']:.1f}%)")
-            lines.append(f"    Correct: {result['correct']}")
-            lines.append(f"    Incorrect: {result['incorrect']} (off RIG: {result['breakdown']['incorrect_off_rig_unbuilt']}, mismatch: {result['breakdown']['incorrect_mismatch']})")
-            lines.append(f"    Hallucinated: {result['hallucinated']}")
-            lines.append(f"    Expected: {result['expected_count']}")
+            lines.append(f"    Score: {result.score:.2f} (normalized: {result.normalized_score:.2f}, {result.percentage:.1f}%)")
+            lines.append(f"    Correct: {result.num_correct}")
+            lines.append(f"    Incorrect: {result.num_incorrect} (off RIG: {result.num_incorrect_off_rig_unbuilt}, mismatch: {result.num_incorrect_mismatch})")
+            lines.append(f"    Hallucinated: {result.num_hallucinated}")
+            lines.append(f"    Expected: {result.expected_fact_count}")
             
             # Show sample facts
-            if result['found_facts']:
+            if result.found_facts:
                 lines.append(f"    Sample Facts:")
-                for i, fact in enumerate(result['found_facts'][:3]):  # Show first 3 facts
-                    lines.append(f"      {i+1}. {fact['claim']} -> {fact['label']}")
-                if len(result['found_facts']) > 3:
-                    lines.append(f"      ... and {len(result['found_facts']) - 3} more facts")
+                for i, fact in enumerate(result.found_facts[:3]):  # Show first 3 facts
+                    lines.append(f"      {i+1}. {fact.claim} -> {fact.label.value}")
+                if len(result.found_facts) > 3:
+                    lines.append(f"      ... and {len(result.found_facts) - 3} more facts")
         
         lines.append("\n" + "=" * 80)
         return "\n".join(lines)
@@ -138,15 +157,77 @@ class Scores:
 # Score Comparison
 # =========================
 
-def score_comparer(scores1: Scores, name1: str, scores2: Scores, name2: str) -> None:
+def _get_expected_facts_from_rig(rig: RIG, qid: str) -> List[str]:
+    """Get expected facts from RIG for a specific question."""
+    try:
+        # Create a temporary ScoreCalculator to get expected facts
+        temp_calc = ScoreCalculator(rig)
+        # Get the evaluator for this question
+        evaluator = temp_calc._evaluators.get(qid)
+        if not evaluator:
+            return []
+        
+        # Create a dummy response to get expected facts
+        dummy_response = {"items": []}
+        expected_facts = []
+        
+        # This is a simplified approach - in practice, we'd need to extract
+        # the expected facts from the RIG based on the question type
+        if qid == "Q01":  # Project components (top-level aggregators)
+            # Q01 asks for top-level components/aggregators, not individual build targets
+            # Extract from RIG aggregators - these are the main project structure components
+            expected_facts = [agg.name for agg in rig.aggregators if agg.name]
+        elif qid == "Q02":  # Executables
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "executable"]
+        elif qid == "Q03":  # Executables (same as Q02)
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "executable"]
+        elif qid == "Q04":  # Libraries
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "library"]
+        elif qid == "Q05":  # Compilers
+            expected_facts = [c.name for c in rig.components if c.name and "compiler" in c.name.lower()]
+        elif qid == "Q06":  # All components
+            expected_facts = [c.name for c in rig.components if c.name]
+        elif qid == "Q07":  # Libraries (same as Q04)
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "library"]
+        elif qid == "Q08":  # Main executable
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "executable" and "main" in c.name.lower()]
+        elif qid == "Q09":  # Tests
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "test"]
+        elif qid == "Q10":  # Tests (same as Q09)
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "test"]
+        elif qid == "Q11":  # Main executable (same as Q08)
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "executable" and "main" in c.name.lower()]
+        elif qid == "Q12":  # Bridge dependencies
+            expected_facts = [c.name for c in rig.components if c.name and "bridge" in c.name.lower()]
+        elif qid == "Q13":  # Python tests
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "test" and "python" in c.name.lower()]
+        elif qid == "Q14":  # Go tests
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "test" and "go" in c.name.lower()]
+        elif qid == "Q15":  # External packages
+            expected_facts = [ext_pkg.package_manager.package_name for ext_pkg in rig.external_packages if ext_pkg.package_manager and ext_pkg.package_manager.package_name]
+        elif qid == "Q16":  # CLI and CDTS externals
+            expected_facts = [c.name for c in rig.components if c.name and ("cli" in c.name.lower() or "cdts" in c.name.lower())]
+        elif qid == "Q17":  # Main executable (same as Q08, Q11)
+            expected_facts = [c.name for c in rig.components if c.name and c.runtime == "executable" and "main" in c.name.lower()]
+        elif qid == "Q18":  # VM example
+            expected_facts = [c.name for c in rig.components if c.name and "vm" in c.name.lower()]
+        elif qid == "Q19":  # VM example (same as Q18)
+            expected_facts = [c.name for c in rig.components if c.name and "vm" in c.name.lower()]
+        elif qid == "Q20":  # Runtime artifacts
+            expected_facts = [f"{c.name}@{c.output_path}" for c in rig.components if c.name and c.output_path]
+        
+        return expected_facts[:10]  # Limit to first 10 for display
+    except Exception:
+        return []
+
+def score_comparer(without_rig: Scores, with_rig: Scores, rig: RIG) -> None:
     """
     Compare two Scores objects and print a detailed comparison report with final verdict.
     
     Args:
-        scores1: First Scores object to compare
-        name1: Name/label for the first scores
-        scores2: Second Scores object to compare  
-        name2: Name/label for the second scores
+        without_rig: Scores object for WITHOUT RIG
+        with_rig: Scores object for WITH RIG
+        rig: RIG object to determine expected facts
     """
     print("=" * 100)
     print("SCORE COMPARISON REPORT")
@@ -154,21 +235,21 @@ def score_comparer(scores1: Scores, name1: str, scores2: Scores, name2: str) -> 
     
     # Header with names
     print(f"\nCOMPARING:")
-    print(f"  {name1} vs {name2}")
+    print(f"  WITHOUT RIG vs WITH RIG")
     
     # Overall performance comparison
     print(f"\nOVERALL PERFORMANCE COMPARISON:")
-    print(f"  {'Metric':<30} {name1:<20} {name2:<20} {'Difference':<15}")
+    print(f"  {'Metric':<30} {'WITHOUT RIG':<20} {'WITH RIG':<20} {'Difference':<15}")
     print(f"  {'-'*30} {'-'*20} {'-'*20} {'-'*15}")
     
     # Key metrics
     metrics = [
-        ("Percentage", f"{scores1.totals['percentage']:.1f}%", f"{scores2.totals['percentage']:.1f}%", 
-         f"{scores2.totals['percentage'] - scores1.totals['percentage']:+.1f}%"),
-        ("Normalized Score (0-10)", f"{scores1.totals['normalized_score']:.2f}", f"{scores2.totals['normalized_score']:.2f}", 
-         f"{scores2.totals['normalized_score'] - scores1.totals['normalized_score']:+.2f}"),
-        ("Raw Score", f"{scores1.totals['score']:.2f}", f"{scores2.totals['score']:.2f}", 
-         f"{scores2.totals['score'] - scores1.totals['score']:+.2f}"),
+        ("Percentage", f"{without_rig.totals.percentage:.1f}%", f"{with_rig.totals.percentage:.1f}%", 
+         f"{with_rig.totals.percentage - without_rig.totals.percentage:+.1f}%"),
+        ("Normalized Score (0-10)", f"{without_rig.totals.normalized_score:.2f}", f"{with_rig.totals.normalized_score:.2f}", 
+         f"{with_rig.totals.normalized_score - without_rig.totals.normalized_score:+.2f}"),
+        ("Raw Score", f"{without_rig.totals.score:.2f}", f"{with_rig.totals.score:.2f}", 
+         f"{with_rig.totals.score - without_rig.totals.score:+.2f}"),
     ]
     
     for metric, val1, val2, diff in metrics:
@@ -176,15 +257,15 @@ def score_comparer(scores1: Scores, name1: str, scores2: Scores, name2: str) -> 
     
     # Detailed counts comparison
     print(f"\nDETAILED COUNTS COMPARISON:")
-    print(f"  {'Count Type':<30} {name1:<20} {name2:<20} {'Difference':<15}")
+    print(f"  {'Count Type':<30} {'WITHOUT RIG':<20} {'WITH RIG':<20} {'Difference':<15}")
     print(f"  {'-'*30} {'-'*20} {'-'*20} {'-'*15}")
     
     count_metrics = [
-        ("Correct", scores1.totals['correct'], scores2.totals['correct']),
-        ("Incorrect (off RIG/unbuilt)", scores1.totals['incorrect_off_rig_unbuilt'], scores2.totals['incorrect_off_rig_unbuilt']),
-        ("Incorrect (mismatch)", scores1.totals['incorrect_mismatch'], scores2.totals['incorrect_mismatch']),
-        ("Hallucinated", scores1.totals['hallucinated'], scores2.totals['hallucinated']),
-        ("Expected Count", scores1.totals['expected_count'], scores2.totals['expected_count']),
+        ("Correct", without_rig.totals.correct, with_rig.totals.correct),
+        ("Incorrect (off RIG/unbuilt)", without_rig.totals.incorrect_off_rig_unbuilt, with_rig.totals.incorrect_off_rig_unbuilt),
+        ("Incorrect (mismatch)", without_rig.totals.incorrect_mismatch, with_rig.totals.incorrect_mismatch),
+        ("Hallucinated", without_rig.totals.hallucinated, with_rig.totals.hallucinated),
+        ("Expected Count", without_rig.totals.expected_fact_count, with_rig.totals.expected_fact_count),
     ]
     
     for count_type, val1, val2 in count_metrics:
@@ -192,100 +273,102 @@ def score_comparer(scores1: Scores, name1: str, scores2: Scores, name2: str) -> 
         print(f"  {count_type:<30} {val1:<20} {val2:<20} {diff:+d}")
     
     # Accuracy comparison
-    total1 = scores1.totals['correct'] + scores1.totals['incorrect'] + scores1.totals['hallucinated']
-    total2 = scores2.totals['correct'] + scores2.totals['incorrect'] + scores2.totals['hallucinated']
-    accuracy1 = scores1.totals['correct'] / max(1, total1) * 100
-    accuracy2 = scores2.totals['correct'] / max(1, total2) * 100
+    accuracy1 = without_rig.totals.accuracy
+    accuracy2 = with_rig.totals.accuracy
     accuracy_diff = accuracy2 - accuracy1
     
     print(f"  {'Accuracy':<30} {accuracy1:.1f}%{'':<15} {accuracy2:.1f}%{'':<15} {accuracy_diff:+.1f}%")
     
     # Per-question comparison
     print(f"\nPER-QUESTION COMPARISON:")
-    print(f"  {'Question':<10} {'Metric':<20} {name1:<15} {name2:<15} {'Difference':<15}")
-    print(f"  {'-'*10} {'-'*20} {'-'*15} {'-'*15} {'-'*15}")
+    print(f"  {'Question':<10} {'Metric':<20} {'WITHOUT RIG':<15} {'WITH RIG':<15} {'Expected from RIG':<20} {'Difference':<15}")
+    print(f"  {'-'*10} {'-'*20} {'-'*15} {'-'*15} {'-'*20} {'-'*15}")
     
     # Get all questions from both scores
-    all_questions = set(scores1.per_question.keys()) | set(scores2.per_question.keys())
+    all_questions = set(without_rig.per_question.keys()) | set(with_rig.per_question.keys())
     
     for qid in sorted(all_questions):
-        q1 = scores1.per_question.get(qid, {})
-        q2 = scores2.per_question.get(qid, {})
+        q1 = without_rig.per_question.get(qid)
+        q2 = with_rig.per_question.get(qid)
         
         # Skip if question not in both scores
         if not q1 or not q2:
             continue
         
         # Percentage comparison
-        pct1 = q1.get('percentage', 0)
-        pct2 = q2.get('percentage', 0)
+        pct1 = q1.percentage
+        pct2 = q2.percentage
+        expected_pct = 100.0  # Perfect score would be 100%
         q_pct_diff = pct2 - pct1
-        print(f"  {qid:<10} {'Percentage':<20} {pct1:.1f}%{'':<9} {pct2:.1f}%{'':<9} {q_pct_diff:+.1f}%")
+        print(f"  {qid:<10} {'Percentage':<20} {pct1:.1f}%{'':<9} {pct2:.1f}%{'':<9} {expected_pct:.1f}%{'':<15} {q_pct_diff:+.1f}%")
         
         # Correct count comparison
-        corr1 = q1.get('correct', 0)
-        corr2 = q2.get('correct', 0)
+        corr1 = q1.num_correct
+        corr2 = q2.num_correct
+        expected_corr = q1.expected_fact_count  # Same for both q1 and q2
         corr_diff = corr2 - corr1
-        print(f"  {qid:<10} {'Correct':<20} {corr1:<15} {corr2:<15} {corr_diff:+d}")
+        print(f"  {qid:<10} {'Correct':<20} {corr1:<15} {corr2:<15} {expected_corr:<20} {corr_diff:+d}")
         
         # Incorrect count comparison
-        inc1 = q1.get('incorrect', 0)
-        inc2 = q2.get('incorrect', 0)
+        inc1 = q1.num_incorrect
+        inc2 = q2.num_incorrect
+        expected_inc = 0  # Perfect score would have 0 incorrect
         inc_diff = inc2 - inc1
-        print(f"  {qid:<10} {'Incorrect':<20} {inc1:<15} {inc2:<15} {inc_diff:+d}")
+        print(f"  {qid:<10} {'Incorrect':<20} {inc1:<15} {inc2:<15} {expected_inc:<20} {inc_diff:+d}")
         
         # Hallucinated count comparison
-        hall1 = q1.get('hallucinated', 0)
-        hall2 = q2.get('hallucinated', 0)
+        hall1 = q1.num_hallucinated
+        hall2 = q2.num_hallucinated
+        expected_hall = 0  # Perfect score would have 0 hallucinations
         hall_diff = hall2 - hall1
-        print(f"  {qid:<10} {'Hallucinated':<20} {hall1:<15} {hall2:<15} {hall_diff:+d}")
+        print(f"  {qid:<10} {'Hallucinated':<20} {hall1:<15} {hall2:<15} {expected_hall:<20} {hall_diff:+d}")
     
     # Impact analysis
     print(f"\nIMPACT ANALYSIS:")
     
     # Overall impact
-    pct_diff = scores2.totals['percentage'] - scores1.totals['percentage']
+    pct_diff = with_rig.totals.percentage - without_rig.totals.percentage
     if pct_diff > 0:
-        print(f"  ✓ {name2} outperforms {name1} by {pct_diff:.1f} percentage points")
+        print(f"  ✓ WITH RIG outperforms WITHOUT RIG by {pct_diff:.1f} percentage points")
     elif pct_diff < 0:
-        print(f"  ✗ {name2} underperforms {name1} by {abs(pct_diff):.1f} percentage points")
+        print(f"  ✗ WITHOUT RIG outperforms WITH RIG by {abs(pct_diff):.1f} percentage points")
     else:
-        print(f"  = {name1} and {name2} have identical overall performance")
+        print(f"  = WITHOUT RIG and WITH RIG have identical overall performance")
     
     # Accuracy impact
     if accuracy_diff > 0:
-        print(f"  ✓ {name2} has {accuracy_diff:.1f}% higher accuracy than {name1}")
+        print(f"  ✓ WITH RIG has {accuracy_diff:.1f}% higher accuracy than WITHOUT RIG")
     elif accuracy_diff < 0:
-        print(f"  ✗ {name2} has {abs(accuracy_diff):.1f}% lower accuracy than {name1}")
+        print(f"  ✗ WITH RIG has {abs(accuracy_diff):.1f}% lower accuracy than WITHOUT RIG")
     else:
-        print(f"  = {name1} and {name2} have identical accuracy")
+        print(f"  = WITHOUT RIG and WITH RIG have identical accuracy")
     
     # Correct facts impact
-    corr_diff = scores2.totals['correct'] - scores1.totals['correct']
+    corr_diff = with_rig.totals.correct - without_rig.totals.correct
     if corr_diff > 0:
-        print(f"  ✓ {name2} has {corr_diff} more correct facts than {name1}")
+        print(f"  ✓ WITH RIG has {corr_diff} more correct facts than WITHOUT RIG")
     elif corr_diff < 0:
-        print(f"  ✗ {name2} has {abs(corr_diff)} fewer correct facts than {name1}")
+        print(f"  ✗ WITH RIG has {abs(corr_diff)} fewer correct facts than WITHOUT RIG")
     else:
-        print(f"  = {name1} and {name2} have the same number of correct facts")
+        print(f"  = WITHOUT RIG and WITH RIG have the same number of correct facts")
     
     # Hallucination impact
-    hall_diff = scores2.totals['hallucinated'] - scores1.totals['hallucinated']
+    hall_diff = with_rig.totals.hallucinated - without_rig.totals.hallucinated
     if hall_diff < 0:
-        print(f"  ✓ {name2} has {abs(hall_diff)} fewer hallucinations than {name1}")
+        print(f"  ✓ WITH RIG has {abs(hall_diff)} fewer hallucinations than WITHOUT RIG")
     elif hall_diff > 0:
-        print(f"  ✗ {name2} has {hall_diff} more hallucinations than {name1}")
+        print(f"  ✗ WITH RIG has {hall_diff} more hallucinations than WITHOUT RIG")
     else:
-        print(f"  = {name1} and {name2} have the same number of hallucinations")
+        print(f"  = WITHOUT RIG and WITH RIG have the same number of hallucinations")
     
     # Best performing questions
     print(f"\nBEST PERFORMING QUESTIONS:")
     question_improvements = []
     for qid in sorted(all_questions):
-        q1 = scores1.per_question.get(qid, {})
-        q2 = scores2.per_question.get(qid, {})
+        q1 = without_rig.per_question.get(qid)
+        q2 = with_rig.per_question.get(qid)
         if q1 and q2:
-            q_pct_diff = q2.get('percentage', 0) - q1.get('percentage', 0)
+            q_pct_diff = q2.percentage - q1.percentage
             question_improvements.append((qid, q_pct_diff))
     
     # Sort by improvement (descending)
@@ -293,110 +376,192 @@ def score_comparer(scores1: Scores, name1: str, scores2: Scores, name2: str) -> 
     
     for qid, improvement in question_improvements[:3]:  # Top 3 improvements
         if improvement > 0:
-            print(f"  ✓ {qid}: {name2} +{improvement:.1f}% vs {name1}")
+            print(f"  ✓ {qid}: WITH RIG +{improvement:.1f}% vs WITHOUT RIG")
         elif improvement < 0:
-            print(f"  ✗ {qid}: {name2} {improvement:.1f}% vs {name1}")
+            print(f"  ✗ {qid}: WITHOUT RIG +{abs(improvement):.1f}% vs WITH RIG")
         else:
-            print(f"  = {qid}: {name1} and {name2} tied")
+            print(f"  = {qid}: WITHOUT RIG and WITH RIG tied")
     
-    # Final verdict
+    # Final verdict - determine winner dynamically
     print(f"\nFINAL VERDICT:")
     print("=" * 50)
     
+    # Determine which approach is better based on percentage
     if pct_diff > 5:
-        print(f"🏆 WINNER: {name2}")
-        print(f"   {name2} is SIGNIFICANTLY BETTER than {name1}")
-        print(f"   Performance difference: +{pct_diff:.1f} percentage points")
-        print(f"   Recommendation: Use {name2} for superior results")
+        winner = "WITH RIG"
+        loser = "WITHOUT RIG"
+        strength = "SIGNIFICANTLY BETTER"
+        emoji = "🏆"
+        recommendation = f"Use {winner} for superior results"
     elif pct_diff > 1:
-        print(f"👍 WINNER: {name2}")
-        print(f"   {name2} is MODERATELY BETTER than {name1}")
-        print(f"   Performance difference: +{pct_diff:.1f} percentage points")
-        print(f"   Recommendation: {name2} is preferred, but both are viable")
+        winner = "WITH RIG"
+        loser = "WITHOUT RIG"
+        strength = "MODERATELY BETTER"
+        emoji = "👍"
+        recommendation = f"{winner} is preferred, but both are viable"
     elif pct_diff > -1:
-        print(f"🤝 TIE: {name1} and {name2}")
-        print(f"   Both approaches perform SIMILARLY")
-        print(f"   Performance difference: {pct_diff:+.1f} percentage points")
-        print(f"   Recommendation: Either approach is acceptable")
+        winner = "TIE"
+        loser = ""
+        strength = "SIMILARLY"
+        emoji = "🤝"
+        recommendation = "Either approach is acceptable"
     elif pct_diff > -5:
-        print(f"👎 WINNER: {name1}")
-        print(f"   {name1} is MODERATELY BETTER than {name2}")
-        print(f"   Performance difference: {pct_diff:+.1f} percentage points")
-        print(f"   Recommendation: {name1} is preferred, but both are viable")
+        winner = "WITHOUT RIG"
+        loser = "WITH RIG"
+        strength = "MODERATELY BETTER"
+        emoji = "👎"
+        recommendation = f"{winner} is preferred, but both are viable"
     else:
-        print(f"🚫 WINNER: {name1}")
-        print(f"   {name1} is SIGNIFICANTLY BETTER than {name2}")
+        winner = "WITHOUT RIG"
+        loser = "WITH RIG"
+        strength = "SIGNIFICANTLY BETTER"
+        emoji = "🚫"
+        recommendation = f"Use {winner} for superior results"
+    
+    if winner == "TIE":
+        print(f"{emoji} TIE: WITHOUT RIG and WITH RIG")
+        print(f"   Both approaches perform {strength}")
         print(f"   Performance difference: {pct_diff:+.1f} percentage points")
-        print(f"   Recommendation: Use {name1} for superior results")
+        print(f"   Recommendation: {recommendation}")
+    else:
+        print(f"{emoji} WINNER: {winner}")
+        print(f"   {winner} is {strength} than {loser}")
+        print(f"   Performance difference: {abs(pct_diff):.1f} percentage points")
+        print(f"   Recommendation: {recommendation}")
     
     # Additional insights
     print(f"\nKEY INSIGHTS:")
     if accuracy_diff != 0:
-        print(f"   • Accuracy difference: {accuracy_diff:+.1f}% ({name2} vs {name1})")
+        print(f"   • Accuracy difference: {accuracy_diff:+.1f}% (WITH RIG vs WITHOUT RIG)")
     if corr_diff != 0:
-        print(f"   • Correct facts difference: {corr_diff:+d} ({name2} vs {name1})")
+        print(f"   • Correct facts difference: {corr_diff:+d} (WITH RIG vs WITHOUT RIG)")
     if hall_diff != 0:
-        print(f"   • Hallucination difference: {hall_diff:+d} ({name2} vs {name1})")
+        print(f"   • Hallucination difference: {hall_diff:+d} (WITH RIG vs WITHOUT RIG)")
     
     # Best question for each approach
     if question_improvements:
         best_improvement = question_improvements[0]
         if best_improvement[1] > 0:
-            print(f"   • {name2} excels most at: {best_improvement[0]} (+{best_improvement[1]:.1f}%)")
+            print(f"   • WITH RIG excels most at: {best_improvement[0]} (+{best_improvement[1]:.1f}%)")
         elif best_improvement[1] < 0:
-            print(f"   • {name1} excels most at: {best_improvement[0]} ({best_improvement[1]:.1f}%)")
+            print(f"   • WITHOUT RIG excels most at: {best_improvement[0]} ({best_improvement[1]:.1f}%)")
     
     # Detailed incorrect facts and hallucinations
     print(f"\nDETAILED INCORRECT FACTS AND HALLUCINATIONS:")
     print("=" * 80)
     
     for qid in sorted(all_questions):
-        q1 = scores1.per_question.get(qid, {})
-        q2 = scores2.per_question.get(qid, {})
+        q1 = without_rig.per_question.get(qid)
+        q2 = with_rig.per_question.get(qid)
         
         if not q1 or not q2:
             continue
         
         # Get facts from both scores
-        facts1 = q1.get('found_facts', [])
-        facts2 = q2.get('found_facts', [])
+        facts1 = q1.found_facts
+        facts2 = q2.found_facts
         
         # Count incorrect and hallucinated facts
-        incorrect1 = [f for f in facts1 if f.get('label') in ['incorrect.off_rig_unbuilt', 'incorrect.mismatch']]
-        hallucinated1 = [f for f in facts1 if f.get('label') == 'hallucinated']
-        incorrect2 = [f for f in facts2 if f.get('label') in ['incorrect.off_rig_unbuilt', 'incorrect.mismatch']]
-        hallucinated2 = [f for f in facts2 if f.get('label') == 'hallucinated']
+        incorrect1 = [f for f in facts1 if f.label in [FactLabel.INCORRECT_OFF_RIG_UNBUILT, FactLabel.INCORRECT_MISMATCH]]
+        hallucinated1 = [f for f in facts1 if f.label == FactLabel.HALLUCINATED]
+        incorrect2 = [f for f in facts2 if f.label in [FactLabel.INCORRECT_OFF_RIG_UNBUILT, FactLabel.INCORRECT_MISMATCH]]
+        hallucinated2 = [f for f in facts2 if f.label == FactLabel.HALLUCINATED]
         
         if incorrect1 or hallucinated1 or incorrect2 or hallucinated2:
             print(f"\n{qid}:")
             
             if incorrect1:
-                print(f"  {name1} Incorrect Facts ({len(incorrect1)}):")
+                print(f"  WITHOUT RIG Incorrect Facts ({len(incorrect1)}):")
                 for i, fact in enumerate(incorrect1[:5], 1):  # Show first 5
-                    print(f"    {i}. {fact.get('claim', 'Unknown')} -> {fact.get('label', 'Unknown')}")
+                    print(f"    {i}. {fact.claim} -> {fact.label.value}")
                 if len(incorrect1) > 5:
                     print(f"    ... and {len(incorrect1) - 5} more incorrect facts")
             
             if hallucinated1:
-                print(f"  {name1} Hallucinated Facts ({len(hallucinated1)}):")
+                print(f"  WITHOUT RIG Hallucinated Facts ({len(hallucinated1)}):")
                 for i, fact in enumerate(hallucinated1[:5], 1):  # Show first 5
-                    print(f"    {i}. {fact.get('claim', 'Unknown')} -> {fact.get('label', 'Unknown')}")
+                    print(f"    {i}. {fact.claim} -> {fact.label.value}")
                 if len(hallucinated1) > 5:
                     print(f"    ... and {len(hallucinated1) - 5} more hallucinated facts")
             
             if incorrect2:
-                print(f"  {name2} Incorrect Facts ({len(incorrect2)}):")
+                print(f"  WITH RIG Incorrect Facts ({len(incorrect2)}):")
                 for i, fact in enumerate(incorrect2[:5], 1):  # Show first 5
-                    print(f"    {i}. {fact.get('claim', 'Unknown')} -> {fact.get('label', 'Unknown')}")
+                    print(f"    {i}. {fact.claim} -> {fact.label.value}")
                 if len(incorrect2) > 5:
                     print(f"    ... and {len(incorrect2) - 5} more incorrect facts")
             
             if hallucinated2:
-                print(f"  {name2} Hallucinated Facts ({len(hallucinated2)}):")
+                print(f"  WITH RIG Hallucinated Facts ({len(hallucinated2)}):")
                 for i, fact in enumerate(hallucinated2[:5], 1):  # Show first 5
-                    print(f"    {i}. {fact.get('claim', 'Unknown')} -> {fact.get('label', 'Unknown')}")
+                    print(f"    {i}. {fact.claim} -> {fact.label.value}")
                 if len(hallucinated2) > 5:
                     print(f"    ... and {len(hallucinated2) - 5} more hallucinated facts")
+    
+    # Missing facts analysis - what WITH RIG needs to reach perfect score
+    print(f"\nMISSING FACTS ANALYSIS - What WITH RIG needs for perfect score:")
+    print("=" * 80)
+    
+    for qid in sorted(all_questions):
+        q1 = without_rig.per_question.get(qid)
+        q2 = with_rig.per_question.get(qid)
+        
+        if not q1 or not q2:
+            continue
+        
+        # Calculate what's missing for perfect score
+        expected_correct = q2.expected_fact_count
+        actual_correct = q2.num_correct
+        missing_correct = max(0, expected_correct - actual_correct)
+        
+        if missing_correct > 0 or q2.num_incorrect > 0 or q2.num_hallucinated > 0:
+            print(f"\n{qid}:")
+            print(f"\tExpected: {expected_correct} correct, 0 incorrect, 0 hallucinated")
+            print(f"\tActual in \"WITH RIG\": {actual_correct} correct, {q2.num_incorrect} incorrect, {q2.num_hallucinated} hallucinated")
+            
+            # Get expected facts from RIG for this question
+            expected_facts = _get_expected_facts_from_rig(rig, qid)
+            print(f"\tList of expected in RIG:")
+            if expected_facts:
+                for i, fact in enumerate(expected_facts, 1):
+                    print(f"\t\t{i}. {fact}")
+            else:
+                print(f"\t\t(No expected facts found in RIG for this question)")
+            
+            # Get detected facts in WITH RIG
+            q2_correct_facts = [f for f in q2.found_facts if f.label == FactLabel.CORRECT]
+            detected_facts = [f.claim for f in q2_correct_facts]
+            print(f"\tList of detected in \"WITH RIG\":")
+            if detected_facts:
+                for i, fact in enumerate(detected_facts, 1):
+                    print(f"\t\t{i}. {fact}")
+            else:
+                print(f"\t\t(No correct facts detected)")
+            
+            # Calculate missing items
+            expected_set = set(expected_facts)
+            detected_set = set(detected_facts)
+            missing_items = expected_set - detected_set
+            
+            print(f"\tList of missing items in \"WITH RIG\":")
+            if missing_items:
+                for i, item in enumerate(sorted(missing_items), 1):
+                    print(f"\t\t{i}. {item}")
+            else:
+                print(f"\t\t(No missing items - perfect score!)")
+            
+            # Show incorrect and hallucinated facts if any
+            if q2.num_incorrect > 0:
+                incorrect_facts = [f for f in q2.found_facts if f.label in [FactLabel.INCORRECT_OFF_RIG_UNBUILT, FactLabel.INCORRECT_MISMATCH]]
+                print(f"\tIncorrect facts in \"WITH RIG\" ({len(incorrect_facts)}):")
+                for i, fact in enumerate(incorrect_facts, 1):
+                    print(f"\t\t{i}. {fact.claim} -> {fact.label.value}")
+            
+            if q2.num_hallucinated > 0:
+                hallucinated_facts = [f for f in q2.found_facts if f.label == FactLabel.HALLUCINATED]
+                print(f"\tHallucinated facts in \"WITH RIG\" ({len(hallucinated_facts)}):")
+                for i, fact in enumerate(hallucinated_facts, 1):
+                    print(f"\t\t{i}. {fact.claim} -> {fact.label.value}")
     
     print("\n" + "=" * 100)
 
@@ -477,39 +642,27 @@ class ScoreCalculator:
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid LLM JSON: {e}")
 
-        per_question: Dict[str, Dict[str, Any]] = {}
+        per_question: Dict[str, PerQuestionScore] = {}
         skipped_questions: List[str] = []
 
-        totals = {
-            "correct": 0,
-            "incorrect": 0,
-            "incorrect_off_rig_unbuilt": 0,
-            "incorrect_mismatch": 0,
-            "hallucinated": 0,
-            "score": 0.0,
-            "normalized_score": 0.0,
-            "percentage": 0.0,
-            "expected_count": 0,
-            "weights": {
-                "correct": self.weight_correct,
-                "incorrect_off_rig_unbuilt": self.weight_incorrect_off,
-                "incorrect_mismatch": self.weight_incorrect_mis,
-                "hallucinated": self.weight_hallucinated,
-            },
-            "included_questions": list(self._evaluators.keys()),
-        }
+        # Initialize totals
+        correct = 0
+        incorrect_off_rig_unbuilt = 0
+        incorrect_mismatch = 0
+        hallucinated = 0
+        score = 0.0
+        expected_fact_count = 0
 
         for qid, evaluator in self._evaluators.items():
             result = evaluator(llm_obj)
-            per_question[qid] = result.to_dict()
+            per_question[qid] = result
 
-            totals["correct"] += result.num_correct
-            totals["incorrect_off_rig_unbuilt"] += result.num_incorrect_off_rig_unbuilt
-            totals["incorrect_mismatch"] += result.num_incorrect_mismatch
-            totals["incorrect"] += result.num_incorrect
-            totals["hallucinated"] += result.num_hallucinated
-            totals["score"] += result.score
-            totals["expected_count"] += result.expected_fact_count
+            correct += result.num_correct
+            incorrect_off_rig_unbuilt += result.num_incorrect_off_rig_unbuilt
+            incorrect_mismatch += result.num_incorrect_mismatch
+            hallucinated += result.num_hallucinated
+            score += result.score
+            expected_fact_count += result.expected_fact_count
 
         # mark remaining core questions as skipped (non-penalizing)
         core_qids = [f"Q{n:02d}" for n in range(1, 21)]
@@ -517,10 +670,27 @@ class ScoreCalculator:
             if qid not in self._evaluators:
                 skipped_questions.append(qid)
 
-        denom = max(1, totals["expected_count"])
-        clamped = max(0.0, totals["score"])
-        totals["normalized_score"] = 10.0 * clamped / denom
-        totals["percentage"] = 100.0 * clamped / denom
+        # Calculate derived values
+        denom = max(1, expected_fact_count)
+        clamped = max(0.0, score)
+        normalized_score = 10.0 * clamped / denom
+        percentage = 100.0 * clamped / denom
+        
+        # Calculate accuracy
+        total_facts = correct + incorrect_off_rig_unbuilt + incorrect_mismatch + hallucinated
+        accuracy = correct / max(1, total_facts) * 100
+
+        totals = ScoreTotals(
+            correct=correct,
+            incorrect_off_rig_unbuilt=incorrect_off_rig_unbuilt,
+            incorrect_mismatch=incorrect_mismatch,
+            hallucinated=hallucinated,
+            expected_fact_count=expected_fact_count,
+            score=score,
+            normalized_score=normalized_score,
+            percentage=percentage,
+            accuracy=accuracy
+        )
 
         return Scores(per_question=per_question, totals=totals, skipped_questions=skipped_questions)
 
@@ -540,7 +710,7 @@ class ScoreCalculator:
         
         for item in items:
             if not isinstance(item, dict):
-                found_facts.append(FoundFact(claim="Q01:<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
                 counts["num_hallucinated"] += 1
                 continue
             
@@ -556,7 +726,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
             
-            found_facts.append(FoundFact(claim=f"Q01:{name}", label=label, raw=item))
+            found_facts.append(FoundFact(claim=name, label=label, raw=item))
         
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
         
@@ -761,7 +931,7 @@ class ScoreCalculator:
 
         for it in items:
             if not isinstance(it, dict):
-                found_facts.append(FoundFact(claim="Q20:<invalid-item>", label=FactLabel.HALLUCINATED, raw=it))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=it))
                 counts["num_hallucinated"] += 1
                 continue
 
@@ -778,7 +948,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
 
-            found_facts.append(FoundFact(claim=f"Q20:{artifact}@{output_dir}", label=label, raw=it))
+            found_facts.append(FoundFact(claim=f"{artifact}@{output_dir}", label=label, raw=it))
 
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
 
@@ -912,7 +1082,7 @@ class ScoreCalculator:
         
         for item in items:
             if not isinstance(item, dict):
-                found_facts.append(FoundFact(claim="Q09:<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
                 counts["num_hallucinated"] += 1
                 continue
             
@@ -928,7 +1098,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
             
-            found_facts.append(FoundFact(claim=f"Q09:{name}", label=label, raw=item))
+            found_facts.append(FoundFact(claim=name, label=label, raw=item))
         
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
         
@@ -955,7 +1125,7 @@ class ScoreCalculator:
         
         for item in items:
             if not isinstance(item, dict):
-                found_facts.append(FoundFact(claim="Q10:<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
                 counts["num_hallucinated"] += 1
                 continue
             
@@ -974,7 +1144,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
             
-            found_facts.append(FoundFact(claim=f"Q10:{test_name}", label=label, raw=item))
+            found_facts.append(FoundFact(claim=test_name, label=label, raw=item))
         
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
         
@@ -1051,7 +1221,7 @@ class ScoreCalculator:
         
         for item in items:
             if not isinstance(item, dict):
-                found_facts.append(FoundFact(claim="Q13:<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
                 counts["num_hallucinated"] += 1
                 continue
             
@@ -1069,7 +1239,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
             
-            found_facts.append(FoundFact(claim=f"Q13:{test_name}", label=label, raw=item))
+            found_facts.append(FoundFact(claim=test_name, label=label, raw=item))
         
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
         
@@ -1096,7 +1266,7 @@ class ScoreCalculator:
         
         for item in items:
             if not isinstance(item, dict):
-                found_facts.append(FoundFact(claim="Q14:<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
                 counts["num_hallucinated"] += 1
                 continue
             
@@ -1115,7 +1285,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
             
-            found_facts.append(FoundFact(claim=f"Q14:{target}", label=label, raw=item))
+            found_facts.append(FoundFact(claim=target, label=label, raw=item))
         
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
         
@@ -1142,7 +1312,7 @@ class ScoreCalculator:
         
         for item in items:
             if not isinstance(item, dict):
-                found_facts.append(FoundFact(claim="Q15:<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
                 counts["num_hallucinated"] += 1
                 continue
             
@@ -1163,7 +1333,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
             
-            found_facts.append(FoundFact(claim=f"Q15:{lib}", label=label, raw=item))
+            found_facts.append(FoundFact(claim=lib, label=label, raw=item))
         
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
         
@@ -1195,7 +1365,7 @@ class ScoreCalculator:
         
         for item in items:
             if not isinstance(item, dict):
-                found_facts.append(FoundFact(claim="Q16:<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=item))
                 counts["num_hallucinated"] += 1
                 continue
             
@@ -1214,7 +1384,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
             
-            found_facts.append(FoundFact(claim=f"Q16:{target}", label=label, raw=item))
+            found_facts.append(FoundFact(claim=target, label=label, raw=item))
         
         score, normalized, percent = self._score_from_counts(counts, expected_fact_count)
         
@@ -1375,7 +1545,7 @@ class ScoreCalculator:
 
         for it in items:
             if not isinstance(it, dict):
-                found_facts.append(FoundFact(claim=f"{qid}:<invalid-item>", label=FactLabel.HALLUCINATED, raw=it))
+                found_facts.append(FoundFact(claim="<invalid-item>", label=FactLabel.HALLUCINATED, raw=it))
                 counts["num_hallucinated"] += 1
                 continue
 
@@ -1396,7 +1566,7 @@ class ScoreCalculator:
                 counts["num_hallucinated"] += 1
                 label = FactLabel.HALLUCINATED
 
-            found_facts.append(FoundFact(claim=f"{qid}:{target or artifact}", label=label, raw=it))
+            found_facts.append(FoundFact(claim=target or artifact, label=label, raw=it))
 
         return found_facts, counts
 
@@ -1443,94 +1613,26 @@ class ScoreCalculator:
         return idx
 
 
-def demo_score_comparer():
-    """
-    Demo function showing how to use score_comparer() with sample data.
-    """
-    # Create sample scores for demonstration
-    sample_scores1 = Scores(
-        per_question={
-            "Q02": {
-                "correct": 4, "incorrect": 0, "hallucinated": 0, 
-                "percentage": 57.1, "score": 4.0, "normalized_score": 5.71,
-                "expected_count": 7, "found_facts": []
-            },
-            "Q03": {
-                "correct": 8, "incorrect": 0, "hallucinated": 1,
-                "percentage": 66.7, "score": 6.0, "normalized_score": 6.67,
-                "expected_count": 9, "found_facts": []
-            }
-        },
-        totals={
-            "correct": 12, "incorrect": 0, "incorrect_off_rig_unbuilt": 0,
-            "incorrect_mismatch": 0, "hallucinated": 1, "expected_count": 16,
-            "score": 10.0, "normalized_score": 6.25, "percentage": 62.5
-        },
-        skipped_questions=["Q01", "Q04", "Q05"]
-    )
-    
-    sample_scores2 = Scores(
-        per_question={
-            "Q02": {
-                "correct": 6, "incorrect": 1, "hallucinated": 0,
-                "percentage": 75.0, "score": 5.0, "normalized_score": 7.14,
-                "expected_count": 7, "found_facts": []
-            },
-            "Q03": {
-                "correct": 9, "incorrect": 0, "hallucinated": 0,
-                "percentage": 100.0, "score": 9.0, "normalized_score": 10.0,
-                "expected_count": 9, "found_facts": []
-            }
-        },
-        totals={
-            "correct": 15, "incorrect": 1, "incorrect_off_rig_unbuilt": 0,
-            "incorrect_mismatch": 1, "hallucinated": 0, "expected_count": 16,
-            "score": 14.0, "normalized_score": 8.75, "percentage": 87.5
-        },
-        skipped_questions=["Q01", "Q04", "Q05"]
-    )
-    
-    print("DEMO: Using score_comparer() function")
-    print("=" * 50)
-    score_comparer(
-        scores1=sample_scores1,
-        name1="Baseline Approach",
-        scores2=sample_scores2,
-        name2="Improved Approach"
-    )
-
-
 if __name__ == "__main__":
-    import sys
     
-    # Check if user wants demo
-    if len(sys.argv) > 1 and sys.argv[1] == "demo":
-        demo_score_comparer()
-    else:
-        # Original functionality
-        metaffi_config_dir = Path("C:/src/github.com/MetaFFI/cmake-build-debug")
-        entrypoint = CMakeEntrypoint(metaffi_config_dir)
-        rig = entrypoint.rig
+    # Original functionality
+    metaffi_config_dir = Path("C:/src/github.com/MetaFFI/cmake-build-debug")
+    entrypoint = CMakeEntrypoint(metaffi_config_dir)
+    rig = entrypoint.rig
+    
+    
+    with open('results_cursor_without_rig.json', "r", encoding="utf-8") as f:
+        results_cursor_without_rig = f.read()
         
-        # Score both result files if they exist
-        cursor_results_files = [
-            ("results_cursor_without_rig.json", "WITHOUT RIG"),
-            ("results_cursor_with_rig.json", "WITH RIG")
-        ]
-        
-        
-        with open('results_cursor_without_rig.json', "r", encoding="utf-8") as f:
-            results_cursor_without_rig = f.read()
-            
-        with open('results_cursor_with_rig.json', "r", encoding="utf-8") as f:
-            results_cursor_with_rig = f.read()
-        
-        score_results_cursor_without_rig = ScoreCalculator(rig=rig).calculate(results_cursor_without_rig)
-        score_results_cursor_with_rig = ScoreCalculator(rig=rig).calculate(results_cursor_with_rig)
-        
-        print('=======================================')
-        
-        score_comparer(score_results_cursor_without_rig, 'WITHOUT RIG', score_results_cursor_with_rig, 'WITH RIG')
+    with open('results_cursor_with_rig.json', "r", encoding="utf-8") as f:
+        results_cursor_with_rig = f.read()
+    
+    score_results_cursor_without_rig = ScoreCalculator(rig=rig).calculate(results_cursor_without_rig)
+    score_results_cursor_with_rig = ScoreCalculator(rig=rig).calculate(results_cursor_with_rig)
+    
+    print('=======================================')
+    
+    score_comparer(score_results_cursor_without_rig, score_results_cursor_with_rig, rig)
         
         
         

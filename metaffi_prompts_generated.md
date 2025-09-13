@@ -146,11 +146,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 2,
       "name": "metaffi.compiler.go",
-      "type": "executable",
+      "type": "shared_library",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.compiler.go",
-      "output_path": "metaffi.compiler.go",
+      "output": "metaffi.compiler.go.dll",
+      "output_path": "output\\windows\\x64\\Debug\\go\\metaffi.compiler.go.dll",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -169,11 +169,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 3,
       "name": "metaffi.compiler.openjdk",
-      "type": "executable",
+      "type": "shared_library",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.compiler.openjdk",
-      "output_path": "metaffi.compiler.openjdk",
+      "output": "metaffi.compiler.openjdk.dll",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\metaffi.compiler.openjdk.dll",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -192,11 +192,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 4,
       "name": "metaffi.compiler.python311",
-      "type": "executable",
+      "type": "shared_library",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.compiler.python311",
-      "output_path": "metaffi.compiler.python311",
+      "output": "metaffi.compiler.python311.dll",
+      "output_path": "output\\windows\\x64\\Debug\\python311\\metaffi.compiler.python311.dll",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -215,11 +215,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 5,
       "name": "metaffi.idl.go",
-      "type": "executable",
+      "type": "shared_library",
       "language": "go",
       "runtime": "Runtime.GO",
-      "output": "metaffi.idl.go",
-      "output_path": "metaffi.idl.go",
+      "output": "metaffi.idl.go.dll",
+      "output_path": "output\\windows\\x64\\Debug\\go\\metaffi.idl.go.dll",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -316,11 +316,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 8,
       "name": "openjdk_idl_extractor",
-      "type": "executable",
+      "type": "vm",
       "language": "java",
       "runtime": "Runtime.JVM",
-      "output": "openjdk_idl_extractor.dir",
-      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\idl\\CMakeFiles\\openjdk_idl_extractor.dir",
+      "output": "openjdk_idl_extractor.jar",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\openjdk_idl_extractor.jar",
       "source_files": [],
       "depends_on": [],
       "externals": [],
@@ -709,8 +709,8 @@ The following JSON contains the complete build analysis data:
         "lang-plugin-go\\runtime\\go_api_test.cpp"
       ],
       "depends_on": [
-        "xllr.go",
-        "build_go_guest"
+        "build_go_guest",
+        "xllr.go"
       ],
       "externals": [
         {
@@ -1008,11 +1008,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 20,
       "name": "xllr.openjdk.bridge",
-      "type": "executable",
+      "type": "vm",
       "language": "java",
       "runtime": "Runtime.JVM",
-      "output": "metaffi.api.dir",
-      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\api\\CMakeFiles\\metaffi.api.dir",
+      "output": "xllr.openjdk.bridge.jar",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\xllr.openjdk.bridge.jar",
       "source_files": [],
       "depends_on": [
         "xllr.openjdk.jni.bridge"
@@ -1033,11 +1033,11 @@ The following JSON contains the complete build analysis data:
     {
       "id": 21,
       "name": "metaffi.api",
-      "type": "executable",
+      "type": "vm",
       "language": "java",
       "runtime": "Runtime.JVM",
-      "output": "metaffi.api.dir",
-      "output_path": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\api\\CMakeFiles\\metaffi.api.dir",
+      "output": "metaffi.api.jar",
+      "output_path": "output\\windows\\x64\\Debug\\openjdk\\metaffi.api.jar",
       "source_files": [],
       "depends_on": [
         "xllr.openjdk.bridge"
@@ -1092,10 +1092,10 @@ The following JSON contains the complete build analysis data:
       "id": 2,
       "name": "go",
       "depends_on": [
-        "xllr.go",
+        "metaffi.compiler.go",
         "go_api_test",
-        "metaffi.idl.go",
-        "metaffi.compiler.go"
+        "xllr.go",
+        "metaffi.idl.go"
       ],
       "evidence": [
         {
@@ -1110,10 +1110,10 @@ The following JSON contains the complete build analysis data:
       "id": 3,
       "name": "metaffi-core",
       "depends_on": [
-        "xllr",
-        "cdts_test",
         "xllr_capi_test",
-        "metaffi"
+        "cdts_test",
+        "metaffi",
+        "xllr"
       ],
       "evidence": [
         {
@@ -1128,13 +1128,13 @@ The following JSON contains the complete build analysis data:
       "id": 4,
       "name": "openjdk",
       "depends_on": [
-        "metaffi.compiler.openjdk",
-        "openjdk_api_test",
-        "xllr.openjdk",
         "metaffi.idl.openjdk",
-        "cdts_java_test",
-        "xllr.openjdk.jni.bridge",
         "xllr.openjdk.bridge",
+        "metaffi.compiler.openjdk",
+        "xllr.openjdk",
+        "cdts_java_test",
+        "openjdk_api_test",
+        "xllr.openjdk.jni.bridge",
         "metaffi.api"
       ],
       "evidence": [
@@ -1150,10 +1150,10 @@ The following JSON contains the complete build analysis data:
       "id": 5,
       "name": "python311",
       "depends_on": [
-        "xllr.python311",
         "python_runtime_test",
-        "metaffi.idl.python311",
+        "xllr.python311",
         "python311_idl_plugin_test",
+        "metaffi.idl.python311",
         "metaffi.compiler.python311"
       ],
       "evidence": [

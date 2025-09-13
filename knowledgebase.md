@@ -648,6 +648,44 @@ for error in errors:
 3. **Add targeted logging** - Use `unknown_field()` for debugging
 4. **Test with real data** - Use actual CMake build systems
 
+## Recent Scoring System Improvements
+
+### ✅ Score Calculator Implementation
+**Problem Solved**: Need for automated evaluation of LLM responses against RIG ground truth data.
+
+**Solution Implemented**:
+- **ScoreCalculator Class**: Evaluates LLM JSON responses against RIG data for 20 different questions
+- **Evidence-Based Scoring**: Uses RIG as ground truth, classifies facts as CORRECT, INCORRECT_OFF_RIG_UNBUILT, INCORRECT_MISMATCH, or HALLUCINATED
+- **Comprehensive Evaluation**: Covers project components, dependencies, tests, external packages, build artifacts, and more
+- **Detailed Reporting**: Provides per-question analysis with incorrect facts and hallucinations
+- **Comparison System**: Compares two scoring results with detailed analysis and final verdict
+
+**Key Technical Learnings**:
+- **Path Normalization**: Critical for matching LLM responses to RIG data (forward vs backward slashes)
+- **Field Access Patterns**: External packages store library paths in `package_manager.package_name`, not `package_manager.name`
+- **Evidence-Based Validation**: All scoring must be based on actual RIG data, no heuristics
+- **Type Safety**: Strong typing reduces bugs in complex scoring logic
+- **Comprehensive Coverage**: All 20 questions must have proper evaluators to avoid ignored questions
+
+**Critical Issues Identified**:
+- **Hardcoded Expected Facts**: `_get_expected_facts_from_rig` function was using hardcoded values instead of extracting from RIG deterministically
+- **Graph Structure Misunderstanding**: Concept of "top level" components in a graph structure is not well-defined
+- **Question Design Problems**: Current 20 questions may not be appropriate for RIG's graph-based nature
+- **Prefix Bug**: Score detector was prepending "Q[number]:" to detected facts, causing mismatches with RIG data
+- **Incomplete Expected Facts**: Many questions show "No expected facts found in RIG" indicating poor extraction logic
+
+**Results Achieved**:
+- **Accurate Evaluation**: Correctly identifies valid vs invalid LLM responses (after bug fixes)
+- **Detailed Analysis**: Shows exactly what facts are correct, incorrect, or hallucinated
+- **Fair Comparison**: Provides objective comparison between different LLM approaches
+- **Bug Prevention**: Type-safe implementation reduces scoring errors
+- **Deterministic Extraction**: Fixed Q01 to extract from `rig.aggregators` instead of hardcoded values
+
+**Next Steps Required**:
+- **Redesign Expected Facts Function**: `_get_expected_facts_from_rig` needs complete rewrite to properly extract from RIG graph structure
+- **Review Question Design**: Current 20 questions may not be appropriate for RIG's graph-based nature
+- **Define Graph Relationships**: Need clear definition of what constitutes "top level" or other hierarchical concepts in the RIG graph
+
 ## Next Session Priorities
 
 1. **Test with different projects** - Ensure generic approach works broadly across various CMake projects

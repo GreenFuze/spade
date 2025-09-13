@@ -7,9 +7,7 @@
 				"defining_files": [
 					"CMakeLists.txt"
 				],
-				"dirs": [
-					"./"
-				]
+				"dirs": []
 			},
 			{
 				"name": "metaffi-core",
@@ -18,7 +16,7 @@
 					"metaffi-core/CMakeLists.txt"
 				],
 				"dirs": [
-					"metaffi-core/"
+					"metaffi-core"
 				]
 			},
 			{
@@ -28,7 +26,7 @@
 					"lang-plugin-go/CMakeLists.txt"
 				],
 				"dirs": [
-					"lang-plugin-go/"
+					"lang-plugin-go"
 				]
 			},
 			{
@@ -38,7 +36,7 @@
 					"lang-plugin-openjdk/CMakeLists.txt"
 				],
 				"dirs": [
-					"lang-plugin-openjdk/"
+					"lang-plugin-openjdk"
 				]
 			},
 			{
@@ -48,7 +46,7 @@
 					"lang-plugin-python311/CMakeLists.txt"
 				],
 				"dirs": [
-					"lang-plugin-python311/"
+					"lang-plugin-python311"
 				]
 			}
 		]
@@ -147,6 +145,16 @@
 				"artifact": "cdts_test.exe"
 			},
 			{
+				"target": "cdts_java_test",
+				"kind": "executable",
+				"artifact": "cdts_java_test.exe"
+			},
+			{
+				"target": "go_api_test",
+				"kind": "executable",
+				"artifact": "go_api_test.exe"
+			},
+			{
 				"target": "metaffi",
 				"kind": "executable",
 				"artifact": "metaffi.exe"
@@ -160,6 +168,21 @@
 				"target": "metaffi.idl.python311",
 				"kind": "shared_library",
 				"artifact": "metaffi.idl.python311.dll"
+			},
+			{
+				"target": "openjdk_api_test",
+				"kind": "executable",
+				"artifact": "openjdk_api_test.exe"
+			},
+			{
+				"target": "python311_idl_plugin_test",
+				"kind": "executable",
+				"artifact": "python311_idl_plugin_test.exe"
+			},
+			{
+				"target": "python_runtime_test",
+				"kind": "executable",
+				"artifact": "python_runtime_test.exe"
 			},
 			{
 				"target": "xllr",
@@ -185,6 +208,11 @@
 				"target": "xllr.python311",
 				"kind": "shared_library",
 				"artifact": "xllr.python311.dll"
+			},
+			{
+				"target": "xllr_capi_test",
+				"kind": "executable",
+				"artifact": "xllr_capi_test.exe"
 			}
 		]
 	},
@@ -218,7 +246,7 @@
 			"MetaFFI",
 			"metaffi-core",
 			"xllr",
-			"metaffi"
+			"xllr_capi_test"
 		]
 	},
 	"Q09": {
@@ -371,21 +399,31 @@
 	"Q14": {
 		"runtime_source_roots": [
 			{
+				"target": "xllr",
+				"dirs": [
+					"metaffi-core/XLLR",
+					"metaffi-core/plugin-sdk"
+				]
+			},
+			{
 				"target": "xllr.go",
 				"dirs": [
-					"lang-plugin-go/runtime/"
+					"lang-plugin-go/runtime",
+					"lang-plugin-go/plugin-sdk"
 				]
 			},
 			{
 				"target": "xllr.openjdk",
 				"dirs": [
-					"lang-plugin-openjdk/runtime/"
+					"lang-plugin-openjdk/runtime",
+					"lang-plugin-openjdk/plugin-sdk"
 				]
 			},
 			{
 				"target": "xllr.python311",
 				"dirs": [
-					"lang-plugin-python311/runtime/"
+					"lang-plugin-python311/runtime",
+					"lang-plugin-python311/plugin-sdk"
 				]
 			}
 		]
@@ -512,9 +550,9 @@
 	},
 	"Q19": {
 		"vm_example": {
-			"target": "metaffi.api",
-			"artifact": "metaffi.api.dir",
-			"output_dir": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\api\\CMakeFiles\\metaffi.api.dir"
+			"target": "openjdk_idl_extractor",
+			"artifact": "openjdk_idl_extractor.dir",
+			"output_dir": "cmake-build-debug\\CMakeFiles\\lang-plugin-openjdk\\idl\\CMakeFiles\\openjdk_idl_extractor.dir"
 		}
 	},
 	"Q20": {
@@ -562,27 +600,24 @@
 		"paths": []
 	},
 	"E2": {
-		"answer": "Windows-specific conditions are evidenced in the build configuration. The build uses Windows-specific libraries and paths, with x64 architecture targeting.",
+		"answer": "Windows-specific configuration is evident in the build data with Windows x64 Debug artifacts (.exe, .dll files) and Windows-specific library paths. The build analysis shows Windows-specific output paths and vcpkg integration for Windows libraries.",
 		"files": [
-			"cmake/Environment.cmake",
-			"CMakeLists.txt"
+			"CMakeLists.txt",
+			"cmake/Environment.cmake"
 		]
 	},
 	"E3": {
-		"answer": "No code generation steps are evidenced in the build data. The IDL plugins appear to be static implementations rather than generated from IDL files.",
+		"answer": "No code generation steps are explicitly evidenced in the build data. The IDL plugins appear to be compiled from source files rather than generated.",
 		"paths": [],
 		"files": []
 	},
 	"E4": {
-		"answer": "Environment variables referenced include METAFFI_HOME and various vcpkg-related variables for library paths.",
+		"answer": "METAFFI_HOME environment variable is set in the root CMakeLists.txt to define the output directory for binaries.",
 		"symbols": [
-			"METAFFI_HOME",
-			"CMAKE_BUILD_TYPE",
-			"OS_NAME"
+			"METAFFI_HOME"
 		],
 		"files": [
-			"CMakeLists.txt",
-			"cmake/Environment.cmake"
+			"CMakeLists.txt"
 		]
 	},
 	"E5": {
@@ -590,7 +625,7 @@
 		"files": []
 	},
 	"E6": {
-		"answer": "Docker files are evidenced in the containers directory for Ubuntu and Windows environments.",
+		"answer": "Docker files are present in the containers directory for Ubuntu 22.04 and Windows Core 2022 environments.",
 		"files": [
 			"containers/metaffi-u2204.dockerfile",
 			"containers/metaffi-win-core2022.dockerfile"
