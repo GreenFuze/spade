@@ -600,26 +600,26 @@
         "1.87"
       ],
       "libraries": [
-        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_thread-vc143-mt-gd-x64-1_87.lib",
-        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_program_options-vc143-mt-gd-x64-1_87.lib",
         "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_atomic-vc143-mt-gd-x64-1_87.lib",
+        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_date_time-vc143-mt-gd-x64-1_87.lib",
         "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_container-vc143-mt-gd-x64-1_87.lib",
         "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_system-vc143-mt-gd-x64-1_87.lib",
-        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_date_time-vc143-mt-gd-x64-1_87.lib",
-        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib",
-        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_chrono-vc143-mt-gd-x64-1_87.lib"
+        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_chrono-vc143-mt-gd-x64-1_87.lib",
+        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_program_options-vc143-mt-gd-x64-1_87.lib",
+        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_thread-vc143-mt-gd-x64-1_87.lib",
+        "c:\\src\\vcpkg\\installed\\x64-windows\\debug\\lib\\boost_filesystem-vc143-mt-gd-x64-1_87.lib"
       ],
       "declared_in": [
-        "cmake/CPP.cmake",
-        "lang-plugin-openjdk/runtime/CMakeLists.txt",
         "metaffi-core/CMakeLists.txt",
-        "lang-plugin-python311/runtime/CMakeLists.txt",
-        "lang-plugin-python311/idl/CMakeLists.txt",
+        "metaffi-core/CLI/CMakeLists.txt",
         "lang-plugin-go/runtime/CMakeLists.txt",
+        "lang-plugin-openjdk/runtime/CMakeLists.txt",
+        "lang-plugin-python311/runtime/CMakeLists.txt",
         "lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt",
-        "metaffi-core/plugin-sdk/run_sdk_tests.cmake",
+        "cmake/CPP.cmake",
         "metaffi-core/XLLR/CMakeLists.txt",
-        "metaffi-core/CLI/CMakeLists.txt"
+        "metaffi-core/plugin-sdk/run_sdk_tests.cmake",
+        "lang-plugin-python311/idl/CMakeLists.txt"
       ]
     }
   },

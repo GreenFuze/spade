@@ -659,24 +659,34 @@ The scoring system has been completely rewritten with a new, robust architecture
 1. **`scorer.py`** - New comprehensive scoring system
 2. **Pydantic Models** - Type-safe validation for all 14 questions (Q01-Q14)
 3. **Ground Truth Generation** - `generate_results_from_rig()` extracts canonical data from RIG
-4. **Set-Based Comparison** - Handles array order differences correctly
+4. **Element-by-Element Comparison** - Handles array order differences and aliases correctly
 5. **Detailed Reporting** - Comprehensive per-question and total score analysis
+6. **Alias System** - Handles semantically equivalent but syntactically different representations
 
 #### Architecture Benefits
 
 - **Type Safety**: Pydantic models prevent bugs and ensure data consistency
 - **Deterministic Ground Truth**: Direct extraction from RIG ensures accuracy
-- **Robust Comparison**: Set-based validation handles missing elements correctly
-- **Comprehensive Reporting**: Detailed analysis shows exactly what's missing/incorrect
+- **Robust Comparison**: Element-by-element validation with alias support handles missing elements correctly
+- **Comprehensive Reporting**: Detailed analysis shows exactly what's missing/incorrect with expected values
 - **Maintainable**: Clean separation of concerns and modular design
+- **Alias Support**: Handles different naming conventions (e.g., Boost library paths vs CMake targets)
 
 #### Results
 
 The new system shows **WITH RIG significantly outperforms WITHOUT RIG**:
-- **14.9 percentage points** better performance
-- **8.1% higher accuracy**
-- **14 more correct facts**
-- Clear winner across most questions
+- **28.0 percentage points** better performance (WITH RIG: 90.2% vs WITHOUT RIG: 62.2%)
+- **Clear winner across most questions**
+- **Robust alias handling** for Boost libraries, version formats, and path variations
+
+### Recent Fixes (2024-12-19)
+
+1. ✅ **Q09 Boost Information**: Fixed `declared_in` field generation from RIG evidence
+2. ✅ **Q14 Go Runtime Binaries**: Fixed detection logic to include all Go binaries by language/runtime properties
+3. ✅ **Alias System**: Added comprehensive alias support for Boost libraries, versions, and paths
+4. ✅ **Ground Truth Accuracy**: All ground truth now generated deterministically from RIG evidence
+5. ✅ **Version Format Support**: Handles both "1.87" and "1.87.0" version formats
+6. ✅ **Library Name Aliases**: Supports full paths, CMake targets, and short names for Boost libraries
 
 ### Previous Issues Resolved
 
@@ -684,6 +694,7 @@ The new system shows **WITH RIG significantly outperforms WITHOUT RIG**:
 2. ✅ **Graph Structure**: Properly handles graph-based RIG data
 3. ✅ **Question Design**: All 14 questions work correctly with new validation
 4. ✅ **Deep Validation**: Field-by-field comparison with detailed reporting
+5. ✅ **Alias Handling**: Semantic equivalence for different naming conventions
 
 ### Technical Implementation
 
@@ -697,16 +708,18 @@ The new system shows **WITH RIG significantly outperforms WITHOUT RIG**:
 - **Exact Format Matching**: Output format matches agent response structure exactly
 - **Evidence-Based**: All data comes from actual RIG evidence, no hardcoded values
 
-#### Set-Based Comparison
+#### Element-by-Element Comparison
 - **Order Independence**: Array order doesn't affect scoring accuracy
 - **Missing Element Handling**: Correctly identifies what's missing vs what's wrong
 - **Comprehensive Coverage**: Every field is validated against ground truth
+- **Alias Support**: Handles semantically equivalent representations (e.g., Boost library paths vs CMake targets)
 
 #### Detailed Reporting
 - **Per-Question Analysis**: Individual scores and detailed breakdowns for each question
 - **Total Scoring**: Overall performance metrics with clear winner determination
 - **Missing Facts Analysis**: Shows exactly what each response needs for perfect score
-- **Hallucination Detection**: Identifies incorrect facts not in ground truth
+- **Expected Values Display**: Shows expected values for incorrect facts
+- **Simplified Terminology**: Uses "correct" and "incorrect" categories (removed "hallucinations")
 
 ## Next Session Priorities
 
@@ -781,7 +794,7 @@ pyright cmake_entrypoint.py rig.py
 
 ---
 
-*Last updated: 2024-12-19 16:45 UTC - JVM Detection Fix Completed: Successfully resolved openjdk_idl_extractor component detection issues using BuildOutputFinder approach. Fixed consistency between UNKNOWN language and UNKNOWN runtime. Enhanced language detection with BuildOutputFinder fallback for all non-C/C++ languages. Added runtime mapping for Java→JVM, Go→GO, Python→PYTHON, C#→DOTNET. Generated updated metaffi_prompts_generated.md with correct JVM component classification. All major issues resolved, system fully functional with comprehensive multi-language support.*
+*Last updated: 2024-12-19 18:30 UTC - Scoring System Enhancements Completed: Fixed Q09 Boost information `declared_in` field generation from RIG evidence. Fixed Q14 Go runtime binaries detection to include all Go binaries by language/runtime properties. Implemented comprehensive alias system for Boost libraries, versions, and paths. Added version format support (1.87 vs 1.87.0). Enhanced ground truth accuracy with deterministic RIG extraction. Improved overall scoring performance to 90.2% WITH RIG vs 62.2% WITHOUT RIG (+28.0% difference). All major scoring issues resolved with robust alias handling and evidence-based ground truth generation.*
 
 
 # Very Important!

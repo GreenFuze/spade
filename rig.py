@@ -7,7 +7,7 @@ SQL-friendly for future SQLite storage.
 """
 
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Tuple, Set, Iterable
+from typing import List, Optional, Dict, Any, Tuple, Set, Iterable, Union
 
 from schemas import Component, Aggregator, Runner, Utility, Test, ComponentType, Runtime, Evidence, ComponentLocation, ExternalPackage, PackageManager, BuildNode, RepositoryInfo, BuildSystemInfo, ValidationSeverity, ValidationError, RIGValidationError
 
@@ -1939,3 +1939,17 @@ The following JSON contains the complete build analysis data:
                 edges.append({"data": {"id": f"{test.test_executable.name}_builds_{test.name}", "source": test.test_executable.name, "target": test.name, "type": "build", "color": "#f39c12", "label": "builds"}})
 
         return edges
+    
+    def save(self, db_path: Union[str, Path], description: str = "RIG Export") -> int:
+        """
+        Save RIG to SQLite database.
+        
+        Args:
+            db_path: Path to SQLite database file
+            description: Description for this RIG export
+            
+        Returns:
+            RIG ID in database
+        """
+        from rig_store import save_rig
+        return save_rig(self, db_path, description)

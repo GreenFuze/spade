@@ -6,67 +6,67 @@
 
 ## Overall Performance Comparison
 
-| Metric                  | WITHOUT RIG | WITH RIG | Difference                               |
-| ----------------------- | ----------- | -------- | ---------------------------------------- |
-| Percentage              | 62.2%       | 90.2%    | <span style='color: green'>+28.0</span>  |
-| Normalized Score (0-10) | 6.22        | 9.02     | <span style='color: green'>+2.8</span>   |
-| Raw Score               | 211.00      | 323.00   | <span style='color: green'>+112.0</span> |
+| Metric | WITHOUT RIG | WITH RIG | Difference |
+|--------|-------------|----------|------------|
+| Percentage | 62.2% | 90.2% | <span style='color: green'>+28.0</span> |
+| Normalized Score (0-10) | 6.22 | 9.02 | <span style='color: green'>+2.8</span> |
+| Raw Score | 211.00 | 323.00 | <span style='color: green'>+112.0</span> |
 
 ## Detailed Counts Comparison
 
-| Count Type     | WITHOUT RIG | WITH RIG | Difference                               |
-| -------------- | ----------- | -------- | ---------------------------------------- |
-| Correct        | 211         | 323      | <span style='color: green'>+112.0</span> |
-| Incorrect      | 128         | 35       | <span style='color: green'>-93.0</span>  |
-| Expected Count | 339         | 358      | <span style='color: green'>+19.0</span>  |
-| Accuracy       | 62.2%       | 90.2%    | <span style='color: green'>+28.0</span>  |
+| Count Type | WITHOUT RIG | WITH RIG | Difference |
+|------------|-------------|----------|------------|
+| Correct | 211 | 323 | <span style='color: green'>+112.0</span> |
+| Incorrect | 128 | 35 | <span style='color: green'>-93.0</span> |
+| Expected Count | 339 | 358 | <span style='color: green'>+19.0</span> |
+| Accuracy | 62.2% | 90.2% | <span style='color: green'>+28.0</span> |
 
 ## Per-Question Comparison
 
-| Question | Metric     | WITHOUT RIG | WITH RIG | Expected from RIG | Difference                               |
-| -------- | ---------- | ----------- | -------- | ----------------- | ---------------------------------------- |
-| Q01      | Percentage | 55.9%       | 88.8%    | 100.0%            | <span style='color: green'>+32.9</span>  |
-| Q01      | Correct    | 62          | 95       | 111               | <span style='color: green'>+33.0</span>  |
-| Q01      | Incorrect  | 49          | 12       | 0                 | <span style='color: green'>-37.0</span>  |
-| Q02      | Percentage | 47.8%       | 97.1%    | 100.0%            | <span style='color: green'>+49.3</span>  |
-| Q02      | Correct    | 22          | 34       | 46                | <span style='color: green'>+12.0</span>  |
-| Q02      | Incorrect  | 24          | 1        | 0                 | <span style='color: green'>-23.0</span>  |
-| Q03      | Percentage | 70.6%       | 76.2%    | 100.0%            | <span style='color: green'>+5.6</span>   |
-| Q03      | Correct    | 24          | 32       | 34                | <span style='color: green'>+8.0</span>   |
-| Q03      | Incorrect  | 10          | 10       | 0                 | 0.0                                      |
-| Q04      | Percentage | 100.0%      | 100.0%   | 100.0%            | 0.0                                      |
-| Q04      | Correct    | 9           | 12       | 9                 | <span style='color: green'>+3.0</span>   |
-| Q04      | Incorrect  | 0           | 0        | 0                 | 0.0                                      |
-| Q05      | Percentage | 100.0%      | 100.0%   | 100.0%            | 0.0                                      |
-| Q05      | Correct    | 9           | 12       | 9                 | <span style='color: green'>+3.0</span>   |
-| Q05      | Incorrect  | 0           | 0        | 0                 | 0.0                                      |
-| Q06      | Percentage | 83.7%       | 91.8%    | 100.0%            | <span style='color: green'>+8.1</span>   |
-| Q06      | Correct    | 36          | 45       | 43                | <span style='color: green'>+9.0</span>   |
-| Q06      | Incorrect  | 7           | 4        | 0                 | <span style='color: green'>-3.0</span>   |
-| Q07      | Percentage | 100.0%      | 100.0%   | 100.0%            | 0.0                                      |
-| Q07      | Correct    | 12          | 15       | 12                | <span style='color: green'>+3.0</span>   |
-| Q07      | Incorrect  | 0           | 0        | 0                 | 0.0                                      |
-| Q08      | Percentage | 100.0%      | 100.0%   | 100.0%            | 0.0                                      |
-| Q08      | Correct    | 6           | 9        | 6                 | <span style='color: green'>+3.0</span>   |
-| Q08      | Incorrect  | 0           | 0        | 0                 | 0.0                                      |
-| Q09      | Percentage | 42.9%       | 89.5%    | 100.0%            | <span style='color: green'>+46.6</span>  |
-| Q09      | Correct    | 9           | 17       | 21                | <span style='color: green'>+8.0</span>   |
-| Q09      | Incorrect  | 12          | 2        | 0                 | <span style='color: green'>-10.0</span>  |
-| Q10      | Percentage | 0.0%        | 100.0%   | 100.0%            | <span style='color: green'>+100.0</span> |
-| Q10      | Correct    | 0           | 14       | 15                | <span style='color: green'>+14.0</span>  |
-| Q10      | Incorrect  | 15          | 0        | 0                 | <span style='color: green'>-15.0</span>  |
-| Q11      | Percentage | 12.5%       | 37.5%    | 100.0%            | <span style='color: green'>+25.0</span>  |
-| Q11      | Correct    | 1           | 3        | 8                 | <span style='color: green'>+2.0</span>   |
-| Q11      | Incorrect  | 7           | 5        | 0                 | <span style='color: green'>-2.0</span>   |
-| Q12      | Percentage | 75.0%       | 100.0%   | 100.0%            | <span style='color: green'>+25.0</span>  |
-| Q12      | Correct    | 3           | 4        | 4                 | <span style='color: green'>+1.0</span>   |
-| Q12      | Incorrect  | 1           | 0        | 0                 | <span style='color: green'>-1.0</span>   |
-| Q13      | Percentage | 100.0%      | 100.0%   | 100.0%            | 0.0                                      |
-| Q13      | Correct    | 12          | 15       | 12                | <span style='color: green'>+3.0</span>   |
-| Q13      | Incorrect  | 0           | 0        | 0                 | 0.0                                      |
-| Q14      | Percentage | 66.7%       | 94.1%    | 100.0%            | <span style='color: green'>+27.5</span>  |
-| Q14      | Correct    | 6           | 16       | 9                 | <span style='color: green'>+10.0</span>  |
-| Q14      | Incorrect  | 3           | 1        | 0                 | <span style='color: green'>-2.0</span>   |
+| Question | Metric | WITHOUT RIG | WITH RIG | Expected from RIG | Difference |
+|----------|--------|-------------|----------|-------------------|------------|
+| Q01 | Percentage | 55.9% | 88.8% | 100.0% | <span style='color: green'>+32.9</span> |
+| Q01 | Correct | 62 | 95 | 111 | <span style='color: green'>+33.0</span> |
+| Q01 | Incorrect | 49 | 12 | 0 | <span style='color: green'>-37.0</span> |
+| Q02 | Percentage | 47.8% | 97.1% | 100.0% | <span style='color: green'>+49.3</span> |
+| Q02 | Correct | 22 | 34 | 46 | <span style='color: green'>+12.0</span> |
+| Q02 | Incorrect | 24 | 1 | 0 | <span style='color: green'>-23.0</span> |
+| Q03 | Percentage | 70.6% | 76.2% | 100.0% | <span style='color: green'>+5.6</span> |
+| Q03 | Correct | 24 | 32 | 34 | <span style='color: green'>+8.0</span> |
+| Q03 | Incorrect | 10 | 10 | 0 | 0.0 |
+| Q04 | Percentage | 100.0% | 100.0% | 100.0% | 0.0 |
+| Q04 | Correct | 9 | 12 | 9 | <span style='color: green'>+3.0</span> |
+| Q04 | Incorrect | 0 | 0 | 0 | 0.0 |
+| Q05 | Percentage | 100.0% | 100.0% | 100.0% | 0.0 |
+| Q05 | Correct | 9 | 12 | 9 | <span style='color: green'>+3.0</span> |
+| Q05 | Incorrect | 0 | 0 | 0 | 0.0 |
+| Q06 | Percentage | 83.7% | 91.8% | 100.0% | <span style='color: green'>+8.1</span> |
+| Q06 | Correct | 36 | 45 | 43 | <span style='color: green'>+9.0</span> |
+| Q06 | Incorrect | 7 | 4 | 0 | <span style='color: green'>-3.0</span> |
+| Q07 | Percentage | 100.0% | 100.0% | 100.0% | 0.0 |
+| Q07 | Correct | 12 | 15 | 12 | <span style='color: green'>+3.0</span> |
+| Q07 | Incorrect | 0 | 0 | 0 | 0.0 |
+| Q08 | Percentage | 100.0% | 100.0% | 100.0% | 0.0 |
+| Q08 | Correct | 6 | 9 | 6 | <span style='color: green'>+3.0</span> |
+| Q08 | Incorrect | 0 | 0 | 0 | 0.0 |
+| Q09 | Percentage | 42.9% | 89.5% | 100.0% | <span style='color: green'>+46.6</span> |
+| Q09 | Correct | 9 | 17 | 21 | <span style='color: green'>+8.0</span> |
+| Q09 | Incorrect | 12 | 2 | 0 | <span style='color: green'>-10.0</span> |
+| Q10 | Percentage | 0.0% | 100.0% | 100.0% | <span style='color: green'>+100.0</span> |
+| Q10 | Correct | 0 | 14 | 15 | <span style='color: green'>+14.0</span> |
+| Q10 | Incorrect | 15 | 0 | 0 | <span style='color: green'>-15.0</span> |
+| Q11 | Percentage | 12.5% | 37.5% | 100.0% | <span style='color: green'>+25.0</span> |
+| Q11 | Correct | 1 | 3 | 8 | <span style='color: green'>+2.0</span> |
+| Q11 | Incorrect | 7 | 5 | 0 | <span style='color: green'>-2.0</span> |
+| Q12 | Percentage | 75.0% | 100.0% | 100.0% | <span style='color: green'>+25.0</span> |
+| Q12 | Correct | 3 | 4 | 4 | <span style='color: green'>+1.0</span> |
+| Q12 | Incorrect | 1 | 0 | 0 | <span style='color: green'>-1.0</span> |
+| Q13 | Percentage | 100.0% | 100.0% | 100.0% | 0.0 |
+| Q13 | Correct | 12 | 15 | 12 | <span style='color: green'>+3.0</span> |
+| Q13 | Incorrect | 0 | 0 | 0 | 0.0 |
+| Q14 | Percentage | 66.7% | 94.1% | 100.0% | <span style='color: green'>+27.5</span> |
+| Q14 | Correct | 6 | 16 | 9 | <span style='color: green'>+10.0</span> |
+| Q14 | Incorrect | 3 | 1 | 0 | <span style='color: green'>-2.0</span> |
 
 ## Impact Analysis
 
@@ -266,16 +266,16 @@
 
 5. `boost.libraries: json` → <span style='color: red'>**incorrect** (expected: `Not found in ground truth`)</span>
 6. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_atomic-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_atomic-vc143-mt-gd-x64-1_87.lib`)</span>
-7. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_container-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_container-vc143-mt-gd-x64-1_87.lib`)</span>
-8. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_system-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_system-vc143-mt-gd-x64-1_87.lib`)</span>
-9. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_date_time-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_date_time-vc143-mt-gd-x64-1_87.lib`)</span>
+7. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_date_time-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_date_time-vc143-mt-gd-x64-1_87.lib`)</span>
+8. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_container-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_container-vc143-mt-gd-x64-1_87.lib`)</span>
+9. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_system-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_system-vc143-mt-gd-x64-1_87.lib`)</span>
 10. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_chrono-vc143-mt-gd-x64-1_87.lib` → <span style='color: red'>**incorrect** (expected: `c:\src\vcpkg\installed\x64-windows\debug\lib\boost_chrono-vc143-mt-gd-x64-1_87.lib`)</span>
 16. `boost.declared_in: lang-plugin-c/idl/CMakeLists.txt` → <span style='color: red'>**incorrect** (expected: `Not found in ground truth`)</span>
-17. `boost.declared_in: MISSING cmake/CPP.cmake` → <span style='color: red'>**incorrect** (expected: `cmake/CPP.cmake`)</span>
-18. `boost.declared_in: MISSING metaffi-core/CMakeLists.txt` → <span style='color: red'>**incorrect** (expected: `metaffi-core/CMakeLists.txt`)</span>
-19. `boost.declared_in: MISSING lang-plugin-python311/idl/CMakeLists.txt` → <span style='color: red'>**incorrect** (expected: `lang-plugin-python311/idl/CMakeLists.txt`)</span>
-20. `boost.declared_in: MISSING lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt` → <span style='color: red'>**incorrect** (expected: `lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt`)</span>
-21. `boost.declared_in: MISSING metaffi-core/plugin-sdk/run_sdk_tests.cmake` → <span style='color: red'>**incorrect** (expected: `metaffi-core/plugin-sdk/run_sdk_tests.cmake`)</span>
+17. `boost.declared_in: MISSING metaffi-core/CMakeLists.txt` → <span style='color: red'>**incorrect** (expected: `metaffi-core/CMakeLists.txt`)</span>
+18. `boost.declared_in: MISSING lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt` → <span style='color: red'>**incorrect** (expected: `lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt`)</span>
+19. `boost.declared_in: MISSING cmake/CPP.cmake` → <span style='color: red'>**incorrect** (expected: `cmake/CPP.cmake`)</span>
+20. `boost.declared_in: MISSING metaffi-core/plugin-sdk/run_sdk_tests.cmake` → <span style='color: red'>**incorrect** (expected: `metaffi-core/plugin-sdk/run_sdk_tests.cmake`)</span>
+21. `boost.declared_in: MISSING lang-plugin-python311/idl/CMakeLists.txt` → <span style='color: red'>**incorrect** (expected: `lang-plugin-python311/idl/CMakeLists.txt`)</span>
 
 **WITH RIG Incorrect Facts (2):**
 
@@ -577,16 +577,16 @@
 
 5. `boost.libraries: json`
 6. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_atomic-vc143-mt-gd-x64-1_87.lib`
-7. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_container-vc143-mt-gd-x64-1_87.lib`
-8. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_system-vc143-mt-gd-x64-1_87.lib`
-9. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_date_time-vc143-mt-gd-x64-1_87.lib`
+7. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_date_time-vc143-mt-gd-x64-1_87.lib`
+8. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_container-vc143-mt-gd-x64-1_87.lib`
+9. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_system-vc143-mt-gd-x64-1_87.lib`
 10. `boost.libraries: MISSING c:\src\vcpkg\installed\x64-windows\debug\lib\boost_chrono-vc143-mt-gd-x64-1_87.lib`
 16. `boost.declared_in: lang-plugin-c/idl/CMakeLists.txt`
-17. `boost.declared_in: MISSING cmake/CPP.cmake`
-18. `boost.declared_in: MISSING metaffi-core/CMakeLists.txt`
-19. `boost.declared_in: MISSING lang-plugin-python311/idl/CMakeLists.txt`
-20. `boost.declared_in: MISSING lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt`
-21. `boost.declared_in: MISSING metaffi-core/plugin-sdk/run_sdk_tests.cmake`
+17. `boost.declared_in: MISSING metaffi-core/CMakeLists.txt`
+18. `boost.declared_in: MISSING lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt`
+19. `boost.declared_in: MISSING cmake/CPP.cmake`
+20. `boost.declared_in: MISSING metaffi-core/plugin-sdk/run_sdk_tests.cmake`
+21. `boost.declared_in: MISSING lang-plugin-python311/idl/CMakeLists.txt`
 
 **Expected:** 19 correct, 0 incorrect
 **Actual in "WITH RIG":** 17 correct, 2 incorrect
