@@ -1,0 +1,6 @@
+https://github.com/MetaFFI/metaffi-root: bae6ac7
+https://github.com/MetaFFI/lang-plugin-python311: c737682
+https://github.com/MetaFFI/lang-plugin-openjdk: 674b18d
+https://github.com/MetaFFI/metaffi-core: a3227a5
+https://github.com/MetaFFI/lang-plugin-go: 78733fa
+https://github.com/MetaFFI/metaffi-installer: ddceafb
