@@ -1,0 +1,20 @@
+# Requirements for LLM-based RIG Generation System
+
+# Core dependencies
+agentkit-gf>=0.1.1
+pydantic>=2.0.0
+pydantic-ai>=0.0.14
+
+# OpenAI API
+openai>=1.0.0
+
+# Existing RIG dependencies
+pathlib2>=2.3.7  # For Path handling
+typing-extensions>=4.0.0  # For typing support
+
+# Development and testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Optional: For enhanced file handling
+aiofiles>=23.0.0
