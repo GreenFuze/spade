@@ -16,6 +16,7 @@ class ComponentType(str, Enum):
     EXECUTABLE = "executable"
     SHARED_LIBRARY = "shared_library"
     STATIC_LIBRARY = "static_library"
+    PACKAGE_LIBRARY = "package_library"
     VM = "vm"
     INTERPRETED = "interpreted"
 
@@ -107,7 +108,7 @@ class Utility(BuildNode):
     pass
 
 
-class Test(BaseModel):
+class TestDefinition(BaseModel):
     """Test definition."""
 
     id: Optional[int] = Field(None, description="Database ID")

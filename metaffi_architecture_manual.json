@@ -1,0 +1,399 @@
+{
+	"repository": {
+		"name": "MetaFFI",
+		"path": "C:/src/github.com/MetaFFI",
+		"build_system": {
+			"type": "CMake",
+			"version": "3.10+",
+			"test_framework": "CTest"
+		}
+	},
+	"aggregators": {
+		"main_aggregator": {
+			"name": "MetaFFI",
+			"description": "Main MetaFFI aggregator",
+			"sub_aggregators": [
+				"metaffi-core",
+				"python311",
+				"openjdk",
+				"go"
+			]
+		}
+	},
+	"components": {
+		"metaffi-core": {
+			"type": "aggregator",
+			"description": "Core library and build orchestration for MetaFFI",
+			"subcomponents": [
+				{
+					"name": "xllr",
+					"type": "C++ dynamic library",
+					"packages": [
+						"Boost.filesystem",
+						"Boost.thread"
+					],
+					"location": "metaffi-core/XLLR/",
+					"actions": "copy of several .c files and .h files to $METAFFI_HOME"
+				},
+				{
+					"name": "metaffi",
+					"type": "C++ executable",
+					"packages": [
+						"Boost.filesystem",
+						"Boost.program_options"
+					],
+					"location": "metaffi-core/CLI/"
+				},
+				{
+					"name": "cdts_test",
+					"type": "C++ executable",
+					"test_type": "CTest unit-test",
+					"packages": [
+						"Boost.filesystem",
+						"doctest"
+					],
+					"location": "metaffi-core/plugin-sdk/"
+				},
+				{
+					"name": "xllr_capi_test",
+					"type": "C++ executable",
+					"test_type": "CTest unit-test",
+					"packages": [
+						"Boost.filesystem",
+						"doctest"
+					],
+					"location": "metaffi-core/plugin-sdk/"
+				}
+			]
+		},
+		"python311": {
+			"type": "aggregator",
+			"description": "Python 3.11 language plugin",
+			"subcomponents": [
+				{
+					"name": "xllr.python311",
+					"type": "C++ dynamic library",
+					"packages": [
+						"Boost.filesystem"
+					],
+					"location": "lang-plugin-python311/runtime/"
+				},
+				{
+					"name": "python_runtime_test",
+					"type": "C++ executable",
+					"test_type": "CTest unit-test",
+					"packages": [
+						"Boost.filesystem",
+						"doctest"
+					],
+					"depends_on": [
+						"xllr.python311"
+					],
+					"location": "lang-plugin-python311/runtime/"
+				},
+				{
+					"name": "metaffi.idl.python311",
+					"type": "C++ dynamic library",
+					"packages": [
+						"Boost.filesystem"
+					],
+					"location": "lang-plugin-python311/idl/"
+				},
+				{
+					"name": "python311_idl_plugin_test",
+					"type": "C++ executable",
+					"test_type": "CTest unit-test",
+					"packages": [
+						"Boost.filesystem",
+						"doctest"
+					],
+					"depends_on": [
+						"metaffi.idl.python311"
+					],
+					"location": "lang-plugin-python311/idl/"
+				},
+				{
+					"name": "metaffi.compiler.python311",
+					"type": "Go dynamic library",
+					"location": "lang-plugin-python311/compiler/"
+				}
+			]
+		},
+		"openjdk": {
+			"type": "aggregator",
+			"description": "OpenJDK language plugin",
+			"subcomponents": [
+				{
+					"name": "xllr.openjdk",
+					"type": "C++ dynamic library",
+					"packages": [
+						"Boost.filesystem",
+						"JNI"
+					],
+					"location": "lang-plugin-openjdk/runtime/"
+				},
+				{
+					"name": "xllr.openjdk.jni.bridge",
+					"type": "C++ dynamic library",
+					"packages": [
+						"Boost.filesystem",
+						"JNI"
+					],
+					"depends_on": [
+						"xllr.openjdk"
+					],
+					"location": "lang-plugin-openjdk/xllr-openjdk-bridge/"
+				},
+				{
+					"name": "xllr.openjdk.bridge",
+					"type": "JVM jar",
+					"depends_on": [
+						"xllr.openjdk.jni.bridge"
+					],
+					"location": "lang-plugin-openjdk/xllr-openjdk-bridge/"
+				},
+				{
+					"name": "metaffi.api",
+					"type": "JVM jar",
+					"depends_on": [
+						"xllr.openjdk.bridge"
+					],
+					"location": "lang-plugin-openjdk/api/"
+				},
+				{
+					"name": "openjdk_api_test",
+					"type": "C++ executable",
+					"test_type": "CTest unit-test",
+					"packages": [
+						"Boost.filesystem",
+						"doctest",
+						"JNI"
+					],
+					"depends_on": [
+						"xllr.openjdk"
+					],
+					"location": "lang-plugin-openjdk/runtime/"
+				},
+				{
+					"name": "cdts_java_test",
+					"type": "C++ executable",
+					"test_type": "CTest unit-test",
+					"packages": [
+						"Boost.filesystem",
+						"doctest",
+						"JNI"
+					],
+					"depends_on": [
+						"xllr.openjdk"
+					],
+					"location": "lang-plugin-openjdk/runtime/"
+				},
+				{
+					"name": "metaffi.idl.openjdk",
+					"type": "C++ dynamic library",
+					"packages": [
+						"JNI"
+					],
+					"location": "lang-plugin-openjdk/idl/"
+				},
+				{
+					"name": "metaffi.compiler.openjdk",
+					"type": "Go dynamic library",
+					"location": "lang-plugin-openjdk/compiler/"
+				}
+			]
+		},
+		"go": {
+			"type": "aggregator",
+			"description": "Go language plugin",
+			"subcomponents": [
+				{
+					"name": "xllr.go",
+					"type": "C++ dynamic library",
+					"packages": [
+						"Boost.filesystem"
+					],
+					"location": "lang-plugin-go/runtime/"
+				},
+				{
+					"name": "metaffi.compiler.go",
+					"type": "Go dynamic library",
+					"location": "lang-plugin-go/compiler/"
+				},
+				{
+					"name": "metaffi.idl.go",
+					"type": "Go dynamic library",
+					"location": "lang-plugin-go/idl/"
+				},
+				{
+					"name": "go_api_test",
+					"type": "C++ executable",
+					"test_type": "CTest unit-test",
+					"packages": [
+						"doctest",
+						"Boost.filesystem"
+					],
+					"depends_on": [
+						"xllr.go",
+						"build_go_guest"
+					],
+					"location": "lang-plugin-go/api/"
+				}
+			]
+		}
+	},
+	"standalone_targets": [
+		{
+			"name": "python3_api_unitest",
+			"type": "CTest target",
+			"description": "Runs python3 unittest on lang-plugin-python311/api/unittest/test_python311_api.py",
+			"location": "lang-plugin-python311/api/"
+		},
+		{
+			"name": "python3_api_cross_pl_tests",
+			"type": "CTest runner",
+			"description": "Runs python3 script lang-plugin-python311/api/tests/run_api_tests.py",
+			"location": "lang-plugin-python311/api/"
+		},
+		{
+			"name": "python311.publish",
+			"type": "Python script runner",
+			"description": "Runs using python3 the script 'publish_python_package.py' which publishes a package to pypi",
+			"depends_on": [
+				"xllr.python311"
+			],
+			"location": "lang-plugin-python311/api/"
+		},
+		{
+			"name": "metaffi_compiler_python311_test",
+			"type": "Go Test unit test runner",
+			"description": "Executed by CTest",
+			"location": "lang-plugin-python311/compiler/"
+		},
+		{
+			"name": "openjdk_api_cross_pl_tests",
+			"type": "CTest runner",
+			"description": "Runs python3 script lang-plugin-openjdk/api/tests/run_api_tests.py",
+			"location": "lang-plugin-openjdk/api/"
+		},
+		{
+			"name": "openjdk_idl_extractor",
+			"type": "JVM jar",
+			"packages": [
+				"libs/gson-2.10.1.jar",
+				"libs/asm-9.6.jar",
+				"libs/asm-tree-9.6.jar",
+				"libs/javaparser-core-3.24.4.jar"
+			],
+			"location": "lang-plugin-openjdk/idl/"
+		},
+		{
+			"name": "test_data_classes",
+			"type": "JVM classes",
+			"location": "lang-plugin-openjdk/idl/"
+		},
+		{
+			"name": "java_tests_classes",
+			"type": "JVM classes",
+			"location": "lang-plugin-openjdk/idl/"
+		},
+		{
+			"name": "java_tests_run",
+			"type": "JUnitCore unit test runner",
+			"location": "lang-plugin-openjdk/idl/"
+		},
+		{
+			"name": "openjdk_idl_plugin_java_tests",
+			"type": "JUnitCore unit test runner",
+			"description": "Executed by CTest",
+			"depends_on": [
+				"java_tests_run"
+			],
+			"location": "plugin-openjdk/idl/"
+		},
+		{
+			"name": "openjdk_compiler_go_tests",
+			"type": "Go Test unit test runner",
+			"description": "Executed by CTest",
+			"location": "lang-plugin-openjdk/compiler/"
+		},
+		{
+			"name": "build_go_guest",
+			"type": "Python script runner",
+			"description": "Executes python3 script lang-plugin-openjdk/runtime/test/build_guest.py",
+			"location": "lang-plugin-openjdk/runtime/"
+		},
+		{
+			"name": "metaffi_compiler_go_test",
+			"type": "Go Test unit test runner",
+			"description": "Executed by CTest",
+			"location": "lang-plugin-go/compiler/"
+		},
+		{
+			"name": "metaffi_idl_go_test",
+			"type": "Go Test unit test runner",
+			"description": "Executed by CTest",
+			"location": "lang-plugin-go/idl/"
+		},
+		{
+			"name": "go_runtime_test",
+			"type": "Go Test unit test runner",
+			"description": "Executed by CTest",
+			"location": "lang-plugin-go/go-runtime/"
+		}
+	],
+	"excluded_directories": [
+		"lang-plugin-c/",
+		"metaffi-installer/"
+	],
+	"non_build_directories": [
+		"containers/",
+		"cmake-build-*/",
+		"cmake/",
+		"output/",
+		"metaffi.github.io/"
+	],
+	"expected_directories": {
+		"source_directories": [
+			"metaffi-core",
+			"lang-plugin-python311",
+			"lang-plugin-openjdk",
+			"lang-plugin-go"
+		],
+		"test_directories": [
+			"metaffi-core/plugin-sdk"
+		]
+	},
+	"expected_components": {
+		"core_components": [
+			"metaffi-core",
+			"xllr",
+			"metaffi",
+			"cdts_test",
+			"xllr_capi_test"
+		],
+		"python311_components": [
+			"xllr.python311",
+			"python_runtime_test",
+			"metaffi.idl.python311",
+			"python311_idl_plugin_test",
+			"metaffi.compiler.python311"
+		],
+		"openjdk_components": [
+			"xllr.openjdk",
+			"xllr.openjdk.jni.bridge",
+			"xllr.openjdk.bridge",
+			"metaffi.api",
+			"openjdk_api_test",
+			"cdts_java_test",
+			"metaffi.idl.openjdk",
+			"metaffi.compiler.openjdk"
+		],
+		"go_components": [
+			"xllr.go",
+			"metaffi.compiler.go",
+			"metaffi.idl.go",
+			"go_api_test"
+		]
+	}
+}

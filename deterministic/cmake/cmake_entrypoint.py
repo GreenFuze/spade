@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import List, Optional, Dict, Tuple, Any, Union, Set
 
 from cmake_file_api import CMakeProject, ObjectKind
-from schemas import Component, ComponentType, Runtime, ExternalPackage, PackageManager, Test, Evidence, ComponentLocation, Aggregator, Runner, Utility, RepositoryInfo, BuildSystemInfo
+from schemas import Component, ComponentType, Runtime, ExternalPackage, PackageManager, TestDefinition, Evidence, ComponentLocation, Aggregator, Runner, Utility, RepositoryInfo, BuildSystemInfo
 from rig import RIG
 
 
@@ -847,7 +847,7 @@ class CMakeEntrypoint:
         self._temp_aggregators: List[Aggregator] = []
         self._temp_runners: List[Runner] = []
         self._temp_utilities: List[Utility] = []
-        self._temp_tests: List[Test] = []
+        self._temp_tests: List[TestDefinition] = []
         self._temp_build_directory: Path = Path()
         self._temp_output_directory: Path = Path()
         self._temp_configure_command: str = ""
@@ -1142,7 +1142,7 @@ class CMakeEntrypoint:
         for component in test_components:
             try:
                 # Create test object
-                test_obj = Test(
+                test_obj = TestDefinition(
                     id=None,
                     name=component.name,
                     test_framework=self._detect_test_framework_from_name(component.name),
@@ -1774,7 +1774,7 @@ class CMakeEntrypoint:
         elif ext in [".a", ".lib"]:
             return ComponentType.STATIC_LIBRARY
         elif ext in [".jar"]:
-            return ComponentType.VM
+            return ComponentType.PACKAGE_LIBRARY
         else:
             # Unknown extension - return None instead of defaulting
             return None
@@ -3460,7 +3460,7 @@ class CMakeEntrypoint:
                     continue
                 
                 # Create test object with ComponentRef
-                test_obj = Test(
+                test_obj = TestDefinition(
                     id=None,
                     name=test_name,
                     test_framework=self._detect_test_framework_from_ctest(test),
@@ -3598,7 +3598,7 @@ class CMakeEntrypoint:
             if test_obj:
                 self._temp_tests.append(test_obj)
 
-    def _create_test_from_ctest(self, test: Dict[str, Any], backtrace_graph: Optional[Dict[str, Any]]) -> Optional[Test]:
+    def _create_test_from_ctest(self, test: Dict[str, Any], backtrace_graph: Optional[Dict[str, Any]]) -> Optional[TestDefinition]:
         """Create Test from CTest information."""
         try:
             # Get test name
@@ -3646,7 +3646,7 @@ class CMakeEntrypoint:
                     self._temp_unknown_errors
                 )
 
-            return Test(
+            return TestDefinition(
                 id=None,
                 name=test_name,
                 test_executable=None,  # Would need custom logic to determine

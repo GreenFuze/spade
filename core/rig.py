@@ -9,7 +9,7 @@ SQL-friendly for future SQLite storage.
 from pathlib import Path
 from typing import List, Optional, Dict, Any, Tuple, Set, Iterable, Union
 
-from schemas import Component, Aggregator, Runner, Utility, Test, ComponentType, Runtime, Evidence, ComponentLocation, ExternalPackage, PackageManager, BuildNode, RepositoryInfo, BuildSystemInfo, ValidationSeverity, ValidationError, RIGValidationError
+from .schemas import Component, Aggregator, Runner, Utility, TestDefinition, ComponentType, Runtime, Evidence, ComponentLocation, ExternalPackage, PackageManager, BuildNode, RepositoryInfo, BuildSystemInfo, ValidationSeverity, ValidationError, RIGValidationError
 
 
 class RIG:
@@ -36,7 +36,7 @@ class RIG:
         self.aggregators: List[Aggregator] = []
         self.runners: List[Runner] = []
         self.utilities: List[Utility] = []
-        self.tests: List[Test] = []
+        self.tests: List[TestDefinition] = []
 
         # Supporting data (also flat for SQL)
         self.evidence: List[Evidence] = []
@@ -49,7 +49,7 @@ class RIG:
         self._aggregators_by_name: Dict[str, Aggregator] = {}
         self._runners_by_name: Dict[str, Runner] = {}
         self._utilities_by_name: Dict[str, Utility] = {}
-        self._tests_by_name: Dict[str, Test] = {}
+        self._tests_by_name: Dict[str, TestDefinition] = {}
 
     def add_component(self, component: Component) -> None:
         """Add a component to the RIG."""
@@ -90,7 +90,7 @@ class RIG:
         self._utilities_by_name[utility.name] = utility
         self.evidence.append(utility.evidence)
 
-    def add_test(self, test: Test) -> None:
+    def add_test(self, test: TestDefinition) -> None:
         """Add a test to the RIG."""
         self.tests.append(test)
         self._tests_by_name[test.name] = test
@@ -127,7 +127,7 @@ class RIG:
         """Get a utility by name."""
         return self._utilities_by_name.get(name)
 
-    def get_test_by_name(self, name: str) -> Optional[Test]:
+    def get_test_by_name(self, name: str) -> Optional[TestDefinition]:
         """Get a test by name."""
         return self._tests_by_name.get(name)
 
@@ -376,7 +376,7 @@ class RIG:
     def _is_likely_unbuilt_component(self, component: Component) -> bool:
         """Check if a component is likely to be unbuilt based on explicit evidence."""
         # Check if this is a library component that's part of the build system
-        if component.type in [ComponentType.SHARED_LIBRARY, ComponentType.STATIC_LIBRARY]:
+        if component.type in [ComponentType.SHARED_LIBRARY, ComponentType.STATIC_LIBRARY, ComponentType.PACKAGE_LIBRARY]:
             # If it has source files, it's likely a build target that needs to be built
             if component.source_files:
                 return True
@@ -811,7 +811,7 @@ The following JSON contains the complete build analysis data:
                 name_lower.startswith('test_') or 
                 'test' in name_lower)
 
-    def _find_corresponding_test(self, component: Component) -> Optional[Test]:
+    def _find_corresponding_test(self, component: Component) -> Optional[TestDefinition]:
         """Find the corresponding test node for a test component."""
         # Look for a test with the same name as the component
         for test in self.tests:
@@ -1877,7 +1877,7 @@ The following JSON contains the complete build analysis data:
 
         return node_data
 
-    def _create_test_node_data(self, test: Test) -> Dict[str, Any]:
+    def _create_test_node_data(self, test: TestDefinition) -> Dict[str, Any]:
         """Create node data for a test."""
         # Use plain text label (no HTML)
         label = test.name
@@ -1893,7 +1893,7 @@ The following JSON contains the complete build analysis data:
                 "width": 100,
                 "height": 50,
                 "testFramework": test.test_framework,
-                "filePath": str(test.evidence.file) if test.evidence else None,
+                "filePath": test.evidence.call_stack[0] if test.evidence and test.evidence.call_stack else None,
             }
         }
 
