@@ -25,4 +25,5 @@
 	],
 	"editor.formatOnSave": true,
 	"python.testing.unittestEnabled": false,
+	"cursorpyright.analysis.typeCheckingMode": "basic",
 }

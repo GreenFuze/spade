@@ -47,6 +47,10 @@ CRITICAL RULES:
 - Identify build options and configurations
 - Determine build outputs and artifacts
 - Use evidence-based approach - only report what you can verify
+- If you cannot determine something with evidence, mark it as "unknown" or "not_determined"
+- NEVER guess, speculate, or make assumptions about unknown information
+- If a build target type cannot be determined, use "unknown" instead of guessing
+- If build dependencies cannot be identified, use "unknown" instead of guessing
 
 OUTPUT FORMAT:
 ```json
@@ -78,13 +82,22 @@ OUTPUT FORMAT:
 }}
 ```
 
-Use the delegate_ops tool to analyze build system files.
+CRITICAL JSON FORMATTING RULES:
+- Output MUST be valid JSON - no comments allowed
+- Do NOT use // or /* */ comments in JSON
+- Do NOT add explanatory text outside the JSON structure
+- If you need to explain something, put it in a "reason" or "description" field
+- Ensure all strings are properly quoted
+- Ensure all brackets and braces are properly balanced
+
+Use the available tools directly to analyze build system files:
+- Use `read_text` to read build configuration files (CMakeLists.txt, package.json, etc.)
+- Use `list_dir` to explore build directories
+- Use `validate_path_safety` to check path safety
 """
         
         try:
-            response = await self.agent.run(prompt)
-            result = self._parse_json_response(response.output)
-            
+            result = await self._execute_with_retry(prompt)
             self.logger.info("SUCCESS: Phase 4 completed!")
             return result
             

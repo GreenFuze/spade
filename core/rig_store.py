@@ -11,9 +11,9 @@ from pathlib import Path
 from typing import Optional, List, Dict, Any, Union
 from contextlib import contextmanager
 
-from rig import RIG
-from schemas import (
-    Component, Aggregator, Runner, Utility, Test, Evidence, 
+from .rig import RIG
+from .schemas import (
+    Component, Aggregator, Runner, Utility, TestDefinition, Evidence, 
     ComponentLocation, ExternalPackage, PackageManager, RepositoryInfo, 
     BuildSystemInfo, ComponentType, Runtime
 )
@@ -317,7 +317,7 @@ class RIGStore:
             utility_map[utility.id] = cursor.lastrowid
         return utility_map
     
-    def _save_tests(self, conn: sqlite3.Connection, rig_id: int, tests: List[Test], evidence_map: Dict[int, int], component_map: Dict[int, int], runner_map: Dict[int, int]) -> Dict[int, int]:
+    def _save_tests(self, conn: sqlite3.Connection, rig_id: int, tests: List[TestDefinition], evidence_map: Dict[int, int], component_map: Dict[int, int], runner_map: Dict[int, int]) -> Dict[int, int]:
         """Save tests and return mapping from original ID to database ID."""
         test_map = {}
         for test in tests:
@@ -605,7 +605,7 @@ class RIGStore:
             utility_list.append(utility)
         return utility_list
     
-    def _load_tests(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence], component_map: Dict[int, Component], runner_map: Dict[int, Runner]) -> List[Test]:
+    def _load_tests(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence], component_map: Dict[int, Component], runner_map: Dict[int, Runner]) -> List[TestDefinition]:
         """Load tests."""
         cursor = conn.execute("SELECT * FROM tests WHERE rig_id = ?", (rig_id,))
         test_list = []
@@ -618,7 +618,7 @@ class RIGStore:
             if row['test_runner_id'] and row['test_runner_id'] in runner_map:
                 test_runner = runner_map[row['test_runner_id']]
             
-            test = Test(
+            test = TestDefinition(
                 id=row['id'],
                 name=row['name'],
                 test_executable=test_executable,
@@ -677,7 +677,7 @@ class RIGStore:
             return utility_map[row['depends_on_utility_id']]
         return None
     
-    def _load_test_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, test_map: Dict[int, Test], component_map: Dict[int, Component]) -> None:
+    def _load_test_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, test_map: Dict[int, TestDefinition], component_map: Dict[int, Component]) -> None:
         """Load test-to-component relationships."""
         cursor = conn.execute("SELECT * FROM test_components WHERE rig_id = ?", (rig_id,))
         for row in cursor.fetchall():
@@ -685,7 +685,7 @@ class RIGStore:
             component = component_map[row['component_id']]
             test.components_being_tested.append(component)
     
-    def _load_source_files(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, Component], test_map: Dict[int, Test]) -> None:
+    def _load_source_files(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, Component], test_map: Dict[int, TestDefinition]) -> None:
         """Load source file relationships."""
         # Load component source files
         cursor = conn.execute("SELECT * FROM component_source_files WHERE rig_id = ?", (rig_id,))

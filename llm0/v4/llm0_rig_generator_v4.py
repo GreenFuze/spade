@@ -98,8 +98,8 @@ class LLMRIGGeneratorV4:
             rig = RIG()
             
             # Set repository info
-            if "repository_info" in rig_assembly:
-                repo_info = rig_assembly["repository_info"]
+            if "rig_assembly" in rig_assembly and "repository_info" in rig_assembly["rig_assembly"]:
+                repo_info = rig_assembly["rig_assembly"]["repository_info"]
                 rig.repository = RepositoryInfo(
                     name=repo_info.get("name", "Unknown"),
                     root_path=Path(repo_info.get("root_path", str(self.repository_path))),
@@ -110,14 +110,33 @@ class LLMRIGGeneratorV4:
                     install_command=repo_info.get("install_command", ""),
                     test_command=repo_info.get("test_command", "")
                 )
+            else:
+                # Fallback repository info
+                rig.repository = RepositoryInfo(
+                    name="Unknown",
+                    root_path=self.repository_path,
+                    build_directory=self.repository_path / "build",
+                    output_directory=self.repository_path / "output",
+                    configure_command="",
+                    build_command="",
+                    install_command="",
+                    test_command=""
+                )
             
             # Set build system info
-            if "build_system_info" in rig_assembly:
-                build_info = rig_assembly["build_system_info"]
+            if "rig_assembly" in rig_assembly and "build_system_info" in rig_assembly["rig_assembly"]:
+                build_info = rig_assembly["rig_assembly"]["build_system_info"]
                 rig.build_system = BuildSystemInfo(
                     name=build_info.get("name", "Unknown"),
                     version=build_info.get("version", "Unknown"),
                     build_type=build_info.get("build_type", "Unknown")
+                )
+            else:
+                # Fallback build system info
+                rig.build_system = BuildSystemInfo(
+                    name="Unknown",
+                    version="Unknown",
+                    build_type="Unknown"
                 )
             
             return rig

@@ -22,12 +22,12 @@ from agentkit_gf.tools.fs import FileTools
 from agentkit_gf.tools.os import ProcessTools
 from pydantic_ai.settings import ModelSettings
 
-from schemas import (
+from core.schemas import (
     Component, ComponentType, Runtime, Evidence, ComponentLocation,
     ExternalPackage, PackageManager, RepositoryInfo, BuildSystemInfo,
     TestDefinition, Aggregator, Runner, Utility
 )
-from rig import RIG
+from core.rig import RIG
 
 
 @dataclass

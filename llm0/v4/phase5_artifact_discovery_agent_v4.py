@@ -48,6 +48,23 @@ CRITICAL RULES:
 - Classify artifacts by type and purpose
 - Identify installation and distribution artifacts
 - Use evidence-based approach - only report what you can verify
+- If you cannot determine something with evidence, mark it as "unknown" or "not_determined"                                                                     
+- NEVER guess, speculate, or make assumptions about unknown information
+- If an artifact type cannot be determined, use "unknown" instead of guessing
+- If artifact size cannot be determined, use "unknown" instead of guessing
+
+HANDLING MISSING BUILD ARTIFACTS:
+- ALWAYS use "list_dir" to check if build directories exist BEFORE trying to access them
+- If build directories don't exist, report "no build artifacts found"
+- If build artifacts don't exist, report "build artifacts not available"
+- Do NOT try to access non-existent build paths repeatedly
+- If no build artifacts are found, return empty arrays for build_artifacts, library_artifacts, package_artifacts
+
+MANDATORY EXPLORATION STRATEGY:
+1. FIRST: Use "list_dir" to check what build directories exist
+2. ONLY THEN: Explore existing build directories
+3. If no build directories exist, report "no build artifacts found"
+4. If build directories exist but are empty, report "build artifacts not available"
 
 OUTPUT FORMAT:
 ```json
@@ -82,13 +99,22 @@ OUTPUT FORMAT:
 }}
 ```
 
-Use the delegate_ops tool to discover build artifacts.
+CRITICAL JSON FORMATTING RULES:
+- Output MUST be valid JSON - no comments allowed
+- Do NOT use // or /* */ comments in JSON
+- Do NOT add explanatory text outside the JSON structure
+- If you need to explain something, put it in a "reason" or "description" field
+- Ensure all strings are properly quoted
+- Ensure all brackets and braces are properly balanced
+
+Use the available tools directly to discover build artifacts:
+- Use `list_dir` to explore build output directories
+- Use `stat` to get file information
+- Use `validate_path_safety` to check path safety
 """
         
         try:
-            response = await self.agent.run(prompt)
-            result = self._parse_json_response(response.output)
-            
+            result = await self._execute_with_retry(prompt)
             self.logger.info("SUCCESS: Phase 5 completed!")
             return result
             

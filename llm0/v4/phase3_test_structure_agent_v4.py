@@ -34,7 +34,7 @@ SOURCE STRUCTURE: {json.dumps(source_structure, indent=2)}
 TASK: Analyze test frameworks and test directory structure.
 
 ANALYSIS STEPS:
-1. Identify testing frameworks (CTest, JUnit, pytest, etc.)
+1. Identify testing frameworks (CTest, JUnit, pytest, Jest, Mocha, etc.)
 2. Map test directory structure and organization
 3. Analyze test configuration files and settings
 4. Identify what components are tested
@@ -46,6 +46,10 @@ CRITICAL RULES:
 - Map test files to their target components
 - Identify test execution patterns and commands
 - Use evidence-based approach - only report what you can verify
+- If you cannot determine something with evidence, mark it as "unknown" or "not_determined"
+- NEVER guess, speculate, or make assumptions about unknown information
+- If a test framework cannot be identified, use "unknown" instead of guessing
+- If test targets cannot be determined, use "unknown" instead of guessing
 
 OUTPUT FORMAT:
 ```json
@@ -56,6 +60,18 @@ OUTPUT FORMAT:
         "name": "CTest",
         "version": "3.10+",
         "config_files": ["CMakeLists.txt"],
+        "test_directories": ["tests", "test"]
+      }},
+      {{
+        "name": "JUnit",
+        "version": "5.x",
+        "config_files": ["pom.xml", "build.gradle"],
+        "test_directories": ["src/test/java"]
+      }},
+      {{
+        "name": "pytest",
+        "version": "7.x",
+        "config_files": ["pytest.ini", "pyproject.toml"],
         "test_directories": ["tests", "test"]
       }}
     ],
@@ -70,7 +86,7 @@ OUTPUT FORMAT:
       ]
     }},
     "test_configuration": {{
-      "test_command": "ctest",
+      "test_command": "ctest|mvn test|npm test|pytest",
       "test_timeout": "300",
       "parallel_tests": true
     }}
@@ -78,13 +94,22 @@ OUTPUT FORMAT:
 }}
 ```
 
-Use the delegate_ops tool to explore test directories and configurations.
+CRITICAL JSON FORMATTING RULES:
+- Output MUST be valid JSON - no comments allowed
+- Do NOT use // or /* */ comments in JSON
+- Do NOT add explanatory text outside the JSON structure
+- If you need to explain something, put it in a "reason" or "description" field
+- Ensure all strings are properly quoted
+- Ensure all brackets and braces are properly balanced
+
+Use the available tools directly to explore test directories:
+- Use `list_dir` to explore test directories
+- Use `read_text` to read test configuration files
+- Use `validate_path_safety` to check path safety
 """
         
         try:
-            response = await self.agent.run(prompt)
-            result = self._parse_json_response(response.output)
-            
+            result = await self._execute_with_retry(prompt)
             self.logger.info("SUCCESS: Phase 3 completed!")
             return result
             

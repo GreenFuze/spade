@@ -44,6 +44,19 @@ CRITICAL RULES:
 - Determine exploration scope for subsequent phases
 - Avoid deep directory traversal in this phase
 - Use evidence-based approach - only report what you can verify
+- Do NOT assume subdirectory structure (e.g., don't assume 'src/main' exists)
+- Only report directories that you can actually see and verify
+- If you cannot determine something with evidence, mark it as "unknown" or "not_determined"                                                                     
+- NEVER guess, speculate, or make assumptions about unknown information
+- If a build system cannot be identified, use "unknown" instead of guessing
+
+SECURITY RULES (CRITICAL):
+- NEVER access files or directories outside the repository root
+- ONLY use relative paths from the repository root
+- NEVER use absolute paths or paths that go outside the repository
+- If you need to access a file, use relative paths like "CMakeLists.txt" not absolute paths
+- Stay within the repository boundaries at all times
+- If you're unsure about a path, use 'list_dir' to check what's available first
 
 OUTPUT FORMAT:
 ```json
@@ -63,19 +76,25 @@ OUTPUT FORMAT:
     "exploration_scope": {{
       "priority_dirs": ["src", "tests"],
       "skip_dirs": ["build", "node_modules", ".git"],
-      "deep_exploration": ["src/main", "tests/unit"]
+      "deep_exploration": ["src", "tests"]
     }}
   }}
 }}
 ```
 
+CRITICAL JSON FORMATTING RULES:
+- Output MUST be valid JSON - no comments allowed
+- Do NOT use // or /* */ comments in JSON
+- Do NOT add explanatory text outside the JSON structure
+- If you need to explain something, put it in a "reason" or "description" field
+- Ensure all strings are properly quoted
+- Ensure all brackets and braces are properly balanced
+
 Use the delegate_ops tool to explore the repository structure.
 """
         
         try:
-            response = await self.agent.run(prompt)
-            result = self._parse_json_response(response.output)
-            
+            result = await self._execute_with_retry(prompt)
             self.logger.info("SUCCESS: Phase 1 completed!")
             return result
             

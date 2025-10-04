@@ -9,10 +9,11 @@ import sys
 import asyncio
 from pathlib import Path
 
-# Add the current directory to Python path
-sys.path.insert(0, str(Path(__file__).parent))
+# Add the project root to Python path
+project_root = Path(__file__).parent.parent.parent.parent
+sys.path.insert(0, str(project_root))
 
-from llm0_rig_generator_v3 import LLMRIGGeneratorV3
+from llm0.v3.llm0_rig_generator_v3 import LLMRIGGeneratorV3
 
 async def test_v3_approach():
     """Test the V3 approach with separate agents."""
@@ -21,7 +22,7 @@ async def test_v3_approach():
     print("=" * 60)
     
     # Test with cmake_hello_world
-    test_path = Path("test_repos/cmake_hello_world")
+    test_path = Path(__file__).parent.parent.parent / "test_repos" / "cmake_hello_world"
     
     if not test_path.exists():
         print(f"ERROR: Test repository not found at {test_path}")

@@ -50,6 +50,11 @@ CRITICAL RULES:
 - Identify external package dependencies
 - Map test relationships accurately
 - Use evidence-based approach - only report what you can verify
+- If you cannot determine something with evidence, mark it as "unknown" or "not_determined"
+- NEVER guess, speculate, or make assumptions about unknown information
+- If a dependency type cannot be determined, use "unknown" instead of guessing
+- If external package versions cannot be identified, use "unknown" instead of guessing
+- If test relationships cannot be determined, use "unknown" instead of guessing
 
 OUTPUT FORMAT:
 ```json
@@ -105,13 +110,22 @@ OUTPUT FORMAT:
 }}
 ```
 
-Use the delegate_ops tool to analyze relationships and dependencies.
+CRITICAL JSON FORMATTING RULES:
+- Output MUST be valid JSON - no comments allowed
+- Do NOT use // or /* */ comments in JSON
+- Do NOT add explanatory text outside the JSON structure
+- If you need to explain something, put it in a "reason" or "description" field
+- Ensure all strings are properly quoted
+- Ensure all brackets and braces are properly balanced
+
+Use the available tools directly to analyze relationships:
+- Use `read_text` to analyze source files for dependencies
+- Use `list_dir` to explore component directories
+- Use `validate_path_safety` to check path safety
 """
         
         try:
-            response = await self.agent.run(prompt)
-            result = self._parse_json_response(response.output)
-            
+            result = await self._execute_with_retry(prompt)
             self.logger.info("SUCCESS: Phase 7 completed!")
             return result
             

@@ -7,10 +7,11 @@ import os
 import sys
 from pathlib import Path
 
-# Add the current directory to Python path
-sys.path.insert(0, str(Path(__file__).parent))
+# Add the project root to Python path
+project_root = Path(__file__).parent.parent.parent.parent
+sys.path.insert(0, str(project_root))
 
-from llm0_rig_generator_v2 import LLMRIGGeneratorV2
+from llm0.v2.llm0_rig_generator_v2 import LLMRIGGeneratorV2
 
 def test_llm_v2_approach():
     """Test the V2 approach with directory listing and context tracking."""
@@ -19,7 +20,7 @@ def test_llm_v2_approach():
     print("=" * 60)
     
     # Use the simple cmake_hello_world project
-    test_project = Path(__file__).parent / "test_repos" / "cmake_hello_world"
+    test_project = Path(__file__).parent.parent.parent / "test_repos" / "cmake_hello_world"
     
     if not test_project.exists():
         print(f"ERROR: Test project not found at {test_project}")

@@ -1,0 +1,65 @@
+{
+  "repository_overview": {
+    "name": "MetaFFI",
+    "type": "framework",
+    "primary_language": "C++",
+    "build_systems": [
+      "cmake"
+    ],
+    "directory_structure": {
+      "source_dirs": [
+        "containers",
+        "metaffi-core",
+        "metaffi-installer",
+        "lang-plugin-c",
+        "lang-plugin-go",
+        "lang-plugin-openjdk",
+        "lang-plugin-python311",
+        "metaffi.github.io"
+      ],
+      "test_dirs": [],
+      "build_dirs": [
+        "cmake-build-debug",
+        "cmake-build-debug-wsl-2404",
+        "cmake-build-relwithdebinfo",
+        "cmake-build-relwithdebinfo-wsl-2404"
+      ],
+      "config_dirs": [
+        "cmake"
+      ]
+    },
+    "entry_points": [
+      "CMakeLists.txt",
+      "MetaFFI.code-workspace"
+    ],
+    "exploration_scope": {
+      "priority_dirs": [
+        "metaffi-core",
+        "containers",
+        "lang-plugin-c",
+        "lang-plugin-go",
+        "lang-plugin-openjdk",
+        "lang-plugin-python311",
+        "metaffi-installer",
+        "metaffi.github.io"
+      ],
+      "skip_dirs": [
+        "cmake-build-debug",
+        "cmake-build-debug-wsl-2404",
+        "cmake-build-relwithdebinfo",
+        "cmake-build-relwithdebinfo-wsl-2404",
+        ".git"
+      ],
+      "deep_exploration": [
+        "metaffi-core",
+        "containers",
+        "lang-plugin-c",
+        "lang-plugin-go",
+        "lang-plugin-openjdk",
+        "lang-plugin-python311",
+        "metaffi-installer",
+        "metaffi.github.io"
+      ]
+    }
+  }
+}
