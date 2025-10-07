@@ -59,20 +59,11 @@ class RIGToolsV4:
                              evidence: List[Dict]) -> str:
         """Add build system information to the RIG."""
         try:
-            # Create evidence objects
-            evidence_objects = []
-            if evidence:
-                for e in evidence:
-                    evidence_obj = Evidence(
-                        call_stack=e.get('call_stack', [])
-                    )
-                    evidence_objects.append(evidence_obj)
-            
+            # BuildSystemInfo doesn't have evidence field, so we create it without evidence
             build_info = BuildSystemInfo(
                 name=name,
                 version=version,
-                build_type=build_type,
-                evidence=evidence_objects
+                build_type=build_type
             )
             
             self.rig.build_system = build_info

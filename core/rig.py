@@ -114,6 +114,10 @@ class RIG:
     def get_component_by_name(self, name: str) -> Optional[Component]:
         """Get a component by name."""
         return self._components_by_name.get(name)
+    
+    def has_component(self, name: str) -> bool:
+        """Check if component exists by name."""
+        return self.get_component_by_name(name) is not None
 
     def get_aggregator_by_name(self, name: str) -> Optional[Aggregator]:
         """Get an aggregator by name."""

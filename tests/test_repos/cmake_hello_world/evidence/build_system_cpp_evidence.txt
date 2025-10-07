@@ -1,0 +1,1 @@
+CMakeLists.txt defines a CMake project with add_executable(hello_world src/main.cpp) and add_library(utils src/utils.cpp); project name TestProject; enable_testing(); add_test(NAME test_hello_world COMMAND hello_world). This confirms CMake-based build system and C++ sources; entry point src/main.cpp and library src/utils.cpp; build directory expected as 'build'. Language: C++

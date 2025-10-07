@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Phase 2: Source Structure Discovery Agent V4
+Phase 2: Source Structure Discovery Agent V7
 
 Comprehensive source directory and component discovery.
 """
@@ -9,10 +9,10 @@ import json
 from pathlib import Path
 from typing import Dict, Any
 
-from .base_agent_v4 import BaseLLMAgentV4
+from .base_agent_v7 import BaseLLMAgentV7
 
 
-class SourceStructureDiscoveryAgentV4(BaseLLMAgentV4):
+class SourceStructureDiscoveryAgentV7(BaseLLMAgentV7):
     """Phase 2: Source Structure Discovery Agent - Comprehensive source directory and component discovery."""
     
     def __init__(self, repository_path: Path):

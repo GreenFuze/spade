@@ -1,3 +1,7 @@
-#pragma once
+// Utilities library interface
+#ifndef UTILS_H
+#define UTILS_H
 
-void print_utils();
+int util_add(int a, int b);
+
+#endif // UTILS_H

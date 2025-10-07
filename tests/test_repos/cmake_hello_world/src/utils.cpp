@@ -1,7 +1,4 @@
+// Utilities library implementation
 #include "utils.h"
-#include <iostream>
 
-void print_utils()
-{
-	std::cout << "Utils library working!" << std::endl;
-}
+int util_add(int a, int b) { return a + b; }

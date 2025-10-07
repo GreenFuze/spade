@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Phase 1: Repository Overview Agent V4
+Phase 1: Repository Overview Agent V7
 
 High-level repository structure analysis and build system identification.
 """
@@ -9,14 +9,39 @@ import json
 from pathlib import Path
 from typing import Dict, Any
 
-from .base_agent_v4 import BaseLLMAgentV4
+from .base_agent_v7 import BaseLLMAgentV7
+from .phase1_tools import Phase1Tools
 
 
-class RepositoryOverviewAgentV4(BaseLLMAgentV4):
+class RepositoryOverviewAgentV7(BaseLLMAgentV7):
     """Phase 1: Repository Overview Agent - High-level structure and build system identification."""
     
     def __init__(self, repository_path: Path):
+        # Initialize Phase 1 specific tools first
+        self.phase1_tools = Phase1Tools(repository_path)
+        
+        # Call parent constructor with tools
         super().__init__(repository_path, "RepositoryOverview")
+        
+        # Recreate agent with Phase 1 tools included
+        from agentkit_gf.delegating_tools_agent import DelegatingToolsAgent
+        from agentkit_gf.tools.fs import FileTools
+        from agentkit_gf.tools.os import ProcessTools
+        
+        self.agent = DelegatingToolsAgent(
+            model="openai:gpt-5-nano",
+            tool_sources=[self.file_tools, self.process_tools, self.phase1_tools],
+            builtin_enums=[],
+            model_settings=None,
+            usage_limit=None,
+            real_time_log_user=True,
+            real_time_log_agent=True,
+            temperature=0
+        )
+        
+        # Debug: Check if tools are properly exposed
+        self.logger.info(f"Phase1Tools methods: {[method for method in dir(self.phase1_tools) if not method.startswith('_')]}")
+        self.logger.info(f"explore_repository_signals available: {hasattr(self.phase1_tools, 'explore_repository_signals')}")
     
     async def execute_phase(self) -> Dict[str, Any]:
         """Execute repository overview analysis."""
@@ -65,6 +90,9 @@ OUTPUT FORMAT:
     "name": "repository_name",
     "type": "application|library|framework|tool",
     "primary_language": "C++|Java|Python|JavaScript|Go|etc",
+    "detected_languages": ["C++", "Java", "Python"],
+    "language_percentages": {{"C++": 60.0, "Java": 40.0}},
+    "multi_language": true,
     "build_systems": ["cmake", "maven", "npm"],
     "directory_structure": {{
       "source_dirs": ["src", "lib", "core"],
@@ -77,7 +105,8 @@ OUTPUT FORMAT:
       "priority_dirs": ["src", "tests"],
       "skip_dirs": ["build", "node_modules", ".git"],
       "deep_exploration": ["src", "tests"]
-    }}
+    }},
+    "notes": "Additional observations about the repository (e.g., JNI components, multi-language nature, special frameworks)"
   }}
 }}
 ```
@@ -90,13 +119,22 @@ CRITICAL JSON FORMATTING RULES:
 - Ensure all strings are properly quoted
 - Ensure all brackets and braces are properly balanced
 
-Use the delegate_ops tool to explore the repository structure.
+CRITICAL: You MUST use the explore_repository_signals tool for this analysis.
 
 TOOL USAGE INSTRUCTIONS:
-- To list directory contents: delegate_ops({"tool": "list_dir", "args": {"path": "."}, "why": "List root directory contents"})
-- To read a file: delegate_ops({"tool": "read_text", "args": {"path": "filename"}, "why": "Read file contents"})
-- Always provide a valid path (use "." for current directory)
-- Never call tools with empty paths
+- MANDATORY: Start by calling explore_repository_signals() to analyze the repository
+- This tool will detect languages, build systems, and define exploration scope
+- You can customize parameters like exploration_paths, language_focus, content_depth, confidence_threshold
+- Example: explore_repository_signals(exploration_paths=["."], language_focus=["C++", "Java"], content_depth="deep", confidence_threshold=0.95)
+- DO NOT use basic file tools (list_dir, read_text) - use the specialized tool instead
+
+CRITICAL: USE THE TOOL RESULTS IN YOUR OUTPUT:
+- Use the "detected_languages" from the tool results
+- Use the "language_percentages" from the tool results  
+- Use the "multi_language" flag from the tool results
+- If multi_language is true, mention this in the notes field
+- If you detect JNI (Java Native Interface) components, mention this in the notes field
+- Always base your output on the tool results, not assumptions
 """
         
         try:

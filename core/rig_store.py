@@ -37,7 +37,7 @@ class RIGStore:
             """)
             if cursor.fetchone() is None:
                 # Tables don't exist, create them
-                with open('rig_store_schema.sql', 'r') as f:
+                with open(Path(__file__).parent / 'rig_store_schema.sql', 'r') as f:
                     schema_sql = f.read()
                 conn.executescript(schema_sql)
     
