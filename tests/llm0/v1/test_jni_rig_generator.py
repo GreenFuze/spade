@@ -39,7 +39,7 @@ def test_jni_rig_generation():
 
     try:
         # Run the complete RIG generation pipeline
-        rig = generator.generate_rig()
+        rig = generator._generate_rig()
         print("SUCCESS: Complete pipeline execution successful")
 
         print("\nINFO Validating generated RIG...")
@@ -59,13 +59,13 @@ def test_jni_rig_generation():
             return False
         print(f"SUCCESS Build system info: {rig.build_system_info.name} {rig.build_system_info.version}")
 
-        if not rig.components:
+        if not rig._components:
             print("ERROR No components found in RIG")
             return False
-        print(f"SUCCESS Found {len(rig.components)} components")
+        print(f"SUCCESS Found {len(rig._components)} components")
 
         # Validate individual components
-        for i, comp in enumerate(rig.components):
+        for i, comp in enumerate(rig._components):
             print(f"  Component {i+1}: {comp.name}")
             if not comp.name:
                 print(f"    ERROR Component {i+1} has no name")
@@ -76,7 +76,7 @@ def test_jni_rig_generation():
             if not comp.programming_language:
                 print(f"    ERROR Component {comp.name} has no programming language")
                 return False
-            if not comp.evidence:
+            if not comp._evidence:
                 print(f"    ERROR Component {comp.name} has no evidence")
                 return False
             if not comp.source_files is not None: # Can be empty list
@@ -85,7 +85,7 @@ def test_jni_rig_generation():
             print(f"    SUCCESS Type: {comp.type}")
             print(f"    SUCCESS Language: {comp.programming_language}")
             print(f"    SUCCESS Runtime: {comp.runtime}")
-            print(f"    SUCCESS Evidence: {len(comp.evidence.call_stack)} call stack entries")
+            print(f"    SUCCESS Evidence: {len(comp._evidence.call_stack)} call stack entries")
             print(f"    SUCCESS Source files: {len(comp.source_files)}")
 
         print("SUCCESS RIG structure validation passed")
@@ -100,7 +100,7 @@ def test_jni_rig_generation():
             "test_jni_wrapper": {"type": ComponentType.EXECUTABLE, "language": "C++", "runtime": Runtime.CLANG_C}
         }
 
-        found_components = {comp.name: comp for comp in rig.components}
+        found_components = {comp.name: comp for comp in rig._components}
 
         for name, expected in expected_components.items():
             # Find component by partial name match (handle variations like "jni_hello_world (C++ executable)")
@@ -142,7 +142,7 @@ def test_jni_rig_generation():
 
         # Validate multi-language detection
         print("INFO Validating multi-language detection...")
-        languages = set(comp.programming_language for comp in rig.components)
+        languages = set(comp.programming_language for comp in rig._components)
         expected_languages = {"C++", "Java"}
         if not languages.issuperset(expected_languages):
             print(f"ERROR Missing expected languages. Found: {languages}, Expected: {expected_languages}")
@@ -173,18 +173,18 @@ def test_jni_rig_generation():
         print("\n📊 JNI RIG Generation Summary:")
         print(f"   Repository: {rig.repository_info.name}")
         print(f"   Build System: {rig.build_system_info.name} {rig.build_system_info.version}")
-        print(f"   Components: {len(rig.components)}")
+        print(f"   Components: {len(rig._components)}")
         print(f"   Languages: {languages}")
         print(f"   Validation Errors: {len(validation_errors)}")
 
         print("\nINFO Component Details:")
-        for i, comp in enumerate(rig.components):
+        for i, comp in enumerate(rig._components):
             print(f"   {i+1}. {comp.name}")
             print(f"      Type: {comp.type}")
             print(f"      Language: {comp.programming_language}")
             print(f"      Runtime: {comp.runtime}")
             print(f"      Source Files: {len(comp.source_files)}")
-            print(f"      Evidence: {len(comp.evidence.call_stack)} entries")
+            print(f"      Evidence: {len(comp._evidence.call_stack)} entries")
             if comp.depends_on:
                 print(f"      Dependencies: {[dep.name for dep in comp.depends_on]}")
 

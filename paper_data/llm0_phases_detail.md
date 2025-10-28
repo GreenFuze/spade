@@ -1,6 +1,219 @@
-# LLM0 Phases Detail - Agent Behavior Analysis
+# V7 Enhanced Architecture: Single-Goal Phases
 
-## Abstract
+## **Core Principles:**
+1. **One Goal Per Phase**: Each phase has exactly one, well-defined objective
+2. **Unique Agent Per Phase**: Each phase has its own agent with isolated context
+3. **Sequential Input**: Each phase receives output from all previous phases
+4. **Deterministic Tools**: All tools are pure functions, no LLM calls
+5. **Minimal Tool Calls**: Batch operations and efficient data collection
+6. **Context Isolation**: No context pollution between phases
+
+## **Phase 1: Language Detection** ✅ **IMPLEMENTED**
+**Goal**: Identify all programming languages present in the repository with confidence scores
+
+**Input**: Repository path, initial parameters
+**Output**: Languages detected with evidence and confidence scores
+
+**Tool**: `explore_repository_signals()` in `phase1_tools.py`
+- **Deterministic**: File extension analysis + content pattern matching
+- **Batch Operation**: Single call analyzes entire repository
+- **Output**: `{"languages_detected": {...}, "build_systems_detected": {...}, "architecture_classification": {...}}`
+- **Efficiency**: One tool call for complete language detection
+
+**Status**: ✅ **WORKING** - 100% accuracy on test repositories
+
+---
+
+## **Phase 2: Build System Detection** ✅ **IMPLEMENTED & WORKING**
+**Goal**: Identify all build systems present in the repository
+
+**Input**: Repository path, Phase 1 output (languages)
+**Output**: Build systems detected with evidence
+
+**Tool**: `detect_build_systems(file_patterns, directory_patterns)` in `phase2_tools.py`
+- **Deterministic**: Scans repository recursively for specified file and directory patterns
+- **LLM-Controlled**: LLM decides which patterns to scan based on detected languages
+- **Signal Collection**: Returns all found signals with confidence levels
+- **Re-exploration**: LLM can call tool again with different patterns if needed
+- **Output**: `{"build_system_signals": {"cmake": {"evidence_files": [...], "confidence_level": 0.95}}}`
+- **Efficiency**: LLM can focus on relevant patterns instead of scanning everything
+
+**Status**: ✅ **WORKING** - 100% accuracy on all test repositories (cmake_hello_world, jni_hello_world, MetaFFI)
+
+---
+
+## **Phase 3: Artifact Discovery** 📋 **NEXT TO IMPLEMENT**
+**Goal**: Discover and classify all build artifacts and components
+
+**Input**: Repository path, Phase 1-2 outputs (languages, build systems)
+**Output**: Artifacts discovered and classified by type
+
+**Tool**: `discover_artifacts(repository_path, languages_detected, build_systems_detected)` in `phase3_artifact_tools.py`
+- **Deterministic**: Scans for executable files, libraries, packages, and other build outputs
+- **LLM-Controlled**: LLM decides which artifact patterns to scan based on detected languages and build systems
+- **Comprehensive**: Detects all artifact types (executables, libraries, JARs, Python packages, etc.)
+- **Classification**: Categorizes artifacts by type and purpose
+- **Output**: `{"artifacts_discovered": {"executables": [...], "libraries": [...], "jvm_artifacts": [...]}}`
+- **Efficiency**: LLM can focus on relevant artifact patterns based on languages and build systems
+
+---
+
+## **Phase 4: Exploration Scope Definition** 📋 **PLANNED**
+**Goal**: Define exploration scope and strategy for subsequent phases
+
+**Input**: Repository path, Phase 1-3 outputs
+**Output**: Exploration scope with priority directories and skip lists
+
+**Tool**: `define_exploration_scope(repository_path, languages, build_systems, architecture)`
+- **Deterministic**: Analyzes directory structure to identify source, test, build, config directories
+- **Batch Operation**: Single call defines complete exploration strategy
+- **Output**: `{"scope": {"source_dirs": [...], "test_dirs": [...], "skip_dirs": [...], "priority": [...]}}`
+- **Efficiency**: One tool call for complete scope definition
+
+---
+
+## **Phase 5: Source Structure Discovery** 📋 **PLANNED**
+**Goal**: Discover source code structure and identify potential components
+
+**Input**: Repository path, Phase 1-4 outputs
+**Output**: Source structure with component hints
+
+**Tool**: `discover_source_structure(repository_path, exploration_scope, languages, build_systems)`
+- **Deterministic**: Uses glob patterns to efficiently scan source directories
+- **Batch Operation**: Single call with multiple glob patterns (e.g., `["*.cpp", "*.java", "*.py"]`)
+- **Output**: `{"source_structure": {"directories": [...], "components": [...], "files": [...]}}`
+- **Efficiency**: One tool call with batch glob patterns for complete source analysis
+
+---
+
+## **Phase 6: Test Structure Discovery** 📋 **PLANNED**
+**Goal**: Discover test structure and identify test frameworks
+
+**Input**: Repository path, Phase 1-5 outputs
+**Output**: Test structure with framework identification
+
+**Tool**: `discover_test_structure(repository_path, exploration_scope, source_structure)`
+- **Deterministic**: Scans test directories for test files and framework indicators
+- **Batch Operation**: Single call with test-specific glob patterns
+- **Output**: `{"test_structure": {"frameworks": [...], "test_files": [...], "organization": "..."}}`
+- **Efficiency**: One tool call for complete test analysis
+
+---
+
+## **Phase 7: Build Configuration Analysis** 📋 **PLANNED**
+**Goal**: Analyze build configuration and identify build targets
+
+**Input**: Repository path, Phase 1-6 outputs
+**Output**: Build analysis with targets and dependencies
+
+**Tool**: `analyze_build_configuration(repository_path, build_systems, source_structure, test_structure)`
+- **Deterministic**: Parses build configuration files to extract targets, dependencies, and build rules
+- **Batch Operation**: Single call analyzes all build configuration files
+- **Output**: `{"build_analysis": {"targets": [...], "dependencies": [...], "configuration": "..."}}`
+- **Efficiency**: One tool call for complete build analysis
+
+---
+
+## **Phase 8: Artifact Discovery** 📋 **PLANNED**
+**Goal**: Discover build artifacts and outputs
+
+**Input**: Repository path, Phase 1-7 outputs
+**Output**: Artifact analysis with build outputs
+
+**Tool**: `discover_artifacts(repository_path, build_analysis, source_structure)`
+- **Deterministic**: Scans for build artifacts (executables, libraries, packages) based on build analysis
+- **Batch Operation**: Single call with artifact-specific patterns
+- **Output**: `{"artifacts": {"executables": [...], "libraries": [...], "packages": [...]}}`
+- **Efficiency**: One tool call for complete artifact discovery
+
+---
+
+## **Phase 9: Component Classification** 📋 **PLANNED**
+**Goal**: Classify all discovered entities into RIG component types
+
+**Input**: Repository path, Phase 1-8 outputs
+**Output**: Classified components with RIG types
+
+**Tool**: `classify_components(repository_path, source_structure, test_structure, build_analysis, artifacts)`
+- **Deterministic**: Maps discovered entities to RIG component types (EXECUTABLE, LIBRARY, TEST, etc.)
+- **Batch Operation**: Single call classifies all components
+- **Output**: `{"components": [{"name": "...", "type": "EXECUTABLE", "evidence": "..."}]}`
+- **Efficiency**: One tool call for complete component classification
+
+---
+
+## **Phase 10: Relationship Mapping** 📋 **PLANNED**
+**Goal**: Map dependencies and relationships between components
+
+**Input**: Repository path, Phase 1-9 outputs
+**Output**: Component relationships and dependencies
+
+**Tool**: `map_relationships(repository_path, components, build_analysis, source_structure)`
+- **Deterministic**: Analyzes import/include statements, build dependencies, and component interactions
+- **Batch Operation**: Single call maps all relationships
+- **Output**: `{"relationships": [{"from": "...", "to": "...", "type": "DEPENDS_ON", "evidence": "..."}]}`
+- **Efficiency**: One tool call for complete relationship mapping
+
+---
+
+## **Phase 11: RIG Assembly** 📋 **PLANNED**
+**Goal**: Assemble the final RIG from all discovered data
+
+**Input**: Repository path, Phase 1-10 outputs
+**Output**: Complete RIG object
+
+**Tool**: `assemble_rig(repository_path, components, relationships, build_analysis, artifacts)`
+- **Deterministic**: Creates RIG object from all collected data
+- **Batch Operation**: Single call assembles complete RIG
+- **Output**: Complete RIG object with all components, relationships, and metadata
+- **Efficiency**: One tool call for complete RIG assembly
+
+---
+
+## **Key Benefits of This Design:**
+
+### **1. Single Responsibility**
+- Each phase has exactly one, well-defined goal
+- No ambiguity about what each phase should accomplish
+- Clear success criteria for each phase
+
+### **2. Context Isolation**
+- Each phase has its own agent with fresh context
+- No context pollution between phases
+- Each phase can focus entirely on its specific task
+
+### **3. Deterministic Tools**
+- All tools are pure functions with no LLM calls
+- Predictable, testable, and debuggable
+- No tool call failures or JSON parsing issues
+
+### **4. Minimal Tool Calls**
+- Each phase uses exactly one tool call
+- Batch operations within tools for efficiency
+- No multiple round-trips or context explosion
+
+### **5. Sequential Data Flow**
+- Each phase receives cumulative output from previous phases
+- Clear data dependencies between phases
+- Easy to debug and validate each phase independently
+
+### **6. Scalability**
+- Works for repositories of any size
+- No context explosion issues
+- Each phase can be optimized independently
+
+---
+
+## **Implementation Status:**
+- ✅ **Phase 1**: Language Detection - **IMPLEMENTED & WORKING**
+- 🔄 **Phase 2**: Build System Detection - **NEXT TO IMPLEMENT**
+- 📋 **Phases 3-11**: **PLANNED** - To be implemented following same principles
+
+This design transforms the current 8-phase system into 11 focused phases, each with a single responsibility and deterministic tool, while maintaining the sequential data flow and context isolation that makes the system scalable and reliable.
+
+---
+
+## **Abstract**
 
 The LLM0 Repository Intelligence Graph (RIG) generation system represents a novel approach to automated build system analysis through Large Language Model (LLM) orchestration. This document provides a comprehensive analysis of the evolution from JSON-based agent architecture (V4) to direct RIG manipulation architecture (V5), detailing the behavioral patterns, evidence-based methodologies, and technical implementation of each specialized agent. The system employs deterministic LLM interactions with temperature 0 (greedy sampling) to ensure reproducible, evidence-based repository analysis across diverse build systems including CMake, Maven, npm, Cargo, and others.
 

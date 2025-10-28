@@ -1,0 +1,89 @@
+{
+  "test": "V7 Phase 2: Build System Detection (JNI Standalone)",
+  "repository": "jni_hello_world",
+  "success": true,
+  "phase1_time": 44.3066771030426,
+  "phase2_time": 61.724205493927,
+  "total_time": 106.0308825969696,
+  "tool_calls": 0,
+  "total_tokens": 0,
+  "phase1_output": {
+    "languages_detected": {
+      "C++": {
+        "detected": true,
+        "confidence": 1.0,
+        "evidence": [
+          "build\\CMakeFiles\\4.0.3\\CompilerIdCXX\\CMakeCXXCompilerId.cpp",
+          "src\\cpp\\jni_wrapper.cpp",
+          "src\\cpp\\main.cpp",
+          "tests\\cpp\\test_jni_wrapper.cpp",
+          "src\\cpp\\jni_wrapper.h"
+        ],
+        "reasoning": "C++ source files and CMake configuration detected in project."
+      },
+      "Java": {
+        "detected": true,
+        "confidence": 0.9,
+        "evidence": [
+          "src\\java\\HelloWorld.java",
+          "src\\java\\HelloWorldJNI.java",
+          "tests\\java\\HelloWorldTest.java"
+        ],
+        "reasoning": "Java source files detected alongside JNI integration."
+      }
+    },
+    "architecture_classification": {
+      "primary_language": "C++",
+      "detected_languages": [
+        "C++",
+        "Java"
+      ],
+      "language_percentages": {
+        "C++": 52.63157894736842,
+        "Java": 47.368421052631575
+      },
+      "multi_language": true,
+      "repository_type": "application",
+      "notes": "Multi-language C++/Java JNI application"
+    },
+    "confidence_verification": {
+      "all_languages_analyzed": true,
+      "all_confidence_scores_above_95": false,
+      "evidence_sufficient": true,
+      "ready_for_phase_2": false
+    }
+  },
+  "phase2_output": {
+    "build_systems_detected": {
+      "cmake": {
+        "detected": true,
+        "confidence": 1.0,
+        "evidence": [
+          "CMakeLists.txt",
+          "build\\cmake_install.cmake",
+          "build\\CTestTestfile.cmake",
+          "build\\CMakeFiles\\4.0.3\\CMakeCXXCompiler.cmake",
+          "build\\CMakeFiles\\4.0.3\\CMakeJavaCompiler.cmake",
+          "build\\CMakeFiles\\4.0.3\\CMakeRCCompiler.cmake",
+          "build\\CMakeFiles\\4.0.3\\CMakeSystem.cmake"
+        ],
+        "reasoning": "CMakeLists.txt found in root and a populated build/ directory with multiple CMakeFiles signals strong CMake usage."
+      }
+    },
+    "build_analysis": {
+      "primary_build_system": "cmake",
+      "secondary_build_systems": [],
+      "multi_build_system": false,
+      "language_build_mapping": {
+        "C++": "cmake",
+        "Java": "cmake"
+      }
+    },
+    "confidence_verification": {
+      "all_build_systems_analyzed": true,
+      "all_confidence_scores_above_95": true,
+      "evidence_sufficient": true,
+      "ready_for_phase_3": true
+    }
+  }
+}

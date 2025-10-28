@@ -44,36 +44,36 @@ async def test_metaffi_complete_rig_generation():
         rig = await generator.generate_rig()
         
         logger.info("✅ COMPLETE RIG GENERATION SUCCESSFUL!")
-        logger.info(f"Repository: {rig.repository.name if rig.repository else 'Unknown'}")
-        logger.info(f"Components: {len(rig.components) if rig.components else 0}")
-        logger.info(f"Tests: {len(rig.tests) if rig.tests else 0}")
-        logger.info(f"Evidence: {len(rig.evidence) if rig.evidence else 0}")
-        logger.info(f"Aggregators: {len(rig.aggregators) if rig.aggregators else 0}")
-        logger.info(f"Runners: {len(rig.runners) if rig.runners else 0}")
+        logger.info(f"Repository: {rig._repository_info.name if rig._repository_info else 'Unknown'}")
+        logger.info(f"Components: {len(rig._components) if rig._components else 0}")
+        logger.info(f"Tests: {len(rig._tests) if rig._tests else 0}")
+        logger.info(f"Evidence: {len(rig._evidence) if rig._evidence else 0}")
+        logger.info(f"Aggregators: {len(rig._aggregators) if rig._aggregators else 0}")
+        logger.info(f"Runners: {len(rig._runners) if rig._runners else 0}")
         logger.info(f"Utilities: {len(rig.utilities) if rig.utilities else 0}")
         
         # Save the complete RIG to JSON for future use
         rig_data = {
             "repository": {
-                "name": rig.repository.name if rig.repository else "Unknown",
-                "root_path": str(rig.repository.root_path) if rig.repository else "Unknown",
-                "build_directory": rig.repository.build_directory if rig.repository else "Unknown",
-                "output_directory": rig.repository.output_directory if rig.repository else "Unknown",
-                "configure_command": rig.repository.configure_command if rig.repository else "Unknown",
-                "build_command": rig.repository.build_command if rig.repository else "Unknown",
-                "install_command": rig.repository.install_command if rig.repository else "Unknown",
-                "test_command": rig.repository.test_command if rig.repository else "Unknown"
-            } if rig.repository else {},
+                "name": rig._repository_info.name if rig._repository_info else "Unknown",
+                "root_path": str(rig._repository_info.root_path) if rig._repository_info else "Unknown",
+                "build_directory": rig._repository_info.build_directory if rig._repository_info else "Unknown",
+                "output_directory": rig._repository_info.output_directory if rig._repository_info else "Unknown",
+                "configure_command": rig._repository_info.configure_command if rig._repository_info else "Unknown",
+                "build_command": rig._repository_info.build_command if rig._repository_info else "Unknown",
+                "install_command": rig._repository_info.install_command if rig._repository_info else "Unknown",
+                "test_command": rig._repository_info.test_command if rig._repository_info else "Unknown"
+            } if rig._repository_info else {},
             "build_system": {
-                "name": rig.build_system.name if rig.build_system else "Unknown",
-                "version": rig.build_system.version if rig.build_system else "Unknown",
-                "build_type": rig.build_system.build_type if rig.build_system else "Unknown"
-            } if rig.build_system else {},
-            "components_count": len(rig.components) if rig.components else 0,
-            "tests_count": len(rig.tests) if rig.tests else 0,
-            "evidence_count": len(rig.evidence) if rig.evidence else 0,
-            "aggregators_count": len(rig.aggregators) if rig.aggregators else 0,
-            "runners_count": len(rig.runners) if rig.runners else 0,
+                "name": rig._build_system_info.name if rig._build_system_info else "Unknown",
+                "version": rig._build_system_info.version if rig._build_system_info else "Unknown",
+                "build_type": rig._build_system_info.build_type if rig._build_system_info else "Unknown"
+            } if rig._build_system_info else {},
+            "components_count": len(rig._components) if rig._components else 0,
+            "tests_count": len(rig._tests) if rig._tests else 0,
+            "evidence_count": len(rig._evidence) if rig._evidence else 0,
+            "aggregators_count": len(rig._aggregators) if rig._aggregators else 0,
+            "runners_count": len(rig._runners) if rig._runners else 0,
             "utilities_count": len(rig.utilities) if rig.utilities else 0
         }
         
@@ -89,7 +89,7 @@ async def test_metaffi_complete_rig_generation():
         rig.show_graph(validate_before_show=True)
         
         # Get the generated filename
-        project_name = rig.repository.name if rig.repository else "MetaFFI"
+        project_name = rig._repository_info.name if rig._repository_info else "MetaFFI"
         html_filename = f"rig_{project_name}_graph.html"
         
         logger.info(f"✅ HTML graph created: {html_filename}")

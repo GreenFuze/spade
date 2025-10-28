@@ -41,10 +41,10 @@ async def test_metaffi_rig_store():
         original_rig = await generator.generate_rig()
         
         logger.info("✅ Original RIG generated successfully!")
-        logger.info(f"Repository: {original_rig.repository.name if original_rig.repository else 'Unknown'}")
-        logger.info(f"Components: {len(original_rig.components) if original_rig.components else 0}")
-        logger.info(f"Tests: {len(original_rig.tests) if original_rig.tests else 0}")
-        logger.info(f"Evidence: {len(original_rig.evidence) if original_rig.evidence else 0}")
+        logger.info(f"Repository: {original_rig._repository_info.name if original_rig._repository_info else 'Unknown'}")
+        logger.info(f"Components: {len(original_rig._components) if original_rig._components else 0}")
+        logger.info(f"Tests: {len(original_rig._tests) if original_rig._tests else 0}")
+        logger.info(f"Evidence: {len(original_rig._evidence) if original_rig._evidence else 0}")
         
         # Step 2: Save RIG to store
         logger.info("=== STEP 2: Saving RIG to store ===")
@@ -63,34 +63,34 @@ async def test_metaffi_rig_store():
         logger.info("=== STEP 4: Comparing original and loaded RIGs ===")
         
         # Compare basic properties
-        original_repo_name = original_rig.repository.name if original_rig.repository else None
-        loaded_repo_name = loaded_rig.repository.name if loaded_rig.repository else None
+        original_repo_name = original_rig._repository_info.name if original_rig._repository_info else None
+        loaded_repo_name = loaded_rig._repository_info.name if loaded_rig._repository_info else None
         
         logger.info(f"Repository names - Original: {original_repo_name}, Loaded: {loaded_repo_name}")
         assert original_repo_name == loaded_repo_name, "Repository names don't match"
         
-        original_components_count = len(original_rig.components) if original_rig.components else 0
-        loaded_components_count = len(loaded_rig.components) if loaded_rig.components else 0
+        original_components_count = len(original_rig._components) if original_rig._components else 0
+        loaded_components_count = len(loaded_rig._components) if loaded_rig._components else 0
         
         logger.info(f"Components count - Original: {original_components_count}, Loaded: {loaded_components_count}")
         assert original_components_count == loaded_components_count, "Components count doesn't match"
         
-        original_tests_count = len(original_rig.tests) if original_rig.tests else 0
-        loaded_tests_count = len(loaded_rig.tests) if loaded_rig.tests else 0
+        original_tests_count = len(original_rig._tests) if original_rig._tests else 0
+        loaded_tests_count = len(loaded_rig._tests) if loaded_rig._tests else 0
         
         logger.info(f"Tests count - Original: {original_tests_count}, Loaded: {loaded_tests_count}")
         assert original_tests_count == loaded_tests_count, "Tests count doesn't match"
         
-        original_evidence_count = len(original_rig.evidence) if original_rig.evidence else 0
-        loaded_evidence_count = len(loaded_rig.evidence) if loaded_rig.evidence else 0
+        original_evidence_count = len(original_rig._evidence) if original_rig._evidence else 0
+        loaded_evidence_count = len(loaded_rig._evidence) if loaded_rig._evidence else 0
         
         logger.info(f"Evidence count - Original: {original_evidence_count}, Loaded: {loaded_evidence_count}")
         assert original_evidence_count == loaded_evidence_count, "Evidence count doesn't match"
         
         # Compare component details
-        if original_rig.components and loaded_rig.components:
-            original_component_names = [c.name for c in original_rig.components]
-            loaded_component_names = [c.name for c in loaded_rig.components]
+        if original_rig._components and loaded_rig._components:
+            original_component_names = [c.name for c in original_rig._components]
+            loaded_component_names = [c.name for c in loaded_rig._components]
             
             logger.info(f"Component names - Original: {original_component_names}")
             logger.info(f"Component names - Loaded: {loaded_component_names}")
@@ -101,9 +101,9 @@ async def test_metaffi_rig_store():
             assert original_component_names == loaded_component_names, "Component names don't match"
         
         # Compare test details
-        if original_rig.tests and loaded_rig.tests:
-            original_test_names = [t.name for t in original_rig.tests]
-            loaded_test_names = [t.name for t in loaded_rig.tests]
+        if original_rig._tests and loaded_rig._tests:
+            original_test_names = [t.name for t in original_rig._tests]
+            loaded_test_names = [t.name for t in loaded_rig._tests]
             
             logger.info(f"Test names - Original: {original_test_names}")
             logger.info(f"Test names - Loaded: {loaded_test_names}")
@@ -119,7 +119,7 @@ async def test_metaffi_rig_store():
         logger.info("=== STEP 5: Generating HTML graph from loaded RIG ===")
         loaded_rig.show_graph(validate_before_show=True)
         
-        project_name = loaded_rig.repository.name if loaded_rig.repository else "MetaFFI"
+        project_name = loaded_rig._repository_info.name if loaded_rig._repository_info else "MetaFFI"
         html_filename = f"rig_{project_name}_v4_enhanced_from_store.html"
         
         logger.info(f"✅ HTML graph created: {html_filename}")

@@ -15,13 +15,16 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 from .phase1_repository_overview_agent_v7 import RepositoryOverviewAgentV7
-from .phase2_source_structure_agent_v7 import SourceStructureDiscoveryAgentV7
-from .phase3_test_structure_agent_v7 import TestStructureDiscoveryAgentV7
-from .phase4_build_system_agent_v7 import BuildSystemAnalysisAgentV7
-from .phase5_artifact_discovery_agent_v7 import ArtifactDiscoveryAgentV7
-from .phase6_component_classification_agent_v7 import ComponentClassificationAgentV7
-from .phase7_relationship_mapping_agent_v7 import RelationshipMappingAgentV7
-from .phase8_rig_assembly_agent_v7_enhanced import RIGAssemblyAgentV7Enhanced
+from .phase2_build_system_detection_agent_v7 import BuildSystemDetectionAgentV7
+from .phase3_artifact_discovery_agent_v7 import ArtifactDiscoveryAgentV7
+from .phase4_exploration_scope_agent_v7 import ExplorationScopeAgentV7
+from .phase5_source_structure_agent_v7 import SourceStructureDiscoveryAgentV7
+from .phase6_test_structure_agent_v7 import TestStructureDiscoveryAgentV7
+from .phase7_build_configuration_agent_v7 import BuildSystemAnalysisAgentV7
+from .phase8_artifact_discovery_agent_v7 import ArtifactDiscoveryAgentV7 as Phase8ArtifactDiscoveryAgentV7
+from .phase9_component_classification_agent_v7 import ComponentClassificationAgentV7
+from .phase10_relationship_mapping_agent_v7 import RelationshipMappingAgentV7
+from .phase11_rig_assembly_agent_v7 import RIGAssemblyAgentV7Enhanced
 from core.rig import RIG
 
 
@@ -36,13 +39,16 @@ class LLMRIGGeneratorV7Enhanced:
         # Initialize agents with V7 enhancements
         self.agents = {
             "phase1": RepositoryOverviewAgentV7(repository_path),
-            "phase2": SourceStructureDiscoveryAgentV7(repository_path),
-            "phase3": TestStructureDiscoveryAgentV7(repository_path),
-            "phase4": BuildSystemAnalysisAgentV7(repository_path),
-            "phase5": ArtifactDiscoveryAgentV7(repository_path),
-            "phase6": ComponentClassificationAgentV7(repository_path),
-            "phase7": RelationshipMappingAgentV7(repository_path),
-            "phase8": None  # Will be initialized with RIG instance
+            "phase2": BuildSystemDetectionAgentV7(repository_path),
+            "phase3": ArtifactDiscoveryAgentV7(repository_path),
+            "phase4": ExplorationScopeAgentV7(repository_path),
+            "phase5": SourceStructureDiscoveryAgentV7(repository_path),
+            "phase6": TestStructureDiscoveryAgentV7(repository_path),
+            "phase7": BuildSystemAnalysisAgentV7(repository_path),
+            "phase8": Phase8ArtifactDiscoveryAgentV7(repository_path),
+            "phase9": ComponentClassificationAgentV7(repository_path),
+            "phase10": RelationshipMappingAgentV7(repository_path),
+            "phase11": None  # Will be initialized with RIG instance
         }
         
         # Track execution

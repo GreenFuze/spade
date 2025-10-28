@@ -434,77 +434,81 @@ def generate_results_from_rig(rig: RIG) -> Dict[str, Any]:
         return Path(p).name.lower()
     
     results = {}
-    
+
+    # Build set of test executable component IDs
+    test_exec_ids = {t.test_executable_component.id for t in rig._tests
+                     if t.test_executable_component and isinstance(t.test_executable_component, Component)}
+
     # Q01: All built artifacts (excluding test executables)
     artifacts = []
-    for c in rig.components:
-        if c.output_path and not c.test_link_name:  # Exclude test executables
+    for c in rig._components:
+        if c.output_path and c.id not in test_exec_ids:  # Exclude test executables
             artifact_info = {
                 "name": c.name,
                 "kind": c.type.value if hasattr(c.type, 'value') else str(c.type),
                 "artifact": basename(str(c.output_path)),
                 "output_dir": str(c.output_path.parent) if c.output_path.parent else "",
                 "depends_on": [dep.name for dep in c.depends_on],
-                "externals": [ext.package_manager.package_name for ext in c.external_packages if ext.package_manager and ext.package_manager.package_name],
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "externals": [ext.package_manager.package_name for ext in c._external_packages if ext.package_manager and ext.package_manager.package_name],
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             artifacts.append(artifact_info)
     results["Q01"] = {"artifacts": artifacts}
     
     # Q02: XLLR runtime plugins
     xllr_runtimes = []
-    for c in rig.components:
+    for c in rig._components:
         if c.type == ComponentType.SHARED_LIBRARY and "xllr" in c.name.lower():
             xllr_info = {
                 "name": c.name,
                 "artifact": basename(str(c.output_path)) if c.output_path else "",
                 "depends_on": [dep.name for dep in c.depends_on],
-                "externals": [ext.package_manager.package_name for ext in c.external_packages if ext.package_manager and ext.package_manager.package_name],
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "externals": [ext.package_manager.package_name for ext in c._external_packages if ext.package_manager and ext.package_manager.package_name],
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             xllr_runtimes.append(xllr_info)
     results["Q02"] = {"xllr_runtimes": xllr_runtimes}
     
     # Q03: CLI executables
     executables = []
-    for c in rig.components:
+    for c in rig._components:
         if c.type == ComponentType.EXECUTABLE:
             exec_info = {
                 "name": c.name,
                 "artifact": basename(str(c.output_path)) if c.output_path else "",
                 "output_dir": str(c.output_path.parent) if c.output_path and c.output_path.parent else "",
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             executables.append(exec_info)
     results["Q03"] = {"executables": executables}
     
     # Q04: IDL plugins
     idl_plugins = []
-    for c in rig.components:
+    for c in rig._components:
         if c.type == ComponentType.SHARED_LIBRARY and "idl" in c.name.lower():
             idl_info = {
                 "name": c.name,
                 "artifact": basename(str(c.output_path)) if c.output_path else "",
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             idl_plugins.append(idl_info)
     results["Q04"] = {"idl_plugins": idl_plugins}
     
     # Q05: Go compilers
     go_compilers = []
-    for c in rig.components:
+    for c in rig._components:
         if c.type == ComponentType.SHARED_LIBRARY and "compiler" in c.name.lower():
             compiler_info = {
                 "name": c.name,
                 "artifact": basename(str(c.output_path)) if c.output_path else "",
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             go_compilers.append(compiler_info)
     results["Q05"] = {"go_compilers": go_compilers}
     
     # Q06: Native components
     native = []
-    for c in rig.components:
+    for c in rig._components:
         if c.type in [ComponentType.EXECUTABLE, ComponentType.SHARED_LIBRARY]:
             native_info = {
                 "name": c.name,
@@ -516,26 +520,26 @@ def generate_results_from_rig(rig: RIG) -> Dict[str, Any]:
     
     # Q07: VM/JAR artifacts
     vm_artifacts = []
-    for c in rig.components:
+    for c in rig._components:
         if c.type == ComponentType.VM or (c.output_path and str(c.output_path).lower().endswith('.jar')):
             vm_info = {
                 "name": c.name,
                 "artifact": basename(str(c.output_path)) if c.output_path else "",
                 "output_dir": str(c.output_path.parent) if c.output_path and c.output_path.parent else "",
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             vm_artifacts.append(vm_info)
     results["Q07"] = {"vm_artifacts": vm_artifacts}
     
     # Q08: CDTS tests
     cdts_tests = []
-    for t in rig.tests:
+    for t in rig._tests:
         if "cdts" in t.name.lower():
-            if t.test_executable and t.test_executable.output_path and t.evidence.call_stack:
+            if t.test_executable and t.test_executable.output_path and t._evidence.call_stack:
                 # Remove line numbers and deduplicate
                 defining_files = []
                 seen_files = set()
-                for f in t.evidence.call_stack:
+                for f in t._evidence.call_stack:
                     file_path = str(f).split('#')[0]  # Remove line numbers
                     if file_path not in seen_files:
                         defining_files.append(file_path)
@@ -554,13 +558,13 @@ def generate_results_from_rig(rig: RIG) -> Dict[str, Any]:
     boost_versions = set()
     declared_in = set()
     
-    for c in rig.components:
-        for ext in c.external_packages:
+    for c in rig._components:
+        for ext in c._external_packages:
             if ext.package_manager and "boost" in ext.package_manager.package_name.lower():
                 boost_libraries.add(ext.package_manager.package_name)
                 # Add the CMake files where this component is defined
-                if c.evidence and c.evidence.call_stack:
-                    for f in c.evidence.call_stack:
+                if c._evidence and c._evidence.call_stack:
+                    for f in c._evidence.call_stack:
                         file_path = str(f).split('#')[0]  # Remove line numbers
                         declared_in.add(file_path)
     
@@ -582,13 +586,13 @@ def generate_results_from_rig(rig: RIG) -> Dict[str, Any]:
     
     # Q10: Test to components mapping
     test_to_components = []
-    for t in rig.tests:
-        if t.evidence.call_stack:
+    for t in rig._tests:
+        if t._evidence.call_stack:
             components = []
             # Find components that this test depends on - precise matching only
-            for c in rig.components:
+            for c in rig._components:
                 # Only match if component name exactly matches test name or is in call stack
-                if c.name == t.name or (t.evidence.call_stack and c.name in t.evidence.call_stack[0]):
+                if c.name == t.name or (t._evidence.call_stack and c.name in t._evidence.call_stack[0]):
                     components.append(c.name)
             
             # Only include tests that have associated components
@@ -602,19 +606,19 @@ def generate_results_from_rig(rig: RIG) -> Dict[str, Any]:
     
     # Q11: go_api_test dependencies
     go_api_test = None
-    for t in rig.tests:
-        if "go_api_test" in t.name.lower() and t.evidence.call_stack:
+    for t in rig._tests:
+        if "go_api_test" in t.name.lower() and t._evidence.call_stack:
             dependencies = []
             externals = []
             # Find dependencies - precise matching only
-            for c in rig.components:
-                if c.name == t.name or (t.evidence.call_stack and c.name in t.evidence.call_stack[0]):
+            for c in rig._components:
+                if c.name == t.name or (t._evidence.call_stack and c.name in t._evidence.call_stack[0]):
                     dependencies.append(c.name)
             
             # Extract externals from the test's associated components
-            for c in rig.components:
+            for c in rig._components:
                 if c.name in dependencies:
-                    for ext in c.external_packages:
+                    for ext in c._external_packages:
                         if ext.package_manager and ext.package_manager.package_name:
                             externals.append(ext.package_manager.package_name)
             
@@ -630,12 +634,12 @@ def generate_results_from_rig(rig: RIG) -> Dict[str, Any]:
     
     # Q12: xllr.openjdk.jni.bridge
     jni_bridge = None
-    for c in rig.components:
+    for c in rig._components:
         if "xllr.openjdk.jni.bridge" in c.name.lower() and c.output_path and c.source_files:
             jni_bridge = {
                 "depends_on": [dep.name for dep in c.depends_on],
                 "artifact": basename(str(c.output_path)),
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             break
     
@@ -645,31 +649,30 @@ def generate_results_from_rig(rig: RIG) -> Dict[str, Any]:
     
     # Q13: JAR files
     jars = []
-    for c in rig.components:
+    for c in rig._components:
         if c.output_path and str(c.output_path).lower().endswith('.jar'):
             jar_info = {
                 "name": c.name,
                 "artifact": basename(str(c.output_path)),
                 "output_dir": str(c.output_path.parent) if c.output_path.parent else "",
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             jars.append(jar_info)
     results["Q13"] = {"jars": jars}
     
     # Q14: Go runtime binaries
     go_runtime_binaries = []
-    for c in rig.components:
-        # Check if it's a Go binary by language and runtime, or by name containing "go"
+    for c in rig._components:
+        # Check if it's a Go binary by language or by name containing "go"
         is_go_binary = (
             (hasattr(c, 'language') and c.language == 'go') or
-            (hasattr(c, 'runtime') and str(c.runtime) == 'Runtime.GO') or
             "go" in c.name.lower()
         )
         if c.type == ComponentType.SHARED_LIBRARY and is_go_binary:
             go_info = {
                 "name": c.name,
                 "artifact": basename(str(c.output_path)) if c.output_path else "",
-                "defining_files": [str(f.split('#')[0]) for f in c.evidence.call_stack[:2]] if c.evidence and c.evidence.call_stack else []
+                "defining_files": [str(f.split('#')[0]) for f in c._evidence.call_stack[:2]] if c._evidence and c._evidence.call_stack else []
             }
             go_runtime_binaries.append(go_info)
     results["Q14"] = {"go_runtime_binaries": go_runtime_binaries}

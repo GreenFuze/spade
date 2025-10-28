@@ -43,16 +43,16 @@ async def test_v4_rig_generation_metaffi():
             logger.error("Generated object is not a RIG instance")
             return False
         
-        logger.info(f"SUCCESS: Generated RIG with repository: {rig.repository.name}")
-        logger.info(f"Build system: {rig.build_system.name}")
+        logger.info(f"SUCCESS: Generated RIG with repository: {rig._repository_info.name}")
+        logger.info(f"Build system: {rig._build_system_info.name}")
         
         # Print some details about discovered components
-        if hasattr(rig, 'components') and rig.components:
-            logger.info(f"Discovered {len(rig.components)} components:")
-            for component in rig.components[:10]:  # Show first 10 components
+        if hasattr(rig, 'components') and rig._components:
+            logger.info(f"Discovered {len(rig._components)} components:")
+            for component in rig._components[:10]:  # Show first 10 components
                 logger.info(f"  - {component.name} ({component.type})")
-            if len(rig.components) > 10:
-                logger.info(f"  ... and {len(rig.components) - 10} more components")
+            if len(rig._components) > 10:
+                logger.info(f"  ... and {len(rig._components) - 10} more components")
         
         return True
         

@@ -97,10 +97,10 @@ class LLMRIGGeneratorV5:
             self.logger.info(f"Final RIG state: {self.rig}")
             
             # Log RIG summary
-            components_count = len(self.rig.components) if self.rig.components else 0
-            tests_count = len(self.rig.tests) if self.rig.tests else 0
-            aggregators_count = len(self.rig.aggregators) if self.rig.aggregators else 0
-            runners_count = len(self.rig.runners) if self.rig.runners else 0
+            components_count = len(self.rig._components) if self.rig._components else 0
+            tests_count = len(self.rig._tests) if self.rig._tests else 0
+            aggregators_count = len(self.rig._aggregators) if self.rig._aggregators else 0
+            runners_count = len(self.rig._runners) if self.rig._runners else 0
             utilities_count = len(self.rig.utilities) if self.rig.utilities else 0
             
             self.logger.info(f"RIG Summary: {components_count} components, {tests_count} tests, {aggregators_count} aggregators, {runners_count} runners, {utilities_count} utilities")
@@ -114,11 +114,11 @@ class LLMRIGGeneratorV5:
     def get_rig_summary(self) -> dict:
         """Get a summary of the current RIG state."""
         return {
-            "components_count": len(self.rig.components) if self.rig.components else 0,
-            "tests_count": len(self.rig.tests) if self.rig.tests else 0,
-            "aggregators_count": len(self.rig.aggregators) if self.rig.aggregators else 0,
-            "runners_count": len(self.rig.runners) if self.rig.runners else 0,
+            "components_count": len(self.rig._components) if self.rig._components else 0,
+            "tests_count": len(self.rig._tests) if self.rig._tests else 0,
+            "aggregators_count": len(self.rig._aggregators) if self.rig._aggregators else 0,
+            "runners_count": len(self.rig._runners) if self.rig._runners else 0,
             "utilities_count": len(self.rig.utilities) if self.rig.utilities else 0,
-            "repository_name": self.rig.repository.name if self.rig.repository else "Unknown",
-            "build_system": self.rig.build_system.name if self.rig.build_system else "Unknown"
+            "repository_name": self.rig._repository_info.name if self.rig._repository_info else "Unknown",
+            "build_system": self.rig._build_system_info.name if self.rig._build_system_info else "Unknown"
         }

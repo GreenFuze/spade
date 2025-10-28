@@ -1,0 +1,228 @@
+{
+  "test": "V7 Phase 2: Build System Detection (MetaFFI Standalone)",
+  "repository": "MetaFFI",
+  "success": true,
+  "phase1_time": 125.21286249160767,
+  "phase2_time": 132.25654983520508,
+  "total_time": 257.46941232681274,
+  "tool_calls": 0,
+  "total_tokens": 0,
+  "detected_languages": [
+    "C++",
+    "Python",
+    "Java",
+    "JavaScript",
+    "Go",
+    "C"
+  ],
+  "detected_build_systems": [
+    "cmake"
+  ],
+  "primary_build_system": "cmake",
+  "multi_build_system": false,
+  "language_build_mapping": {
+    "C++": "cmake",
+    "Java": "none",
+    "Python": "none",
+    "JavaScript": "none",
+    "Go": "none",
+    "C": "cmake"
+  },
+  "phase1_output": {
+    "languages_detected": {
+      "C++": {
+        "detected": true,
+        "confidence": 1.0,
+        "evidence": [
+          "cmake-build-debug\\CMakeFiles\\3.31.6\\CompilerIdCXX\\CMakeCXXCompilerId.cpp",
+          "cmake-build-debug\\CMakeFiles\\4.0.3\\CompilerIdCXX\\CMakeCXXCompilerId.cpp",
+          "cmake-build-debug\\CMakeFiles\\CMakeFiles\\4.0.3\\CompilerIdCXX\\CMakeCXXCompilerId.cpp",
+          "cmake-build-debug\\lang-plugin-openjdk\\CMakeFiles\\4.0.3\\CompilerIdCXX\\CMakeCXXCompilerId.cpp",
+          "cmake-build-debug\\ShowIncludes\\main.c"
+        ],
+        "file_count": 358,
+        "content_patterns": [
+          "namespace found in CMakeCXXCompilerId.cpp",
+          "namespace found in CMakeCXXCompilerId.cpp",
+          "namespace found in CMakeCXXCompilerId.cpp"
+        ],
+        "reasoning": "C++ source files detected via CompilerIdCXX and CMake build artifacts."
+      },
+      "Python": {
+        "detected": true,
+        "confidence": 1.0,
+        "evidence": [
+          "build_target.py",
+          "lang-plugin-c\\build_plugin_installer_helper.py",
+          "lang-plugin-c\\uninstall_plugin.py",
+          "lang-plugin-go\\build_plugin_installer_helper.py",
+          "lang-plugin-go\\uninstall_plugin.py"
+        ],
+        "file_count": 100,
+        "content_patterns": [
+          "import found in build_target.py",
+          "import found in build_plugin_installer_helper.py",
+          "import found in uninstall_plugin.py"
+        ],
+        "reasoning": "Python source files detected in build targets and plugin scripts."
+      },
+      "Java": {
+        "detected": true,
+        "confidence": 1.0,
+        "evidence": [
+          "cmake-build-debug\\lang-plugin-openjdk\\idl\\src\\java_extractor\\BytecodeExtractor.java",
+          "cmake-build-debug\\lang-plugin-openjdk\\idl\\src\\java_extractor\\ClassInfo.java",
+          "cmake-build-debug\\lang-plugin-openjdk\\idl\\src\\java_extractor\\Extractor.java",
+          "cmake-build-debug\\lang-plugin-openjdk\\idl\\src\\java_extractor\\JarExtractor.java",
+          "cmake-build-debug\\lang-plugin-openjdk\\idl\\src\\java_extractor\\JavaExtractor.java"
+        ],
+        "file_count": 33,
+        "content_patterns": [
+          "package found in BytecodeExtractor.java",
+          "package found in ClassInfo.java",
+          "package found in Extractor.java"
+        ],
+        "reasoning": "Java source files found within lang-plugin-openjdk module."
+      },
+      "JavaScript": {
+        "detected": true,
+        "confidence": 0.3,
+        "evidence": [
+          "metaffi.github.io\\mytest\\codepreviewer.js"
+        ],
+        "file_count": 1,
+        "content_patterns": [
+          "function found in codepreviewer.js"
+        ],
+        "reasoning": "A single JavaScript file detected, weak signal"
+      },
+      "Go": {
+        "detected": true,
+        "confidence": 1.0,
+        "evidence": [
+          "cmake-build-debug\\graph.dot.xllr.go",
+          "cmake-build-debug\\CMakeFiles\\graph.dot.xllr.go",
+          "lang-plugin-c\\compiler\\constants.go",
+          "lang-plugin-c\\compiler\\GuestCompiler.go",
+          "lang-plugin-c\\compiler\\GuestCompiler_test.go"
+        ],
+        "file_count": 165,
+        "content_patterns": [
+          "var found in graph.dot.xllr.go",
+          "var found in graph.dot.xllr.go",
+          "package found in constants.go"
+        ],
+        "reasoning": "Go sources detected in multiple Go files."
+      },
+      "C": {
+        "detected": true,
+        "confidence": 1.0,
+        "evidence": [
+          "cmake-build-debug\\CMakeFiles\\ShowIncludes\\main.c",
+          "cmake-build-debug\\CMakeFiles\\3.31.6\\CompilerIdC\\CMakeCCompilerId.c",
+          "cmake-build-debug\\CMakeFiles\\4.0.3\\CompilerIdC\\CMakeCCompilerId.c",
+          "cmake-build-debug\\CMakeFiles\\CMakeFiles\\4.0.3\\CompilerIdC\\CMakeCCompilerId.c",
+          "cmake-build-debug\\lang-plugin-openjdk\\CMakeFiles\\4.0.3\\CompilerIdC\\CMakeCCompilerId.c"
+        ],
+        "file_count": 207,
+        "content_patterns": []
+      },
+      "C#": {
+        "detected": false,
+        "confidence": 0.0,
+        "evidence": [],
+        "file_count": 0,
+        "content_patterns": []
+      },
+      "Rust": {
+        "detected": false,
+        "confidence": 0.0,
+        "evidence": [],
+        "file_count": 0,
+        "content_patterns": []
+      }
+    },
+    "architecture_classification": {
+      "primary_language": "C++",
+      "detected_languages": [
+        "C++",
+        "Java",
+        "Python",
+        "JavaScript",
+        "Go",
+        "C"
+      ],
+      "language_percentages": {
+        "C++": 18.867924528301888,
+        "Java": 18.867924528301888,
+        "Python": 18.867924528301888,
+        "JavaScript": 5.660377358490567,
+        "Go": 18.867924528301888,
+        "C": 18.867924528301888
+      },
+      "multi_language": true,
+      "repository_type": "framework",
+      "notes": "Multi-language framework with C++, Python, and Java components"
+    },
+    "confidence_verification": {
+      "all_languages_analyzed": true,
+      "all_build_systems_analyzed": true,
+      "language_confidence_ok": false,
+      "build_confidence_ok": true,
+      "architecture_determined": true,
+      "ready_for_phase_2": false
+    }
+  },
+  "phase2_output": {
+    "build_systems_detected": {
+      "cmake": {
+        "detected": true,
+        "confidence": 0.98,
+        "evidence": [
+          "CMakeLists.txt",
+          "lang-plugin-c\\CMakeLists.txt",
+          "metaffi-core\\CMakeLists.txt",
+          "cmake-build-debug",
+          "cmake",
+          "lang-plugin-go\\CMakeLists.txt",
+          "lang-plugin-openjdk\\CMakeLists.txt",
+          "lang-plugin-python311\\CMakeLists.txt"
+        ],
+        "reasoning": "Root-level and module-level CMakeLists.txt files across multiple components, plus existing cmake-build-debug directories, indicate CMake as the active build system."
+      },
+      "npm": {
+        "detected": false,
+        "confidence": 0.2,
+        "evidence": [
+          "lang-plugin-python311\\api\\dist"
+        ],
+        "reasoning": "A dist directory exists, but there is no package.json or other strong npm indicators; signal is weak."
+      },
+      "maven": {
+        "detected": false,
+        "confidence": 0.0,
+        "evidence": [],
+        "reasoning": "No pom.xml or Maven-specific files detected in scanned areas."
+      }
+    },
+    "build_analysis": {
+      "primary_build_system": "cmake",
+      "secondary_build_systems": [],
+      "multi_build_system": false,
+      "language_build_mapping": {
+        "C++": "cmake",
+        "Java": "none",
+        "Python": "none",
+        "JavaScript": "none",
+        "Go": "none",
+        "C": "cmake"
+      }
+    },
+    "confidence_verification": {
+      "all_build_systems_analyzed": true,
+      "all_confidence_scores_above_95": false,
+      "evidence_sufficient": true,
+      "ready_for_phase_3": true
+    }
+  }
+}

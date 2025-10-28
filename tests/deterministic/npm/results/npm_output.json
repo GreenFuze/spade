@@ -1,0 +1,90 @@
+# Repository Build Analysis
+
+## Repository Information
+- **Repository**: npm_monorepo
+- **Root Path**: C:\src\github.com\GreenFuze\spade\tests\test_repos\npm_monorepo
+- **Build System**: npm
+- **Scope**: ['./']
+- **Detection Mode**: configure_only
+- **Configure Command**: npm install
+- **Test Discovery Command**: npm test
+
+## Build Data
+
+The following JSON contains the complete build analysis data:
+
+```json
+{
+  "repo": {
+    "name": "npm_monorepo",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\npm_monorepo"
+  },
+  "build": {
+    "system": "npm",
+    "generator": null,
+    "type": "UNKNOWN",
+    "configure_cmd": "npm install",
+    "test_cmd": "npm test"
+  },
+  "components": [
+    {
+      "id": 0,
+      "name": "npm-monorepo",
+      "type": "static_library",
+      "language": "typescript",
+      "runtime": "Runtime.PYTHON",
+      "output": "npm-monorepo",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\npm_monorepo\\dist\\npm-monorepo.js",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "package.json: package.json"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    },
+    {
+      "id": 1,
+      "name": "@monorepo/core",
+      "type": "static_library",
+      "language": "typescript",
+      "runtime": "Runtime.PYTHON",
+      "output": "@monorepo/core",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\npm_monorepo\\packages\\core\\dist\\@monorepo\\core.js",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "package.json: packages\\core\\package.json"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [],
+  "gaps": {
+    "missing_sources": [],
+    "missing_outputs": [],
+    "orphans": {
+      "aggregators": [],
+      "tests": []
+    },
+    "risky_runners": []
+  }
+}
+```

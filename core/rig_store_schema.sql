@@ -1,5 +1,7 @@
 -- RIG SQLite Database Schema
 -- Repository Intelligence Graph storage schema
+-- Aligned with schemas.py structure
+-- Design: One RIG per database (no rig_id needed)
 
 -- ==============================================
 -- CORE METADATA TABLES
@@ -17,69 +19,53 @@ CREATE TABLE rig_metadata (
 -- Repository-level information
 CREATE TABLE repository_info (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     root_path TEXT NOT NULL,
-    build_directory TEXT NOT NULL,
-    output_directory TEXT NOT NULL,
-    configure_command TEXT NOT NULL,
-    build_command TEXT NOT NULL,
-    install_command TEXT NOT NULL,
-    test_command TEXT NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE
+    build_directory TEXT,  -- Optional
+    output_directory TEXT,  -- Optional
+    install_directory TEXT,  -- Optional
+    configure_command TEXT,  -- Optional
+    build_command TEXT,  -- Optional
+    install_command TEXT,  -- Optional
+    test_command TEXT  -- Optional
 );
 
 -- Build system information
 CREATE TABLE build_system_info (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     version TEXT,
-    build_type TEXT,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE
+    build_type TEXT
 );
 
 -- ==============================================
 -- EVIDENCE AND SUPPORTING DATA TABLES
 -- ==============================================
 
--- Evidence with call stacks (stored as JSON for flexibility)
+-- Evidence with both line and call_stack (stored as JSON for flexibility)
 CREATE TABLE evidence (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
-    call_stack_json TEXT NOT NULL, -- JSON array of call stack strings
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE
+    evidence_string_id TEXT NOT NULL,  -- The original string ID from Evidence.id
+    line_json TEXT,  -- JSON array of line strings (can be NULL)
+    call_stack_json TEXT,  -- JSON array of call stack strings (can be NULL)
+    CHECK (line_json IS NOT NULL OR call_stack_json IS NOT NULL)
 );
 
 -- Package manager information
 CREATE TABLE package_managers (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
+    pm_string_id TEXT NOT NULL,  -- The original string ID from PackageManager.id
     name TEXT NOT NULL,
-    package_name TEXT NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE
+    package_name TEXT NOT NULL
 );
 
 -- External package dependencies
 CREATE TABLE external_packages (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
+    ep_string_id TEXT NOT NULL,  -- The original string ID from ExternalPackage.id
+    name TEXT NOT NULL,
     package_manager_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
     FOREIGN KEY (package_manager_id) REFERENCES package_managers(id) ON DELETE CASCADE
-);
-
--- Component locations
-CREATE TABLE component_locations (
-    id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
-    path TEXT NOT NULL,
-    action TEXT NOT NULL,
-    source_location_id INTEGER,
-    evidence_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (source_location_id) REFERENCES component_locations(id) ON DELETE SET NULL,
-    FOREIGN KEY (evidence_id) REFERENCES evidence(id) ON DELETE CASCADE
 );
 
 -- ==============================================
@@ -89,169 +75,118 @@ CREATE TABLE component_locations (
 -- Build components (executables, libraries, etc.)
 CREATE TABLE components (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
+    comp_string_id TEXT NOT NULL,  -- The original string ID from Component.id
     name TEXT NOT NULL,
     type TEXT NOT NULL, -- ComponentType enum
-    runtime TEXT, -- Runtime enum
-    output TEXT NOT NULL,
-    output_path TEXT NOT NULL,
-    programming_language TEXT NOT NULL,
-    evidence_id INTEGER NOT NULL,
-    test_link_id INTEGER,
-    test_link_name TEXT,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (evidence_id) REFERENCES evidence(id) ON DELETE CASCADE,
-    FOREIGN KEY (test_link_id) REFERENCES tests(id) ON DELETE SET NULL
+    relative_path TEXT NOT NULL,  -- From Artifact.relative_path
+    programming_language TEXT NOT NULL
 );
 
 -- Build aggregators
 CREATE TABLE aggregators (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
-    name TEXT NOT NULL,
-    evidence_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (evidence_id) REFERENCES evidence(id) ON DELETE CASCADE
+    agg_string_id TEXT NOT NULL,  -- The original string ID from Aggregator.id
+    name TEXT NOT NULL
 );
 
 -- Build runners
 CREATE TABLE runners (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
+    runner_string_id TEXT NOT NULL,  -- The original string ID from Runner.id
     name TEXT NOT NULL,
-    evidence_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (evidence_id) REFERENCES evidence(id) ON DELETE CASCADE
-);
-
--- Build utilities
-CREATE TABLE utilities (
-    id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
-    name TEXT NOT NULL,
-    evidence_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (evidence_id) REFERENCES evidence(id) ON DELETE CASCADE
+    arguments_json TEXT  -- JSON array of command-line arguments (can be NULL)
 );
 
 -- Test definitions
 CREATE TABLE tests (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
+    test_string_id TEXT NOT NULL,  -- The original string ID from TestDefinition.id
     name TEXT NOT NULL,
-    test_executable_id INTEGER,
-    test_runner_id INTEGER,
+    test_executable_component_id INTEGER,  -- Can reference component OR runner
+    test_executable_type TEXT,  -- 'component' or 'runner'
     test_framework TEXT NOT NULL,
-    evidence_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (test_executable_id) REFERENCES components(id) ON DELETE SET NULL,
-    FOREIGN KEY (test_runner_id) REFERENCES runners(id) ON DELETE SET NULL,
-    FOREIGN KEY (evidence_id) REFERENCES evidence(id) ON DELETE CASCADE
+    CHECK (test_executable_type IN ('component', 'runner', NULL))
 );
 
 -- ==============================================
 -- RELATIONSHIP TABLES
 -- ==============================================
 
+-- Node evidence relationships (many-to-many)
+-- Each node (component/aggregator/runner/test) can have multiple evidence
+CREATE TABLE node_evidence (
+    id INTEGER PRIMARY KEY,
+    node_type TEXT NOT NULL,  -- 'component', 'aggregator', 'runner', 'test'
+    node_id INTEGER NOT NULL,  -- References the appropriate table
+    evidence_id INTEGER NOT NULL,
+    FOREIGN KEY (evidence_id) REFERENCES evidence(id) ON DELETE CASCADE,
+    CHECK (node_type IN ('component', 'aggregator', 'runner', 'test'))
+);
+
 -- Component dependencies (many-to-many)
 CREATE TABLE component_dependencies (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     component_id INTEGER NOT NULL,
-    depends_on_component_id INTEGER,
-    depends_on_aggregator_id INTEGER,
-    depends_on_runner_id INTEGER,
-    depends_on_utility_id INTEGER,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
+    depends_on_type TEXT NOT NULL,  -- 'component', 'aggregator', 'runner'
+    depends_on_id INTEGER NOT NULL,
     FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_component_id) REFERENCES components(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_aggregator_id) REFERENCES aggregators(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_runner_id) REFERENCES runners(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_utility_id) REFERENCES utilities(id) ON DELETE CASCADE,
-    CHECK (
-        (depends_on_component_id IS NOT NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NOT NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NOT NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NOT NULL)
-    )
+    CHECK (depends_on_type IN ('component', 'aggregator', 'runner'))
 );
 
 -- Aggregator dependencies
 CREATE TABLE aggregator_dependencies (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     aggregator_id INTEGER NOT NULL,
-    depends_on_component_id INTEGER,
-    depends_on_aggregator_id INTEGER,
-    depends_on_runner_id INTEGER,
-    depends_on_utility_id INTEGER,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
+    depends_on_type TEXT NOT NULL,  -- 'component', 'aggregator', 'runner'
+    depends_on_id INTEGER NOT NULL,
     FOREIGN KEY (aggregator_id) REFERENCES aggregators(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_component_id) REFERENCES components(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_aggregator_id) REFERENCES aggregators(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_runner_id) REFERENCES runners(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_utility_id) REFERENCES utilities(id) ON DELETE CASCADE,
-    CHECK (
-        (depends_on_component_id IS NOT NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NOT NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NOT NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NOT NULL)
-    )
+    CHECK (depends_on_type IN ('component', 'aggregator', 'runner'))
 );
 
 -- Runner dependencies
 CREATE TABLE runner_dependencies (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     runner_id INTEGER NOT NULL,
-    depends_on_component_id INTEGER,
-    depends_on_aggregator_id INTEGER,
-    depends_on_runner_id INTEGER,
-    depends_on_utility_id INTEGER,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
+    depends_on_type TEXT NOT NULL,  -- 'component', 'aggregator', 'runner'
+    depends_on_id INTEGER NOT NULL,
     FOREIGN KEY (runner_id) REFERENCES runners(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_component_id) REFERENCES components(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_aggregator_id) REFERENCES aggregators(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_runner_id) REFERENCES runners(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_utility_id) REFERENCES utilities(id) ON DELETE CASCADE,
-    CHECK (
-        (depends_on_component_id IS NOT NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NOT NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NOT NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NOT NULL)
-    )
+    CHECK (depends_on_type IN ('component', 'aggregator', 'runner'))
 );
 
--- Utility dependencies
-CREATE TABLE utility_dependencies (
+-- Runner argument nodes (args_nodes list)
+CREATE TABLE runner_args_nodes (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
-    utility_id INTEGER NOT NULL,
-    depends_on_component_id INTEGER,
-    depends_on_aggregator_id INTEGER,
-    depends_on_runner_id INTEGER,
-    depends_on_utility_id INTEGER,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (utility_id) REFERENCES utilities(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_component_id) REFERENCES components(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_aggregator_id) REFERENCES aggregators(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_runner_id) REFERENCES runners(id) ON DELETE CASCADE,
-    FOREIGN KEY (depends_on_utility_id) REFERENCES utilities(id) ON DELETE CASCADE,
-    CHECK (
-        (depends_on_component_id IS NOT NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NOT NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NOT NULL AND depends_on_utility_id IS NULL) OR
-        (depends_on_component_id IS NULL AND depends_on_aggregator_id IS NULL AND depends_on_runner_id IS NULL AND depends_on_utility_id IS NOT NULL)
-    )
+    runner_id INTEGER NOT NULL,
+    args_node_type TEXT NOT NULL,  -- 'component', 'aggregator', 'runner', 'test'
+    args_node_id INTEGER NOT NULL,
+    FOREIGN KEY (runner_id) REFERENCES runners(id) ON DELETE CASCADE,
+    CHECK (args_node_type IN ('component', 'aggregator', 'runner', 'test'))
 );
 
--- Test component relationships
+-- Test dependencies
+CREATE TABLE test_dependencies (
+    id INTEGER PRIMARY KEY,
+    test_id INTEGER NOT NULL,
+    depends_on_type TEXT NOT NULL,  -- 'component', 'aggregator', 'runner'
+    depends_on_id INTEGER NOT NULL,
+    FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE,
+    CHECK (depends_on_type IN ('component', 'aggregator', 'runner'))
+);
+
+-- Test components (test_components list)
 CREATE TABLE test_components (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     test_id INTEGER NOT NULL,
     component_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
+    FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE,
+    FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE
+);
+
+-- Components being tested (components_being_tested list)
+CREATE TABLE test_components_being_tested (
+    id INTEGER PRIMARY KEY,
+    test_id INTEGER NOT NULL,
+    component_id INTEGER NOT NULL,
     FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE,
     FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE
 );
@@ -259,43 +194,34 @@ CREATE TABLE test_components (
 -- Component source files
 CREATE TABLE component_source_files (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     component_id INTEGER NOT NULL,
     source_file_path TEXT NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
     FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE
 );
 
 -- Test source files
 CREATE TABLE test_source_files (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     test_id INTEGER NOT NULL,
     source_file_path TEXT NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
     FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE
 );
 
 -- Component external packages
 CREATE TABLE component_external_packages (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     component_id INTEGER NOT NULL,
     external_package_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
     FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE,
     FOREIGN KEY (external_package_id) REFERENCES external_packages(id) ON DELETE CASCADE
 );
 
--- Component locations relationships
-CREATE TABLE component_locations_rel (
+-- Component locations (simple list of paths)
+CREATE TABLE component_locations (
     id INTEGER PRIMARY KEY,
-    rig_id INTEGER NOT NULL,
     component_id INTEGER NOT NULL,
-    location_id INTEGER NOT NULL,
-    FOREIGN KEY (rig_id) REFERENCES rig_metadata(id) ON DELETE CASCADE,
-    FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE,
-    FOREIGN KEY (location_id) REFERENCES component_locations(id) ON DELETE CASCADE
+    location_path TEXT NOT NULL,
+    FOREIGN KEY (component_id) REFERENCES components(id) ON DELETE CASCADE
 );
 
 -- ==============================================
@@ -307,23 +233,27 @@ CREATE INDEX idx_components_name ON components(name);
 CREATE INDEX idx_components_type ON components(type);
 CREATE INDEX idx_aggregators_name ON aggregators(name);
 CREATE INDEX idx_runners_name ON runners(name);
-CREATE INDEX idx_utilities_name ON utilities(name);
 CREATE INDEX idx_tests_name ON tests(name);
 
+-- String ID indexes for lookups
+CREATE INDEX idx_components_string_id ON components(comp_string_id);
+CREATE INDEX idx_aggregators_string_id ON aggregators(agg_string_id);
+CREATE INDEX idx_runners_string_id ON runners(runner_string_id);
+CREATE INDEX idx_tests_string_id ON tests(test_string_id);
+CREATE INDEX idx_evidence_string_id ON evidence(evidence_string_id);
+CREATE INDEX idx_package_managers_string_id ON package_managers(pm_string_id);
+CREATE INDEX idx_external_packages_string_id ON external_packages(ep_string_id);
+
 -- Relationship indexes
+CREATE INDEX idx_node_evidence_node ON node_evidence(node_type, node_id);
+CREATE INDEX idx_node_evidence_evidence ON node_evidence(evidence_id);
 CREATE INDEX idx_component_deps_component ON component_dependencies(component_id);
-CREATE INDEX idx_component_deps_depends ON component_dependencies(depends_on_component_id, depends_on_aggregator_id, depends_on_runner_id, depends_on_utility_id);
 CREATE INDEX idx_aggregator_deps_aggregator ON aggregator_dependencies(aggregator_id);
 CREATE INDEX idx_runner_deps_runner ON runner_dependencies(runner_id);
-CREATE INDEX idx_utility_deps_utility ON utility_dependencies(utility_id);
+CREATE INDEX idx_runner_args_nodes_runner ON runner_args_nodes(runner_id);
+CREATE INDEX idx_test_deps_test ON test_dependencies(test_id);
 CREATE INDEX idx_test_components_test ON test_components(test_id);
-CREATE INDEX idx_test_components_component ON test_components(component_id);
-
--- Evidence and supporting data indexes
-CREATE INDEX idx_evidence_rig ON evidence(rig_id);
-CREATE INDEX idx_package_managers_rig ON package_managers(rig_id);
-CREATE INDEX idx_external_packages_rig ON external_packages(rig_id);
-CREATE INDEX idx_component_locations_rig ON component_locations(rig_id);
+CREATE INDEX idx_test_components_being_tested_test ON test_components_being_tested(test_id);
 
 -- ==============================================
 -- TRIGGERS FOR UPDATED_AT

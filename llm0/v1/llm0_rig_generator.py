@@ -1440,14 +1440,14 @@ Return a JSON response with this structure:
                 test_link_id=None,
                 test_link_name=comp_data.get("test_relationship", "UNKNOWN") if comp_data.get("test_relationship") != "UNKNOWN" else None
             )
-            rig.components.append(component)
+            rig._components.append(component)
         
         # Convert relationships and populate component dependencies
         relationships_data = assembly_result.get("relationships", [])
         self.logger.info(f"Found {len(relationships_data)} relationships to process")
         
         # Create a map of component names to Component objects for dependency resolution
-        component_map = {comp.name: comp for comp in rig.components}
+        component_map = {comp.name: comp for comp in rig._components}
         
         # Process relationships to populate dependencies
         for relationship in relationships_data:
@@ -1481,7 +1481,7 @@ Return a JSON response with this structure:
             if warnings:
                 self.logger.warning(f"WARNING: RIG validation warnings: {warnings}")
         
-        self.logger.info(f"RIG conversion completed: {len(rig.components)} components created")
+        self.logger.info(f"RIG conversion completed: {len(rig._components)} components created")
         return rig
     
     def _parse_agent_json_response(self, result_output: str, phase_name: str) -> Dict[str, Any]:

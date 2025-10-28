@@ -1,0 +1,92 @@
+{
+  "repo": {
+    "name": "CMakeHelloWorld",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\cmake_hello_world"
+  },
+  "build": {
+    "system": "CMake",
+    "generator": null,
+    "type": "Debug",
+    "configure_cmd": null,
+    "test_cmd": null
+  },
+  "components": [
+    {
+      "id": "comp-2",
+      "name": "hello_world.exe",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "spade_build\\Debug\\hello_world.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "src\\main.cpp"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-1",
+      "name": "utils.lib",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "spade_build\\Debug\\utils.lib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "cxx",
+      "source_files": [
+        "src\\utils.cpp"
+      ],
+      "external_packages_ids": []
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "test_hello_world",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "test_executable_component_id": "comp-2",
+      "test_components_ids": [
+        "comp-1"
+      ],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "src\\main.cpp"
+      ],
+      "test_framework": "CTest"
+    }
+  ],
+  "external_packages": [],
+  "package_managers": [],
+  "evidence": [
+    {
+      "id": "evidence-2",
+      "line": [
+        "CMakeLists.txt:5"
+      ]
+    },
+    {
+      "id": "evidence-1",
+      "line": [
+        "CMakeLists.txt:8"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "CMakeLists.txt:15"
+      ]
+    }
+  ]
+}

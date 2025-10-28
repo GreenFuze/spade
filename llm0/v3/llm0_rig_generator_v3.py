@@ -501,7 +501,7 @@ Return a JSON response with the appropriate structure for the assembly phase.
             rig = RIG()
             
             # Set basic repository info
-            rig.repository = RepositoryInfo(
+            rig._repository_info = RepositoryInfo(
                 name="Unknown",
                 root_path=self.repository_path,
                 build_directory=self.repository_path / "build",
@@ -513,7 +513,7 @@ Return a JSON response with the appropriate structure for the assembly phase.
             )
             
             # Set basic build system info
-            rig.build_system = BuildSystemInfo(
+            rig._build_system_info = BuildSystemInfo(
                 name="Unknown",
                 version="Unknown",
                 build_type="Unknown"

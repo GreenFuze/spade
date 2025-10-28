@@ -39,7 +39,7 @@ def create_metaffi_rig_from_phase1():
         
         # Set repository info from Phase 1
         repo_overview = phase1_data.get("repository_overview", {})
-        rig.repository = RepositoryInfo(
+        rig._repository_info = RepositoryInfo(
             name=repo_overview.get("name", "MetaFFI"),
             root_path="C:/src/github.com/MetaFFI",
             build_directory=repo_overview.get("directory_structure", {}).get("build_dirs", ["build"])[0] if repo_overview.get("directory_structure", {}).get("build_dirs") else "build",
@@ -53,7 +53,7 @@ def create_metaffi_rig_from_phase1():
         # Set build system info
         build_systems = repo_overview.get("build_systems", [])
         if build_systems:
-            rig.build_system = BuildSystemInfo(
+            rig._build_system_info = BuildSystemInfo(
                 name=build_systems[0].title(),  # "cmake" -> "CMake"
                 version="3.10+",
                 build_type="Debug"
@@ -80,10 +80,10 @@ def create_metaffi_rig_from_phase1():
                 dependencies=[],
                 test_relationship=None
             )
-            rig.components.append(component)
+            rig._components.append(component)
             
             # Add evidence
-            rig.evidence.append(component.evidence[0])
+            rig._evidence.append(component.evidence[0])
             
             # Add component location
             location = ComponentLocation(
@@ -92,19 +92,19 @@ def create_metaffi_rig_from_phase1():
                 line_start=1,
                 line_end=1
             )
-            rig.component_locations.append(location)
+            rig._component_locations.append(location)
         
         logger.info("✅ RIG created from Phase 1 results!")
-        logger.info(f"Repository: {rig.repository.name}")
-        logger.info(f"Components: {len(rig.components)}")
-        logger.info(f"Evidence: {len(rig.evidence)}")
+        logger.info(f"Repository: {rig._repository_info.name}")
+        logger.info(f"Components: {len(rig._components)}")
+        logger.info(f"Evidence: {len(rig._evidence)}")
         
         # Generate HTML graph
         logger.info("Generating HTML graph visualization...")
         rig.show_graph(validate_before_show=False)  # Skip validation since we're using partial data
         
         # Get the generated filename
-        html_filename = f"rig_{rig.repository.name}_graph.html"
+        html_filename = f"rig_{rig._repository_info.name}_graph.html"
         
         logger.info(f"✅ HTML graph created: {html_filename}")
         logger.info(f"Open {html_filename} in your browser to view the RIG graph")

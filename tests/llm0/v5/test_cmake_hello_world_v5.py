@@ -47,8 +47,8 @@ async def test_cmake_hello_world_v5():
         
         # Log results
         logger.info("✅ V5 RIG generation completed successfully!")
-        logger.info(f"Repository: {rig.repository.name if rig.repository else 'Unknown'}")
-        logger.info(f"Build System: {rig.build_system.name if rig.build_system else 'Unknown'}")
+        logger.info(f"Repository: {rig._repository_info.name if rig._repository_info else 'Unknown'}")
+        logger.info(f"Build System: {rig._build_system_info.name if rig._build_system_info else 'Unknown'}")
         
         # Log RIG summary
         summary = generator.get_rig_summary()
@@ -59,40 +59,40 @@ async def test_cmake_hello_world_v5():
         logger.info(f"Utilities: {summary['utilities_count']}")
         
         # Validate RIG structure
-        if rig.repository:
-            logger.info(f"✅ Repository info: {rig.repository.name} ({rig.repository.type})")
+        if rig._repository_info:
+            logger.info(f"✅ Repository info: {rig._repository_info.name} ({rig._repository_info.type})")
         else:
             logger.warning("⚠️ No repository info found")
         
-        if rig.build_system:
-            logger.info(f"✅ Build system: {rig.build_system.name} {rig.build_system.version}")
+        if rig._build_system_info:
+            logger.info(f"✅ Build system: {rig._build_system_info.name} {rig._build_system_info.version}")
         else:
             logger.warning("⚠️ No build system info found")
         
-        if rig.components:
-            logger.info(f"✅ Found {len(rig.components)} components")
-            for component in rig.components:
+        if rig._components:
+            logger.info(f"✅ Found {len(rig._components)} components")
+            for component in rig._components:
                 logger.info(f"  - {component.name} ({component.type}, {component.programming_language})")
         else:
             logger.warning("⚠️ No components found")
         
-        if rig.tests:
-            logger.info(f"✅ Found {len(rig.tests)} tests")
-            for test in rig.tests:
+        if rig._tests:
+            logger.info(f"✅ Found {len(rig._tests)} tests")
+            for test in rig._tests:
                 logger.info(f"  - {test.name} ({test.framework})")
         else:
             logger.warning("⚠️ No tests found")
         
-        if rig.aggregators:
-            logger.info(f"✅ Found {len(rig.aggregators)} aggregators")
-            for agg in rig.aggregators:
+        if rig._aggregators:
+            logger.info(f"✅ Found {len(rig._aggregators)} aggregators")
+            for agg in rig._aggregators:
                 logger.info(f"  - {agg.name} ({agg.type})")
         else:
             logger.warning("⚠️ No aggregators found")
         
-        if rig.runners:
-            logger.info(f"✅ Found {len(rig.runners)} runners")
-            for runner in rig.runners:
+        if rig._runners:
+            logger.info(f"✅ Found {len(rig._runners)} runners")
+            for runner in rig._runners:
                 logger.info(f"  - {runner.name} ({runner.type})")
         else:
             logger.warning("⚠️ No runners found")

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(TestProject)
+project(CMakeHelloWorld)
 
 # Add executable
 add_executable(hello_world src/main.cpp)

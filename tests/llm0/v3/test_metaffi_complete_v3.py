@@ -102,11 +102,11 @@ async def test_metaffi_complete_v3():
         rig = await assembly_agent.assemble_rig(discovery_results, classification_results, relationships_results)
         
         print(f"Assembly completed:")
-        print(f"  - RIG Components: {len(rig.components)}")
-        print(f"  - RIG Aggregators: {len(rig.aggregators)}")
-        print(f"  - RIG Runners: {len(rig.runners)}")
+        print(f"  - RIG Components: {len(rig._components)}")
+        print(f"  - RIG Aggregators: {len(rig._aggregators)}")
+        print(f"  - RIG Runners: {len(rig._runners)}")
         print(f"  - RIG Utilities: {len(rig.utilities)}")
-        print(f"  - RIG Tests: {len(rig.tests)}")
+        print(f"  - RIG Tests: {len(rig._tests)}")
         
         # Summary
         print("\n" + "=" * 80)
@@ -126,9 +126,9 @@ async def test_metaffi_complete_v3():
         print(f"   - Dependencies mapped: {len(relationships_results.get('dependencies', []))}")
         
         print(f"[OK] Phase 4 (Assembly): SUCCESS")
-        print(f"   - Final RIG created with {len(rig.components)} components")
-        print(f"   - Repository: {rig.repository.name}")
-        print(f"   - Build System: {rig.build_system.name}")
+        print(f"   - Final RIG created with {len(rig._components)} components")
+        print(f"   - Repository: {rig._repository_info.name}")
+        print(f"   - Build System: {rig._build_system_info.name}")
         
         # Performance metrics
         total_requests = (

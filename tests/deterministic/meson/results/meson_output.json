@@ -1,0 +1,151 @@
+# Repository Build Analysis
+
+## Repository Information
+- **Repository**: meson_cpp
+- **Root Path**: C:\src\github.com\GreenFuze\spade\tests\test_repos\meson_cpp
+- **Build System**: meson
+- **Scope**: ['./']
+- **Detection Mode**: configure_only
+- **Configure Command**: meson setup build
+- **Test Discovery Command**: meson test -C build
+
+## Build Data
+
+The following JSON contains the complete build analysis data:
+
+```json
+{
+  "repo": {
+    "name": "meson_cpp",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\meson_cpp"
+  },
+  "build": {
+    "system": "meson",
+    "generator": null,
+    "type": "UNKNOWN",
+    "configure_cmd": "meson setup build",
+    "test_cmd": "meson test -C build"
+  },
+  "components": [
+    {
+      "id": 0,
+      "name": "hello_world",
+      "type": "executable",
+      "language": "cpp",
+      "runtime": "Runtime.CLANG_C",
+      "output": "hello_world",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\meson_cpp\\build\\hello_world",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "meson.build: meson.build"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    },
+    {
+      "id": 1,
+      "name": "test_utils",
+      "type": "executable",
+      "language": "cpp",
+      "runtime": "Runtime.CLANG_C",
+      "output": "test_utils",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\meson_cpp\\build\\test_utils",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "meson.build: meson.build"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    },
+    {
+      "id": 2,
+      "name": "bench_utils",
+      "type": "executable",
+      "language": "cpp",
+      "runtime": "Runtime.CLANG_C",
+      "output": "bench_utils",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\meson_cpp\\build\\bench_utils",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "meson.build: meson.build"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    },
+    {
+      "id": 3,
+      "name": "utils",
+      "type": "static_library",
+      "language": "cpp",
+      "runtime": "Runtime.CLANG_C",
+      "output": "utils",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\meson_cpp\\build\\libutils.a",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "meson.build: meson.build"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [
+    {
+      "id": 0,
+      "name": "test_utils",
+      "framework": "meson_test",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "meson test: test_utils"
+          ]
+        }
+      ]
+    }
+  ],
+  "gaps": {
+    "missing_sources": [],
+    "missing_outputs": [],
+    "orphans": {
+      "aggregators": [],
+      "tests": []
+    },
+    "risky_runners": []
+  }
+}
+```

@@ -61,13 +61,13 @@ async def test_v6_phases1_4_cmake_hello_world():
     # Validate overall pipeline results
     print("\n📊 Pipeline Summary:")
     print(f"Phase 1 - Repository: {phase1_store.name} ({phase1_store.type})")
-    print(f"Phase 2 - Components: {len(phase2_store.components)}")
+    print(f"Phase 2 - Components: {len(phase2_store._components)}")
     print(f"Phase 3 - Test Components: {len(phase3_store.test_components)}")
     print(f"Phase 4 - Build Targets: {len(phase4_store.build_targets)}")
     
     # Check specific expectations for cmake_hello_world
     assert "cmake" in [bs.lower() for bs in phase1_store.build_systems], "CMake should be identified as build system"
-    assert len(phase2_store.components) >= 2, "Should have at least 2 source components (main + utils)"
+    assert len(phase2_store._components) >= 2, "Should have at least 2 source components (main + utils)"
     assert len(phase4_store.build_targets) >= 2, "Should have at least 2 build targets (hello_world + utils)"
     
     print("\n✅ V6 Phases 1-4 test passed!")

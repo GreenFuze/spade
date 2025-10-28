@@ -36,23 +36,23 @@ def test_llm_v2_jni():
         
         # Test complete RIG generation with V2 approach
         print("RUNNING: Complete RIG Generation (V2) for JNI project...")
-        rig = generator.generate_rig()
+        rig = generator._generate_rig()
         
         print("SUCCESS: Complete RIG generation completed!")
-        print(f"COMPONENTS: Generated {len(rig.components)} components")
-        print(f"TESTS: Generated {len(rig.tests)} tests")
-        print(f"AGGREGATORS: Generated {len(rig.aggregators)} aggregators")
-        print(f"RUNNERS: Generated {len(rig.runners)} runners")
+        print(f"COMPONENTS: Generated {len(rig._components)} components")
+        print(f"TESTS: Generated {len(rig._tests)} tests")
+        print(f"AGGREGATORS: Generated {len(rig._aggregators)} aggregators")
+        print(f"RUNNERS: Generated {len(rig._runners)} runners")
         print(f"UTILITIES: Generated {len(rig.utilities)} utilities")
         print(f"MISSING FILES: {len(generator.missing_files)} files requested but not found")
         print(f"FOUND FILES: {len(generator.found_files)} files successfully read")
         
         # Show basic RIG info
         print(f"\nRIG INFO:")
-        print(f"Repository: {rig.repository.name if rig.repository else 'Unknown'}")
-        print(f"Build System: {rig.build_system.name if rig.build_system else 'Unknown'}")
-        print(f"Components: {len(rig.components)}")
-        print(f"Tests: {len(rig.tests)}")
+        print(f"Repository: {rig._repository_info.name if rig._repository_info else 'Unknown'}")
+        print(f"Build System: {rig._build_system_info.name if rig._build_system_info else 'Unknown'}")
+        print(f"Components: {len(rig._components)}")
+        print(f"Tests: {len(rig._tests)}")
         
         return True
             

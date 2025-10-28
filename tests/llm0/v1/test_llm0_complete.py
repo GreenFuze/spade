@@ -54,14 +54,14 @@ def validate_rig_structure(rig: RIG) -> bool:
     print(f"SUCCESS: Build system info: {rig.build_system_info.name} {rig.build_system_info.version}")
     
     # Check components
-    if not rig.components:
+    if not rig._components:
         print("ERROR: No components found in RIG")
         return False
     
-    print(f"SUCCESS: Found {len(rig.components)} components")
+    print(f"SUCCESS: Found {len(rig._components)} components")
     
     # Validate each component
-    for i, component in enumerate(rig.components):
+    for i, component in enumerate(rig._components):
         print(f"  Component {i+1}: {component.name}")
         
         # Check required fields
@@ -77,14 +77,14 @@ def validate_rig_structure(rig: RIG) -> bool:
             print(f"    ERROR: Component {i+1} missing programming language")
             return False
         
-        if not component.evidence:
+        if not component._evidence:
             print(f"    ERROR: Component {i+1} missing evidence")
             return False
         
         print(f"    SUCCESS: Type: {component.type}")
         print(f"    SUCCESS: Language: {component.programming_language}")
         print(f"    SUCCESS: Runtime: {component.runtime}")
-        print(f"    SUCCESS: Evidence: {len(component.evidence.call_stack)} call stack entries")
+        print(f"    SUCCESS: Evidence: {len(component._evidence.call_stack)} call stack entries")
         print(f"    SUCCESS: Source files: {len(component.source_files)}")
     
     print("SUCCESS: RIG structure validation passed")
@@ -104,7 +104,7 @@ def validate_rig_content(rig: RIG) -> bool:
     
     # Expected components for cmake_hello_world
     expected_components = ["hello_world", "utils", "test_hello_world"]
-    found_components = [comp.name for comp in rig.components]
+    found_components = [comp.name for comp in rig._components]
     
     for expected in expected_components:
         if expected not in found_components:
@@ -113,7 +113,7 @@ def validate_rig_content(rig: RIG) -> bool:
         print(f"SUCCESS: Found expected component: {expected}")
     
     # Check specific component types
-    component_map = {comp.name: comp for comp in rig.components}
+    component_map = {comp.name: comp for comp in rig._components}
     
     # Check hello_world is an executable
     if component_map["hello_world"].type != ComponentType.EXECUTABLE:
@@ -142,10 +142,10 @@ def validate_rig_content(rig: RIG) -> bool:
     
     # Check evidence quality
     for comp_name, comp in component_map.items():
-        if not comp.evidence.call_stack:
+        if not comp._evidence.call_stack:
             print(f"ERROR: {comp_name} has no evidence")
             return False
-        print(f"SUCCESS: {comp_name} has evidence: {comp.evidence.call_stack[0]}")
+        print(f"SUCCESS: {comp_name} has evidence: {comp._evidence.call_stack[0]}")
     
     print("SUCCESS: RIG content validation passed")
     return True
@@ -174,7 +174,7 @@ def test_complete_llm_rig_generation():
     # Run the complete pipeline
     print("RUNNING: Running complete LLM-based RIG generation pipeline...")
     try:
-        rig = generator.generate_rig()
+        rig = generator._generate_rig()
         print("SUCCESS: Complete pipeline execution successful")
     except Exception as e:
         print(f"ERROR: Pipeline execution failed: {e}")
@@ -207,18 +207,18 @@ def test_complete_llm_rig_generation():
     print("\nSUMMARY: RIG Generation Summary:")
     print(f"   Repository: {rig.repository_info.name}")
     print(f"   Build System: {rig.build_system_info.name} {rig.build_system_info.version}")
-    print(f"   Components: {len(rig.components)}")
+    print(f"   Components: {len(rig._components)}")
     print(f"   Validation Errors: {len(validation_errors)}")
     
     # Print component details
     print("\nDETAILS: Component Details:")
-    for i, component in enumerate(rig.components, 1):
+    for i, component in enumerate(rig._components, 1):
         print(f"   {i}. {component.name}")
         print(f"      Type: {component.type}")
         print(f"      Language: {component.programming_language}")
         print(f"      Runtime: {component.runtime}")
         print(f"      Source Files: {len(component.source_files)}")
-        print(f"      Evidence: {len(component.evidence.call_stack)} entries")
+        print(f"      Evidence: {len(component._evidence.call_stack)} entries")
     
     return True
 

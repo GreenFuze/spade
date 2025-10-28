@@ -38,8 +38,8 @@ async def generate_rig_and_html_graph(repository_path: Path, output_filename: st
         rig = await generator.generate_rig()
         
         logger.info("✅ RIG generation completed successfully!")
-        logger.info(f"Repository: {rig.repository.name if rig.repository else 'Unknown'}")
-        logger.info(f"Components: {len(rig.components) if rig.components else 0}")
+        logger.info(f"Repository: {rig._repository_info.name if rig._repository_info else 'Unknown'}")
+        logger.info(f"Components: {len(rig._components) if rig._components else 0}")
         logger.info(f"Relationships: {len(rig.relationships) if rig.relationships else 0}")
         
         # Generate HTML graph
@@ -47,7 +47,7 @@ async def generate_rig_and_html_graph(repository_path: Path, output_filename: st
         rig.show_graph(validate_before_show=True)
         
         # Get the generated filename
-        project_name = rig.repository.name if rig.repository else "unknown"
+        project_name = rig._repository_info.name if rig._repository_info else "unknown"
         html_filename = f"rig_{project_name}_graph.html"
         
         if output_filename:

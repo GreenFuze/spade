@@ -100,7 +100,7 @@ class LLMRIGGeneratorV4:
             # Set repository info
             if "rig_assembly" in rig_assembly and "repository_info" in rig_assembly["rig_assembly"]:
                 repo_info = rig_assembly["rig_assembly"]["repository_info"]
-                rig.repository = RepositoryInfo(
+                rig._repository_info = RepositoryInfo(
                     name=repo_info.get("name", "Unknown"),
                     root_path=Path(repo_info.get("root_path", str(self.repository_path))),
                     build_directory=Path(repo_info.get("build_directory", "build")),
@@ -112,7 +112,7 @@ class LLMRIGGeneratorV4:
                 )
             else:
                 # Fallback repository info
-                rig.repository = RepositoryInfo(
+                rig._repository_info = RepositoryInfo(
                     name="Unknown",
                     root_path=self.repository_path,
                     build_directory=self.repository_path / "build",
@@ -126,14 +126,14 @@ class LLMRIGGeneratorV4:
             # Set build system info
             if "rig_assembly" in rig_assembly and "build_system_info" in rig_assembly["rig_assembly"]:
                 build_info = rig_assembly["rig_assembly"]["build_system_info"]
-                rig.build_system = BuildSystemInfo(
+                rig._build_system_info = BuildSystemInfo(
                     name=build_info.get("name", "Unknown"),
                     version=build_info.get("version", "Unknown"),
                     build_type=build_info.get("build_type", "Unknown")
                 )
             else:
                 # Fallback build system info
-                rig.build_system = BuildSystemInfo(
+                rig._build_system_info = BuildSystemInfo(
                     name="Unknown",
                     version="Unknown",
                     build_type="Unknown"
@@ -145,7 +145,7 @@ class LLMRIGGeneratorV4:
             self.logger.error(f"Failed to convert to RIG: {e}")
             # Return basic RIG if conversion fails
             rig = RIG()
-            rig.repository = RepositoryInfo(
+            rig._repository_info = RepositoryInfo(
                 name="Unknown",
                 root_path=self.repository_path,
                 build_directory=self.repository_path / "build",
@@ -155,7 +155,7 @@ class LLMRIGGeneratorV4:
                 install_command="",
                 test_command=""
             )
-            rig.build_system = BuildSystemInfo(
+            rig._build_system_info = BuildSystemInfo(
                 name="Unknown",
                 version="Unknown",
                 build_type="Unknown"

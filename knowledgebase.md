@@ -2,23 +2,212 @@
 
 ## Project Overview
 
-**Spade** is a Repository Intelligence Graph (RIG) system that analyzes CMake-based build systems to create a canonical, evidence-based representation of build components, dependencies, and relationships. The system is designed to be build-system agnostic and suitable for future SQLite storage and graph visualization.
+**Spade** is a Repository Intelligence Graph (RIG) system that analyzes multiple build systems (CMake, Maven, npm, Cargo, Go, Meson) to create a canonical, evidence-based representation of build components, dependencies, and relationships. The system is designed to be build-system agnostic and includes comprehensive evaluation frameworks to measure RIG effectiveness in helping LLMs understand repositories.
+
+## Current Status (Updated: 2024-10-16)
+
+**Focus Shift**: The project has shifted focus from LLM0-based RIG generation to a **deterministic approach** that generates RIGs directly from build system analysis without LLM involvement. This approach provides more reliable, evidence-based RIGs that can be used to improve LLM understanding of repositories.
+
+### Completed Work
+- ✅ **6 Build System Entrypoints**: CMake, Maven, npm, Cargo, Go, Meson
+- ✅ **7 Test Repositories**: Diverse projects covering all build systems
+- ✅ **Ground Truth Generation**: Manually verified RIGs for all test repositories
+- ✅ **Evaluation Framework**: 56 evaluation questions across all repositories
+- ✅ **Claude SDK Integration**: Automated evaluation with/without RIG context
+- ✅ **Comprehensive Scoring**: Detailed analysis of RIG effectiveness
+- ✅ **RIG Optimization**: Token reduction strategies for LLM consumption
+- ✅ **Modular Architecture**: Refactored CMake entrypoint with proper separation of concerns
 
 ## Core Architecture
 
+### Deterministic Entrypoints
+
+The system now includes **6 build system entrypoints** in the `deterministic/` directory:
+
+1. **`deterministic/cmake/cmake_entrypoint_v2.py`** - CMake File API parser and RIG builder
+2. **`deterministic/maven/maven_entrypoint.py`** - Maven multi-module project parser
+3. **`deterministic/npm/npm_entrypoint.py`** - npm monorepo and workspace parser
+4. **`deterministic/cargo/cargo_entrypoint.py`** - Rust Cargo workspace parser
+5. **`deterministic/go/go_entrypoint.py`** - Go modules parser
+6. **`deterministic/meson/meson_entrypoint.py`** - Meson build system parser
+
 ### Main Components
 
-1. **`cmake_entrypoint.py`** - Primary CMake File API parser and RIG builder
-2. **`rig.py`** - Repository Intelligence Graph data structure and methods
-3. **`schemas.py`** - Pydantic data models for all RIG entities
-4. **`test_cmake_entrypoint.py`** - Comprehensive unit tests
+1. **`rig.py`** - Repository Intelligence Graph data structure and methods
+2. **`schemas.py`** - Pydantic data models for all RIG entities
+3. **`rig_store.py`** - SQLite storage for RIG objects
+4. **`evaluation/evaluate_rig.py`** - Claude SDK evaluation system
+5. **`evaluation/deterministic_scorer.py`** - RIG effectiveness scoring
 
 ### Key Classes
 
-- **`CMakeEntrypoint`** - Main entry point for CMake analysis
+- **`CMakeEntrypointV2`** - CMake File API-based entry point
+- **`MavenEntrypoint`** - Maven multi-module project analyzer
+- **`NpmEntrypoint`** - npm monorepo and workspace analyzer
+- **`CargoEntrypoint`** - Rust Cargo workspace analyzer
+- **`GoEntrypoint`** - Go modules analyzer
+- **`MesonEntrypoint`** - Meson build system analyzer
 - **`RIG`** - Repository Intelligence Graph container
-- **`ResearchBackedUtilities`** - Evidence-based helper functions
-- **`CMakeParser`** - CMakeLists.txt parser for evidence extraction
+- **`RIGEvaluator`** - Claude SDK evaluation system
+- **`DeterministicRIGScorer`** - RIG effectiveness scoring system
+
+## Test Repositories
+
+The system includes **7 diverse test repositories** in `tests/test_repos/`:
+
+1. **`cmake_hello_world/`** - Simple C++ CMake project with executable and library
+2. **`jni_hello_world/`** - Java + C++ JNI project with CMake build
+3. **`maven_multimodule/`** - Multi-module Maven project with core and API modules
+4. **`npm_monorepo/`** - TypeScript npm monorepo with workspaces
+5. **`cargo_workspace/`** - Rust Cargo workspace with multiple crates
+6. **`go_modules/`** - Go project with modules and external dependencies
+7. **`meson_cpp/`** - C++ project using Meson build system
+
+Each repository includes:
+- **`ground_truth.json`** - Manually verified RIG data
+- **`ground_truth_summary.json`** - Structured summary of components, tests, dependencies
+- **`evaluation_questions.json`** - 7-10 evaluation questions with expected answers
+
+## Evaluation System
+
+### Ground Truth Generation
+- **`scripts/generate_ground_truth_simple.py`** - Generates ground truth RIGs for all repositories
+- **`scripts/generate_evaluation_questions.py`** - Creates comprehensive evaluation questions
+- **`scripts/test_evaluation_system.py`** - Validates evaluation system components
+
+### Claude SDK Evaluation
+- **`evaluation/evaluate_rig.py`** - Runs experiments with/without RIG context
+- **`evaluation/deterministic_scorer.py`** - Detailed scoring and comparison reports
+- **Results stored in** `results/deterministic/{repo_name}/` with detailed markdown reports
+
+## RIG Optimization
+
+The `RIG.generate_prompts()` method includes LLM optimization strategies:
+
+### Token Reduction Techniques
+1. **String-to-ID Mapping**: Common strings replaced with compact IDs
+2. **Compact Keys**: Shortened field names (e.g., `component_type` → `ct`)
+3. **Deduplication**: Eliminates repeated information
+4. **Nested Structure Optimization**: Flattens where beneficial
+
+### Usage
+```python
+# Standard RIG output
+rig_data = rig.generate_prompts(optimize=False)
+
+# Optimized for LLM consumption
+optimized_data = rig.generate_prompts(optimize=True)
+```
+
+## Technical Implementation
+
+### CMake File API Integration
+- **Primary Source**: `cmake_file_api` package for project introspection
+- **Fallback**: Direct JSON parsing for custom commands and targets
+- **Query Files**: Explicitly created in CMakeLists.txt for File API activation
+- **Reply Processing**: Automatic detection of latest index files
+
+### Build System Detection
+Each entrypoint implements:
+- **Project Discovery**: Automatic detection of build files
+- **Dependency Resolution**: Extraction of internal and external dependencies
+- **Component Analysis**: Identification of executables, libraries, tests
+- **Evidence Collection**: File paths, line numbers, build commands
+
+### No-Heuristics Policy
+- **Deterministic Only**: All information must be extractable from build files
+- **UNKNOWN Marking**: Explicit marking of undeterminable information
+- **Fail-Fast**: Immediate failure on unexpected conditions
+- **Evidence-Based**: All RIG data backed by build system evidence
+
+## Project Structure
+
+```
+spade/
+├── core/                    # Core RIG data structures
+│   ├── rig.py              # RIG class and methods
+│   ├── schemas.py          # Pydantic data models
+│   └── rig_store.py        # SQLite storage
+├── deterministic/          # Build system entrypoints
+│   ├── cmake/             # CMake File API integration
+│   ├── maven/             # Maven multi-module support
+│   ├── npm/               # npm monorepo support
+│   ├── cargo/             # Rust Cargo workspace
+│   ├── go/                # Go modules support
+│   └── meson/             # Meson build system
+├── evaluation/            # Evaluation framework
+│   ├── evaluate_rig.py    # Claude SDK integration
+│   └── deterministic_scorer.py  # RIG comparison
+├── tests/                 # Test suites
+│   ├── test_repos/        # Test repositories
+│   └── deterministic/     # Entrypoint tests
+├── scripts/               # Utility scripts
+└── data/                  # Generated data and results
+```
+
+## Usage Examples
+
+### Generate RIG for CMake Project
+```python
+from deterministic.cmake.cmake_entrypoint_v2 import CMakeEntrypointV2
+
+entrypoint = CMakeEntrypointV2("path/to/cmake/project")
+rig = entrypoint.rig
+print(rig.generate_prompts(optimize=True))
+```
+
+### Generate RIG for Maven Project
+```python
+from deterministic.maven.maven_entrypoint import MavenEntrypoint
+
+entrypoint = MavenEntrypoint("path/to/maven/project")
+rig = entrypoint.rig
+print(rig.generate_prompts(optimize=False))
+```
+
+### Run Evaluation
+```python
+from evaluation.evaluate_rig import RIGEvaluator
+
+evaluator = RIGEvaluator("path/to/test/repo")
+results = evaluator.evaluate_with_and_without_rig()
+print(f"Improvement: {results.improvement_percentage}%")
+```
+
+## Recent Changes (2024-10-16)
+
+### Completed Work
+- ✅ **Modular CMake Refactoring**: Split `cmake_entrypoint.py` into focused modules
+- ✅ **6 Build System Entrypoints**: Complete coverage of major build systems
+- ✅ **7 Test Repositories**: Diverse projects for comprehensive testing
+- ✅ **Ground Truth Generation**: Manually verified RIGs for all repositories
+- ✅ **Evaluation Framework**: 56 evaluation questions with Claude SDK integration
+- ✅ **RIG Optimization**: Token reduction strategies for LLM consumption
+- ✅ **Test Organization**: Moved tests to proper locations with descriptive names
+- ✅ **Comprehensive Testing**: All entrypoints tested with 100% success rate
+- ✅ **Documentation Updates**: Complete knowledge base and usage examples
+
+### Key Improvements
+- **CMake File API Integration**: Robust CMake project introspection
+- **No-Heuristics Policy**: Deterministic-only approach with explicit UNKNOWN marking
+- **Comprehensive Testing**: All entrypoints tested with real projects
+- **Evaluation System**: Automated scoring and comparison framework
+- **Fail-Fast Testing**: Tests stop on first failure for immediate feedback
+- **Complete Infrastructure**: Ready for full evaluation pipeline
+
+## Next Steps
+
+### Immediate Tasks
+1. **Run Full Evaluation Pipeline**: Execute Claude SDK experiments for all repositories
+2. **Generate Results**: Create comprehensive evaluation reports
+3. **Performance Analysis**: Measure RIG effectiveness across different project types
+4. **Documentation Updates**: Complete paper_data/ documentation for academic publication
+
+### Future Enhancements
+1. **Additional Build Systems**: Support for Gradle, Bazel, SCons
+2. **Multi-Language Projects**: Enhanced cross-language dependency detection
+3. **RIG Visualization**: Graph-based visualization of repository structure
+4. **API Integration**: REST API for RIG generation and querying
 
 ## Data Models (schemas.py)
 
@@ -361,64 +550,70 @@ def add_multiple_relationships(relationships: List[Dict]) -> str:
 ```
 
 #### **2. Smart Validation Tools**
+
 ```python
 def validate_component_completeness(component_name: str) -> str:
-    """Validate specific component has all required fields"""
-    component = self.rig.get_component(component_name)
-    missing = []
-    if not component.source_files:
-        missing.append("source_files")
-    if not component.evidence:
-        missing.append("evidence")
-    return f"Component {component_name} missing: {missing}" if missing else "Complete"
+	"""Validate specific component has all required fields"""
+	component = self.rig.get_component(component_name)
+	missing = []
+	if not component.source_files:
+		missing.append("source_files")
+	if not component._evidence:
+		missing.append("evidence")
+	return f"Component {component_name} missing: {missing}" if missing else "Complete"
+
 
 def validate_relationship_consistency() -> str:
-    """Check if all relationships reference existing components"""
-    issues = []
-    for rel in self.rig.relationships:
-        if not self.rig.has_component(rel.source):
-            issues.append(f"Missing source component: {rel.source}")
-        if not self.rig.has_component(rel.target):
-            issues.append(f"Missing target component: {rel.target}")
-    return f"Found {len(issues)} relationship issues" if issues else "All relationships valid"
+	"""Check if all relationships reference existing components"""
+	issues = []
+	for rel in self.rig.relationships:
+		if not self.rig.has_component(rel.source):
+			issues.append(f"Missing source component: {rel.source}")
+		if not self.rig.has_component(rel.target):
+			issues.append(f"Missing target component: {rel.target}")
+	return f"Found {len(issues)} relationship issues" if issues else "All relationships valid"
 ```
 
 #### **3. Evidence Enhancement Tools**
+
 ```python
 def add_evidence_batch(component_name: str, evidence_list: List[Dict]) -> str:
-    """Add multiple evidence items to a component"""
-    component = self.rig.get_component(component_name)
-    for evidence in evidence_list:
-        component.add_evidence(evidence)
-    return f"Added {len(evidence_list)} evidence items to {component_name}"
+	"""Add multiple evidence items to a component"""
+	component = self.rig.get_component(component_name)
+	for evidence in evidence_list:
+		component.add_evidence(evidence)
+	return f"Added {len(evidence_list)} evidence items to {component_name}"
+
 
 def validate_evidence_completeness() -> str:
-    """Ensure all components have sufficient evidence"""
-    incomplete = []
-    for comp in self.rig.components:
-        if len(comp.evidence) < 2:  # Minimum evidence threshold
-            incomplete.append(comp.name)
-    return f"Components with insufficient evidence: {incomplete}" if incomplete else "All components have sufficient evidence"
+	"""Ensure all components have sufficient evidence"""
+	incomplete = []
+	for comp in self.rig._components:
+		if len(comp._evidence) < 2:  # Minimum evidence threshold
+			incomplete.append(comp.name)
+	return f"Components with insufficient evidence: {incomplete}" if incomplete else "All components have sufficient evidence"
 ```
 
 #### **4. Progress Tracking Tools**
+
 ```python
 def get_assembly_progress() -> str:
-    """Get current assembly progress"""
-    total_expected = len(self.phase_results) * 10  # Estimate
-    current_items = len(self.rig.components) + len(self.rig.relationships)
-    progress = (current_items / total_expected) * 100
-    return f"Assembly progress: {progress:.1f}% ({current_items}/{total_expected} items)"
+	"""Get current assembly progress"""
+	total_expected = len(self.phase_results) * 10  # Estimate
+	current_items = len(self.rig._components) + len(self.rig.relationships)
+	progress = (current_items / total_expected) * 100
+	return f"Assembly progress: {progress:.1f}% ({current_items}/{total_expected} items)"
+
 
 def get_missing_components() -> str:
-    """Identify components that should exist but are missing"""
-    expected = []
-    for phase_result in self.phase_results:
-        if hasattr(phase_result, 'components'):
-            expected.extend([c['name'] for c in phase_result.components])
-    
-    missing = [name for name in expected if not self.rig.has_component(name)]
-    return f"Missing components: {missing}" if missing else "All expected components present"
+	"""Identify components that should exist but are missing"""
+	expected = []
+	for phase_result in self.phase_results:
+		if hasattr(phase_result, 'components'):
+			expected.extend([c['name'] for c in phase_result._components])
+	
+	missing = [name for name in expected if not self.rig.has_component(name)]
+	return f"Missing components: {missing}" if missing else "All expected components present"
 ```
 
 #### **5. Error Recovery Tools**
@@ -491,28 +686,30 @@ def retry_failed_operations() -> str:
 The V7 Enhanced Architecture represents the current state-of-the-art implementation of the LLM0 RIG generation system, featuring:
 
 - **11-Phase Structure**: Expanded from 8 to 11 phases for more granular analysis
-- **Checkbox Verification System**: Each phase uses structured checkboxes with validation loops
-- **Single Comprehensive Tools**: Each phase uses one optimized tool instead of multiple calls
-- **LLM-Controlled Parameters**: Tools accept LLM-determined parameters for flexible exploration
-- **Confidence-Based Exploration**: Deterministic confidence calculation with LLM interpretation
+- **Single-Goal Phases**: Each phase has exactly one, well-defined objective
+- **Unique Agent Per Phase**: Each phase has its own agent with isolated context
+- **Deterministic Tools**: All tools are pure functions, no LLM calls
+- **Minimal Tool Calls**: Batch operations and efficient data collection
+- **Context Isolation**: No context pollution between phases
+- **Sequential Data Flow**: Each phase receives output from all previous phases
 - **Evidence-Based Validation**: All conclusions backed by first-party evidence
 - **Token Optimization**: 60-70% reduction in token usage through batch operations
 
 ### V7 Enhanced Architecture - Phase Breakdown
 
-| Phase  | Name                         | Goal                                                      | Input                               | Output                               | Key Tools                         |
-| ------ | ---------------------------- | --------------------------------------------------------- | ----------------------------------- | ------------------------------------ | --------------------------------- |
-| **1**  | Language Detection           | Identify all programming languages with confidence scores | Repository path, initial parameters | Languages detected with evidence     | `explore_repository_signals()`    |
-| **2**  | Build System Detection       | Identify all build systems with confidence scores         | Phase 1 output, repository path     | Build systems detected with evidence | `explore_repository_signals()`    |
-| **3**  | Architecture Classification  | Determine repository architecture type                    | Phase 1-2 outputs                   | Architecture classification          | `analyze_architecture_patterns()` |
-| **4**  | Exploration Scope Definition | Define exploration scope for subsequent phases            | Phase 1-3 outputs                   | Exploration scope and strategy       | `define_exploration_scope()`      |
-| **5**  | Source Structure Discovery   | Discover source code structure and components             | Phase 4 output, repository path     | Source structure and components      | `explore_source_structure()`      |
-| **6**  | Test Structure Discovery     | Discover test structure and frameworks                    | Phase 4-5 outputs                   | Test structure and frameworks        | `explore_test_structure()`        |
-| **7**  | Build System Analysis        | Analyze build configuration and targets                   | Phase 4-6 outputs                   | Build analysis and targets           | `analyze_build_configuration()`   |
-| **8**  | Artifact Discovery           | Discover build artifacts and outputs                      | Phase 4-7 outputs                   | Artifact analysis                    | `discover_build_artifacts()`      |
-| **9**  | Component Classification     | Classify entities into RIG component types                | All previous outputs                | Classified components with evidence  | `classify_components()`           |
-| **10** | Relationship Mapping         | Map dependencies and relationships                        | All previous outputs                | Relationships with evidence          | `map_component_dependencies()`    |
-| **11** | RIG Assembly                 | Assemble final RIG from all data                          | All previous outputs                | Complete RIG                         | `assemble_rig_components()`       |
+| Phase  | Name                         | Goal                                                      | Input                               | Output                                  | Key Tools                        |
+| ------ | ---------------------------- | --------------------------------------------------------- | ----------------------------------- | --------------------------------------- | -------------------------------- |
+| **1**  | Language Detection           | Identify all programming languages with confidence scores | Repository path, initial parameters | Languages detected with evidence        | `explore_repository_signals()`   |
+| **2**  | Build System Detection       | Identify all build systems with confidence scores         | Phase 1 output, repository path     | Build systems detected with evidence    | `explore_repository_signals()`   |
+| **3**  | Artifact Discovery           | Identify and classify all build artifacts                 | Phase 1-2 outputs                   | Artifact inventory with classifications | `analyze_build_configurations()` |
+| **4**  | Exploration Scope Definition | Define exploration scope for subsequent phases            | Phase 1-3 outputs                   | Exploration scope and strategy          | `define_exploration_scope()`     |
+| **5**  | Source Structure Discovery   | Discover source code structure and components             | Phase 4 output, repository path     | Source structure and components         | `explore_source_structure()`     |
+| **6**  | Test Structure Discovery     | Discover test structure and frameworks                    | Phase 4-5 outputs                   | Test structure and frameworks           | `explore_test_structure()`       |
+| **7**  | Build System Analysis        | Analyze build configuration and targets                   | Phase 4-6 outputs                   | Build analysis and targets              | `analyze_build_configuration()`  |
+| **8**  | Build Configuration Analysis | Analyze build configuration and targets                   | Phase 4-7 outputs                   | Build configuration analysis            | `analyze_build_configuration()`  |
+| **9**  | Component Classification     | Classify entities into RIG component types                | All previous outputs                | Classified components with evidence     | `classify_components()`          |
+| **10** | Relationship Mapping         | Map dependencies and relationships                        | All previous outputs                | Relationships with evidence             | `map_component_dependencies()`   |
+| **11** | RIG Assembly                 | Assemble final RIG from all data                          | All previous outputs                | Complete RIG                            | `assemble_rig_components()`      |
 
 ### V7 Enhanced Architecture - Key Innovations
 

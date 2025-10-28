@@ -280,7 +280,7 @@ class SimpleAssemblyAgent:
         rig = RIG()
         
         # Set basic repository info
-        rig.repository = RepositoryInfo(
+        rig._repository_info = RepositoryInfo(
             name="TestProject",
             root_path=self.repository_path,
             build_directory=self.repository_path / "build",
@@ -292,7 +292,7 @@ class SimpleAssemblyAgent:
         )
         
         # Set basic build system info
-        rig.build_system = BuildSystemInfo(
+        rig._build_system_info = BuildSystemInfo(
             name="CMake",
             version="3.10",
             build_type="Debug"
@@ -349,4 +349,4 @@ if __name__ == "__main__":
     generator = LLMRIGGeneratorV3Simple(test_path)
     import asyncio
     rig = asyncio.run(generator.generate_rig())
-    print(f"Generated RIG with {len(rig.components)} components")
+    print(f"Generated RIG with {len(rig._components)} components")

@@ -51,14 +51,14 @@ def validate_metaffi_rig_structure(rig: RIG) -> bool:
     print(f"SUCCESS: Build system info: {rig.build_system_info.name} {rig.build_system_info.version}")
     
     # Check components (MetaFFI should have many components)
-    if not rig.components:
+    if not rig._components:
         print("ERROR: No components found in RIG")
         return False
     
-    print(f"SUCCESS: Found {len(rig.components)} components")
+    print(f"SUCCESS: Found {len(rig._components)} components")
     
     # Validate each component
-    for i, component in enumerate(rig.components):
+    for i, component in enumerate(rig._components):
         # Check required fields
         if not component.name:
             print(f"    ERROR: Component {i+1} missing name")
@@ -72,7 +72,7 @@ def validate_metaffi_rig_structure(rig: RIG) -> bool:
             print(f"    ERROR: Component {i+1} missing programming language")
             return False
         
-        if not component.evidence:
+        if not component._evidence:
             print(f"    ERROR: Component {i+1} missing evidence")
             return False
         
@@ -95,7 +95,7 @@ def validate_metaffi_rig_content(rig: RIG) -> bool:
     print("INFO: Validating MetaFFI RIG content...")
     
     # Create component map for easy lookup
-    component_map = {comp.name: comp for comp in rig.components}
+    component_map = {comp.name: comp for comp in rig._components}
     
     # Expected key components from MetaFFI (based on the reference RIG)
     expected_components = [
@@ -129,20 +129,20 @@ def validate_metaffi_rig_content(rig: RIG) -> bool:
         print("SUCCESS: All expected components found")
     
     # Check for multi-language support
-    languages = set(comp.programming_language for comp in rig.components)
+    languages = set(comp.programming_language for comp in rig._components)
     print(f"SUCCESS: Found programming languages: {languages}")
     
     # Check for different component types
-    types = set(comp.type for comp in rig.components)
+    types = set(comp.type for comp in rig._components)
     print(f"SUCCESS: Found component types: {types}")
     
     # Check for different runtimes
-    runtimes = set(comp.runtime for comp in rig.components if comp.runtime)
+    runtimes = set(comp.runtime for comp in rig._components if comp.runtime)
     print(f"SUCCESS: Found runtimes: {runtimes}")
     
     # Check evidence quality
-    components_with_evidence = sum(1 for comp in rig.components if comp.evidence.call_stack)
-    print(f"SUCCESS: {components_with_evidence}/{len(rig.components)} components have evidence")
+    components_with_evidence = sum(1 for comp in rig._components if comp._evidence.call_stack)
+    print(f"SUCCESS: {components_with_evidence}/{len(rig._components)} components have evidence")
     
     print("SUCCESS: MetaFFI RIG content validation passed")
     return True
@@ -174,7 +174,7 @@ def test_metaffi_rig_generation():
     # Run the complete pipeline
     print("RUNNING: Running LLM-based RIG generation for MetaFFI...")
     try:
-        rig = generator.generate_rig()
+        rig = generator._generate_rig()
         print("SUCCESS: MetaFFI RIG generation completed successfully")
     except Exception as e:
         print(f"ERROR: MetaFFI RIG generation failed: {e}")
@@ -207,10 +207,10 @@ def test_metaffi_rig_generation():
     print("\nSUMMARY: MetaFFI RIG Generation Summary:")
     print(f"   Repository: {rig.repository_info.name}")
     print(f"   Build System: {rig.build_system_info.name} {rig.build_system_info.version}")
-    print(f"   Components: {len(rig.components)}")
-    print(f"   Tests: {len(rig.tests)}")
-    print(f"   Aggregators: {len(rig.aggregators)}")
-    print(f"   Runners: {len(rig.runners)}")
+    print(f"   Components: {len(rig._components)}")
+    print(f"   Tests: {len(rig._tests)}")
+    print(f"   Aggregators: {len(rig._aggregators)}")
+    print(f"   Runners: {len(rig._runners)}")
     print(f"   Validation Errors: {len(validation_errors) if validation_errors else 0}")
     
     # Print component breakdown
@@ -219,7 +219,7 @@ def test_metaffi_rig_generation():
     types = {}
     runtimes = {}
     
-    for component in rig.components:
+    for component in rig._components:
         # Count languages
         lang = component.programming_language
         languages[lang] = languages.get(lang, 0) + 1

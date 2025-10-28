@@ -37,16 +37,16 @@ async def test_v6_phase2_cmake_hello_world():
     assert phase2_store.is_valid(), f"Phase 2 store validation failed: {phase2_store.get_validation_errors()}"
     
     # Check basic requirements
-    assert len(phase2_store.components) > 0, "At least one source component should be identified"
+    assert len(phase2_store._components) > 0, "At least one source component should be identified"
     assert phase2_store.language_analysis.primary_language is not None, "Primary language should be set"
     assert len(phase2_store.file_organization) > 0, "File organization information should be available"
     
     # Check specific expectations for cmake_hello_world
-    component_names = [c.name for c in phase2_store.components]
+    component_names = [c.name for c in phase2_store._components]
     assert "main" in component_names or "hello_world" in component_names, "Main component should be identified"
     
     # Check that components have files
-    for component in phase2_store.components:
+    for component in phase2_store._components:
         assert len(component.files) > 0, f"Component '{component.name}' should have files"
         assert component.language is not None, f"Component '{component.name}' should have a language"
     

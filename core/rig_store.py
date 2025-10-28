@@ -3,36 +3,47 @@ RIG SQLite Storage Module
 
 This module provides functionality to save and load RIG objects to/from SQLite databases.
 It handles the complete serialization and deserialization of RIG data structures.
+
+Design: One RIG per database
+- Each SQLite database contains exactly one RIG
+- save_rig() replaces any existing RIG in the database
+- load_rig() loads the single RIG from the database
+
+Key Concepts:
+- String IDs: Objects have string IDs like "comp-1", "evidence-1"
+- Database IDs: SQLite uses integer primary keys
+- During SAVE: Maps string ID → integer database ID
+- During LOAD: Maps integer database ID → object, reconstructs string IDs
 """
 
 import json
 import sqlite3
 from pathlib import Path
-from typing import Optional, List, Dict, Any, Union
+from typing import Optional, List, Dict, Any, Union, Tuple
 from contextlib import contextmanager
 
-from .rig import RIG
-from .schemas import (
-    Component, Aggregator, Runner, Utility, TestDefinition, Evidence, 
-    ComponentLocation, ExternalPackage, PackageManager, RepositoryInfo, 
-    BuildSystemInfo, ComponentType, Runtime
+from core.rig import RIG
+from core.schemas import (
+    Component, Aggregator, Runner, TestDefinition, Evidence,
+    ExternalPackage, PackageManager, RepositoryInfo,
+    BuildSystemInfo, ComponentType
 )
 
 
 class RIGStore:
-    """SQLite storage for RIG objects."""
-    
+    """SQLite storage for RIG objects (one RIG per database)."""
+
     def __init__(self, db_path: Union[str, Path]):
         """Initialize RIG store with database path."""
         self.db_path = Path(db_path)
         self._ensure_database_exists()
-    
+
     def _ensure_database_exists(self) -> None:
         """Create database and tables if they don't exist."""
         with self._get_connection() as conn:
             # Check if tables already exist
             cursor = conn.execute("""
-                SELECT name FROM sqlite_master 
+                SELECT name FROM sqlite_master
                 WHERE type='table' AND name='rig_metadata'
             """)
             if cursor.fetchone() is None:
@@ -40,7 +51,7 @@ class RIGStore:
                 with open(Path(__file__).parent / 'rig_store_schema.sql', 'r') as f:
                     schema_sql = f.read()
                 conn.executescript(schema_sql)
-    
+
     @contextmanager
     def _get_connection(self):
         """Get database connection with proper error handling."""
@@ -48,682 +59,868 @@ class RIGStore:
         conn.row_factory = sqlite3.Row  # Enable dict-like access
         try:
             yield conn
+            conn.commit()
         except Exception:
             conn.rollback()
             raise
         finally:
             conn.close()
-    
-    def save_rig(self, rig: RIG, description: str = "RIG Export") -> int:
+
+    # ==============================================
+    # SAVE METHODS
+    # ==============================================
+
+    def save_rig(self, rig: RIG, description: str = "RIG Export") -> None:
         """
         Save RIG object to SQLite database.
-        
+        Replaces any existing RIG in the database.
+
         Args:
             rig: RIG object to save
             description: Description for this RIG export
-            
-        Returns:
-            RIG ID in database
         """
         with self._get_connection() as conn:
-            # Start transaction
-            conn.execute("BEGIN TRANSACTION")
-            
-            try:
-                # Insert RIG metadata
-                rig_id = self._save_rig_metadata(conn, description)
-                
-                # Save repository info
-                if rig.repository:
-                    self._save_repository_info(conn, rig_id, rig.repository)
-                
-                # Save build system info
-                if rig.build_system:
-                    self._save_build_system_info(conn, rig_id, rig.build_system)
-                
-                # Save evidence first (referenced by other entities)
-                evidence_map = self._save_evidence(conn, rig_id, rig.evidence)
-                
-                # Save package managers and external packages
-                package_manager_map = self._save_package_managers(conn, rig_id, rig.package_managers)
-                external_package_map = self._save_external_packages(conn, rig_id, rig.external_packages, package_manager_map)
-                
-                # Save component locations
-                location_map = self._save_component_locations(conn, rig_id, rig.component_locations, evidence_map)
-                
-                # Save entities
-                component_map = self._save_components(conn, rig_id, rig.components, evidence_map, external_package_map, location_map)
-                aggregator_map = self._save_aggregators(conn, rig_id, rig.aggregators, evidence_map)
-                runner_map = self._save_runners(conn, rig_id, rig.runners, evidence_map)
-                utility_map = self._save_utilities(conn, rig_id, rig.utilities, evidence_map)
-                test_map = self._save_tests(conn, rig_id, rig.tests, evidence_map, component_map, runner_map)
-                
-                # Save relationships
-                self._save_dependencies(conn, rig_id, rig, component_map, aggregator_map, runner_map, utility_map)
-                self._save_test_relationships(conn, rig_id, rig, test_map, component_map)
-                self._save_source_files(conn, rig_id, rig, component_map, test_map)
-                self._save_external_package_relationships(conn, rig_id, rig, component_map, external_package_map)
-                self._save_location_relationships(conn, rig_id, rig, component_map, location_map)
-                
-                # Commit transaction
-                conn.commit()
-                return rig_id
-                
-            except Exception:
-                conn.rollback()
-                raise
-    
-    def load_rig(self, rig_id: int) -> RIG:
-        """
-        Load RIG object from SQLite database.
-        
-        Args:
-            rig_id: RIG ID to load
-            
-        Returns:
-            Loaded RIG object
-        """
-        with self._get_connection() as conn:
-            # Load RIG metadata
-            rig_metadata = self._load_rig_metadata(conn, rig_id)
-            if not rig_metadata:
-                raise ValueError(f"RIG with ID {rig_id} not found")
-            
-            # Create RIG object
-            rig = RIG()
-            
-            # Load repository info
-            rig.repository = self._load_repository_info(conn, rig_id)
-            
-            # Load build system info
-            rig.build_system = self._load_build_system_info(conn, rig_id)
-            
-            # Load evidence
-            rig.evidence = self._load_evidence(conn, rig_id)
-            evidence_map = {e.id: e for e in rig.evidence}
-            
-            # Load package managers and external packages
-            rig.package_managers = self._load_package_managers(conn, rig_id)
-            package_manager_map = {pm.id: pm for pm in rig.package_managers}
-            
-            rig.external_packages = self._load_external_packages(conn, rig_id, package_manager_map)
-            external_package_map = {ep.id: ep for ep in rig.external_packages}
-            
-            # Load component locations
-            rig.component_locations = self._load_component_locations(conn, rig_id, evidence_map)
-            location_map = {cl.id: cl for cl in rig.component_locations}
-            
-            # Load entities
-            rig.components = self._load_components(conn, rig_id, evidence_map, external_package_map, location_map)
-            component_map = {c.id: c for c in rig.components}
-            
-            rig.aggregators = self._load_aggregators(conn, rig_id, evidence_map)
-            aggregator_map = {a.id: a for a in rig.aggregators}
-            
-            rig.runners = self._load_runners(conn, rig_id, evidence_map)
-            runner_map = {r.id: r for r in rig.runners}
-            
-            rig.utilities = self._load_utilities(conn, rig_id, evidence_map)
-            utility_map = {u.id: u for u in rig.utilities}
-            
-            rig.tests = self._load_tests(conn, rig_id, evidence_map, component_map, runner_map)
-            test_map = {t.id: t for t in rig.tests}
-            
-            # Load relationships
-            self._load_dependencies(conn, rig_id, rig, component_map, aggregator_map, runner_map, utility_map)
-            self._load_test_relationships(conn, rig_id, rig, test_map, component_map)
-            self._load_source_files(conn, rig_id, rig, component_map, test_map)
-            self._load_external_package_relationships(conn, rig_id, rig, component_map, external_package_map)
-            self._load_location_relationships(conn, rig_id, rig, component_map, location_map)
-            
-            return rig
-    
-    def list_rigs(self) -> List[Dict[str, Any]]:
-        """List all RIGs in the database."""
-        with self._get_connection() as conn:
-            cursor = conn.execute("""
-                SELECT id, created_at, updated_at, version, description
-                FROM rig_metadata
-                ORDER BY created_at DESC
-            """)
-            return [dict(row) for row in cursor.fetchall()]
-    
-    def delete_rig(self, rig_id: int) -> bool:
-        """Delete RIG from database."""
-        with self._get_connection() as conn:
-            cursor = conn.execute("DELETE FROM rig_metadata WHERE id = ?", (rig_id,))
-            conn.commit()
-            return cursor.rowcount > 0
-    
-    # Private helper methods for saving data
-    
-    def _save_rig_metadata(self, conn: sqlite3.Connection, description: str) -> int:
-        """Save RIG metadata and return RIG ID."""
-        cursor = conn.execute("""
-            INSERT INTO rig_metadata (description)
-            VALUES (?)
+            # Clear all existing data (cascade delete will handle relationships)
+            self._clear_database(conn)
+
+            # Insert RIG metadata with id=1
+            self._save_rig_metadata(conn, description)
+
+            # Save repository info
+            if rig._repository_info:
+                self._save_repository_info(conn, rig._repository_info)
+
+            # Save build system info
+            if rig._build_system_info:
+                self._save_build_system_info(conn, rig._build_system_info)
+
+            # Get entity lists from RIG (using *_by_id.values())
+            evidence_list = list(rig._evidence_by_id.values())
+            pm_list = list(rig._package_managers_by_id.values())
+            ep_list = list(rig._external_packages_by_id.values())
+
+            # Save evidence first (referenced by nodes)
+            # Returns Dict[str, int] mapping string ID → database ID
+            evidence_map = self._save_evidence(conn, evidence_list)
+
+            # Save package managers and external packages
+            pm_map = self._save_package_managers(conn, pm_list)
+            ep_map = self._save_external_packages(conn, ep_list, pm_map)
+
+            # Save entities (use properties that return lists)
+            component_map = self._save_components(conn, rig._components)
+            aggregator_map = self._save_aggregators(conn, rig._aggregators)
+            runner_map = self._save_runners(conn, rig._runners)
+            test_map = self._save_tests(conn, rig._tests, component_map, runner_map)
+
+            # Save relationships
+            self._save_node_evidence(conn, rig, evidence_map, component_map, aggregator_map, runner_map, test_map)
+            self._save_dependencies(conn, rig, component_map, aggregator_map, runner_map, test_map)
+            self._save_runner_args_nodes(conn, rig, runner_map, component_map, aggregator_map, test_map)
+            self._save_test_relationships(conn, rig._tests, test_map, component_map)
+            self._save_source_files(conn, rig, component_map, test_map)
+            self._save_external_package_relationships(conn, rig, component_map, ep_map)
+            self._save_component_locations(conn, rig, component_map)
+
+    def _clear_database(self, conn: sqlite3.Connection) -> None:
+        """Clear all data from database tables."""
+        # Delete from rig_metadata (cascades to other tables via FK constraints)
+        conn.execute("DELETE FROM rig_metadata")
+
+        # Explicitly delete from tables without FK to rig_metadata
+        conn.execute("DELETE FROM repository_info")
+        conn.execute("DELETE FROM build_system_info")
+        conn.execute("DELETE FROM evidence")
+        conn.execute("DELETE FROM package_managers")
+        conn.execute("DELETE FROM external_packages")
+        conn.execute("DELETE FROM components")
+        conn.execute("DELETE FROM aggregators")
+        conn.execute("DELETE FROM runners")
+        conn.execute("DELETE FROM tests")
+        conn.execute("DELETE FROM node_evidence")
+        conn.execute("DELETE FROM component_dependencies")
+        conn.execute("DELETE FROM aggregator_dependencies")
+        conn.execute("DELETE FROM runner_dependencies")
+        conn.execute("DELETE FROM runner_args_nodes")
+        conn.execute("DELETE FROM test_dependencies")
+        conn.execute("DELETE FROM test_components")
+        conn.execute("DELETE FROM test_components_being_tested")
+        conn.execute("DELETE FROM component_source_files")
+        conn.execute("DELETE FROM test_source_files")
+        conn.execute("DELETE FROM component_external_packages")
+        conn.execute("DELETE FROM component_locations")
+
+    def _save_rig_metadata(self, conn: sqlite3.Connection, description: str) -> None:
+        """Save RIG metadata with id=1."""
+        conn.execute("""
+            INSERT INTO rig_metadata (id, description)
+            VALUES (1, ?)
         """, (description,))
-        return cursor.lastrowid
-    
-    def _save_repository_info(self, conn: sqlite3.Connection, rig_id: int, repo: RepositoryInfo) -> None:
+
+    def _save_repository_info(self, conn: sqlite3.Connection, repo: RepositoryInfo) -> None:
         """Save repository information."""
         conn.execute("""
-            INSERT INTO repository_info (rig_id, name, root_path, build_directory, output_directory, 
-                                      configure_command, build_command, install_command, test_command)
+            INSERT INTO repository_info (name, root_path, build_directory, output_directory,
+                                       install_directory, configure_command, build_command, install_command, test_command)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (rig_id, repo.name, str(repo.root_path), str(repo.build_directory), 
-              str(repo.output_directory), repo.configure_command, repo.build_command, 
-              repo.install_command, repo.test_command))
-    
-    def _save_build_system_info(self, conn: sqlite3.Connection, rig_id: int, build_system: BuildSystemInfo) -> None:
+        """, (
+            repo.name,
+            str(repo.root_path),
+            str(repo.build_directory) if repo.build_directory else None,
+            str(repo.output_directory) if repo.output_directory else None,
+            str(repo.install_directory) if repo.install_directory else None,
+            repo.configure_command if repo.configure_command else None,
+            repo.build_command if repo.build_command else None,
+            repo.install_command if repo.install_command else None,
+            repo.test_command if repo.test_command else None
+        ))
+
+    def _save_build_system_info(self, conn: sqlite3.Connection, build_system: BuildSystemInfo) -> None:
         """Save build system information."""
         conn.execute("""
-            INSERT INTO build_system_info (rig_id, name, version, build_type)
-            VALUES (?, ?, ?, ?)
-        """, (rig_id, build_system.name, build_system.version, build_system.build_type))
-    
-    def _save_evidence(self, conn: sqlite3.Connection, rig_id: int, evidence_list: List[Evidence]) -> Dict[int, int]:
-        """Save evidence and return mapping from original ID to database ID."""
+            INSERT INTO build_system_info (name, version, build_type)
+            VALUES (?, ?, ?)
+        """, (build_system.name, build_system.version, build_system.build_type))
+
+    def _save_evidence(self, conn: sqlite3.Connection, evidence_list: List[Evidence]) -> Dict[str, int]:
+        """Save evidence and return mapping from string ID to database ID."""
         evidence_map = {}
         for evidence in evidence_list:
             cursor = conn.execute("""
-                INSERT INTO evidence (rig_id, call_stack_json)
-                VALUES (?, ?)
-            """, (rig_id, json.dumps(evidence.call_stack)))
+                INSERT INTO evidence (evidence_string_id, line_json, call_stack_json)
+                VALUES (?, ?, ?)
+            """, (
+                evidence.id,  # String ID like "evidence-1"
+                json.dumps(evidence.line) if evidence.line else None,
+                json.dumps(evidence.call_stack) if evidence.call_stack else None
+            ))
             evidence_map[evidence.id] = cursor.lastrowid
         return evidence_map
-    
-    def _save_package_managers(self, conn: sqlite3.Connection, rig_id: int, package_managers: List[PackageManager]) -> Dict[int, int]:
-        """Save package managers and return mapping from original ID to database ID."""
+
+    def _save_package_managers(self, conn: sqlite3.Connection, pm_list: List[PackageManager]) -> Dict[str, int]:
+        """Save package managers and return mapping from string ID to database ID."""
         pm_map = {}
-        for pm in package_managers:
+        for pm in pm_list:
             cursor = conn.execute("""
-                INSERT INTO package_managers (rig_id, name, package_name)
+                INSERT INTO package_managers (pm_string_id, name, package_name)
                 VALUES (?, ?, ?)
-            """, (rig_id, pm.name, pm.package_name))
+            """, (pm.id, pm.name, pm.package_name))
             pm_map[pm.id] = cursor.lastrowid
         return pm_map
-    
-    def _save_external_packages(self, conn: sqlite3.Connection, rig_id: int, external_packages: List[ExternalPackage], pm_map: Dict[int, int]) -> Dict[int, int]:
-        """Save external packages and return mapping from original ID to database ID."""
+
+    def _save_external_packages(self, conn: sqlite3.Connection, ep_list: List[ExternalPackage], pm_map: Dict[str, int]) -> Dict[str, int]:
+        """Save external packages and return mapping from string ID to database ID."""
         ep_map = {}
-        for ep in external_packages:
+        for ep in ep_list:
+            pm_db_id = pm_map[ep.package_manager.id]
             cursor = conn.execute("""
-                INSERT INTO external_packages (rig_id, package_manager_id)
-                VALUES (?, ?)
-            """, (rig_id, pm_map[ep.package_manager.id]))
+                INSERT INTO external_packages (ep_string_id, name, package_manager_id)
+                VALUES (?, ?, ?)
+            """, (ep.id, ep.name, pm_db_id))
             ep_map[ep.id] = cursor.lastrowid
         return ep_map
-    
-    def _save_component_locations(self, conn: sqlite3.Connection, rig_id: int, locations: List[ComponentLocation], evidence_map: Dict[int, int]) -> Dict[int, int]:
-        """Save component locations and return mapping from original ID to database ID."""
-        location_map = {}
-        for location in locations:
-            source_location_id = None
-            if location.source_location and location.source_location.id in location_map:
-                source_location_id = location_map[location.source_location.id]
-            
-            cursor = conn.execute("""
-                INSERT INTO component_locations (rig_id, path, action, source_location_id, evidence_id)
-                VALUES (?, ?, ?, ?, ?)
-            """, (rig_id, str(location.path), location.action, source_location_id, evidence_map[location.evidence.id]))
-            location_map[location.id] = cursor.lastrowid
-        return location_map
-    
-    def _save_components(self, conn: sqlite3.Connection, rig_id: int, components: List[Component], evidence_map: Dict[int, int], ep_map: Dict[int, int], location_map: Dict[int, int]) -> Dict[int, int]:
-        """Save components and return mapping from original ID to database ID."""
+
+    def _save_components(self, conn: sqlite3.Connection, components: List[Component]) -> Dict[str, int]:
+        """Save components and return mapping from string ID to database ID."""
         component_map = {}
         for component in components:
             cursor = conn.execute("""
-                INSERT INTO components (rig_id, name, type, runtime, output, output_path, programming_language, 
-                                      evidence_id, test_link_id, test_link_name)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (rig_id, component.name, component.type.value, component.runtime.value if component.runtime else None,
-                  component.output, str(component.output_path), component.programming_language,
-                  evidence_map[component.evidence.id], component.test_link_id, component.test_link_name))
+                INSERT INTO components (comp_string_id, name, type, relative_path, programming_language)
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                component.id,
+                component.name,
+                component.type.value,
+                str(component.relative_path),
+                component.programming_language
+            ))
             component_map[component.id] = cursor.lastrowid
         return component_map
-    
-    def _save_aggregators(self, conn: sqlite3.Connection, rig_id: int, aggregators: List[Aggregator], evidence_map: Dict[int, int]) -> Dict[int, int]:
-        """Save aggregators and return mapping from original ID to database ID."""
+
+    def _save_aggregators(self, conn: sqlite3.Connection, aggregators: List[Aggregator]) -> Dict[str, int]:
+        """Save aggregators and return mapping from string ID to database ID."""
         aggregator_map = {}
         for aggregator in aggregators:
             cursor = conn.execute("""
-                INSERT INTO aggregators (rig_id, name, evidence_id)
-                VALUES (?, ?, ?)
-            """, (rig_id, aggregator.name, evidence_map[aggregator.evidence.id]))
+                INSERT INTO aggregators (agg_string_id, name)
+                VALUES (?, ?)
+            """, (aggregator.id, aggregator.name))
             aggregator_map[aggregator.id] = cursor.lastrowid
         return aggregator_map
-    
-    def _save_runners(self, conn: sqlite3.Connection, rig_id: int, runners: List[Runner], evidence_map: Dict[int, int]) -> Dict[int, int]:
-        """Save runners and return mapping from original ID to database ID."""
+
+    def _save_runners(self, conn: sqlite3.Connection, runners: List[Runner]) -> Dict[str, int]:
+        """Save runners and return mapping from string ID to database ID."""
         runner_map = {}
         for runner in runners:
+            # Serialize arguments as JSON
+            arguments_json = json.dumps(runner.arguments) if runner.arguments else None
+
             cursor = conn.execute("""
-                INSERT INTO runners (rig_id, name, evidence_id)
+                INSERT INTO runners (runner_string_id, name, arguments_json)
                 VALUES (?, ?, ?)
-            """, (rig_id, runner.name, evidence_map[runner.evidence.id]))
+            """, (runner.id, runner.name, arguments_json))
             runner_map[runner.id] = cursor.lastrowid
         return runner_map
-    
-    def _save_utilities(self, conn: sqlite3.Connection, rig_id: int, utilities: List[Utility], evidence_map: Dict[int, int]) -> Dict[int, int]:
-        """Save utilities and return mapping from original ID to database ID."""
-        utility_map = {}
-        for utility in utilities:
-            cursor = conn.execute("""
-                INSERT INTO utilities (rig_id, name, evidence_id)
-                VALUES (?, ?, ?)
-            """, (rig_id, utility.name, evidence_map[utility.evidence.id]))
-            utility_map[utility.id] = cursor.lastrowid
-        return utility_map
-    
-    def _save_tests(self, conn: sqlite3.Connection, rig_id: int, tests: List[TestDefinition], evidence_map: Dict[int, int], component_map: Dict[int, int], runner_map: Dict[int, int]) -> Dict[int, int]:
-        """Save tests and return mapping from original ID to database ID."""
+
+    def _save_tests(self, conn: sqlite3.Connection, tests: List[TestDefinition], component_map: Dict[str, int], runner_map: Dict[str, int]) -> Dict[str, int]:
+        """Save tests and return mapping from string ID to database ID."""
         test_map = {}
         for test in tests:
-            test_executable_id = None
-            if test.test_executable and test.test_executable.id in component_map:
-                test_executable_id = component_map[test.test_executable.id]
-            
-            test_runner_id = None
-            if test.test_runner and test.test_runner.id in runner_map:
-                test_runner_id = runner_map[test.test_runner.id]
-            
+            # Handle test_executable_component (can be Component or Runner)
+            test_exec_db_id = None
+            test_exec_type = None
+
+            if test.test_executable_component:
+                if isinstance(test.test_executable_component, Component):
+                    test_exec_db_id = component_map[test.test_executable_component.id]
+                    test_exec_type = 'component'
+                elif isinstance(test.test_executable_component, Runner):
+                    test_exec_db_id = runner_map[test.test_executable_component.id]
+                    test_exec_type = 'runner'
+
             cursor = conn.execute("""
-                INSERT INTO tests (rig_id, name, test_executable_id, test_runner_id, test_framework, evidence_id)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (rig_id, test.name, test_executable_id, test_runner_id, test.test_framework, evidence_map[test.evidence.id]))
+                INSERT INTO tests (test_string_id, name, test_executable_component_id, test_executable_type, test_framework)
+                VALUES (?, ?, ?, ?, ?)
+            """, (test.id, test.name, test_exec_db_id, test_exec_type, test.test_framework))
             test_map[test.id] = cursor.lastrowid
         return test_map
-    
-    def _save_dependencies(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, int], aggregator_map: Dict[int, int], runner_map: Dict[int, int], utility_map: Dict[int, int]) -> None:
+
+    def _save_node_evidence(self, conn: sqlite3.Connection, rig: RIG, evidence_map: Dict[str, int],
+                           component_map: Dict[str, int], aggregator_map: Dict[str, int],
+                           runner_map: Dict[str, int], test_map: Dict[str, int]) -> None:
+        """Save node-evidence relationships (many-to-many)."""
+        # Components
+        for component in rig._components:
+            component_db_id = component_map[component.id]
+            for evidence in component.evidence:
+                evidence_db_id = evidence_map[evidence.id]
+                conn.execute("""
+                    INSERT INTO node_evidence (node_type, node_id, evidence_id)
+                    VALUES (?, ?, ?)
+                """, ('component', component_db_id, evidence_db_id))
+
+        # Aggregators
+        for aggregator in rig._aggregators:
+            aggregator_db_id = aggregator_map[aggregator.id]
+            for evidence in aggregator.evidence:
+                evidence_db_id = evidence_map[evidence.id]
+                conn.execute("""
+                    INSERT INTO node_evidence (node_type, node_id, evidence_id)
+                    VALUES (?, ?, ?)
+                """, ('aggregator', aggregator_db_id, evidence_db_id))
+
+        # Runners
+        for runner in rig._runners:
+            runner_db_id = runner_map[runner.id]
+            for evidence in runner.evidence:
+                evidence_db_id = evidence_map[evidence.id]
+                conn.execute("""
+                    INSERT INTO node_evidence (node_type, node_id, evidence_id)
+                    VALUES (?, ?, ?)
+                """, ('runner', runner_db_id, evidence_db_id))
+
+        # Tests
+        for test in rig._tests:
+            test_db_id = test_map[test.id]
+            for evidence in test.evidence:
+                evidence_db_id = evidence_map[evidence.id]
+                conn.execute("""
+                    INSERT INTO node_evidence (node_type, node_id, evidence_id)
+                    VALUES (?, ?, ?)
+                """, ('test', test_db_id, evidence_db_id))
+
+    def _save_dependencies(self, conn: sqlite3.Connection, rig: RIG,
+                          component_map: Dict[str, int], aggregator_map: Dict[str, int], runner_map: Dict[str, int], test_map: Dict[str, int]) -> None:
         """Save all dependency relationships."""
         # Component dependencies
-        for component in rig.components:
+        for component in rig._components:
+            component_db_id = component_map[component.id]
             for dep in component.depends_on:
-                self._save_dependency(conn, rig_id, 'component', component.id, dep, component_map, aggregator_map, runner_map, utility_map)
-        
+                self._save_single_dependency(conn, 'component', component_db_id, dep,
+                                            component_map, aggregator_map, runner_map)
+
         # Aggregator dependencies
-        for aggregator in rig.aggregators:
+        for aggregator in rig._aggregators:
+            aggregator_db_id = aggregator_map[aggregator.id]
             for dep in aggregator.depends_on:
-                self._save_dependency(conn, rig_id, 'aggregator', aggregator.id, dep, component_map, aggregator_map, runner_map, utility_map)
-        
+                self._save_single_dependency(conn, 'aggregator', aggregator_db_id, dep,
+                                            component_map, aggregator_map, runner_map)
+
         # Runner dependencies
-        for runner in rig.runners:
+        for runner in rig._runners:
+            runner_db_id = runner_map[runner.id]
             for dep in runner.depends_on:
-                self._save_dependency(conn, rig_id, 'runner', runner.id, dep, component_map, aggregator_map, runner_map, utility_map)
-        
-        # Utility dependencies
-        for utility in rig.utilities:
-            for dep in utility.depends_on:
-                self._save_dependency(conn, rig_id, 'utility', utility.id, dep, component_map, aggregator_map, runner_map, utility_map)
-    
-    def _save_dependency(self, conn: sqlite3.Connection, rig_id: int, entity_type: str, entity_id: int, dep, component_map: Dict[int, int], aggregator_map: Dict[int, int], runner_map: Dict[int, int], utility_map: Dict[int, int]) -> None:
-        """Save a single dependency relationship."""
-        table_map = {
-            'component': 'component_dependencies',
-            'aggregator': 'aggregator_dependencies', 
-            'runner': 'runner_dependencies',
-            'utility': 'utility_dependencies'
-        }
-        
-        table = table_map[entity_type]
-        
-        # Determine dependency type and ID
-        dep_component_id = None
-        dep_aggregator_id = None
-        dep_runner_id = None
-        dep_utility_id = None
-        
-        if hasattr(dep, 'id'):
-            if isinstance(dep, Component) and dep.id in component_map:
-                dep_component_id = component_map[dep.id]
-            elif isinstance(dep, Aggregator) and dep.id in aggregator_map:
-                dep_aggregator_id = aggregator_map[dep.id]
-            elif isinstance(dep, Runner) and dep.id in runner_map:
-                dep_runner_id = runner_map[dep.id]
-            elif isinstance(dep, Utility) and dep.id in utility_map:
-                dep_utility_id = utility_map[dep.id]
-        
-        if dep_component_id or dep_aggregator_id or dep_runner_id or dep_utility_id:
+                self._save_single_dependency(conn, 'runner', runner_db_id, dep,
+                                            component_map, aggregator_map, runner_map)
+
+        # Test dependencies
+        for test in rig._tests:
+            test_db_id = test_map[test.id]
+            for dep in test.depends_on:
+                self._save_single_dependency(conn, 'test', test_db_id, dep,
+                                            component_map, aggregator_map, runner_map)
+
+    def _save_single_dependency(self, conn: sqlite3.Connection, node_type: str, node_db_id: int,
+                               dep: Union[Component, Aggregator, Runner],
+                               component_map: Dict[str, int], aggregator_map: Dict[str, int], runner_map: Dict[str, int]) -> None:
+        """Save a single dependency relationship with type discriminator."""
+        dep_db_id = None
+        dep_type = None
+
+        if isinstance(dep, Component):
+            dep_db_id = component_map.get(dep.id)
+            dep_type = 'component'
+        elif isinstance(dep, Aggregator):
+            dep_db_id = aggregator_map.get(dep.id)
+            dep_type = 'aggregator'
+        elif isinstance(dep, Runner):
+            dep_db_id = runner_map.get(dep.id)
+            dep_type = 'runner'
+
+        if dep_db_id and dep_type:
+            table_name = f"{node_type}_dependencies"
             conn.execute(f"""
-                INSERT INTO {table} (rig_id, {entity_type}_id, depends_on_component_id, depends_on_aggregator_id, 
-                                   depends_on_runner_id, depends_on_utility_id)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (rig_id, entity_id, dep_component_id, dep_aggregator_id, dep_runner_id, dep_utility_id))
-    
-    def _save_test_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, test_map: Dict[int, int], component_map: Dict[int, int]) -> None:
+                INSERT INTO {table_name} ({node_type}_id, depends_on_type, depends_on_id)
+                VALUES (?, ?, ?)
+            """, (node_db_id, dep_type, dep_db_id))
+
+    def _save_runner_args_nodes(self, conn: sqlite3.Connection, rig: RIG, runner_map: Dict[str, int],
+                                component_map: Dict[str, int], aggregator_map: Dict[str, int], test_map: Dict[str, int]) -> None:
+        """Save runner args_nodes relationships."""
+        for runner in rig._runners:
+            runner_db_id = runner_map[runner.id]
+            for args_node in runner.args_nodes:
+                args_node_db_id = None
+                args_node_type = None
+
+                if isinstance(args_node, Component):
+                    args_node_db_id = component_map.get(args_node.id)
+                    args_node_type = 'component'
+                elif isinstance(args_node, Aggregator):
+                    args_node_db_id = aggregator_map.get(args_node.id)
+                    args_node_type = 'aggregator'
+                elif isinstance(args_node, Runner):
+                    args_node_db_id = runner_map.get(args_node.id)
+                    args_node_type = 'runner'
+                elif isinstance(args_node, TestDefinition):
+                    args_node_db_id = test_map.get(args_node.id)
+                    args_node_type = 'test'
+
+                if args_node_db_id and args_node_type:
+                    conn.execute("""
+                        INSERT INTO runner_args_nodes (runner_id, args_node_type, args_node_id)
+                        VALUES (?, ?, ?)
+                    """, (runner_db_id, args_node_type, args_node_db_id))
+
+    def _save_test_relationships(self, conn: sqlite3.Connection, tests: List[TestDefinition],
+                                 test_map: Dict[str, int], component_map: Dict[str, int]) -> None:
         """Save test-to-component relationships."""
-        for test in rig.tests:
+        for test in tests:
+            test_db_id = test_map[test.id]
+
+            # Save test_components
+            for component in test.test_components:
+                if component.id in component_map:
+                    conn.execute("""
+                        INSERT INTO test_components (test_id, component_id)
+                        VALUES (?, ?)
+                    """, (test_db_id, component_map[component.id]))
+
+            # Save components_being_tested
             for component in test.components_being_tested:
                 if component.id in component_map:
                     conn.execute("""
-                        INSERT INTO test_components (rig_id, test_id, component_id)
-                        VALUES (?, ?, ?)
-                    """, (rig_id, test_map[test.id], component_map[component.id]))
-    
-    def _save_source_files(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, int], test_map: Dict[int, int]) -> None:
+                        INSERT INTO test_components_being_tested (test_id, component_id)
+                        VALUES (?, ?)
+                    """, (test_db_id, component_map[component.id]))
+
+    def _save_source_files(self, conn: sqlite3.Connection, rig: RIG,
+                           component_map: Dict[str, int], test_map: Dict[str, int]) -> None:
         """Save source file relationships."""
         # Component source files
-        for component in rig.components:
+        for component in rig._components:
+            component_db_id = component_map[component.id]
             for source_file in component.source_files:
                 conn.execute("""
-                    INSERT INTO component_source_files (rig_id, component_id, source_file_path)
-                    VALUES (?, ?, ?)
-                """, (rig_id, component_map[component.id], str(source_file)))
-        
+                    INSERT INTO component_source_files (component_id, source_file_path)
+                    VALUES (?, ?)
+                """, (component_db_id, str(source_file)))
+
         # Test source files
-        for test in rig.tests:
+        for test in rig._tests:
+            test_db_id = test_map[test.id]
             for source_file in test.source_files:
                 conn.execute("""
-                    INSERT INTO test_source_files (rig_id, test_id, source_file_path)
-                    VALUES (?, ?, ?)
-                """, (rig_id, test_map[test.id], str(source_file)))
-    
-    def _save_external_package_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, int], ep_map: Dict[int, int]) -> None:
+                    INSERT INTO test_source_files (test_id, source_file_path)
+                    VALUES (?, ?)
+                """, (test_db_id, str(source_file)))
+
+    def _save_external_package_relationships(self, conn: sqlite3.Connection, rig: RIG,
+                                            component_map: Dict[str, int], ep_map: Dict[str, int]) -> None:
         """Save component-to-external-package relationships."""
-        for component in rig.components:
+        for component in rig._components:
+            component_db_id = component_map[component.id]
             for ep in component.external_packages:
                 if ep.id in ep_map:
                     conn.execute("""
-                        INSERT INTO component_external_packages (rig_id, component_id, external_package_id)
-                        VALUES (?, ?, ?)
-                    """, (rig_id, component_map[component.id], ep_map[ep.id]))
-    
-    def _save_location_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, int], location_map: Dict[int, int]) -> None:
-        """Save component-to-location relationships."""
-        for component in rig.components:
-            for location in component.locations:
-                if location.id in location_map:
-                    conn.execute("""
-                        INSERT INTO component_locations_rel (rig_id, component_id, location_id)
-                        VALUES (?, ?, ?)
-                    """, (rig_id, component_map[component.id], location_map[location.id]))
-    
-    # Private helper methods for loading data
-    
-    def _load_rig_metadata(self, conn: sqlite3.Connection, rig_id: int) -> Optional[Dict[str, Any]]:
+                        INSERT INTO component_external_packages (component_id, external_package_id)
+                        VALUES (?, ?)
+                    """, (component_db_id, ep_map[ep.id]))
+
+    def _save_component_locations(self, conn: sqlite3.Connection, rig: RIG, component_map: Dict[str, int]) -> None:
+        """Save component locations (simple paths)."""
+        for component in rig._components:
+            component_db_id = component_map[component.id]
+            for location_path in component.locations:
+                conn.execute("""
+                    INSERT INTO component_locations (component_id, location_path)
+                    VALUES (?, ?)
+                """, (component_db_id, str(location_path)))
+
+    # ==============================================
+    # LOAD METHODS
+    # ==============================================
+
+    def load_rig(self) -> RIG:
+        """
+        Load RIG object from SQLite database.
+
+        Returns:
+            Loaded RIG object
+
+        Raises:
+            ValueError: If database contains 0 or >1 RIGs
+        """
+        with self._get_connection() as conn:
+            # Validate exactly 1 RIG exists
+            cursor = conn.execute("SELECT COUNT(*) as count FROM rig_metadata")
+            count = cursor.fetchone()['count']
+
+            if count == 0:
+                raise ValueError("Database is empty - no RIG found")
+            elif count > 1:
+                raise ValueError(f"Database is corrupted - contains {count} RIGs, expected 1")
+
+            # Load RIG metadata
+            rig_metadata = self._load_rig_metadata(conn)
+            if not rig_metadata:
+                raise ValueError("RIG metadata not found")
+
+            # Create RIG object
+            rig = RIG()
+
+            # Load repository info
+            rig._repository_info = self._load_repository_info(conn)
+
+            # Load build system info
+            rig._build_system_info = self._load_build_system_info(conn)
+
+            # Load evidence and create db_id → Evidence map
+            evidence_list, evidence_db_map = self._load_evidence(conn)
+            for evidence in evidence_list:
+                rig._evidence_by_id[evidence.id] = evidence
+
+            # Load package managers and external packages
+            pm_list, pm_db_map = self._load_package_managers(conn)
+            for pm in pm_list:
+                rig._package_managers_by_id[pm.id] = pm
+
+            ep_list, ep_db_map = self._load_external_packages(conn, pm_db_map)
+            for ep in ep_list:
+                rig._external_packages_by_id[ep.id] = ep
+
+            # Load entities and create db_id → Object maps
+            component_list, component_db_map = self._load_components(conn)
+            for component in component_list:
+                rig._components_by_id[component.id] = component
+
+            aggregator_list, aggregator_db_map = self._load_aggregators(conn)
+            for aggregator in aggregator_list:
+                rig._aggregators_by_id[aggregator.id] = aggregator
+
+            runner_list, runner_db_map = self._load_runners(conn)
+            for runner in runner_list:
+                rig._runners_by_id[runner.id] = runner
+
+            test_list, test_db_map = self._load_tests(conn, component_db_map, runner_db_map)
+            for test in test_list:
+                rig._tests_by_id[test.id] = test
+
+            # Load relationships using db_id maps
+            self._load_node_evidence(conn, component_db_map, aggregator_db_map, runner_db_map, test_db_map, evidence_db_map)
+            self._load_dependencies(conn, component_db_map, aggregator_db_map, runner_db_map, test_db_map)
+            self._load_test_relationships(conn, test_db_map, component_db_map)
+            self._load_source_files(conn, component_db_map, test_db_map)
+            self._load_external_package_relationships(conn, component_db_map, ep_db_map)
+            self._load_component_locations(conn, component_db_map)
+
+            return rig
+
+    def _load_rig_metadata(self, conn: sqlite3.Connection) -> Optional[Dict[str, Any]]:
         """Load RIG metadata."""
-        cursor = conn.execute("SELECT * FROM rig_metadata WHERE id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM rig_metadata WHERE id = 1")
         row = cursor.fetchone()
         return dict(row) if row else None
-    
-    def _load_repository_info(self, conn: sqlite3.Connection, rig_id: int) -> Optional[RepositoryInfo]:
+
+    def _load_repository_info(self, conn: sqlite3.Connection) -> Optional[RepositoryInfo]:
         """Load repository information."""
-        cursor = conn.execute("SELECT * FROM repository_info WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM repository_info")
         row = cursor.fetchone()
         if not row:
             return None
-        
+
         return RepositoryInfo(
             name=row['name'],
             root_path=Path(row['root_path']),
-            build_directory=Path(row['build_directory']),
-            output_directory=Path(row['output_directory']),
+            build_directory=Path(row['build_directory']) if row['build_directory'] else None,
+            output_directory=Path(row['output_directory']) if row['output_directory'] else None,
+            install_directory=Path(row['install_directory']) if row['install_directory'] else None,
             configure_command=row['configure_command'],
             build_command=row['build_command'],
             install_command=row['install_command'],
             test_command=row['test_command']
         )
-    
-    def _load_build_system_info(self, conn: sqlite3.Connection, rig_id: int) -> Optional[BuildSystemInfo]:
+
+    def _load_build_system_info(self, conn: sqlite3.Connection) -> Optional[BuildSystemInfo]:
         """Load build system information."""
-        cursor = conn.execute("SELECT * FROM build_system_info WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM build_system_info")
         row = cursor.fetchone()
         if not row:
             return None
-        
+
         return BuildSystemInfo(
             name=row['name'],
             version=row['version'],
             build_type=row['build_type']
         )
-    
-    def _load_evidence(self, conn: sqlite3.Connection, rig_id: int) -> List[Evidence]:
-        """Load evidence."""
-        cursor = conn.execute("SELECT * FROM evidence WHERE rig_id = ?", (rig_id,))
+
+    def _load_evidence(self, conn: sqlite3.Connection) -> Tuple[List[Evidence], Dict[int, Evidence]]:
+        """Load evidence and return both list and db_id → Evidence map."""
+        cursor = conn.execute("SELECT * FROM evidence")
         evidence_list = []
+        evidence_db_map = {}
+
         for row in cursor.fetchall():
             evidence = Evidence(
-                id=row['id'],
-                call_stack=json.loads(row['call_stack_json'])
+                id=row['evidence_string_id'],  # Use string ID column
+                line=json.loads(row['line_json']) if row['line_json'] else None,
+                call_stack=json.loads(row['call_stack_json']) if row['call_stack_json'] else None
             )
             evidence_list.append(evidence)
-        return evidence_list
-    
-    def _load_package_managers(self, conn: sqlite3.Connection, rig_id: int) -> List[PackageManager]:
-        """Load package managers."""
-        cursor = conn.execute("SELECT * FROM package_managers WHERE rig_id = ?", (rig_id,))
+            evidence_db_map[row['id']] = evidence  # Map db ID → object
+
+        return evidence_list, evidence_db_map
+
+    def _load_package_managers(self, conn: sqlite3.Connection) -> Tuple[List[PackageManager], Dict[int, PackageManager]]:
+        """Load package managers and return both list and db_id → PackageManager map."""
+        cursor = conn.execute("SELECT * FROM package_managers")
         pm_list = []
+        pm_db_map = {}
+
         for row in cursor.fetchall():
             pm = PackageManager(
-                id=row['id'],
+                id=row['pm_string_id'],
                 name=row['name'],
                 package_name=row['package_name']
             )
             pm_list.append(pm)
-        return pm_list
-    
-    def _load_external_packages(self, conn: sqlite3.Connection, rig_id: int, pm_map: Dict[int, PackageManager]) -> List[ExternalPackage]:
-        """Load external packages."""
-        cursor = conn.execute("SELECT * FROM external_packages WHERE rig_id = ?", (rig_id,))
+            pm_db_map[row['id']] = pm
+
+        return pm_list, pm_db_map
+
+    def _load_external_packages(self, conn: sqlite3.Connection, pm_db_map: Dict[int, PackageManager]) -> Tuple[List[ExternalPackage], Dict[int, ExternalPackage]]:
+        """Load external packages and return both list and db_id → ExternalPackage map."""
+        cursor = conn.execute("SELECT * FROM external_packages")
         ep_list = []
+        ep_db_map = {}
+
         for row in cursor.fetchall():
+            pm = pm_db_map[row['package_manager_id']]
             ep = ExternalPackage(
-                id=row['id'],
-                package_manager=pm_map[row['package_manager_id']]
+                id=row['ep_string_id'],
+                name=row['name'],
+                package_manager=pm
             )
             ep_list.append(ep)
-        return ep_list
-    
-    def _load_component_locations(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence]) -> List[ComponentLocation]:
-        """Load component locations."""
-        cursor = conn.execute("SELECT * FROM component_locations WHERE rig_id = ?", (rig_id,))
-        location_list = []
-        for row in cursor.fetchall():
-            source_location = None
-            if row['source_location_id']:
-                # Find source location in already loaded locations
-                for loc in location_list:
-                    if loc.id == row['source_location_id']:
-                        source_location = loc
-                        break
-            
-            location = ComponentLocation(
-                id=row['id'],
-                path=Path(row['path']),
-                action=row['action'],
-                source_location=source_location,
-                evidence=evidence_map[row['evidence_id']]
-            )
-            location_list.append(location)
-        return location_list
-    
-    def _load_components(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence], ep_map: Dict[int, ExternalPackage], location_map: Dict[int, ComponentLocation]) -> List[Component]:
-        """Load components."""
-        cursor = conn.execute("SELECT * FROM components WHERE rig_id = ?", (rig_id,))
+            ep_db_map[row['id']] = ep
+
+        return ep_list, ep_db_map
+
+    def _load_components(self, conn: sqlite3.Connection) -> Tuple[List[Component], Dict[int, Component]]:
+        """Load components and return both list and db_id → Component map."""
+        cursor = conn.execute("SELECT * FROM components")
         component_list = []
+        component_db_map = {}
+
         for row in cursor.fetchall():
             component = Component(
-                id=row['id'],
+                id=row['comp_string_id'],  # Use string ID column!
                 name=row['name'],
                 type=ComponentType(row['type']),
-                runtime=Runtime(row['runtime']) if row['runtime'] else None,
-                output=row['output'],
-                output_path=Path(row['output_path']),
+                relative_path=Path(row['relative_path']),
                 programming_language=row['programming_language'],
-                source_files=[],  # Will be loaded separately
-                external_packages=[],  # Will be loaded separately
-                locations=[],  # Will be loaded separately
-                depends_on=[],  # Will be loaded separately
-                evidence=evidence_map[row['evidence_id']],
-                test_link_id=row['test_link_id'],
-                test_link_name=row['test_link_name']
+                source_files=[],  # Loaded separately
+                external_packages=[],  # Loaded separately
+                locations=[],  # Loaded separately
+                depends_on=[],  # Loaded separately
+                evidence=[]  # Loaded separately
             )
             component_list.append(component)
-        return component_list
-    
-    def _load_aggregators(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence]) -> List[Aggregator]:
-        """Load aggregators."""
-        cursor = conn.execute("SELECT * FROM aggregators WHERE rig_id = ?", (rig_id,))
+            component_db_map[row['id']] = component  # Map db ID → object
+
+        return component_list, component_db_map
+
+    def _load_aggregators(self, conn: sqlite3.Connection) -> Tuple[List[Aggregator], Dict[int, Aggregator]]:
+        """Load aggregators and return both list and db_id → Aggregator map."""
+        cursor = conn.execute("SELECT * FROM aggregators")
         aggregator_list = []
+        aggregator_db_map = {}
+
         for row in cursor.fetchall():
             aggregator = Aggregator(
-                id=row['id'],
+                id=row['agg_string_id'],
                 name=row['name'],
-                depends_on=[],  # Will be loaded separately
-                evidence=evidence_map[row['evidence_id']]
+                depends_on=[],
+                evidence=[]
             )
             aggregator_list.append(aggregator)
-        return aggregator_list
-    
-    def _load_runners(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence]) -> List[Runner]:
-        """Load runners."""
-        cursor = conn.execute("SELECT * FROM runners WHERE rig_id = ?", (rig_id,))
+            aggregator_db_map[row['id']] = aggregator
+
+        return aggregator_list, aggregator_db_map
+
+    def _load_runners(self, conn: sqlite3.Connection) -> Tuple[List[Runner], Dict[int, Runner]]:
+        """Load runners and return both list and db_id → Runner map."""
+        cursor = conn.execute("SELECT * FROM runners")
         runner_list = []
+        runner_db_map = {}
+
         for row in cursor.fetchall():
+            # Deserialize arguments from JSON
+            arguments = json.loads(row['arguments_json']) if row['arguments_json'] else []
+
             runner = Runner(
-                id=row['id'],
+                id=row['runner_string_id'],
                 name=row['name'],
-                depends_on=[],  # Will be loaded separately
-                evidence=evidence_map[row['evidence_id']]
+                depends_on=[],
+                evidence=[],
+                arguments=arguments,
+                args_nodes=[],
+                args_nodes_ids=set()
             )
             runner_list.append(runner)
-        return runner_list
-    
-    def _load_utilities(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence]) -> List[Utility]:
-        """Load utilities."""
-        cursor = conn.execute("SELECT * FROM utilities WHERE rig_id = ?", (rig_id,))
-        utility_list = []
-        for row in cursor.fetchall():
-            utility = Utility(
-                id=row['id'],
-                name=row['name'],
-                depends_on=[],  # Will be loaded separately
-                evidence=evidence_map[row['evidence_id']]
-            )
-            utility_list.append(utility)
-        return utility_list
-    
-    def _load_tests(self, conn: sqlite3.Connection, rig_id: int, evidence_map: Dict[int, Evidence], component_map: Dict[int, Component], runner_map: Dict[int, Runner]) -> List[TestDefinition]:
-        """Load tests."""
-        cursor = conn.execute("SELECT * FROM tests WHERE rig_id = ?", (rig_id,))
+            runner_db_map[row['id']] = runner
+
+        return runner_list, runner_db_map
+
+    def _load_tests(self, conn: sqlite3.Connection, component_db_map: Dict[int, Component], runner_db_map: Dict[int, Runner]) -> Tuple[List[TestDefinition], Dict[int, TestDefinition]]:
+        """Load tests and return both list and db_id → TestDefinition map."""
+        cursor = conn.execute("SELECT * FROM tests")
         test_list = []
+        test_db_map = {}
+
         for row in cursor.fetchall():
-            test_executable = None
-            if row['test_executable_id'] and row['test_executable_id'] in component_map:
-                test_executable = component_map[row['test_executable_id']]
-            
-            test_runner = None
-            if row['test_runner_id'] and row['test_runner_id'] in runner_map:
-                test_runner = runner_map[row['test_runner_id']]
-            
+            # Handle test_executable_component (Component | Runner)
+            test_exec = None
+            if row['test_executable_component_id']:
+                if row['test_executable_type'] == 'component':
+                    test_exec = component_db_map.get(row['test_executable_component_id'])
+                elif row['test_executable_type'] == 'runner':
+                    test_exec = runner_db_map.get(row['test_executable_component_id'])
+
             test = TestDefinition(
-                id=row['id'],
+                id=row['test_string_id'],
                 name=row['name'],
-                test_executable=test_executable,
-                components_being_tested=[],  # Will be loaded separately
-                test_runner=test_runner,
-                source_files=[],  # Will be loaded separately
+                test_executable_component=test_exec,
+                test_executable_component_id=test_exec.id if test_exec else None,
+                test_components=[],  # Loaded separately
+                components_being_tested=[],  # Loaded separately
+                source_files=[],  # Loaded separately
                 test_framework=row['test_framework'],
-                evidence=evidence_map[row['evidence_id']]
+                depends_on=[],  # Loaded separately
+                evidence=[]  # Loaded separately
             )
             test_list.append(test)
-        return test_list
-    
-    def _load_dependencies(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, Component], aggregator_map: Dict[int, Aggregator], runner_map: Dict[int, Runner], utility_map: Dict[int, Utility]) -> None:
+            test_db_map[row['id']] = test
+
+        return test_list, test_db_map
+
+    def _load_node_evidence(self, conn: sqlite3.Connection,
+                           component_db_map: Dict[int, Component], aggregator_db_map: Dict[int, Aggregator],
+                           runner_db_map: Dict[int, Runner], test_db_map: Dict[int, TestDefinition],
+                           evidence_db_map: Dict[int, Evidence]) -> None:
+        """Load node-evidence relationships."""
+        cursor = conn.execute("SELECT * FROM node_evidence")
+
+        for row in cursor.fetchall():
+            evidence = evidence_db_map[row['evidence_id']]
+
+            if row['node_type'] == 'component':
+                node = component_db_map.get(row['node_id'])
+                if node:
+                    node.evidence.append(evidence)
+                    node.evidence_ids.add(evidence.id)
+            elif row['node_type'] == 'aggregator':
+                node = aggregator_db_map.get(row['node_id'])
+                if node:
+                    node.evidence.append(evidence)
+                    node.evidence_ids.add(evidence.id)
+            elif row['node_type'] == 'runner':
+                node = runner_db_map.get(row['node_id'])
+                if node:
+                    node.evidence.append(evidence)
+                    node.evidence_ids.add(evidence.id)
+            elif row['node_type'] == 'test':
+                node = test_db_map.get(row['node_id'])
+                if node:
+                    node.evidence.append(evidence)
+                    node.evidence_ids.add(evidence.id)
+
+    def _load_dependencies(self, conn: sqlite3.Connection,
+                          component_db_map: Dict[int, Component], aggregator_db_map: Dict[int, Aggregator],
+                          runner_db_map: Dict[int, Runner], test_db_map: Dict[int, TestDefinition]) -> None:
         """Load all dependency relationships."""
         # Load component dependencies
-        cursor = conn.execute("SELECT * FROM component_dependencies WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM component_dependencies")
         for row in cursor.fetchall():
-            component = component_map[row['component_id']]
-            dep = self._find_dependency_target(row, component_map, aggregator_map, runner_map, utility_map)
-            if dep:
+            component = component_db_map.get(row['component_id'])
+            dep = self._get_dependency_object(row['depends_on_type'], row['depends_on_id'],
+                                             component_db_map, aggregator_db_map, runner_db_map)
+            if component and dep:
                 component.depends_on.append(dep)
-        
+                component.depends_on_ids.add(dep.id)
+
         # Load aggregator dependencies
-        cursor = conn.execute("SELECT * FROM aggregator_dependencies WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM aggregator_dependencies")
         for row in cursor.fetchall():
-            aggregator = aggregator_map[row['aggregator_id']]
-            dep = self._find_dependency_target(row, component_map, aggregator_map, runner_map, utility_map)
-            if dep:
+            aggregator = aggregator_db_map.get(row['aggregator_id'])
+            dep = self._get_dependency_object(row['depends_on_type'], row['depends_on_id'],
+                                             component_db_map, aggregator_db_map, runner_db_map)
+            if aggregator and dep:
                 aggregator.depends_on.append(dep)
-        
+                aggregator.depends_on_ids.add(dep.id)
+
         # Load runner dependencies
-        cursor = conn.execute("SELECT * FROM runner_dependencies WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM runner_dependencies")
         for row in cursor.fetchall():
-            runner = runner_map[row['runner_id']]
-            dep = self._find_dependency_target(row, component_map, aggregator_map, runner_map, utility_map)
-            if dep:
+            runner = runner_db_map.get(row['runner_id'])
+            dep = self._get_dependency_object(row['depends_on_type'], row['depends_on_id'],
+                                             component_db_map, aggregator_db_map, runner_db_map)
+            if runner and dep:
                 runner.depends_on.append(dep)
-        
-        # Load utility dependencies
-        cursor = conn.execute("SELECT * FROM utility_dependencies WHERE rig_id = ?", (rig_id,))
+                runner.depends_on_ids.add(dep.id)
+
+        # Load runner args_nodes
+        cursor = conn.execute("SELECT * FROM runner_args_nodes")
         for row in cursor.fetchall():
-            utility = utility_map[row['utility_id']]
-            dep = self._find_dependency_target(row, component_map, aggregator_map, runner_map, utility_map)
-            if dep:
-                utility.depends_on.append(dep)
-    
-    def _find_dependency_target(self, row, component_map: Dict[int, Component], aggregator_map: Dict[int, Aggregator], runner_map: Dict[int, Runner], utility_map: Dict[int, Utility]):
-        """Find dependency target from database row."""
-        if row['depends_on_component_id'] and row['depends_on_component_id'] in component_map:
-            return component_map[row['depends_on_component_id']]
-        elif row['depends_on_aggregator_id'] and row['depends_on_aggregator_id'] in aggregator_map:
-            return aggregator_map[row['depends_on_aggregator_id']]
-        elif row['depends_on_runner_id'] and row['depends_on_runner_id'] in runner_map:
-            return runner_map[row['depends_on_runner_id']]
-        elif row['depends_on_utility_id'] and row['depends_on_utility_id'] in utility_map:
-            return utility_map[row['depends_on_utility_id']]
+            runner = runner_db_map.get(row['runner_id'])
+            args_node = self._get_args_node_object(row['args_node_type'], row['args_node_id'],
+                                                   component_db_map, aggregator_db_map, runner_db_map, test_db_map)
+            if runner and args_node:
+                runner.args_nodes.append(args_node)
+                runner.args_nodes_ids.add(args_node.id)
+
+        # Load test dependencies
+        cursor = conn.execute("SELECT * FROM test_dependencies")
+        for row in cursor.fetchall():
+            test = test_db_map.get(row['test_id'])
+            dep = self._get_dependency_object(row['depends_on_type'], row['depends_on_id'],
+                                             component_db_map, aggregator_db_map, runner_db_map)
+            if test and dep:
+                test.depends_on.append(dep)
+                test.depends_on_ids.add(dep.id)
+
+    def _get_dependency_object(self, dep_type: str, dep_db_id: int,
+                               component_db_map: Dict[int, Component], aggregator_db_map: Dict[int, Aggregator],
+                               runner_db_map: Dict[int, Runner]) -> Optional[Union[Component, Aggregator, Runner]]:
+        """Get dependency object using type discriminator."""
+        if dep_type == 'component':
+            return component_db_map.get(dep_db_id)
+        elif dep_type == 'aggregator':
+            return aggregator_db_map.get(dep_db_id)
+        elif dep_type == 'runner':
+            return runner_db_map.get(dep_db_id)
         return None
-    
-    def _load_test_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, test_map: Dict[int, TestDefinition], component_map: Dict[int, Component]) -> None:
+
+    def _get_args_node_object(self, node_type: str, node_db_id: int,
+                              component_db_map: Dict[int, Component], aggregator_db_map: Dict[int, Aggregator],
+                              runner_db_map: Dict[int, Runner], test_db_map: Dict[int, TestDefinition]) -> Optional[Union[Component, Aggregator, Runner, TestDefinition]]:
+        """Get args_node object using type discriminator (supports all node types)."""
+        if node_type == 'component':
+            return component_db_map.get(node_db_id)
+        elif node_type == 'aggregator':
+            return aggregator_db_map.get(node_db_id)
+        elif node_type == 'runner':
+            return runner_db_map.get(node_db_id)
+        elif node_type == 'test':
+            return test_db_map.get(node_db_id)
+        return None
+
+    def _load_test_relationships(self, conn: sqlite3.Connection,
+                                 test_db_map: Dict[int, TestDefinition], component_db_map: Dict[int, Component]) -> None:
         """Load test-to-component relationships."""
-        cursor = conn.execute("SELECT * FROM test_components WHERE rig_id = ?", (rig_id,))
+        # Load test_components
+        cursor = conn.execute("SELECT * FROM test_components")
         for row in cursor.fetchall():
-            test = test_map[row['test_id']]
-            component = component_map[row['component_id']]
-            test.components_being_tested.append(component)
-    
-    def _load_source_files(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, Component], test_map: Dict[int, TestDefinition]) -> None:
+            test = test_db_map.get(row['test_id'])
+            component = component_db_map.get(row['component_id'])
+            if test and component:
+                test.test_components.append(component)
+                test.test_components_ids.add(component.id)
+
+        # Load components_being_tested
+        cursor = conn.execute("SELECT * FROM test_components_being_tested")
+        for row in cursor.fetchall():
+            test = test_db_map.get(row['test_id'])
+            component = component_db_map.get(row['component_id'])
+            if test and component:
+                test.components_being_tested.append(component)
+                test.components_being_tested_ids.add(component.id)
+
+    def _load_source_files(self, conn: sqlite3.Connection,
+                          component_db_map: Dict[int, Component], test_db_map: Dict[int, TestDefinition]) -> None:
         """Load source file relationships."""
         # Load component source files
-        cursor = conn.execute("SELECT * FROM component_source_files WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM component_source_files")
         for row in cursor.fetchall():
-            component = component_map[row['component_id']]
-            component.source_files.append(Path(row['source_file_path']))
-        
+            component = component_db_map.get(row['component_id'])
+            if component:
+                component.source_files.append(Path(row['source_file_path']))
+
         # Load test source files
-        cursor = conn.execute("SELECT * FROM test_source_files WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM test_source_files")
         for row in cursor.fetchall():
-            test = test_map[row['test_id']]
-            test.source_files.append(Path(row['source_file_path']))
-    
-    def _load_external_package_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, Component], ep_map: Dict[int, ExternalPackage]) -> None:
+            test = test_db_map.get(row['test_id'])
+            if test:
+                test.source_files.append(Path(row['source_file_path']))
+
+    def _load_external_package_relationships(self, conn: sqlite3.Connection,
+                                            component_db_map: Dict[int, Component], ep_db_map: Dict[int, ExternalPackage]) -> None:
         """Load component-to-external-package relationships."""
-        cursor = conn.execute("SELECT * FROM component_external_packages WHERE rig_id = ?", (rig_id,))
+        cursor = conn.execute("SELECT * FROM component_external_packages")
         for row in cursor.fetchall():
-            component = component_map[row['component_id']]
-            ep = ep_map[row['external_package_id']]
-            component.external_packages.append(ep)
-    
-    def _load_location_relationships(self, conn: sqlite3.Connection, rig_id: int, rig: RIG, component_map: Dict[int, Component], location_map: Dict[int, ComponentLocation]) -> None:
-        """Load component-to-location relationships."""
-        cursor = conn.execute("SELECT * FROM component_locations_rel WHERE rig_id = ?", (rig_id,))
+            component = component_db_map.get(row['component_id'])
+            ep = ep_db_map.get(row['external_package_id'])
+            if component and ep:
+                component.external_packages.append(ep)
+                component.external_packages_ids.add(ep.id)
+
+    def _load_component_locations(self, conn: sqlite3.Connection, component_db_map: Dict[int, Component]) -> None:
+        """Load component locations."""
+        cursor = conn.execute("SELECT * FROM component_locations")
         for row in cursor.fetchall():
-            component = component_map[row['component_id']]
-            location = location_map[row['location_id']]
-            component.locations.append(location)
+            component = component_db_map.get(row['component_id'])
+            if component:
+                component.locations.append(Path(row['location_path']))
 
 
 # Convenience functions
-def save_rig(rig: RIG, db_path: Union[str, Path], description: str = "RIG Export") -> int:
-    """Save RIG to SQLite database."""
+def save_rig(rig: RIG, db_path: Union[str, Path], description: str = "RIG Export") -> None:
+    """Save RIG to SQLite database (replaces any existing RIG)."""
     store = RIGStore(db_path)
-    return store.save_rig(rig, description)
+    store.save_rig(rig, description)
 
 
-def load_rig(rig_id: int, db_path: Union[str, Path]) -> RIG:
+def load_rig(db_path: Union[str, Path]) -> RIG:
     """Load RIG from SQLite database."""
     store = RIGStore(db_path)
-    return store.load_rig(rig_id)
+    return store.load_rig()

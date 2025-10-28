@@ -32,11 +32,11 @@ class RepositoryOverviewAgentV7(BaseLLMAgentV7):
             model="openai:gpt-5-nano",
             tool_sources=[self.file_tools, self.process_tools, self.phase1_tools],
             builtin_enums=[],
-            model_settings=None,
+            temperature=0,
+            max_tool_retries=1,
             usage_limit=None,
             real_time_log_user=True,
-            real_time_log_agent=True,
-            temperature=0
+            real_time_log_agent=True
         )
         
         # Debug: Check if tools are properly exposed

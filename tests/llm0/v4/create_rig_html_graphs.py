@@ -35,7 +35,7 @@ async def create_rig_html_for_repository(repo_name: str, repo_path: Path):
         rig = await generator.generate_rig()
         
         logger.info(f"✅ RIG generation completed for {repo_name}!")
-        logger.info(f"Components: {len(rig.components) if rig.components else 0}")
+        logger.info(f"Components: {len(rig._components) if rig._components else 0}")
         logger.info(f"Relationships: {len(rig.relationships) if rig.relationships else 0}")
         
         # Generate HTML graph
@@ -43,7 +43,7 @@ async def create_rig_html_for_repository(repo_name: str, repo_path: Path):
         rig.show_graph(validate_before_show=True)
         
         # Get the generated filename
-        project_name = rig.repository.name if rig.repository else repo_name
+        project_name = rig._repository_info.name if rig._repository_info else repo_name
         html_filename = f"rig_{project_name}_graph.html"
         
         logger.info(f"✅ HTML graph created: {html_filename}")

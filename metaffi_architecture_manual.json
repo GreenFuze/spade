@@ -33,7 +33,9 @@
 						"Boost.thread"
 					],
 					"location": "metaffi-core/XLLR/",
-					"actions": "copy of several .c files and .h files to $METAFFI_HOME"
+					"actions": [
+						"copy of several .c files and .h files to $METAFFI_HOME"
+					]
 				},
 				{
 					"name": "metaffi",
@@ -309,7 +311,11 @@
 			"depends_on": [
 				"java_tests_run"
 			],
-			"location": "plugin-openjdk/idl/"
+			"location": "plugin-openjdk/idl/",
+			"actions": [
+				"copies JAR files to plugin-openjdk/idl/lib/",
+				"Post build to metaffi.idl.openjdk - copies plugin-openjdk/idl/src/java_extractor/ to CMake binary dir \"/src/java_extractor\""
+			]
 		},
 		{
 			"name": "openjdk_compiler_go_tests",

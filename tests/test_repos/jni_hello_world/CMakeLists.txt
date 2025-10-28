@@ -10,6 +10,19 @@ project(JNIHelloWorld
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Enable CMake File API
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Enable File API for query files
+set(CMAKE_FILE_API_QUERY_DIR "${CMAKE_BINARY_DIR}/.cmake/api/v1/query")
+file(MAKE_DIRECTORY "${CMAKE_FILE_API_QUERY_DIR}")
+
+# Create query files for File API
+file(WRITE "${CMAKE_FILE_API_QUERY_DIR}/codemodel-v2" "")
+file(WRITE "${CMAKE_FILE_API_QUERY_DIR}/toolchains-v1" "")
+file(WRITE "${CMAKE_FILE_API_QUERY_DIR}/cache-v2" "")
+file(WRITE "${CMAKE_FILE_API_QUERY_DIR}/cmakeFiles-v1" "")
+
 # Find required packages
 find_package(JNI REQUIRED)
 find_package(Java REQUIRED)

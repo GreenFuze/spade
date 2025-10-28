@@ -1,0 +1,1 @@
+# CMake tests package

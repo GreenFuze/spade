@@ -47,8 +47,8 @@ async def test_v4_enhanced_rig_generation():
         
         # Log results
         logger.info("✅ Enhanced V4+ RIG generation completed successfully!")
-        logger.info(f"Repository: {rig.repository.name if rig.repository else 'Unknown'}")
-        logger.info(f"Build System: {rig.build_system.name if rig.build_system else 'Unknown'}")
+        logger.info(f"Repository: {rig._repository_info.name if rig._repository_info else 'Unknown'}")
+        logger.info(f"Build System: {rig._build_system_info.name if rig._build_system_info else 'Unknown'}")
         
         # Log RIG summary
         summary = generator.get_rig_summary()
@@ -56,26 +56,26 @@ async def test_v4_enhanced_rig_generation():
         logger.info(f"Tests: {summary['tests_count']}")
         
         # Validate RIG structure
-        if rig.repository:
-            logger.info(f"✅ Repository info: {rig.repository.name} ({rig.repository.type})")
+        if rig._repository_info:
+            logger.info(f"✅ Repository info: {rig._repository_info.name} ({rig._repository_info.type})")
         else:
             logger.warning("⚠️ No repository info found")
 
-        if rig.build_system:
-            logger.info(f"✅ Build system: {rig.build_system.name} {rig.build_system.version}")
+        if rig._build_system_info:
+            logger.info(f"✅ Build system: {rig._build_system_info.name} {rig._build_system_info.version}")
         else:
             logger.warning("⚠️ No build system info found")
 
-        if rig.components:
-            logger.info(f"✅ Found {len(rig.components)} components")
-            for component in rig.components:
+        if rig._components:
+            logger.info(f"✅ Found {len(rig._components)} components")
+            for component in rig._components:
                 logger.info(f"  - {component.name} ({component.type}, {component.programming_language})")
         else:
             logger.warning("⚠️ No components found")
         
-        if rig.tests:
-            logger.info(f"✅ Found {len(rig.tests)} tests")
-            for test in rig.tests:
+        if rig._tests:
+            logger.info(f"✅ Found {len(rig._tests)} tests")
+            for test in rig._tests:
                 logger.info(f"  - {test.name} ({test.test_framework})")
         else:
             logger.warning("⚠️ No tests found")
@@ -94,10 +94,10 @@ async def test_v4_enhanced_rig_generation():
         logger.info("✅ Data stored in RIG, not context")
 
         # Assertions for basic RIG content
-        assert rig.repository is not None, "Repository info should be set"
-        assert rig.build_system is not None, "Build system info should be set"
-        assert len(rig.components) > 0, "Should discover at least one component"
-        assert len(rig.tests) > 0, "Should discover at least one test"
+        assert rig._repository_info is not None, "Repository info should be set"
+        assert rig._build_system_info is not None, "Build system info should be set"
+        assert len(rig._components) > 0, "Should discover at least one component"
+        assert len(rig._tests) > 0, "Should discover at least one test"
         # Relationships are handled through component dependencies
         
         return True

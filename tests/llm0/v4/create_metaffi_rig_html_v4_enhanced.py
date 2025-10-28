@@ -44,10 +44,10 @@ async def create_metaffi_rig_html_v4_enhanced():
         rig = await generator.generate_rig()
         
         logger.info("✅ V4+ Enhanced RIG generation completed!")
-        logger.info(f"Repository: {rig.repository.name if rig.repository else 'Unknown'}")
-        logger.info(f"Components: {len(rig.components) if rig.components else 0}")
-        logger.info(f"Tests: {len(rig.tests) if rig.tests else 0}")
-        logger.info(f"Evidence: {len(rig.evidence) if rig.evidence else 0}")
+        logger.info(f"Repository: {rig._repository_info.name if rig._repository_info else 'Unknown'}")
+        logger.info(f"Components: {len(rig._components) if rig._components else 0}")
+        logger.info(f"Tests: {len(rig._tests) if rig._tests else 0}")
+        logger.info(f"Evidence: {len(rig._evidence) if rig._evidence else 0}")
         
         # Get RIG summary
         summary = generator.get_rig_summary()
@@ -58,7 +58,7 @@ async def create_metaffi_rig_html_v4_enhanced():
         rig.show_graph(validate_before_show=True)
         
         # Get the generated filename
-        project_name = rig.repository.name if rig.repository else "MetaFFI"
+        project_name = rig._repository_info.name if rig._repository_info else "MetaFFI"
         html_filename = f"rig_{project_name}_v4_enhanced_graph.html"
         
         logger.info(f"✅ HTML graph created: {html_filename}")

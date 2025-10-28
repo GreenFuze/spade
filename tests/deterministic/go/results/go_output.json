@@ -1,0 +1,82 @@
+# Repository Build Analysis
+
+## Repository Information
+- **Repository**: go_modules
+- **Root Path**: C:\src\github.com\GreenFuze\spade\tests\test_repos\go_modules
+- **Build System**: go
+- **Scope**: ['./']
+- **Detection Mode**: configure_only
+- **Configure Command**: go mod download
+- **Test Discovery Command**: go test
+
+## Build Data
+
+The following JSON contains the complete build analysis data:
+
+```json
+{
+  "repo": {
+    "name": "go_modules",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\go_modules"
+  },
+  "build": {
+    "system": "go",
+    "generator": null,
+    "type": "UNKNOWN",
+    "configure_cmd": "go mod download",
+    "test_cmd": "go test"
+  },
+  "components": [
+    {
+      "id": 0,
+      "name": "go-modules",
+      "type": "static_library",
+      "language": "go",
+      "runtime": "Runtime.GO",
+      "output": "go-modules",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\go_modules\\libgo-modules.a",
+      "source_files": [
+        "."
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "go.mod: C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\go_modules\\go.mod"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [
+    {
+      "id": 0,
+      "name": "user_test",
+      "framework": "go_test",
+      "exe_component": null,
+      "components": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "test file: internal\\user\\user_test.go"
+          ]
+        }
+      ]
+    }
+  ],
+  "gaps": {
+    "missing_sources": [],
+    "missing_outputs": [],
+    "orphans": {
+      "aggregators": [],
+      "tests": []
+    },
+    "risky_runners": []
+  }
+}
+```

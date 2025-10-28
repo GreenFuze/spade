@@ -3,5 +3,6 @@
 #define UTILS_H
 
 int util_add(int a, int b);
+void print_utils();
 
 #endif // UTILS_H

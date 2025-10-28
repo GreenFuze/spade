@@ -44,13 +44,13 @@ async def test_simple_v4_rerun():
         
         logger.info(f"✅ V4 pipeline completed successfully!")
         logger.info(f"Execution time: {execution_time:.1f} seconds")
-        logger.info(f"Repository: {rig.repository.name if rig.repository else 'Unknown'}")
-        logger.info(f"Components found: {len(rig.components) if rig.components else 0}")
+        logger.info(f"Repository: {rig._repository_info.name if rig._repository_info else 'Unknown'}")
+        logger.info(f"Components found: {len(rig._components) if rig._components else 0}")
         logger.info(f"Relationships found: {len(rig.relationships) if rig.relationships else 0}")
         
         # Calculate accuracy metrics
         total_expected = 10  # Expected components/files for cmake_hello_world
-        total_found = len(rig.components) if rig.components else 0
+        total_found = len(rig._components) if rig._components else 0
         accuracy = (total_found / total_expected) * 100 if total_expected > 0 else 0
         
         logger.info(f"Accuracy: {accuracy:.2f}% ({total_found}/{total_expected})")
@@ -64,7 +64,7 @@ async def test_simple_v4_rerun():
             "found": total_found,
             "not_found": total_expected - total_found,
             "total_expected": total_expected,
-            "components": len(rig.components) if rig.components else 0,
+            "components": len(rig._components) if rig._components else 0,
             "relationships": len(rig.relationships) if rig.relationships else 0
         }
         

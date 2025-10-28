@@ -38,13 +38,13 @@ class RIGValidator:
         """Validate basic RIG structure."""
         try:
             # Check repository info
-            if not self.rig.repository:
+            if not self.rig._repository_info:
                 self.validation_results["errors"].append("Missing repository information")
                 self.validation_results["structure_valid"] = False
                 return False
             
             # Check components exist
-            if not self.rig.components:
+            if not self.rig._components:
                 self.validation_results["warnings"].append("No components found in RIG")
             
             # Check relationships exist
@@ -64,7 +64,7 @@ class RIGValidator:
         try:
             evidence_issues = []
             
-            for component in self.rig.components or []:
+            for component in self.rig._components or []:
                 if not component.evidence:
                     evidence_issues.append(f"Component '{component.name}' missing evidence")
                     continue
@@ -93,7 +93,7 @@ class RIGValidator:
         """Validate relationship integrity."""
         try:
             relationship_issues = []
-            component_names = {c.name for c in self.rig.components or []}
+            component_names = {c.name for c in self.rig._components or []}
             
             for relationship in self.rig.relationships or []:
                 # Check source exists
@@ -128,7 +128,7 @@ class RIGValidator:
             classification_issues = []
             valid_types = ["executable", "library", "test", "aggregator", "runner", "utility"]
             
-            for component in self.rig.components or []:
+            for component in self.rig._components or []:
                 if component.component_type not in valid_types:
                     classification_issues.append(f"Component '{component.name}' has invalid type '{component.component_type}'")
                 
@@ -152,7 +152,7 @@ class RIGValidator:
         """Calculate comprehensive RIG statistics."""
         try:
             stats = {
-                "total_components": len(self.rig.components or []),
+                "total_components": len(self.rig._components or []),
                 "total_relationships": len(self.rig.relationships or []),
                 "component_types": {},
                 "languages": {},
@@ -161,7 +161,7 @@ class RIGValidator:
             }
             
             # Component type distribution
-            for component in self.rig.components or []:
+            for component in self.rig._components or []:
                 comp_type = component.component_type
                 stats["component_types"][comp_type] = stats["component_types"].get(comp_type, 0) + 1
                 
@@ -174,8 +174,8 @@ class RIGValidator:
                 stats["relationship_types"][rel_type] = stats["relationship_types"].get(rel_type, 0) + 1
             
             # Evidence coverage
-            components_with_evidence = sum(1 for c in self.rig.components or [] if c.evidence and c.evidence.file_path)
-            total_components = len(self.rig.components or [])
+            components_with_evidence = sum(1 for c in self.rig._components or [] if c.evidence and c.evidence.file_path)
+            total_components = len(self.rig._components or [])
             stats["evidence_coverage"] = (components_with_evidence / total_components * 100) if total_components > 0 else 0.0
             
             self.validation_results["statistics"] = stats

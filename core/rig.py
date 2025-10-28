@@ -6,10 +6,14 @@ in a canonical, non-build-system-specific format. The data is structured to be
 SQL-friendly for future SQLite storage.
 """
 
+import json
+import difflib
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Tuple, Set, Iterable, Union
+from typing import List, Optional, Dict, Any, Set, Iterable, Union
 
-from .schemas import Component, Aggregator, Runner, Utility, TestDefinition, ComponentType, Runtime, Evidence, ComponentLocation, ExternalPackage, PackageManager, BuildNode, RepositoryInfo, BuildSystemInfo, ValidationSeverity, ValidationError, RIGValidationError
+from core.schemas import RepositoryInfo, BuildSystemInfo, Component, Aggregator, Runner, TestDefinition, ExternalPackage, PackageManager, Evidence, RIGNode, ComponentType, ValidationError, RIGPromptData
+from core.rig_validator import RIGValidator
+from core.rig_visualizer import RIGVisualizer
 
 
 class RIG:
@@ -26,215 +30,284 @@ class RIG:
         Initialize an empty RIG.
         """
         # Repository-level information
-        self.repository: Optional[RepositoryInfo] = None
+        self._repository_info: Optional[RepositoryInfo] = None
 
         # Build system information
-        self.build_system: Optional[BuildSystemInfo] = None
-
-        # Build entities (flat lists for SQL compatibility)
-        self.components: List[Component] = []
-        self.aggregators: List[Aggregator] = []
-        self.runners: List[Runner] = []
-        self.utilities: List[Utility] = []
-        self.tests: List[TestDefinition] = []
-
-        # Supporting data (also flat for SQL)
-        self.evidence: List[Evidence] = []
-        self.component_locations: List[ComponentLocation] = []
-        self.external_packages: List[ExternalPackage] = []
-        self.package_managers: List[PackageManager] = []
+        self._build_system_info: Optional[BuildSystemInfo] = None
 
         # Lookup dictionaries for efficient access (not stored in SQL)
-        self._components_by_name: Dict[str, Component] = {}
-        self._aggregators_by_name: Dict[str, Aggregator] = {}
-        self._runners_by_name: Dict[str, Runner] = {}
-        self._utilities_by_name: Dict[str, Utility] = {}
-        self._tests_by_name: Dict[str, TestDefinition] = {}
+        self._components_by_id: Dict[str, Component] = {}
+        self._aggregators_by_id: Dict[str, Aggregator] = {}
+        self._runners_by_id: Dict[str, Runner] = {}
+        # self._utilities_by_name: Dict[str, Utility] = {} # TODO: I think its not needed
+        self._tests_by_id: Dict[str, TestDefinition] = {}
+        
+        self._external_packages_by_id: Dict[str, ExternalPackage] = {}
+        self._package_managers_by_id: Dict[str, PackageManager] = {}
+        self._evidence_by_id: Dict[str, Evidence] = {}
+
+    def _set_rig_nodes_ids(self, rignode: RIGNode, processed_ids: Optional[Set[str]] = None) -> None:
+        """Set artifact IDs for a given RIG node.
+
+        Args:
+            rignode: The RIG node to process
+            processed_ids: Set of node IDs that have already been processed (to prevent infinite recursion)
+        """
+        # Initialize processed_ids if not provided
+        if processed_ids is None:
+            processed_ids = set()
+
+        # Skip if this node has already been processed
+        if rignode.id in processed_ids:
+            return
+
+        # Mark this node as processed
+        processed_ids.add(rignode.id)
+
+        # evidence
+        for evidence in rignode.evidence:
+            self._evidence_by_id[evidence.id] = evidence
+
+            if rignode.evidence_ids is None:
+                rignode.evidence_ids = set()
+
+            rignode.evidence_ids.add(evidence.id)
+
+        # dependencies
+        if rignode.depends_on is None:
+            rignode.depends_on = []
+
+        for dep in rignode.depends_on:
+            if rignode.depends_on_ids is None:
+                rignode.depends_on_ids = set()
+
+            rignode.depends_on_ids.add(dep.id)
+            if isinstance(dep, Component):
+                self._components_by_id[dep.id] = dep
+            elif isinstance(dep, Aggregator):
+                self._aggregators_by_id[dep.id] = dep
+            elif isinstance(dep, Runner):
+                self._runners_by_id[dep.id] = dep
+            elif isinstance(dep, TestDefinition):
+                self._tests_by_id[dep.id] = dep
+            else:
+                raise ValueError(f"Unknown dependency type: {type(dep)}")
+
+            # Recursively process the dependency to register its evidence
+            self._set_rig_nodes_ids(dep, processed_ids)
+
 
     def add_component(self, component: Component) -> None:
         """Add a component to the RIG."""
-        # Check if this component is a test and populate test link fields
-        if self._is_test_component(component):
-            test_node = self._find_corresponding_test(component)
-            if test_node:
-                component.test_link_id = test_node.id if test_node.id is not None else len(self.tests)
-                component.test_link_name = test_node.name
         
-        self.components.append(component)
-        self._components_by_name[component.name] = component
+        if component.id in self._components_by_id:
+            # Component already exists, skip adding
+            return
+            
+        # add component
+        self._components_by_id[component.id] = component
 
-        # Add evidence and locations to flat lists
-        self.evidence.append(component.evidence)
-        self.component_locations.extend(component.locations)
-        self.external_packages.extend(component.external_packages)
-
-        # Add package managers
-        for pkg in component.external_packages:
-            self.package_managers.append(pkg.package_manager)
-
+        # external packages
+        assert component.external_packages is not None
+        
+        for external_package in component.external_packages:
+            if external_package.package_manager.id not in self._package_managers_by_id:
+                self._package_managers_by_id[external_package.package_manager.id] = external_package.package_manager
+            
+            assert component.external_packages_ids is not None
+            component.external_packages_ids.add(external_package.id)
+            self._external_packages_by_id[external_package.id] = external_package
+            
+        self._set_rig_nodes_ids(component)
+        
+        
     def add_aggregator(self, aggregator: Aggregator) -> None:
         """Add an aggregator to the RIG."""
-        self.aggregators.append(aggregator)
-        self._aggregators_by_name[aggregator.name] = aggregator
-        self.evidence.append(aggregator.evidence)
+        self._aggregators_by_id[aggregator.id] = aggregator
+        self._set_rig_nodes_ids(aggregator)
 
     def add_runner(self, runner: Runner) -> None:
         """Add a runner to the RIG."""
-        self.runners.append(runner)
-        self._runners_by_name[runner.name] = runner
-        self.evidence.append(runner.evidence)
+        self._runners_by_id[runner.id] = runner
+        self._set_rig_nodes_ids(runner)
 
-    def add_utility(self, utility: Utility) -> None:
-        """Add a utility to the RIG."""
-        self.utilities.append(utility)
-        self._utilities_by_name[utility.name] = utility
-        self.evidence.append(utility.evidence)
+    # def add_utility(self, utility: Utility) -> None:
+    #     """Add a utility to the RIG."""
+    #     self.utilities.append(utility)
+    #     self._utilities_by_name[utility.name] = utility
+    #     self.evidence.extend(utility.evidence)
 
     def add_test(self, test: TestDefinition) -> None:
         """Add a test to the RIG."""
-        self.tests.append(test)
-        self._tests_by_name[test.name] = test
-        self.evidence.append(test.evidence)
+        self._tests_by_id[test.id] = test
         
-        # Update any existing components that might be linked to this test
-        for component in self.components:
-            if component.name == test.name and component.test_link_id is None:
-                component.test_link_id = test.id if test.id is not None else len(self.tests)
-                component.test_link_name = test.name
+        if test.test_executable_component is not None:
+            test.test_executable_component_id = test.test_executable_component.id
+            
+            assert test.test_executable_component is not None
+            
+            if isinstance(test.test_executable_component, Component):
+                self._components_by_id[test.test_executable_component.id] = test.test_executable_component
+            else:
+                raise RuntimeError(f'test.test_executable_component is expected to be Component, while it is {type(test.test_executable_component)}')
+            
+        if test.test_components is not None:
+            for comp in test.test_components:
+                assert test.test_components_ids is not None
+                test.test_components_ids.add(comp.id)
+                self._components_by_id[comp.id] = comp
+                
+        if test.components_being_tested is not None:
+            for comp in test.components_being_tested:
+                assert test.components_being_tested_ids is not None
+                test.components_being_tested_ids.add(comp.id)
+                self._components_by_id[comp.id] = comp
+                
+        self._set_rig_nodes_ids(test)
+        
 
     def set_repository_info(self, repo_info: RepositoryInfo) -> None:
         """Set repository-level information."""
-        self.repository = repo_info
+        self._repository_info = repo_info
 
     def set_build_system_info(self, build_system_info: BuildSystemInfo) -> None:
         """Set build system information."""
-        self.build_system = build_system_info
+        self._build_system_info = build_system_info
 
     # Lookup methods for efficient access
     def get_component_by_name(self, name: str) -> Optional[Component]:
         """Get a component by name."""
-        return self._components_by_name.get(name)
-    
-    def has_component(self, name: str) -> bool:
-        """Check if component exists by name."""
-        return self.get_component_by_name(name) is not None
+        return self._components_by_id.get(name)
 
     def get_aggregator_by_name(self, name: str) -> Optional[Aggregator]:
         """Get an aggregator by name."""
-        return self._aggregators_by_name.get(name)
+        return self._aggregators_by_id.get(name)
 
     def get_runner_by_name(self, name: str) -> Optional[Runner]:
         """Get a runner by name."""
-        return self._runners_by_name.get(name)
+        return self._runners_by_id.get(name)
 
-    def get_utility_by_name(self, name: str) -> Optional[Utility]:
-        """Get a utility by name."""
-        return self._utilities_by_name.get(name)
+    # def get_utility_by_name(self, name: str) -> Optional[Utility]:
+    #     """Get a utility by name."""
+    #     return self._utilities_by_name.get(name)
 
     def get_test_by_name(self, name: str) -> Optional[TestDefinition]:
         """Get a test by name."""
-        return self._tests_by_name.get(name)
+        return self._tests_by_id.get(name)
 
-    def get_all_build_nodes(self) -> List[Any]:
-        """Get all build nodes (components, aggregators, runners, utilities) as a flat list."""
-        return self.components + self.aggregators + self.runners + self.utilities
-
-    def get_build_node_by_name(self, name: str) -> Optional[Any]:
+    # properties to get all entities
+    @property
+    def _components(self) -> List[Component]:
+        """Get all components as a list."""
+        return list(self._components_by_id.values())
+    
+    @property
+    def _aggregators(self) -> List[Aggregator]:
+        """Get all aggregators as a list."""
+        return list(self._aggregators_by_id.values())
+    
+    @property
+    def _runners(self) -> List[Runner]:
+        """Get all runners as a list."""
+        return list(self._runners_by_id.values())
+    
+    @property
+    def _tests(self) -> List[TestDefinition]:
+        """Get all tests as a list."""
+        return list(self._tests_by_id.values())
+    
+    def get_rig_node_by_name(self, name: str) -> Union[Component, Aggregator, Runner, None]:
         """Get any build node (component, aggregator, runner, or utility) by name."""
         return (self.get_component_by_name(name) or 
                 self.get_aggregator_by_name(name) or 
-                self.get_runner_by_name(name) or 
-                self.get_utility_by_name(name))
+                self.get_runner_by_name(name))
+
+    def get_all_rig_nodes(self) -> List[RIGNode]:
+        """Get all build nodes (components, aggregators, runners) as a list."""
+        all_nodes = []
+        all_nodes.extend(self._components)
+        all_nodes.extend(self._aggregators)
+        all_nodes.extend(self._runners)
+        return all_nodes
+    
+    def _hydrate_components(self):
+        """Hydrate all component nodes to ensure references are set from the IDs."""
+        for component in self._components:
+            # hydrate external packages
+            for external_package_id in component.external_packages_ids:
+                # if the external package object is not already in the component's external_packages list, add it
+                if not any(ep.id == external_package_id for ep in component.external_packages):
+                    external_package_obj = self._external_packages_by_id.get(external_package_id)
+                    assert external_package_obj is not None
+                    component.external_packages.append(external_package_obj)
+                
+                    
+    def _hydrate_tests(self):
+        """Hydrate all test nodes to ensure references are set from the IDs."""
+        for test in self._tests:
+            # hydrate test_executable_component
+            if test.test_executable_component_id is not None and test.test_executable_component is None:
+                component_obj = self.get_component_by_name(test.test_executable_component_id)
+                assert component_obj is not None
+                test.test_executable_component = component_obj
+            
+            # hydrate test_components
+            for test_component_id in test.test_components_ids:
+                # if the component object is not already in the test's test_components list, add it
+                if not any(comp.id == test_component_id for comp in test.test_components):
+                    component_obj = self.get_component_by_name(test_component_id)
+                    assert component_obj is not None
+                    test.test_components.append(component_obj)
+            
+            # hydrate components_being_tested
+            for tested_component_id in test.components_being_tested_ids:
+                # if the component object is not already in the test's components_being_tested list, add it
+                if not any(comp.id == tested_component_id for comp in test.components_being_tested):
+                    component_obj = self.get_component_by_name(tested_component_id)
+                    assert component_obj is not None
+                    test.components_being_tested.append(component_obj)
+    
+    
+    def _hydrate_rig_nodes(self):
+        for node in self.get_all_rig_nodes():
+            # make sure every evidence_id has its evidence object loaded into the test's evidence list
+            for evidence_id in node.evidence_ids:
+                # if the evidence object is not already in the test's evidence list, add it
+                if not any(ev.id == evidence_id for ev in node.evidence):
+                    evidence_obj = self._evidence_by_id.get(evidence_id)
+                    assert evidence_obj is not None
+                    node.evidence.append(evidence_obj)
+            
+            # hydrate dependencies
+            for depends_on_id in node.depends_on_ids:
+                # if the dependency object is not already in the test's depends_on list, add it
+                if not any(dep.id == depends_on_id for dep in node.depends_on):
+                    dependency_obj = self.get_rig_node_by_name(depends_on_id)
+                    assert dependency_obj is not None
+                    node.depends_on.append(dependency_obj)
+    
+    def hydrate_all_nodes(self):
+        """Hydrate all RIG nodes to ensure references are set from the IDs."""
+        self._hydrate_rig_nodes()
+        self._hydrate_components()
+        self._hydrate_tests()
+        
+                
 
     # Statistics and analysis methods
     def get_component_count_by_type(self) -> Dict[ComponentType, int]:
         """Get count of components by type."""
         counts: Dict[ComponentType, int] = {}
-        for component in self.components:
+        for component in self._components:
             counts[component.type] = counts.get(component.type, 0) + 1
         return counts
 
     def get_component_count_by_language(self) -> Dict[str, int]:
         """Get count of components by programming language."""
         counts: Dict[str, int] = {}
-        for component in self.components:
+        for component in self._components:
             counts[component.programming_language] = counts.get(component.programming_language, 0) + 1
         return counts
-
-    def get_component_count_by_runtime(self) -> Dict[Optional[Runtime], int]:
-        """Get count of components by runtime environment."""
-        counts: Dict[Optional[Runtime], int] = {}
-        for component in self.components:
-            counts[component.runtime] = counts.get(component.runtime, 0) + 1
-        return counts
-
-    def get_test_count_by_framework(self) -> Dict[str, int]:
-        """Get count of tests by framework."""
-        counts: Dict[str, int] = {}
-        for test in self.tests:
-            counts[test.test_framework] = counts.get(test.test_framework, 0) + 1
-        return counts
-
-    def get_dependency_graph(self) -> Dict[str, List[str]]:
-        """Get a dependency graph as a dictionary mapping node names to their dependencies."""
-        graph: Dict[str, List[str]] = {}
-
-        # Add all build nodes
-        for node in self.get_all_build_nodes():
-            graph[node.name] = [dep.name for dep in node.depends_on]
-
-        return graph
-
-    def get_reverse_dependency_graph(self) -> Dict[str, List[str]]:
-        """Get a reverse dependency graph mapping node names to what depends on them."""
-        reverse_graph: Dict[str, List[str]] = {}
-
-        # Initialize all nodes
-        for node in self.get_all_build_nodes():
-            reverse_graph[node.name] = []
-
-        # Build reverse dependencies
-        for node in self.get_all_build_nodes():
-            for dep in node.depends_on:
-                reverse_graph[dep.name].append(node.name)
-
-        return reverse_graph
-
-    def get_summary(self) -> Dict[str, Any]:
-        """Get a summary of the RIG contents."""
-        return {
-            "repository": {
-                "name": self.repository.name if self.repository else None,
-                "root_path": str(self.repository.root_path) if self.repository else None,
-                "build_directory": str(self.repository.build_directory) if self.repository else None,
-                "output_directory": str(self.repository.output_directory) if self.repository else None,
-            },
-            "build_system": {"name": self.build_system.name if self.build_system else None, "version": self.build_system.version if self.build_system else None, "build_type": self.build_system.build_type if self.build_system else None},
-            "counts": {
-                "components": len(self.components),
-                "aggregators": len(self.aggregators),
-                "runners": len(self.runners),
-                "utilities": len(self.utilities),
-                "tests": len(self.tests),
-                "evidence": len(self.evidence),
-                "component_locations": len(self.component_locations),
-                "external_packages": len(self.external_packages),
-                "package_managers": len(self.package_managers),
-            },
-            "component_types": self.get_component_count_by_type(),
-            "programming_languages": self.get_component_count_by_language(),
-            "runtimes": self.get_component_count_by_runtime(),
-            "test_frameworks": self.get_test_count_by_framework(),
-        }
-
-    def __str__(self) -> str:
-        """String representation of the RIG."""
-        summary = self.get_summary()
-        return f"RIG({summary['counts']['components']} components, {summary['counts']['tests']} tests, {summary['counts']['aggregators']} aggregators, {summary['counts']['runners']} runners, {summary['counts']['utilities']} utilities)"
-
-    def __repr__(self) -> str:
-        """Detailed representation of the RIG."""
-        return self.__str__()
 
     def validate(self) -> List[ValidationError]:
         """
@@ -243,332 +316,8 @@ class RIG:
         Returns:
             List of validation errors found. Empty list means no issues.
         """
-        errors: List[ValidationError] = []
-
-        # Run all validation checks
-        errors.extend(self._validate_missing_source_files())
-        errors.extend(self._validate_broken_dependencies())
-        errors.extend(self._validate_missing_output_files())
-        errors.extend(self._validate_orphaned_nodes())
-        errors.extend(self._validate_circular_dependencies())
-        errors.extend(self._validate_inconsistent_language())
-        errors.extend(self._validate_duplicate_node_names())
-        errors.extend(self._validate_test_relationships())
-        errors.extend(self._validate_component_locations())
-        errors.extend(self._validate_evidence_consistency())
-
-        return errors
-
-    def _is_cmake_build_artifact(self, source_file: Path) -> bool:
-        """
-        Check if a source file is a CMake build artifact that should be skipped.
-        Uses generic, evidence-based detection.
-
-        Args:
-            source_file: The source file path to check
-
-        Returns:
-            True if the file should be skipped as a build artifact
-        """
-        if not self.repository:
-            return False
-            
-        # Use generic build artifact detection
-        build_dir = self.repository.build_directory
-        known_artifacts: List[Path] = []
-        
-        # Collect known artifacts from components
-        for component in self.components:
-            if component.output_path:
-                known_artifacts.append(component.output_path)
-        
-        # Import the utility function
-        from cmake_entrypoint import ResearchBackedUtilities
-        return ResearchBackedUtilities.is_build_artifact(source_file, build_dir, known_artifacts)
-
-    def _validate_missing_source_files(self) -> List[ValidationError]:
-        """Validate that all referenced source files exist."""
-        errors: List[ValidationError] = []
-
-        if not self.repository:
-            return errors
-
-        repo_root = self.repository.root_path
-
-        for component in self.components:
-            for source_file in component.source_files:
-                # Skip CMake build artifacts and generated files
-                if self._is_cmake_build_artifact(source_file):
-                    continue
-
-                # Handle both relative and absolute paths
-                if source_file.is_absolute():
-                    full_path = source_file
-                else:
-                    full_path = repo_root / source_file
-
-                if not full_path.exists():
-                    errors.append(
-                        ValidationError(
-                            severity=ValidationSeverity.ERROR,
-                            category="missing_source_file",
-                            message=f"Source file does not exist: {source_file}",
-                            node_name=component.name,
-                            file_path=source_file,
-                            suggestion="Check if the file path is correct or if the file was moved/deleted",
-                        )
-                    )
-
-        return errors
-
-    def _validate_broken_dependencies(self) -> List[ValidationError]:
-        """Validate that all dependencies reference existing nodes."""
-        errors: List[ValidationError] = []
-
-        # Create lookup for all node names
-        all_node_names: set[str] = set()
-        for node in self.get_all_build_nodes():
-            all_node_names.add(node.name)
-
-        for node in self.get_all_build_nodes():
-            for dep in node.depends_on:
-                if dep.name not in all_node_names:
-                    errors.append(
-                        ValidationError(
-                            severity=ValidationSeverity.ERROR, category="broken_dependency", message=f"Dependency '{dep.name}' does not exist", node_name=node.name, suggestion="Check if the dependency name is correct or if the target was removed"
-                        )
-                    )
-
-        return errors
-
-    def _validate_missing_output_files(self) -> List[ValidationError]:
-        """Validate that components produce expected output files."""
-        errors: List[ValidationError] = []
-
-        if not self.repository:
-            return errors
-
-        output_root = self.repository.output_directory
-
-        for component in self.components:
-            for location in component.locations:
-                if location.action == "build":
-                    full_path = output_root / location.path
-                    if not full_path.exists():
-                        # Skip validation for components that are expected to be missing until built:
-                        # 1. Test executables
-                        # 2. All executables (they need to be built)
-                        # 3. Library files that are part of the build system but not yet built
-                        if ("test" in component.name.lower() or 
-                            component.type == ComponentType.EXECUTABLE or
-                            self._is_likely_unbuilt_component(component)):
-                            continue
-                            
-                        errors.append(
-                            ValidationError(
-                                severity=ValidationSeverity.WARNING,
-                                category="missing_output_file",
-                                message=f"Expected output file does not exist: {location.path}",
-                                node_name=component.name,
-                                file_path=location.path,
-                                suggestion="The component may not have been built yet or the output path is incorrect",
-                            )
-                        )
-
-        return errors
-    
-    def _is_likely_unbuilt_component(self, component: Component) -> bool:
-        """Check if a component is likely to be unbuilt based on explicit evidence."""
-        # Check if this is a library component that's part of the build system
-        if component.type in [ComponentType.SHARED_LIBRARY, ComponentType.STATIC_LIBRARY, ComponentType.PACKAGE_LIBRARY]:
-            # If it has source files, it's likely a build target that needs to be built
-            if component.source_files:
-                return True
-        
-        # Check if output path exists - if not, component is likely unbuilt
-        if component.output_path and not component.output_path.exists():
-            return True
-        
-        return False
-
-    def _validate_orphaned_nodes(self) -> List[ValidationError]:
-        """Validate that all nodes are connected to the graph."""
-        errors: List[ValidationError] = []
-
-        # Find all nodes that have no connections
-        all_nodes = self.get_all_build_nodes()
-        connected_nodes: set[str] = set()
-
-        # Mark all nodes that are referenced as dependencies
-        for node in all_nodes:
-            for dep in node.depends_on:
-                connected_nodes.add(dep.name)
-
-        # Mark all nodes that have dependencies (they're connected)
-        for node in all_nodes:
-            if node.depends_on:
-                connected_nodes.add(node.name)
-
-        # Check for orphaned nodes
-        for node in all_nodes:
-            if node.name not in connected_nodes:
-                # Check if it's a root node (no dependencies and nothing depends on it)
-                has_dependents = any(node.name in [dep.name for dep in other.depends_on] for other in all_nodes)
-                if not has_dependents:
-                    errors.append(
-                        ValidationError(
-                            severity=ValidationSeverity.WARNING,
-                            category="orphaned_node",
-                            message=f"Node '{node.name}' has no connections to other nodes",
-                            node_name=node.name,
-                            suggestion="Check if this node should have dependencies or if other nodes should depend on it",
-                        )
-                    )
-
-        return errors
-
-    def _validate_circular_dependencies(self) -> List[ValidationError]:
-        """Validate that there are no circular dependencies."""
-        errors: List[ValidationError] = []
-
-        def has_cycle(node_name: str, visited: set[str], rec_stack: set[str], graph: Dict[str, List[str]]) -> bool:
-            visited.add(node_name)
-            rec_stack.add(node_name)
-
-            for neighbor in graph.get(node_name, []):
-                if neighbor not in visited:
-                    if has_cycle(neighbor, visited, rec_stack, graph):
-                        return True
-                elif neighbor in rec_stack:
-                    return True
-
-            rec_stack.remove(node_name)
-            return False
-
-        # Build dependency graph
-        dep_graph: Dict[str, List[str]] = {}
-        for node in self.get_all_build_nodes():
-            dep_graph[node.name] = [dep.name for dep in node.depends_on]
-
-        # Check for cycles
-        visited: set[str] = set()
-        for node_name in dep_graph:
-            if node_name not in visited:
-                if has_cycle(node_name, visited, set(), dep_graph):
-                    errors.append(
-                        ValidationError(
-                            severity=ValidationSeverity.ERROR,
-                            category="circular_dependency",
-                            message=f"Circular dependency detected involving node '{node_name}'",
-                            node_name=node_name,
-                            suggestion="Review the dependency chain to break the circular reference",
-                        )
-                    )
-                    break  # Only report one cycle to avoid spam
-
-        return errors
-
-    def _validate_inconsistent_language(self) -> List[ValidationError]:
-        """Validate that component language matches source file extensions."""
-        errors: List[ValidationError] = []
-
-        # Language to extension mapping
-        language_extensions = {"c": [".c"], "cxx": [".cpp", ".cxx", ".cc", ".c++"], "java": [".java"], "go": [".go"], "python": [".py"], "csharp": [".cs"], "javascript": [".js"], "typescript": [".ts"]}
-
-        for component in self.components:
-            expected_extensions = language_extensions.get(component.programming_language, [])
-            if not expected_extensions:
-                continue  # Unknown language, skip validation
-
-            for source_file in component.source_files:
-                # Skip CMake build artifacts
-                if self._is_cmake_build_artifact(source_file):
-                    continue
-
-                file_ext = source_file.suffix.lower()
-                if file_ext not in expected_extensions:
-                    errors.append(
-                        ValidationError(
-                            severity=ValidationSeverity.WARNING,
-                            category="inconsistent_language",
-                            message=f"Source file '{source_file}' has extension '{file_ext}' but component language is '{component.programming_language}'",
-                            node_name=component.name,
-                            file_path=source_file,
-                            suggestion=f"Check if the file extension matches the programming language or update the language detection",
-                        )
-                    )
-
-        return errors
-
-    def _validate_duplicate_node_names(self) -> List[ValidationError]:
-        """Validate that all node names are unique."""
-        errors: List[ValidationError] = []
-
-        all_nodes = self.get_all_build_nodes()
-        name_counts: Dict[str, int] = {}
-
-        for node in all_nodes:
-            name_counts[node.name] = name_counts.get(node.name, 0) + 1
-
-        for name, count in name_counts.items():
-            if count > 1:
-                errors.append(
-                    ValidationError(severity=ValidationSeverity.ERROR, category="duplicate_node_name", message=f"Node name '{name}' is used by {count} different nodes", node_name=name, suggestion="Ensure all node names are unique across the entire RIG")
-                )
-
-        return errors
-
-    def _validate_test_relationships(self) -> List[ValidationError]:
-        """Validate test relationships and structure."""
-        errors: List[ValidationError] = []
-
-        # Check that tests have proper relationships
-        for test in self.tests:
-            if not test.components_being_tested and not test.test_executable:
-                errors.append(
-                    ValidationError(
-                        severity=ValidationSeverity.WARNING,
-                        category="isolated_test",
-                        message=f"Test '{test.name}' has no components being tested and no test executable",
-                        node_name=test.name,
-                        suggestion="Check if the test should be linked to components or if it's a standalone test",
-                    )
-                )
-
-        return errors
-
-    def _validate_component_locations(self) -> List[ValidationError]:
-        """Validate component location information."""
-        errors: List[ValidationError] = []
-
-        for component in self.components:
-            if not component.locations:
-                errors.append(
-                    ValidationError(
-                        severity=ValidationSeverity.WARNING,
-                        category="missing_location_info",
-                        message=f"Component '{component.name}' has no location information",
-                        node_name=component.name,
-                        suggestion="Components should have at least one location indicating where they are built",
-                    )
-                )
-
-        return errors
-
-    def _validate_evidence_consistency(self) -> List[ValidationError]:
-        """Validate that evidence information is consistent."""
-        errors: List[ValidationError] = []
-
-        # Check that all nodes have evidence
-        for node in self.get_all_build_nodes():
-            if not hasattr(node, "evidence") or not node.evidence:
-                errors.append(
-                    ValidationError(
-                        severity=ValidationSeverity.WARNING, category="missing_evidence", message=f"Node '{node.name}' has no evidence information", node_name=node.name, suggestion="All nodes should have evidence indicating where they are defined"
-                    )
-                )
-
-        return errors
+        validator = RIGValidator(self)
+        return validator.validate()
 
     def show_graph(self, validate_before_show: bool = True) -> None:
         """
@@ -579,187 +328,25 @@ class RIG:
             validate_before_show: If True, validate the RIG before showing the graph.
                                 If validation fails, raises RIGValidationError.
         """
-        if validate_before_show:
-            errors = self.validate()
-            # Only raise error if there are actual errors (not just warnings)
-            error_errors = [e for e in errors if e.severity == ValidationSeverity.ERROR]
-            if error_errors:
-                raise RIGValidationError(error_errors)
+        visualizer = RIGVisualizer(self)
+        visualizer.show_graph(validate_before_show)
 
-        # Generate the HTML file
-        html_content = self._generate_graph_html()
-
-        # Determine filename
-        project_name = self.repository.name if self.repository else "unknown"
-        filename = f"rig_{project_name}_graph.html"
-
-        # Create self-contained HTML with embedded libraries
-        self._create_embedded_html(html_content, filename)
-
-        # Get absolute path for user reference
-        import os
-
-        file_url = f"file://{os.path.abspath(filename)}"
-
-        print(f"Self-contained graph visualization generated: {filename}")
-        print(f"File location: {file_url}")
-        print(f"")
-        print(f"To view the graph: Open {filename} directly in your browser")
-        print(f"This file has no external dependencies and works offline.")
-
-    def _create_embedded_html(self, html_content: str, filename: str) -> None:
-        """Create a self-contained HTML file with embedded JavaScript libraries."""
-        import urllib.request
-        import urllib.error
-
-        # Download the libraries
-        libraries = {
-            "cytoscape": "https://cdn.jsdelivr.net/npm/cytoscape@3.26.0/dist/cytoscape.min.js",
-            "dagre": "https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js",
-            "cytoscape-dagre": "https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.js",
-        }
-
-        downloaded_libs: Dict[str, str] = {}
-        for name, url in libraries.items():
-            try:
-                print(f"Downloading {name}...")
-                with urllib.request.urlopen(url) as response:
-                    content = response.read().decode("utf-8")
-                downloaded_libs[name] = content
-                print(f"✓ Downloaded {name} ({len(content)} characters)")
-            except urllib.error.URLError as e:
-                print(f"✗ Failed to download {name}: {e}")
-                # Continue with CDN fallback
-
-        # Replace script tags with embedded content
-        for name, content in downloaded_libs.items():
-            if content:
-                # Find the script tag for this library
-                script_pattern = f'<script src="https://cdn.jsdelivr.net/npm/{name}@'
-                start_idx = html_content.find(script_pattern)
-                if start_idx != -1:
-                    # Find the end of the script tag
-                    end_idx = html_content.find("></script>", start_idx)
-                    if end_idx != -1:
-                        end_idx += len("></script>")
-                        # Replace with embedded script
-                        embedded_script = f"<script>\n{content}\n</script>"
-                        html_content = html_content[:start_idx] + embedded_script + html_content[end_idx:]
-                        print(f"✓ Embedded {name} library")
-
-        # Write the final HTML file
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(html_content)
-
-    def _get_available_languages(self) -> List[str]:
-        """Get all unique programming languages from components."""
-        languages: set[str] = set()
-        for component in self.components:
-            if component.programming_language:
-                languages.add(component.programming_language)
-        return sorted(list(languages))
-
-    def _get_available_runtimes(self) -> List[str]:
-        """Get all unique runtime environments from components."""
-        runtimes: set[str] = set()
-        for component in self.components:
-            if component.runtime:
-                runtimes.add(str(component.runtime))
-        return sorted(list(runtimes))
-
-    def _generate_language_filter_options(self) -> str:
-        """Generate HTML options for language filter based on actual RIG data."""
-        options = ['<option value="all">All</option>']
-        for lang in self._get_available_languages():
-            # Capitalize first letter for display
-            display_name = lang.capitalize()
-            options.append(f'<option value="{lang}">{display_name}</option>')
-        return "\n                ".join(options)
-
-    def _generate_runtime_filter_options(self) -> str:
-        """Generate HTML options for runtime filter based on actual RIG data."""
-        options = ['<option value="all">All</option>']
-        for runtime in self._get_available_runtimes():
-            # Clean up runtime display name
-            display_name = runtime.replace("Runtime.", "").replace("_", "-")
-            options.append(f'<option value="{runtime}">{display_name}</option>')
-        return "\n                ".join(options)
-
-    def generate_prompts(self, limit: int = 50, filename: Optional[str] = None) -> str:
-        """
-        Generate a comprehensive prompt for AI agents with repository build information.
-
-        This method creates a structured prompt that provides AI agents (like Cursor) with
-        essential information about the repository's build system, components, dependencies,
-        and potential issues. The data is formatted for easy consumption and understanding.
-
-        Args:
-            limit: Maximum number of components to include in the prompt (default: 50)
-            filename: Optional filename to write the prompt to a file
-
-        Returns:
-            Formatted string containing repository build information for AI agents
-        """
-        # Extract basic repository information
-        repo_name = self.repository.name if self.repository else "Unknown"
-        repo_root = str(self.repository.root_path) if self.repository else "Unknown"
-        build_system = self.build_system.name if self.build_system else "Unknown"
-        configure_cmd = self.repository.configure_command if self.repository else ""
-        test_cmd = self.repository.test_command if self.repository else ""
-
-        # Determine build roots (for now, just use repo root)
-        build_roots = ["./"]
-
-        # Generate header section in Markdown format
-        header = f"""# Repository Build Analysis
-
-## Repository Information
-- **Repository**: {repo_name}
-- **Root Path**: {repo_root}
-- **Build System**: {build_system}
-- **Scope**: {build_roots}
-- **Detection Mode**: configure_only
-- **Configure Command**: {configure_cmd}
-- **Test Discovery Command**: {test_cmd}
-
-## Build Data
-
-The following JSON contains the complete build analysis data:
-
-```json"""
-
-        # Generate JSON data section
-        json_data = self._generate_prompts_json_data(limit)
-
-        # Combine header and JSON data in Markdown format
-        full_prompt = f"{header}\n{json_data}\n```"
-
-        # Write to file if filename is provided
-        if filename:
-            with open(filename, "w", encoding="utf-8") as f:
-                f.write(full_prompt)
-
-        return full_prompt
-
-    def _generate_prompts_json_data(self, limit: int) -> str:
+    def generate_prompts_json_data(self, optimize: bool = False) -> str:
         """Generate the JSON data section for the prompts."""
-        import json
-
         # Basic repository info
-        repo_info = {"name": self.repository.name if self.repository else "Unknown", "root": str(self.repository.root_path) if self.repository else "Unknown"}
+        repo_info = {"name": self._repository_info.name if self._repository_info else "Unknown", "root": str(self._repository_info.root_path) if self._repository_info else "Unknown"}
 
         # Build system info
         build_info = {
-            "system": self.build_system.name if self.build_system else "Unknown",
+            "system": self._build_system_info.name if self._build_system_info else "Unknown",
             "generator": None,  # Removed as per our refactoring
-            "type": self.build_system.build_type if self.build_system else None,
-            "configure_cmd": self.repository.configure_command if self.repository else "",
-            "test_cmd": self.repository.test_command if self.repository else "",
-            "limits": {"max_list": limit},
+            "type": self._build_system_info.build_type if self._build_system_info else None,
+            "configure_cmd": self._repository_info.configure_command if self._repository_info else "",
+            "test_cmd": self._repository_info.test_command if self._repository_info else "",
         }
 
-        # Components (topologically sorted, limited)
-        components = self._generate_prompts_components(limit)
+        # Components (topologically sorted, no limit)
+        components = self._generate_prompts_components()
 
         # Aggregators
         aggregators = self._generate_prompts_aggregators()
@@ -770,65 +357,70 @@ The following JSON contains the complete build analysis data:
         # Tests
         tests = self._generate_prompts_tests()
 
-        # Gaps (validation issues)
-        gaps = self._generate_prompts_gaps()
+        # Supporting data
+        external_packages = self._generate_prompts_external_packages()
+        package_managers = self._generate_prompts_package_managers()
+        evidence = self._generate_prompts_evidence()
 
-        # Combine all data
-        data = {"repo": repo_info, "build": build_info, "components": components, "aggregators": aggregators, "runners": runners, "tests": tests, "gaps": gaps}
+        # Combine all data into Pydantic model
+        rig_data = RIGPromptData(
+            repo=repo_info,
+            build=build_info,
+            components=components,
+            aggregators=aggregators,
+            runners=runners,
+            tests=tests,
+            external_packages=external_packages,
+            package_managers=package_managers,
+            evidence=evidence
+        )
 
-        return json.dumps(data, indent=2)
+        # Apply optimization if requested
+        # TODO: re-enable optimization once optimization method is fixed
+        # if optimize:
+        #     data = self._optimize_json_for_llm(data)
 
-    def _generate_prompts_components(self, limit: int) -> List[Dict[str, Any]]:
+        # Use Pydantic's JSON serialization (handles sets → lists automatically)
+        # exclude_none=True removes null fields for more efficient LLM processing
+        return rig_data.model_dump_json(indent=2, exclude_none=True)
+
+    def _generate_prompts_components(self) -> List[Dict[str, Any]]:
         """Generate component data for prompts."""
         components: List[Dict[str, Any]] = []
 
-        # Sort components topologically (dependencies first)
-        sorted_components = self._topological_sort_components()
+        for _, component in enumerate(self._components):
+            # Use Pydantic serialization with exclusions for flat JSON
+            comp_data = component.model_dump(
+                exclude={
+                    'depends_on',        # Keep depends_on_ids
+                    'evidence',           # Keep evidence_ids
+                    'external_packages'   # Keep external_packages_ids
+                },
+                exclude_none=True
+            )
 
-        for i, component in enumerate(sorted_components[:limit]):
-            comp_data: Dict[str, Any] = {
-                "id": component.id or i,
-                "name": component.name,
-                "type": component.type.value,
-                "language": component.programming_language,
-                "runtime": str(component.runtime) if component.runtime else ("native" if component.programming_language in ["c", "cpp", "cxx"] else "UNKNOWN"),
-                "output": component.output,
-                "output_path": str(component.output_path),
-                "source_files": [str(src) for src in component.source_files],
-                "depends_on": [dep.name for dep in component.depends_on],
-                "externals": [{"package_manager": ext.package_manager.name, "package": ext.package_manager.package_name} for ext in component.external_packages],
-                "evidence": [{"call_stack": component.evidence.call_stack}] if component.evidence else [],  # Main evidence
-                "test_link_id": component.test_link_id,
-                "test_link_name": component.test_link_name,
-            }
-            
-            
+            # ID is already generated by Pydantic model, no fallback needed
+
             components.append(comp_data)
 
         return components
-
-    def _is_test_component(self, component: Component) -> bool:
-        """Check if a component is actually a test component."""
-        # Check if the component name indicates it's a test
-        name_lower = component.name.lower()
-        return (name_lower.endswith('_test') or 
-                name_lower.startswith('test_') or 
-                'test' in name_lower)
-
-    def _find_corresponding_test(self, component: Component) -> Optional[TestDefinition]:
-        """Find the corresponding test node for a test component."""
-        # Look for a test with the same name as the component
-        for test in self.tests:
-            if test.name == component.name:
-                return test
-        return None
 
     def _generate_prompts_aggregators(self) -> List[Dict[str, Any]]:
         """Generate aggregator data for prompts."""
         aggregators: List[Dict[str, Any]] = []
 
-        for i, agg in enumerate(self.aggregators):
-            agg_data: Dict[str, Any] = {"id": agg.id or i, "name": agg.name, "depends_on": [dep.name for dep in agg.depends_on], "evidence": [{"call_stack": agg.evidence.call_stack}]}
+        for _, agg in enumerate(self._aggregators):
+            # Use Pydantic serialization with exclusions for flat JSON
+            agg_data = agg.model_dump(
+                exclude={
+                    'depends_on',        # Keep depends_on_ids
+                    'evidence'           # Keep evidence_ids
+                },
+                exclude_none=True
+            )
+
+            # ID is already generated by Pydantic model, no fallback needed
+
             aggregators.append(agg_data)
 
         return aggregators
@@ -837,11 +429,18 @@ The following JSON contains the complete build analysis data:
         """Generate runner data for prompts."""
         runners: List[Dict[str, Any]] = []
 
-        for i, runner in enumerate(self.runners):
-            # Use first call stack entry as command hint
-            command_hint = runner.evidence.call_stack[0] if runner.evidence.call_stack else "No command info"
+        for _, runner in enumerate(self._runners):
+            # Use Pydantic serialization with exclusions for flat JSON
+            runner_data = runner.model_dump(
+                exclude={
+                    'depends_on',        # Keep depends_on_ids
+                    'evidence'           # Keep evidence_ids
+                },
+                exclude_none=True
+            )
 
-            runner_data: Dict[str, Any] = {"id": runner.id or i, "name": runner.name, "hint": command_hint, "evidence": [{"call_stack": runner.evidence.call_stack}]}
+            # ID is already generated by Pydantic model, no fallback needed
+
             runners.append(runner_data)
 
         return runners
@@ -850,789 +449,305 @@ The following JSON contains the complete build analysis data:
         """Generate test data for prompts."""
         tests: List[Dict[str, Any]] = []
 
-        for i, test in enumerate(self.tests):
-            test_data: Dict[str, Any] = {
-                "id": test.id or i,
-                "name": test.name,
-                "framework": test.test_framework,
-                "exe_component": test.test_executable.name if test.test_executable else None,
-                "components": [comp.name for comp in test.components_being_tested],
-                "evidence": [{"call_stack": test.evidence.call_stack}],
-            }
+        for _, test in enumerate(self._tests):
+            # Use Pydantic serialization with exclusions for flat JSON
+            test_data = test.model_dump(
+                exclude={
+                    'depends_on',                    # Keep depends_on_ids
+                    'evidence',                      # Keep evidence_ids
+                    'test_executable_component',     # Keep test_executable_component_id
+                    'test_components',               # Keep test_components_ids
+                    'components_being_tested'        # Keep components_being_tested_ids
+                },
+                exclude_none=True
+            )
+
+            # ID is already generated by Pydantic model, no fallback needed
+
             tests.append(test_data)
 
         return tests
 
-    def _generate_prompts_gaps(self) -> Dict[str, Any]:
-        """Generate gaps/validation issues for prompts."""
-        # Run validation to get current issues
-        validation_errors = self.validate()
+    def _generate_prompts_external_packages(self) -> List[Dict[str, Any]]:
+        """Generate external package data for prompts."""
+        external_packages: List[Dict[str, Any]] = []
 
-        missing_sources: List[str] = []
-        missing_outputs: List[str] = []
-        orphaned_aggregators: List[str] = []
-        orphaned_tests: List[str] = []
-        risky_runners: List[str] = []
+        for _, package in enumerate(self._external_packages_by_id.values()):
+            # Use Pydantic serialization with exclusions for flat JSON
+            package_data = package.model_dump(
+                exclude={
+                    'package_manager'  # Keep package_manager_id
+                },
+                exclude_none=True
+            )
 
-        for error in validation_errors:
-            if error.category == "missing_source_files" and error.node_name:
-                missing_sources.append(error.node_name)
-            elif error.category == "missing_output_files" and error.node_name:
-                missing_outputs.append(error.node_name)
-            elif error.category == "orphaned_nodes":
-                if error.node_name in [agg.name for agg in self.aggregators]:
-                    orphaned_aggregators.append(error.node_name)
-                elif error.node_name in [test.name for test in self.tests]:
-                    orphaned_tests.append(error.node_name)
-            elif error.category == "risky_runners" and error.node_name:
-                risky_runners.append(error.node_name)
+            # ID is already generated by Pydantic model, no fallback needed
 
-        return {"missing_sources": list(set(missing_sources)), "missing_outputs": list(set(missing_outputs)), "orphans": {"aggregators": list(set(orphaned_aggregators)), "tests": list(set(orphaned_tests))}, "risky_runners": list(set(risky_runners))}
+            external_packages.append(package_data)
 
-    def _topological_sort_components(self) -> List[Component]:
-        """Sort components topologically (dependencies first)."""
-        # Simple topological sort using Kahn's algorithm
-        in_degree: Dict[str, int] = {comp.name: 0 for comp in self.components}
-        graph: Dict[str, List[str]] = {comp.name: [] for comp in self.components}
+        return external_packages
 
-        # Build graph and calculate in-degrees
-        for component in self.components:
-            for dep in component.depends_on:
-                if isinstance(dep, Component):
-                    graph[dep.name].append(component.name)
-                    in_degree[component.name] += 1
+    def _generate_prompts_package_managers(self) -> List[Dict[str, Any]]:
+        """Generate package manager data for prompts."""
+        package_managers: List[Dict[str, Any]] = []
 
-        # Find components with no dependencies
-        queue: List[str] = [comp.name for comp in self.components if in_degree[comp.name] == 0]
-        result: List[Component] = []
+        for _, manager in enumerate(self._package_managers_by_id.values()):
+            # Use Pydantic serialization - no exclusions needed for package managers
+            manager_data = manager.model_dump(exclude_none=True)
 
-        # Process queue
-        while queue:
-            current = queue.pop(0)
-            result.append(next(comp for comp in self.components if comp.name == current))
+            # ID is already generated by Pydantic model, no fallback needed
 
-            # Update in-degrees of dependent components
-            for dependent in graph[current]:
-                in_degree[dependent] -= 1
-                if in_degree[dependent] == 0:
-                    queue.append(dependent)
+            package_managers.append(manager_data)
 
-        return result
+        return package_managers
 
-    def _generate_graph_html(self) -> str:
-        """Generate the complete HTML content for the graph visualization."""
+    def _generate_prompts_evidence(self) -> List[Dict[str, Any]]:
+        """Generate evidence data for prompts."""
+        evidence: List[Dict[str, Any]] = []
 
-        # Generate graph data
-        nodes_data, edges_data = self._generate_graph_data()
-
-        # Convert to JSON for JavaScript
-        import json
-
-        nodes_json = json.dumps(nodes_data)
-        edges_json = json.dumps(edges_data)
-
-        # Generate the HTML template
-        html_template = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIG Graph - {self.repository.name if self.repository else "Unknown Project"}</title>
-    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.js"></script>
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }}
-        
-        #header {{
-            background-color: #2c3e50;
-            color: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }}
-        
-        #header h1 {{
-            margin: 0;
-            font-size: 24px;
-        }}
-        
-        #header p {{
-            margin: 5px 0 0 0;
-            opacity: 0.8;
-        }}
-        
-        #controls {{
-            background-color: white;
-            padding: 15px 20px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
-        }}
-        
-        .control-group {{
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }}
-        
-        .control-group label {{
-            font-weight: bold;
-            color: #555;
-        }}
-        
-        select, input, button {{
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }}
-        
-        button {{
-            background-color: #3498db;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }}
-        
-        button:hover {{
-            background-color: #2980b9;
-        }}
-        
-        #search-box {{
-            min-width: 200px;
-        }}
-        
-        #cy {{
-            width: 100%;
-            height: calc(100vh - 200px);
-            background-color: #fafafa;
-        }}
-        
-        .node-tooltip {{
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            pointer-events: none;
-            z-index: 1000;
-            max-width: 300px;
-            word-wrap: break-word;
-        }}
-        
-        .badge {{
-            display: inline-block;
-            padding: 2px 6px;
-            font-size: 10px;
-            font-weight: bold;
-            border-radius: 3px;
-            margin: 1px;
-        }}
-        
-        .badge-language {{
-            background-color: #e74c3c;
-            color: white;
-        }}
-        
-        .badge-runtime {{
-            background-color: #9b59b6;
-            color: white;
-        }}
-        
-        .badge-type {{
-            background-color: #f39c12;
-            color: white;
-        }}
-        
-        #legend {{
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }}
-        
-        #legend h3 {{
-            margin: 0 0 15px 0;
-            color: #2c3e50;
-            font-size: 16px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-        }}
-        
-        .legend-section {{
-            margin-bottom: 15px;
-        }}
-        
-        .legend-section h4 {{
-            margin: 0 0 8px 0;
-            color: #34495e;
-            font-size: 14px;
-            font-weight: bold;
-        }}
-        
-        .legend-items {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }}
-        
-        .legend-item {{
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 10px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            border: 1px solid #e9ecef;
-        }}
-        
-        .legend-node {{
-            width: 20px;
-            height: 20px;
-            border: 2px solid;
-            border-radius: 3px;
-            flex-shrink: 0;
-        }}
-        
-        .legend-edge {{
-            width: 30px;
-            height: 3px;
-            border: 2px solid;
-            border-radius: 1px;
-            flex-shrink: 0;
-        }}
-        
-        .legend-edge.dashed {{
-            border-style: dashed;
-        }}
-        
-        .legend-label {{
-            font-size: 12px;
-            color: #555;
-            font-weight: 500;
-        }}
-        
-        .legend-description {{
-            font-size: 11px;
-            color: #777;
-            margin-left: 28px;
-            margin-top: 2px;
-        }}
-        
-        .legend-toggle {{
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }}
-        
-        .legend-toggle:hover {{
-            background-color: #2980b9;
-        }}
-        
-        .legend-content {{
-            display: block;
-        }}
-        
-        .legend-content.collapsed {{
-            display: none;
-        }}
-    </style>
-</head>
-<body>
-    <div id="header">
-        <h1>Repository Intelligence Graph</h1>
-        <p>Project: {self.repository.name if self.repository else "Unknown"} | 
-           Components: {len(self.components)} | 
-           Tests: {len(self.tests)} | 
-           Aggregators: {len(self.aggregators)} | 
-           Runners: {len(self.runners)} | 
-           Utilities: {len(self.utilities)}</p>
-    </div>
-    
-    <div id="controls">
-        <div class="control-group">
-            <label>Show Sources:</label>
-            <input type="checkbox" id="show-sources" onchange="toggleSources()">
-        </div>
-        
-        <div class="control-group">
-            <label>Node Type:</label>
-            <select id="node-type-filter" onchange="filterNodes()">
-                <option value="all">All</option>
-                <option value="component">Components</option>
-                <option value="test">Tests</option>
-                <option value="aggregator">Aggregators</option>
-                <option value="runner">Runners</option>
-                <option value="utility">Utilities</option>
-                <option value="source">Source Files</option>
-            </select>
-        </div>
-        
-        <div class="control-group">
-            <label>Language:</label>
-            <select id="language-filter" onchange="filterNodes()">
-                {self._generate_language_filter_options()}
-            </select>
-        </div>
-        
-        <div class="control-group">
-            <label>Runtime:</label>
-            <select id="runtime-filter" onchange="filterNodes()">
-                {self._generate_runtime_filter_options()}
-            </select>
-        </div>
-        
-        <div class="control-group">
-            <label>Search:</label>
-            <input type="text" id="search-box" placeholder="Search nodes..." onkeyup="searchNodes()">
-        </div>
-        
-        <div class="control-group">
-            <button onclick="resetView()">Reset View</button>
-            <button onclick="fitToScreen()">Fit to Screen</button>
-            <button onclick="exportGraph()">Export Graph</button>
-        </div>
-    </div>
-    
-    <div id="legend">
-        <button class="legend-toggle" onclick="toggleLegend()">Toggle Legend</button>
-        <div id="legend-content" class="legend-content">
-            <h3>Graph Legend</h3>
+        for _, ev in enumerate(self._evidence_by_id.values()):
+            # Use Pydantic serialization - no exclusions needed for evidence
+            evidence_data = ev.model_dump(exclude_none=True)
             
-            <div class="legend-section">
-                <h4>Node Types</h4>
-                <div class="legend-items">
-                    <div class="legend-item">
-                        <div class="legend-node" style="background-color: #3498db; border-color: #2980b9; border-radius: 4px;"></div>
-                        <span class="legend-label">Component</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-node" style="background-color: #e74c3c; border-color: #c0392b; transform: rotate(45deg);"></div>
-                        <span class="legend-label">Test</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-node" style="background-color: #2ecc71; border-color: #27ae60; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div>
-                        <span class="legend-label">Aggregator</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-node" style="background-color: #f39c12; border-color: #e67e22; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
-                        <span class="legend-label">Runner</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-node" style="background-color: #95a5a6; border-color: #7f8c8d; border-radius: 4px;"></div>
-                        <span class="legend-label">Utility</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-node" style="background-color: #95a5a6; border-color: #7f8c8d; border-radius: 50%; width: 15px; height: 15px;"></div>
-                        <span class="legend-label">Source File</span>
-                    </div>
-                </div>
-                <div class="legend-description">
-                    Components are buildable artifacts (executables, libraries). Tests verify functionality. 
-                    Aggregators group related targets. Runners execute commands. Utilities provide helper functions.
-                </div>
-            </div>
+            # ID is already generated by Pydantic model, no fallback needed
             
-            <div class="legend-section">
-                <h4>Edge Types</h4>
-                <div class="legend-items">
-                    <div class="legend-item">
-                        <div class="legend-edge" style="border-color: #2c3e50;"></div>
-                        <span class="legend-label">Aggregation</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-edge dashed" style="border-color: #e74c3c;"></div>
-                        <span class="legend-label">Tests</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-edge" style="border-color: #f39c12;"></div>
-                        <span class="legend-label">Builds</span>
-                    </div>
-                </div>
-                <div class="legend-description">
-                    Aggregation edges show dependency relationships. Test edges show which components are tested. 
-                    Build edges show source-to-component relationships.
-                </div>
-            </div>
-            
-            <div class="legend-section">
-                <h4>Node Information</h4>
-                <div class="legend-items">
-                    <div class="legend-item">
-                        <span class="badge badge-language">Language</span>
-                        <span class="legend-label">Programming Language</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="badge badge-runtime">Runtime</span>
-                        <span class="legend-label">Runtime Environment</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="badge badge-type">Type</span>
-                        <span class="legend-label">Component Type</span>
-                    </div>
-                </div>
-                <div class="legend-description">
-                    Hover over nodes to see detailed information including language, runtime, and type badges.
-                </div>
-            </div>
-            
-            <div class="legend-section">
-                <h4>Controls</h4>
-                <div class="legend-description">
-                    • <strong>Show Sources:</strong> Toggle visibility of source file nodes<br>
-                    • <strong>Node Type Filter:</strong> Show only specific node types<br>
-                    • <strong>Language/Runtime Filters:</strong> Filter by programming language or runtime<br>
-                    • <strong>Search:</strong> Find nodes by name<br>
-                    • <strong>Reset View:</strong> Reset all filters and zoom<br>
-                    • <strong>Fit to Screen:</strong> Zoom to show all nodes<br>
-                    • <strong>Export Graph:</strong> Download graph as image
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="cy"></div>
-    <div id="tooltip" class="node-tooltip" style="display: none;"></div>
-    
-    <script>
-        // Graph data
-        const nodesData = {nodes_json};
-        const edgesData = {edges_json};
-        
-        let cy;
-        let showSources = false;
-        
-        // Initialize Cytoscape
-        function initCytoscape() {{
-            cy = cytoscape({{
-                container: document.getElementById('cy'),
-                
-                elements: {{
-                    nodes: nodesData,
-                    edges: edgesData
-                }},
-                
-                layout: {{
-                    name: 'dagre',
-                    rankDir: 'TB',
-                    spacingFactor: 1.5,
-                    nodeSep: 50,
-                    rankSep: 100
-                }},
-                
-                style: [
-                    {{
-                        selector: 'node',
-                        style: {{
-                            'label': 'data(label)',
-                            'text-valign': 'center',
-                            'text-halign': 'center',
-                            'font-size': '12px',
-                            'font-weight': 'bold',
-                            'color': '#333',
-                            'text-outline-width': 2,
-                            'text-outline-color': '#fff',
-                            'width': 'data(width)',
-                            'height': 'data(height)',
-                            'background-color': 'data(color)',
-                            'border-width': 2,
-                            'border-color': 'data(borderColor)',
-                            'shape': 'data(shape)'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'node[type="component"]',
-                        style: {{
-                            'background-color': '#3498db',
-                            'border-color': '#2980b9',
-                            'shape': 'round-rectangle'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'node[type="test"]',
-                        style: {{
-                            'background-color': '#e74c3c',
-                            'border-color': '#c0392b',
-                            'shape': 'diamond'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'node[type="aggregator"]',
-                        style: {{
-                            'background-color': '#2ecc71',
-                            'border-color': '#27ae60',
-                            'shape': 'hexagon'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'node[type="runner"]',
-                        style: {{
-                            'background-color': '#f39c12',
-                            'border-color': '#e67e22',
-                            'shape': 'triangle'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'node[type="utility"]',
-                        style: {{
-                            'background-color': '#95a5a6',
-                            'border-color': '#7f8c8d',
-                            'shape': 'round-rectangle'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'node[type="source"]',
-                        style: {{
-                            'background-color': '#95a5a6',
-                            'border-color': '#7f8c8d',
-                            'shape': 'ellipse',
-                            'width': 30,
-                            'height': 30
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'edge',
-                        style: {{
-                            'width': 2,
-                            'line-color': 'data(color)',
-                            'target-arrow-color': 'data(color)',
-                            'target-arrow-shape': 'triangle',
-                            'curve-style': 'bezier',
-                            'label': 'data(label)',
-                            'font-size': '10px',
-                            'text-rotation': 'autorotate',
-                            'text-margin-y': -10
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'edge[type="aggregation"]',
-                        style: {{
-                            'line-color': '#2c3e50',
-                            'target-arrow-color': '#2c3e50',
-                            'line-style': 'solid'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'edge[type="test"]',
-                        style: {{
-                            'line-color': '#e74c3c',
-                            'target-arrow-color': '#e74c3c',
-                            'line-style': 'dashed'
-                        }}
-                    }},
-                    
-                    {{
-                        selector: 'edge[type="build"]',
-                        style: {{
-                            'line-color': '#f39c12',
-                            'target-arrow-color': '#f39c12',
-                            'line-style': 'solid'
-                        }}
-                    }}
-                ]
-            }});
-            
-            // Add event listeners
-            cy.on('mouseover', 'node', showTooltip);
-            cy.on('mouseout', 'node', hideTooltip);
-            cy.on('tap', 'node', selectNode);
-            
-            // Apply initial filters (hide sources by default)
-            filterNodes();
-        }}
-        
-        // Show tooltip on hover
-        function showTooltip(event) {{
-            const node = event.target;
-            const data = node.data();
-            const tooltip = document.getElementById('tooltip');
-            
-            let content = `<strong>${{data.label}}</strong><br>`;
-            content += `Type: ${{data.type}}<br>`;
-            
-            if (data.language) {{
-                content += `Language: ${{data.language}}<br>`;
-            }}
-            if (data.runtime) {{
-                content += `Runtime: ${{data.runtime}}<br>`;
-            }}
-            if (data.componentType) {{
-                content += `Component Type: ${{data.componentType}}<br>`;
-            }}
-            if (data.filePath) {{
-                content += `Path: ${{data.filePath}}<br>`;
-            }}
-            if (data.sourceFiles && data.sourceFiles.length > 0) {{
-                content += `<br><strong>Source Files:</strong><br>`;
-                data.sourceFiles.forEach(file => {{
-                    content += `• ${{file}}<br>`;
-                }});
-            }}
-            if (data.testFramework) {{
-                content += `Test Framework: ${{data.testFramework}}<br>`;
-            }}
-            
-            tooltip.innerHTML = content;
-            tooltip.style.display = 'block';
-        }}
-        
-        // Hide tooltip
-        function hideTooltip() {{
-            document.getElementById('tooltip').style.display = 'none';
-        }}
-        
-        // Select node
-        function selectNode(event) {{
-            const node = event.target;
-            cy.elements().unselect();
-            node.select();
-        }}
-        
-        // Toggle source files visibility
-        function toggleSources() {{
-            showSources = document.getElementById('show-sources').checked;
-            filterNodes();
-        }}
-        
-        // Toggle legend visibility
-        function toggleLegend() {{
-            const legendContent = document.getElementById('legend-content');
-            legendContent.classList.toggle('collapsed');
-        }}
-        
-        // Filter nodes based on controls
-        function filterNodes() {{
-            const nodeTypeFilter = document.getElementById('node-type-filter').value;
-            const languageFilter = document.getElementById('language-filter').value;
-            const runtimeFilter = document.getElementById('runtime-filter').value;
-            const searchTerm = document.getElementById('search-box').value.toLowerCase();
-            
-            cy.elements().forEach(ele => {{
-                const data = ele.data();
-                let visible = true;
-                
-                // Source files filter
-                if (data.type === 'source' && !showSources) {{
-                    visible = false;
-                }}
-                
-                // Node type filter
-                if (nodeTypeFilter !== 'all' && data.type !== nodeTypeFilter) {{
-                    visible = false;
-                }}
-                
-                // Language filter
-                if (languageFilter !== 'all' && data.language !== languageFilter) {{
-                    visible = false;
-                }}
-                
-                // Runtime filter
-                if (runtimeFilter !== 'all' && data.runtime !== runtimeFilter) {{
-                    visible = false;
-                }}
-                
-                // Search filter
-                if (searchTerm && !data.label.toLowerCase().includes(searchTerm) && 
-                    !data.filePath?.toLowerCase().includes(searchTerm)) {{
-                    visible = false;
-                }}
-                
-                ele.style('display', visible ? 'element' : 'none');
-            }});
-            
-            cy.layout({{ name: 'dagre', rankDir: 'TB' }}).run();
-        }}
-        
-        // Search nodes
-        function searchNodes() {{
-            filterNodes();
-        }}
-        
-        // Reset view
-        function resetView() {{
-            document.getElementById('show-sources').checked = false;
-            document.getElementById('node-type-filter').value = 'all';
-            document.getElementById('language-filter').value = 'all';
-            document.getElementById('runtime-filter').value = 'all';
-            document.getElementById('search-box').value = '';
-            showSources = false;
-            filterNodes();
-        }}
-        
-        // Fit to screen
-        function fitToScreen() {{
-            cy.fit();
-        }}
-        
-        // Export graph to PNG
-        function exportGraph() {{
-            try {{
-                // Get the current graph as PNG
-                const pngData = cy.png({{
-                    output: 'blob',
-                    bg: 'white',
-                    full: true,
-                    scale: 2  // Higher resolution
-                }});
-                
-                // Create download link
-                const url = URL.createObjectURL(pngData);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'rig_graph.png';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-                
-                console.log('Graph exported successfully');
-            }} catch (error) {{
-                console.error('Export failed:', error);
-                alert('Export failed. Please try again.');
-            }}
-        }}
-        
-        // Update tooltip position
-        document.addEventListener('mousemove', function(e) {{
-            const tooltip = document.getElementById('tooltip');
-            if (tooltip.style.display === 'block') {{
-                tooltip.style.left = e.pageX + 10 + 'px';
-                tooltip.style.top = e.pageY - 10 + 'px';
-            }}
-        }});
-        
-        // Initialize when page loads
-        window.addEventListener('load', initCytoscape);
-    </script>
-</body>
-</html>"""
+            evidence.append(evidence_data)
 
-        return html_template
+        return evidence
+
+    @staticmethod
+    def _compute_stable_key(entity: Any) -> str:
+        """
+        Compute a stable, content-based key for an entity.
+
+        This key is deterministic and based on the entity's content rather than
+        auto-generated IDs, making it suitable for comparing RIGs generated independently.
+
+        Args:
+            entity: Entity to compute key for (Component, Aggregator, Runner, etc.)
+
+        Returns:
+            Stable string key
+        """
+        from core.schemas import Component, Aggregator, Runner, TestDefinition, Evidence, ExternalPackage, PackageManager
+
+        if isinstance(entity, Component):
+            # Format: name:type:language
+            return f"{entity.name}:{entity.type.value}:{entity.programming_language}"
+        elif isinstance(entity, Aggregator):
+            # Format: name:aggregator
+            return f"{entity.name}:aggregator"
+        elif isinstance(entity, Runner):
+            # Format: name:runner
+            return f"{entity.name}:runner"
+        elif isinstance(entity, TestDefinition):
+            # Format: name:test:framework
+            return f"{entity.name}:test:{entity.test_framework}"
+        elif isinstance(entity, Evidence):
+            # Format: evidence:first_reference
+            # Use first line reference or first call_stack entry as stable identifier
+            if entity.line and len(entity.line) > 0:
+                ref = entity.line[0]
+            elif entity.call_stack and len(entity.call_stack) > 0:
+                ref = entity.call_stack[0]
+            else:
+                ref = "unknown"
+            return f"evidence:{ref}"
+        elif isinstance(entity, PackageManager):
+            # Format: pm:name:package_name
+            return f"pm:{entity.name}:{entity.package_name}"
+        elif isinstance(entity, ExternalPackage):
+            # Format: pkg:name:pm_name
+            return f"pkg:{entity.name}:{entity.package_manager.name}"
+        else:
+            # Fallback for unknown types
+            return f"unknown:{getattr(entity, 'name', str(entity))}"
+
+    def _normalize_for_comparison(self) -> "RIG":
+        """
+        Create a normalized copy of this RIG with stable, content-based IDs.
+
+        This replaces all auto-generated IDs (comp-1, agg-2, etc.) with stable keys
+        based on entity content (name:type:language), making it suitable for comparing
+        RIGs generated independently.
+
+        Returns:
+            New RIG with normalized IDs
+        """
+        from core.schemas import Component, Aggregator, Runner, TestDefinition
+
+        # Build ID mapping dictionaries: old_id → stable_key
+        evidence_map = {e.id: self._compute_stable_key(e) for e in self._evidence_by_id.values()}
+        pm_map = {pm.id: self._compute_stable_key(pm) for pm in self._package_managers_by_id.values()}
+        ep_map = {ep.id: self._compute_stable_key(ep) for ep in self._external_packages_by_id.values()}
+        component_map = {c.id: self._compute_stable_key(c) for c in self._components}
+        aggregator_map = {a.id: self._compute_stable_key(a) for a in self._aggregators}
+        runner_map = {r.id: self._compute_stable_key(r) for r in self._runners}
+        test_map = {t.id: self._compute_stable_key(t) for t in self._tests}
+
+        # Helper to remap ID sets
+        def remap_ids(id_set: Optional[Set[str]], mapping: Dict[str, str]) -> Set[str]:
+            if not id_set:
+                return set()
+            return {mapping.get(old_id, old_id) for old_id in id_set}
+
+        # Create normalized RIG
+        normalized = RIG()
+
+        # Copy repository and build system info (no IDs to normalize)
+        normalized._repository_info = self._repository_info
+        normalized._build_system_info = self._build_system_info
+
+        # Normalize evidence (no dependencies to remap)
+        for evidence in self._evidence_by_id.values():
+            normalized_evidence = evidence.model_copy(deep=True)
+            normalized_evidence.id = evidence_map[evidence.id]
+            normalized._evidence_by_id[normalized_evidence.id] = normalized_evidence
+
+        # Normalize package managers (no dependencies)
+        for pm in self._package_managers_by_id.values():
+            normalized_pm = pm.model_copy(deep=True)
+            normalized_pm.id = pm_map[pm.id]
+            normalized._package_managers_by_id[normalized_pm.id] = normalized_pm
+
+        # Normalize external packages (update package_manager reference)
+        for ep in self._external_packages_by_id.values():
+            normalized_ep = ep.model_copy(deep=True)
+            normalized_ep.id = ep_map[ep.id]
+            # Update package_manager reference to use normalized PM
+            old_pm_id = ep.package_manager.id
+            normalized_ep.package_manager = normalized._package_managers_by_id[pm_map[old_pm_id]]
+            normalized._external_packages_by_id[normalized_ep.id] = normalized_ep
+
+        # Normalize components
+        for component in self._components:
+            normalized_comp = component.model_copy(deep=True)
+            normalized_comp.id = component_map[component.id]
+            normalized_comp.depends_on_ids = remap_ids(component.depends_on_ids, {**component_map, **aggregator_map, **runner_map})
+            normalized_comp.evidence_ids = remap_ids(component.evidence_ids, evidence_map)
+            normalized_comp.external_packages_ids = remap_ids(component.external_packages_ids, ep_map)
+            normalized._components_by_id[normalized_comp.id] = normalized_comp
+
+        # Normalize aggregators
+        for aggregator in self._aggregators:
+            normalized_agg = aggregator.model_copy(deep=True)
+            normalized_agg.id = aggregator_map[aggregator.id]
+            normalized_agg.depends_on_ids = remap_ids(aggregator.depends_on_ids, {**component_map, **aggregator_map, **runner_map})
+            normalized_agg.evidence_ids = remap_ids(aggregator.evidence_ids, evidence_map)
+            normalized._aggregators_by_id[normalized_agg.id] = normalized_agg
+
+        # Normalize runners
+        for runner in self._runners:
+            normalized_runner = runner.model_copy(deep=True)
+            normalized_runner.id = runner_map[runner.id]
+            normalized_runner.depends_on_ids = remap_ids(runner.depends_on_ids, {**component_map, **aggregator_map, **runner_map})
+            normalized_runner.evidence_ids = remap_ids(runner.evidence_ids, evidence_map)
+            normalized_runner.args_nodes_ids = remap_ids(runner.args_nodes_ids, {**component_map, **aggregator_map, **runner_map, **test_map})
+            normalized._runners_by_id[normalized_runner.id] = normalized_runner
+
+        # Normalize tests
+        for test in self._tests:
+            normalized_test = test.model_copy(deep=True)
+            normalized_test.id = test_map[test.id]
+            normalized_test.depends_on_ids = remap_ids(test.depends_on_ids, {**component_map, **aggregator_map, **runner_map})
+            normalized_test.evidence_ids = remap_ids(test.evidence_ids, evidence_map)
+            normalized_test.test_components_ids = remap_ids(test.test_components_ids, component_map)
+            normalized_test.components_being_tested_ids = remap_ids(test.components_being_tested_ids, component_map)
+            # Update test_executable_component_id if present
+            if test.test_executable_component_id:
+                if test.test_executable_component_id in component_map:
+                    normalized_test.test_executable_component_id = component_map[test.test_executable_component_id]
+                elif test.test_executable_component_id in runner_map:
+                    normalized_test.test_executable_component_id = runner_map[test.test_executable_component_id]
+            normalized._tests_by_id[normalized_test.id] = normalized_test
+
+        return normalized
+
+    @staticmethod
+    def _sort_json_for_comparison(data: Any) -> Any:
+        """
+        Recursively sort JSON data structures for consistent comparison.
+
+        Sorts:
+        - Dictionary keys alphabetically
+        - Lists by content (using 'name' field if present, else JSON string)
+
+        Args:
+            data: JSON-compatible data structure (dict, list, or scalar)
+
+        Returns:
+            Sorted version of the input data
+        """
+        if isinstance(data, dict):
+            # Sort dictionary keys and recursively sort values
+            return {k: RIG._sort_json_for_comparison(v) for k, v in sorted(data.items())}
+        elif isinstance(data, list):
+            # Sort list items by stable key
+            sorted_items = []
+            for item in data:
+                sorted_items.append(RIG._sort_json_for_comparison(item))
+
+            # Try to sort by 'name' field if items are dicts with 'name'
+            try:
+                if sorted_items and isinstance(sorted_items[0], dict) and 'name' in sorted_items[0]:
+                    sorted_items.sort(key=lambda x: x.get('name', ''))
+                else:
+                    # Fall back to sorting by JSON string representation
+                    sorted_items.sort(key=lambda x: json.dumps(x, sort_keys=True))
+            except (TypeError, ValueError):
+                # If sorting fails, keep original order
+                pass
+
+            return sorted_items
+        else:
+            # Scalar values (str, int, bool, None) - return as is
+            return data
+
+    def compare(self, other_rig: "RIG") -> Optional[str]:
+        """
+        Compare this RIG with another RIG by comparing their JSON representations.
+
+        This method normalizes both RIGs to use stable, content-based IDs before comparison,
+        making it suitable for comparing RIGs generated independently. It also sorts all
+        lists to ensure ordering doesn't cause false differences.
+
+        Args:
+            other_rig: The RIG to compare against
+
+        Returns:
+            None if RIGs are identical, diff text string if they differ
+        """
+        # Normalize both RIGs to use stable IDs (e.g., "hello_world.exe:executable:cxx")
+        # instead of auto-generated IDs (e.g., "comp-1", "comp-2")
+        self_normalized = self._normalize_for_comparison()
+        other_normalized = other_rig._normalize_for_comparison()
+
+        # Generate JSON from normalized RIGs (without optimization for accurate comparison)
+        self_json = self_normalized.generate_prompts_json_data(optimize=False)
+        other_json = other_normalized.generate_prompts_json_data(optimize=False)
+
+        # Parse JSON strings into dictionaries
+        self_data = json.loads(self_json)
+        other_data = json.loads(other_json)
+
+        # Sort both data structures for consistent comparison
+        self_data_sorted = self._sort_json_for_comparison(self_data)
+        other_data_sorted = self._sort_json_for_comparison(other_data)
+
+        # Compare the sorted dictionaries
+        if self_data_sorted == other_data_sorted:
+            return None
+
+        # Generate unified diff if they differ (using sorted, normalized versions)
+        diff = difflib.unified_diff(
+            json.dumps(self_data_sorted, indent=2).splitlines(),
+            json.dumps(other_data_sorted, indent=2).splitlines(),
+            fromfile='self',
+            tofile='other',
+            lineterm=''
+        )
+        diff_text = "\n".join(diff)
+        return diff_text
 
     def analyze(self) -> None:
         """
@@ -1663,9 +778,9 @@ The following JSON contains the complete build analysis data:
                 if stem + ".exe" not in artifact_idx:
                     artifact_idx[stem + ".exe"] = c
                 # for plugin components, remember their directories for ENV dir equality
-                # Check if this is a plugin target by looking for runtime tokens in name
+                # Check if this is a plugin target by looking for plugin tokens in name
                 cname = getattr(c, "name", "")
-                if any(token in cname.lower() for token in ["openjdk", "python311", "go"]) and getattr(c, "runtime", None):
+                if any(token in cname.lower() for token in ["openjdk", "python311", "go"]):
                     plugin_dirs.setdefault(p.parent, c)
 
         # Dependency graph by component name -> set(component names)
@@ -1710,47 +825,6 @@ The following JSON contains the complete build analysis data:
                         out.add(nxt)
                         stack.append(nxt)
             return out
-
-        # ---------- pass 1: runtime via transitive linkage ----------
-        def resolve_runtime_via_linkage(obj: Any) -> None:
-            # mutate obj.runtime if (a) currently unknown/None, and (b) exactly one plugin runtime reachable
-            r_now = getattr(obj, "runtime", None)
-            if r_now:
-                return  # never overwrite
-            # obtain the "component name" for this object, if it is a component
-            if obj in comps:
-                root = getattr(obj, "name", None)
-                if not root:
-                    return
-                reach = transitive_deps(root)
-                runtimes = {
-                    getattr(name_idx[n], "runtime", None)
-                    for n in reach
-                    if n in name_idx
-                    and any(token in n.lower() for token in ["openjdk", "python311", "go"])
-                    and getattr(name_idx[n], "runtime", None)
-                }
-                runtimes.discard(None)
-                if len(runtimes) == 1:
-                    setattr(obj, "runtime", next(iter(runtimes)))
-                return
-
-            # for non-component objects, try to see if they reference a component they launch
-            # e.g., runner.target_name or runner.launches_name
-            for ref_attr in ("component_name", "target_name", "launches_component", "launches_name"):
-                ref = getattr(obj, ref_attr, None)
-                if isinstance(ref, str) and ref in name_idx:
-                    cand = getattr(name_idx[ref], "runtime", None)
-                    if cand:
-                        setattr(obj, "runtime", cand)
-                        return
-
-        for c in comps:
-            resolve_runtime_via_linkage(c)
-        for r in runners:
-            resolve_runtime_via_linkage(r)
-        for u in utilities:
-            resolve_runtime_via_linkage(u)
 
         # ---------- helpers for tests ----------
         def set_test_component(t: Any, comp_obj: object) -> None:
@@ -1799,161 +873,193 @@ The following JSON contains the complete build analysis data:
                 continue
             # otherwise: leave unmapped here; other passes may help
 
-        # ---------- pass 3: inherit runtime from mapped component (runners/utilities/tests) ----------
-        def inherit_runtime_from_component(obj: Any) -> None:
-            if getattr(obj, "runtime", None):
-                return
-            # try to find a referenced component this object launches/targets
-            ref_names: List[str] = []
-            for attr in ("component_name", "target_name", "component"):
-                v = getattr(obj, attr, None)
-                if isinstance(v, str):
-                    ref_names.append(v)
-            for rn in ref_names:
-                if rn in name_idx:
-                    cand = getattr(name_idx[rn], "runtime", None)
-                    if cand:
-                        setattr(obj, "runtime", cand)
-                        return
+        # Done with test mapping passes.
 
-        for t in tests:
-            inherit_runtime_from_component(t)
-        for r in runners:
-            inherit_runtime_from_component(r)
-        for u in utilities:
-            inherit_runtime_from_component(u)
-
-        # Done. All ambiguous cases intentionally remain unknown.
-
-    def _generate_graph_data(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-        """Generate nodes and edges data for the graph visualization."""
-        nodes: List[Dict[str, Any]] = []
-        edges: List[Dict[str, Any]] = []
-
-        # Add root node if we have a repository
-        if self.repository:
-            nodes.append({"data": {"id": "root", "label": self.repository.name, "type": "root", "color": "#34495e", "borderColor": "#2c3e50", "shape": "round-rectangle", "width": 120, "height": 40}})
-
-        # Add all build nodes
-        for node in self.get_all_build_nodes():
-            node_data = self._create_node_data(node)
-            nodes.append(node_data)
-
-        # Add test nodes
-        for test in self.tests:
-            node_data = self._create_test_node_data(test)
-            nodes.append(node_data)
-
-        # Add source file nodes (will be filtered by UI)
-        for component in self.components:
-            for source_file in component.source_files:
-                source_id = f"source_{source_file}"
-                if not any(n["data"]["id"] == source_id for n in nodes):
-                    nodes.append({"data": {"id": source_id, "label": source_file.name, "type": "source", "color": "#95a5a6", "borderColor": "#7f8c8d", "shape": "ellipse", "width": 30, "height": 30, "filePath": str(source_file)}})
-
-        # Add edges
-        edges.extend(self._create_aggregation_edges())
-        edges.extend(self._create_test_edges())
-        edges.extend(self._create_build_edges())
-
-        return nodes, edges
-
-    def _create_node_data(self, node: BuildNode) -> Dict[str, Any]:
-        """Create node data for a build node."""
-        node_type = type(node).__name__.lower()
-
-        # Determine color based on type
-        color_map = {"component": "#3498db", "aggregator": "#2ecc71", "runner": "#f39c12", "utility": "#95a5a6"}
-        color = color_map.get(node_type, "#95a5a6")
-
-        # Use plain text label (no HTML)
-        label = node.name
-
-        node_data: Dict[str, Any] = {"data": {"id": node.name, "label": label, "type": node_type, "color": color, "borderColor": color, "shape": "round-rectangle", "width": 100, "height": 50}}
-
-        # Add component-specific data
-        if isinstance(node, Component):
-            node_data["data"]["language"] = node.programming_language
-            node_data["data"]["runtime"] = str(node.runtime)
-            node_data["data"]["componentType"] = str(node.type)
-            node_data["data"]["filePath"] = str(node.output_path)
-            node_data["data"]["sourceFiles"] = [str(f) for f in node.source_files]
-
-        return node_data
-
-    def _create_test_node_data(self, test: TestDefinition) -> Dict[str, Any]:
-        """Create node data for a test."""
-        # Use plain text label (no HTML)
-        label = test.name
-
-        return {
-            "data": {
-                "id": test.name,
-                "label": label,
-                "type": "test",
-                "color": "#e74c3c",
-                "borderColor": "#c0392b",
-                "shape": "diamond",
-                "width": 100,
-                "height": 50,
-                "testFramework": test.test_framework,
-                "filePath": test.evidence.call_stack[0] if test.evidence and test.evidence.call_stack else None,
-            }
-        }
-
-    def _create_aggregation_edges(self) -> List[Dict[str, Any]]:
-        """Create aggregation edges."""
-        edges: List[Dict[str, Any]] = []
-
-        # Root to aggregators
-        if self.repository:
-            for aggregator in self.aggregators:
-                edges.append({"data": {"id": f"root_to_{aggregator.name}", "source": "root", "target": aggregator.name, "type": "aggregation", "color": "#2c3e50", "label": "aggregates"}})
-
-        # Aggregators to their dependencies
-        for aggregator in self.aggregators:
-            for dep in aggregator.depends_on:
-                edges.append({"data": {"id": f"{aggregator.name}_to_{dep.name}", "source": aggregator.name, "target": dep.name, "type": "aggregation", "color": "#2c3e50", "label": "aggregates"}})
-
-        return edges
-
-    def _create_test_edges(self) -> List[Dict[str, Any]]:
-        """Create test edges."""
-        edges: List[Dict[str, Any]] = []
-
-        for test in self.tests:
-            for component in test.components_being_tested:
-                edges.append({"data": {"id": f"{test.name}_tests_{component.name}", "source": test.name, "target": component.name, "type": "test", "color": "#e74c3c", "label": "tests"}})
-
-        return edges
-
-    def _create_build_edges(self) -> List[Dict[str, Any]]:
-        """Create build edges."""
-        edges: List[Dict[str, Any]] = []
-
-        # Components to source files
-        for component in self.components:
-            for source_file in component.source_files:
-                source_id = f"source_{source_file}"
-                edges.append({"data": {"id": f"{component.name}_builds_{source_id}", "source": component.name, "target": source_id, "type": "build", "color": "#f39c12", "label": "builds"}})
-
-        # Components to test executables
-        for test in self.tests:
-            if test.test_executable:
-                edges.append({"data": {"id": f"{test.test_executable.name}_builds_{test.name}", "source": test.test_executable.name, "target": test.name, "type": "build", "color": "#f39c12", "label": "builds"}})
-
-        return edges
     
-    def save(self, db_path: Union[str, Path], description: str = "RIG Export") -> int:
+    # def _optimize_json_for_llm(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    #     """
+    #     Optimize JSON data for LLM consumption by reducing token count.
+    #
+    #     This method implements token reduction strategies:
+    #     - Deduplicate file paths (biggest token saver)
+    #     - Deduplicate evidence call stacks
+    #     - Map repeated strings to IDs
+    #     - Use compact keys in JSON
+    #     - Preserve readability for critical fields
+    #
+    #     Args:
+    #         data: Original JSON data dictionary
+    #
+    #     Returns:
+    #         Optimized JSON data with mappings
+    #     """
+    #     import json
+    #
+    #     # Collect file paths and evidence for deduplication
+    #     file_paths = set()
+    #     evidence_stacks = set()
+    #     string_counts = {}
+    #
+    #     def analyze_data(obj, path=""):
+    #         """Analyze data to find optimization opportunities."""
+    #         if isinstance(obj, str):
+    #             # Count string occurrences
+    #             string_counts[obj] = string_counts.get(obj, 0) + 1
+    #
+    #             # Collect file paths (biggest token consumers)
+    #             if (obj.endswith(('.cpp', '.c', '.h', '.hpp', '.py', '.java', '.go', '.cs', '.js', '.ts')) or
+    #                 '/' in obj or '\\' in obj):
+    #                 file_paths.add(obj)
+    #
+    #             # Collect evidence call stacks
+    #             if path.endswith('.call_stack') or 'call_stack' in path:
+    #                 evidence_stacks.add(obj)
+    #
+    #         elif isinstance(obj, dict):
+    #             for key, value in obj.items():
+    #                 analyze_data(value, f"{path}.{key}")
+    #         elif isinstance(obj, list):
+    #             for i, item in enumerate(obj):
+    #                 analyze_data(item, f"{path}[{i}]")
+    #
+    #     # Analyze the data
+    #     analyze_data(data)
+    #
+    #     # Create mappings for repeated strings (only if repeated 3+ times and >5 chars)
+    #     string_to_id = {}
+    #     id_counter = 1
+    #
+    #     for string, count in string_counts.items():
+    #         if count >= 3 and len(string) > 5 and string not in file_paths:
+    #             string_to_id[string] = f"s{id_counter}"
+    #             id_counter += 1
+    #
+    #     # Create file path mappings
+    #     path_to_id = {}
+    #     for i, path in enumerate(sorted(file_paths), 1):
+    #         path_to_id[path] = f"p{i}"
+    #
+    #     # Create evidence mappings
+    #     evidence_to_id = {}
+    #     for i, stack in enumerate(sorted(evidence_stacks), 1):
+    #         evidence_to_id[stack] = f"e{i}"
+    #
+    #     # Comprehensive key mappings
+    #     key_mappings = {
+    #         # Top-level sections
+    #                 "repo": "r",
+    #                 "build": "b",
+    #                 "components": "c",
+    #                 "aggregators": "a",
+    #                 "runners": "rn",
+    #                 "tests": "t",
+    #         "external_packages": "ep",
+    #         "package_managers": "pm",
+    #         "evidence": "ev",
+    #
+    #         # Component fields
+    #                 "name": "n",
+    #                 "type": "ty",
+    #         "programming_language": "lang",
+    #                 "source_files": "sf",
+    #         "depends_on_ids": "doi",
+    #         "evidence_ids": "eid",
+    #         "external_packages_ids": "epi",
+    #         "test_executable_component_id": "teci",
+    #         "test_components_ids": "tci",
+    #         "components_being_tested_ids": "cbti",
+    #         "test_framework": "tf",
+    #
+    #         # Repository fields
+    #         "root": "root",
+    #         "system": "sys",
+    #         "configure_cmd": "ccmd",
+    #         "test_cmd": "tcmd",
+    #
+    #         # Evidence fields
+    #         "line": "line",
+    #         "call_stack": "cs",
+    #
+    #         # Package fields
+    #         "package_name": "pkg",
+    #         "package_manager": "pmgr"
+    #     }
+    #
+    #     def optimize_object(obj, path=""):
+    #         """Recursively optimize objects."""
+    #         if isinstance(obj, str):
+    #             # Apply mappings in order of priority
+    #             if obj in path_to_id:
+    #                 return path_to_id[obj]
+    #             elif obj in evidence_to_id:
+    #                 return evidence_to_id[obj]
+    #             elif obj in string_to_id:
+    #                 return string_to_id[obj]
+    #             else:
+    #                 return obj
+    #         elif isinstance(obj, dict):
+    #             optimized_dict = {}
+    #             for key, value in obj.items():
+    #                 # Use compact key if available
+    #                 compact_key = key_mappings.get(key, key)
+    #                 optimized_dict[compact_key] = optimize_object(value, f"{path}.{key}")
+    #             return optimized_dict
+    #         elif isinstance(obj, list):
+    #             return [optimize_object(item, f"{path}[{i}]") for i, item in enumerate(obj)]
+    #         else:
+    #             return obj
+    #
+    #     # Create optimized structure
+    #     optimized_data = optimize_object(data)
+    #
+    #     # Add mappings at the top
+    #     optimized = {
+    #         "mappings": {
+    #             "paths": path_to_id,
+    #             "evidence": evidence_to_id,
+    #             "strings": string_to_id,
+    #             "keys": key_mappings
+    #         }
+    #     }
+    #     if isinstance(optimized_data, dict):
+    #     optimized.update(optimized_data)
+    #
+    #     # Check if optimization actually reduces size
+    #     original_size = len(json.dumps(data, separators=(',', ':')))
+    #     optimized_size = len(json.dumps(optimized, separators=(',', ':')))
+    #
+    #     # Only return optimized version if it's actually smaller
+    #     if optimized_size < original_size:
+    #         return optimized
+    #     else:
+    #         # Return original data if optimization doesn't help
+    #         return data
+
+    def save(self, db_path: Union[str, Path], description: str = "RIG Export") -> None:
         """
         Save RIG to SQLite database.
-        
+        Replaces any existing RIG in the database.
+
         Args:
             db_path: Path to SQLite database file
             description: Description for this RIG export
-            
-        Returns:
-            RIG ID in database
         """
-        from rig_store import save_rig
-        return save_rig(self, db_path, description)
+        from core.rig_store import save_rig
+        save_rig(self, db_path, description)
+
+    @staticmethod
+    def load(db_path: Union[str, Path]) -> 'RIG':
+        """
+        Load RIG from SQLite database.
+
+        Args:
+            db_path: Path to SQLite database file
+
+        Returns:
+            Loaded RIG object
+
+        Raises:
+            ValueError: If database contains 0 or >1 RIGs
+        """
+        from core.rig_store import load_rig
+        return load_rig(db_path)

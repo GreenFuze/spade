@@ -60,7 +60,7 @@ class RIGTools:
             )
             
             # Set in RIG
-            self.rig.repository = repo_info
+            self.rig._repository_info = repo_info
             return f"Set repository overview: {name} ({type}, {primary_language})"
         except Exception as e:
             self.logger.error(f"Failed to set repository overview: {e}")
@@ -86,7 +86,7 @@ class RIGTools:
                 evidence=evidence_objects
             )
             
-            self.rig.build_system = build_info
+            self.rig._build_system_info = build_info
             return f"Set build system: {name} {version} ({build_type})"
         except Exception as e:
             self.logger.error(f"Failed to set build system info: {e}")
@@ -123,8 +123,6 @@ class RIGTools:
                 source_files=[Path(f) for f in (source_files or [])],
                 external_packages=[],  # Default empty list
                 locations=[],  # Default empty list
-                test_link_id=None,
-                test_link_name=None,
                 evidence=evidence_obj,  # Required by BuildNode base class
                 depends_on=[]  # Default empty list
             )
@@ -171,10 +169,10 @@ class RIGTools:
     def get_rig_summary(self) -> str:
         """Get a summary of the current RIG state."""
         try:
-            components_count = len(self.rig.components) if self.rig.components else 0
-            tests_count = len(self.rig.tests) if self.rig.tests else 0
-            aggregators_count = len(self.rig.aggregators) if self.rig.aggregators else 0
-            runners_count = len(self.rig.runners) if self.rig.runners else 0
+            components_count = len(self.rig._components) if self.rig._components else 0
+            tests_count = len(self.rig._tests) if self.rig._tests else 0
+            aggregators_count = len(self.rig._aggregators) if self.rig._aggregators else 0
+            runners_count = len(self.rig._runners) if self.rig._runners else 0
             utilities_count = len(self.rig.utilities) if self.rig.utilities else 0
             
             return f"RIG Summary: {components_count} components, {tests_count} tests, {aggregators_count} aggregators, {runners_count} runners, {utilities_count} utilities"

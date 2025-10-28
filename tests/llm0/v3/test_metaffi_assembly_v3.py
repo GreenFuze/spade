@@ -344,27 +344,27 @@ async def test_metaffi_assembly_v3():
         print("=" * 80)
         
         # Print key results - result is a RIG object
-        print(f"RIG Components: {len(result.components)}")
-        for comp in result.components[:5]:  # Show first 5
+        print(f"RIG Components: {len(result._components)}")
+        for comp in result._components[:5]:  # Show first 5
             print(f"  - {comp.name} ({comp.type})")
             print(f"    Runtime: {comp.runtime}")
             print(f"    Location: {comp.location}")
-        if len(result.components) > 5:
-            print(f"  ... and {len(result.components) - 5} more")
+        if len(result._components) > 5:
+            print(f"  ... and {len(result._components) - 5} more")
         
-        print(f"\nRIG Aggregators: {len(result.aggregators)}")
-        for agg in result.aggregators[:3]:  # Show first 3
+        print(f"\nRIG Aggregators: {len(result._aggregators)}")
+        for agg in result._aggregators[:3]:  # Show first 3
             print(f"  - {agg.name}")
             print(f"    Sub-aggregators: {len(agg.sub_aggregators)}")
-        if len(result.aggregators) > 3:
-            print(f"  ... and {len(result.aggregators) - 3} more")
+        if len(result._aggregators) > 3:
+            print(f"  ... and {len(result._aggregators) - 3} more")
         
-        print(f"\nRIG Runners: {len(result.runners)}")
-        for run in result.runners[:3]:  # Show first 3
+        print(f"\nRIG Runners: {len(result._runners)}")
+        for run in result._runners[:3]:  # Show first 3
             print(f"  - {run.name}")
             print(f"    Commands: {len(run.commands)}")
-        if len(result.runners) > 3:
-            print(f"  ... and {len(result.runners) - 3} more")
+        if len(result._runners) > 3:
+            print(f"  ... and {len(result._runners) - 3} more")
         
         print(f"\nRIG Utilities: {len(result.utilities)}")
         for util in result.utilities[:3]:  # Show first 3
@@ -372,22 +372,22 @@ async def test_metaffi_assembly_v3():
         if len(result.utilities) > 3:
             print(f"  ... and {len(result.utilities) - 3} more")
         
-        print(f"\nRIG Tests: {len(result.tests)}")
-        for test in result.tests[:3]:  # Show first 3
+        print(f"\nRIG Tests: {len(result._tests)}")
+        for test in result._tests[:3]:  # Show first 3
             print(f"  - {test.name}")
             print(f"    Type: {test.type}")
-        if len(result.tests) > 3:
-            print(f"  ... and {len(result.tests) - 3} more")
+        if len(result._tests) > 3:
+            print(f"  ... and {len(result._tests) - 3} more")
         
         # Print validation results
         print(f"\nVALIDATION RESULTS:")
-        print(f"  - Repository: {result.repository}")
-        print(f"  - Build System: {result.build_system}")
-        print(f"  - Total Components: {len(result.components)}")
-        print(f"  - Total Aggregators: {len(result.aggregators)}")
-        print(f"  - Total Runners: {len(result.runners)}")
+        print(f"  - Repository: {result._repository_info}")
+        print(f"  - Build System: {result._build_system_info}")
+        print(f"  - Total Components: {len(result._components)}")
+        print(f"  - Total Aggregators: {len(result._aggregators)}")
+        print(f"  - Total Runners: {len(result._runners)}")
         print(f"  - Total Utilities: {len(result.utilities)}")
-        print(f"  - Total Tests: {len(result.tests)}")
+        print(f"  - Total Tests: {len(result._tests)}")
         
         print("\n[SUCCESS] V3 Assembly completed successfully!")
         return True

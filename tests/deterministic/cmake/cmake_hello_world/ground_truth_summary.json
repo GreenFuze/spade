@@ -1,0 +1,58 @@
+{
+	"repository": {
+		"name": "TestProject",
+		"path": "tests/test_repos/cmake_hello_world",
+		"build_system": {
+			"type": "CMake",
+			"version": "3.10+",
+			"test_framework": "CTest"
+		}
+	},
+	"aggregators": {
+		"main_aggregator": {
+			"name": "TestProject",
+			"description": "Simple CMake C++ project with executable and library",
+			"sub_aggregators": []
+		}
+	},
+	"components": {
+		"hello_world": {
+			"type": "C++ executable",
+			"packages": [],
+			"location": "src/main.cpp",
+			"output": "spade_build/Debug/hello_world.exe"
+		},
+		"utils": {
+			"type": "C++ static library",
+			"packages": [],
+			"location": "src/utils.cpp",
+			"output": "spade_build/Debug/utils.lib"
+		}
+	},
+	"standalone_targets": [
+		{
+			"name": "test_hello_world",
+			"type": "CTest target",
+			"description": "Runs hello_world executable as test",
+			"location": "CMakeLists.txt"
+		}
+	],
+	"excluded_directories": [],
+	"non_build_directories": [
+		"build/",
+		"cmake-build-*/"
+	],
+	"expected_directories": {
+		"source_directories": [
+			"src"
+		],
+		"test_directories": []
+	},
+	"expected_components": {
+		"core_components": [
+			"hello_world",
+			"utils"
+		]
+	},
+	"ground_truth_file": "tests/deterministic/cmake/cmake_hello_world/ground_truth_summary.json"
+}

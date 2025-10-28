@@ -586,7 +586,7 @@ Return a JSON response with the appropriate structure for the {phase} phase.
         rig = RIG()
         
         # Set basic repository info
-        rig.repository = RepositoryInfo(
+        rig._repository_info = RepositoryInfo(
             name="Unknown",
             root_path=self.repository_path,
             build_directory=self.repository_path / "build",
@@ -598,7 +598,7 @@ Return a JSON response with the appropriate structure for the {phase} phase.
         )
         
         # Set basic build system info
-        rig.build_system = BuildSystemInfo(
+        rig._build_system_info = BuildSystemInfo(
             name="Unknown",
             version="Unknown",
             build_type="Unknown"
@@ -627,7 +627,7 @@ def main():
     try:
         generator = LLMRIGGeneratorV2(test_project)
         rig = generator.generate_rig()
-        print(f"SUCCESS: Generated RIG with {len(rig.components)} components")
+        print(f"SUCCESS: Generated RIG with {len(rig._components)} components")
     except Exception as e:
         print(f"ERROR: Failed to generate RIG: {e}")
         sys.exit(1)

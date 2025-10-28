@@ -1,0 +1,155 @@
+{
+	"repository_name": "cmake_hello_world",
+	"build_system": "cmake",
+	"description": "Evaluation questions for cmake_hello_world repository",
+	"questions": [
+		{
+			"id": "components_count",
+			"category": "component_identification",
+			"question": "How many components (executables, libraries, etc.) are in this repository?",
+			"expected_answer": "2",
+			"difficulty": "easy"
+		},
+		{
+			"id": "component_names",
+			"category": "component_identification",
+			"question": "What are the names of all the components in this repository?",
+			"expected_answer": "hello_world, utils",
+			"difficulty": "easy"
+		},
+		{
+			"id": "component_types",
+			"category": "component_identification",
+			"question": "What types of components are in this repository?",
+			"expected_answer": "executable, static_library",
+			"difficulty": "medium"
+		},
+		{
+			"id": "programming_languages",
+			"category": "component_identification",
+			"question": "What programming languages are used in this repository?",
+			"expected_answer": "cpp, c++",
+			"difficulty": "easy"
+		},
+		{
+			"id": "build_system",
+			"category": "build_system",
+			"question": "What build system is used in this repository?",
+			"expected_answer": "cmake",
+			"difficulty": "easy"
+		},
+		{
+			"id": "cmake_targets",
+			"category": "cmake_specific",
+			"question": "What CMake targets are defined in this project?",
+			"expected_answer": "hello_world, utils",
+			"difficulty": "medium"
+		},
+		{
+			"id": "cmake_outputs",
+			"category": "cmake_specific",
+			"question": "What are the expected output files from the CMake build?",
+			"expected_answer": "hello_world.exe, utils.lib",
+			"difficulty": "medium"
+		},
+		{
+			"id": "source_files_count",
+			"category": "source_analysis",
+			"question": "How many source files are in the src/ directory?",
+			"expected_answer": "3",
+			"difficulty": "easy"
+		},
+		{
+			"id": "source_file_extensions",
+			"category": "source_analysis",
+			"question": "What file extensions are used for source files in this project?",
+			"expected_answer": ".cpp, .h",
+			"difficulty": "easy"
+		},
+		{
+			"id": "executable_component",
+			"category": "component_identification",
+			"question": "Which component is the executable?",
+			"expected_answer": "hello_world",
+			"difficulty": "easy"
+		},
+		{
+			"id": "library_component",
+			"category": "component_identification",
+			"question": "Which component is the library?",
+			"expected_answer": "utils",
+			"difficulty": "easy"
+		},
+		{
+			"id": "library_type",
+			"category": "component_identification",
+			"question": "What type of library is the utils component?",
+			"expected_answer": "static_library",
+			"difficulty": "medium"
+		},
+		{
+			"id": "dependencies",
+			"category": "dependency_analysis",
+			"question": "Does the hello_world component depend on the utils component?",
+			"expected_answer": "yes",
+			"difficulty": "medium"
+		},
+		{
+			"id": "test_targets",
+			"category": "testing",
+			"question": "How many test targets are defined in this project?",
+			"expected_answer": "1",
+			"difficulty": "medium"
+		},
+		{
+			"id": "test_name",
+			"category": "testing",
+			"question": "What is the name of the test target?",
+			"expected_answer": "test_hello_world",
+			"difficulty": "medium"
+		},
+		{
+			"id": "cmake_version",
+			"category": "build_system",
+			"question": "What is the minimum CMake version required?",
+			"expected_answer": "3.10",
+			"difficulty": "medium"
+		},
+		{
+			"id": "project_name",
+			"category": "build_system",
+			"question": "What is the CMake project name?",
+			"expected_answer": "TestProject",
+			"difficulty": "easy"
+		},
+		{
+			"id": "external_packages",
+			"category": "dependency_analysis",
+			"question": "How many external packages does this project depend on?",
+			"expected_answer": "0",
+			"difficulty": "easy"
+		},
+		{
+			"id": "component_dependencies",
+			"category": "dependency_analysis",
+			"question": "How many dependency relationships exist between components?",
+			"expected_answer": "1",
+			"difficulty": "medium"
+		},
+		{
+			"id": "source_file_locations",
+			"category": "source_analysis",
+			"question": "In which directory are the source files located?",
+			"expected_answer": "src",
+			"difficulty": "easy"
+		},
+		{
+			"id": "test_framework",
+			"category": "testing",
+			"question": "What test framework is used in this project?",
+			"expected_answer": "CTest",
+			"difficulty": "medium"
+		}
+	],
+	"ground_truth_file": "tests/deterministic/cmake/cmake_hello_world/ground_truth_summary.json"
+}

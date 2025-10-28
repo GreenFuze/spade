@@ -10,7 +10,7 @@ import sys
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from abc import ABC, abstractmethod
 
 # Add agentkit-gf to path BEFORE any imports
@@ -18,7 +18,7 @@ agentkit_gf_path = Path("C:/src/github.com/GreenFuze/agentkit-gf")
 if str(agentkit_gf_path) not in sys.path:
     sys.path.insert(0, str(agentkit_gf_path))
 
-from agentkit_gf.delegating_tools_agent import DelegatingToolsAgent
+from agentkit_gf.delegating_tools_agent import DelegatingToolsAgent, TokenUsage
 from agentkit_gf.tools.fs import FileTools
 from agentkit_gf.tools.os import ProcessTools
 
@@ -42,12 +42,15 @@ class BaseLLMAgentV7(ABC):
             model="openai:gpt-5-nano",
             tool_sources=[self.file_tools, self.process_tools],
             builtin_enums=[],
-            model_settings=None,
+            temperature=0,
+            max_tool_retries=1,
             usage_limit=None,
             real_time_log_user=True,
-            real_time_log_agent=True,
-            temperature=0
+            real_time_log_agent=True
         )
+        
+        # Log the model being used for verification
+        self.logger.info(f"Agent initialized with model: openai:gpt-5-nano")
         
         # Note: pydantic_ai has a hardcoded default limit of 50 requests
         # We need to work within this limitation
@@ -55,6 +58,9 @@ class BaseLLMAgentV7(ABC):
         # Context management for large repositories
         self._current_context = None
         self._context_history = []
+        
+        # Token usage tracking
+        self._total_token_usage = TokenUsage(0, 0, 0)
     
     def _parse_json_response(self, response: str) -> Dict[str, Any]:
         """Parse JSON response from LLM with error handling."""
@@ -108,6 +114,10 @@ class BaseLLMAgentV7(ABC):
         """Check if context is clean (no accumulated state)."""
         return self._current_context is None
     
+    def get_total_token_usage(self) -> TokenUsage:
+        """Get total token usage for this agent."""
+        return self._total_token_usage
+    
     async def _execute_with_retry(self, prompt: str) -> Dict[str, Any]:
         """Execute agent with retry mechanism for path discovery errors."""
         last_error = None
@@ -116,6 +126,16 @@ class BaseLLMAgentV7(ABC):
             try:
                 self.logger.info(f"Attempt {attempt + 1}/{self.max_retries + 1}")
                 response = await self.agent.run(prompt)
+                
+                # Log token usage if available
+                if response.token_usage:
+                    self.logger.info(f"Token usage - Input: {response.token_usage.input_tokens}, Output: {response.token_usage.output_tokens}, Total: {response.token_usage.total_tokens}")
+                    self._total_token_usage = TokenUsage(
+                        self._total_token_usage.input_tokens + response.token_usage.input_tokens,
+                        self._total_token_usage.output_tokens + response.token_usage.output_tokens,
+                        self._total_token_usage.total_tokens + response.token_usage.total_tokens
+                    )
+                
                 result = self._parse_json_response(response.output)
                 return result
                 
@@ -151,7 +171,10 @@ class BaseLLMAgentV7(ABC):
                 raise
         
         # This should never be reached, but just in case
-        raise last_error
+        if last_error:
+            raise last_error
+        else:
+            raise RuntimeError("All retry attempts failed without specific error")
     
     @abstractmethod
     async def execute_phase(self, *args, **kwargs) -> Dict[str, Any]:

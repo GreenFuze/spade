@@ -26,33 +26,33 @@ class RIGInspector:
     
     def inspect_repository_info(self) -> Dict[str, Any]:
         """Inspect repository information."""
-        if not self.rig.repository:
+        if not self.rig._repository_info:
             return {"error": "No repository information found"}
         
         repo_info = {
-            "name": self.rig.repository.name,
-            "type": self.rig.repository.type,
-            "primary_language": self.rig.repository.primary_language,
-            "build_system": self.rig.repository.build_system.type if self.rig.repository.build_system else "unknown",
-            "test_framework": self.rig.repository.build_system.test_framework if self.rig.repository.build_system else "unknown"
+            "name": self.rig._repository_info.name,
+            "type": self.rig._repository_info.type,
+            "primary_language": self.rig._repository_info.primary_language,
+            "build_system": self.rig._repository_info.build_system.type if self.rig._repository_info.build_system else "unknown",
+            "test_framework": self.rig._repository_info.build_system.test_framework if self.rig._repository_info.build_system else "unknown"
         }
         
         return repo_info
     
     def inspect_components(self) -> Dict[str, Any]:
         """Inspect all components in the RIG."""
-        if not self.rig.components:
+        if not self.rig._components:
             return {"error": "No components found"}
         
         components_info = {
-            "total_count": len(self.rig.components),
+            "total_count": len(self.rig._components),
             "by_type": {},
             "by_language": {},
             "with_evidence": 0,
             "detailed_components": []
         }
         
-        for component in self.rig.components:
+        for component in self.rig._components:
             # Count by type
             comp_type = component.component_type
             components_info["by_type"][comp_type] = components_info["by_type"].get(comp_type, 0) + 1
@@ -100,8 +100,8 @@ class RIGInspector:
                 "source": relationship.source,
                 "target": relationship.target,
                 "type": relationship.relationship_type,
-                "has_evidence": bool(relationship.evidence and relationship.evidence.file_path),
-                "evidence_file": relationship.evidence.file_path if relationship.evidence else None
+                "has_evidence": bool(relationship._evidence and relationship._evidence.file_path),
+                "evidence_file": relationship._evidence.file_path if relationship._evidence else None
             }
             relationships_info["detailed_relationships"].append(rel_detail)
         
@@ -116,24 +116,24 @@ class RIGInspector:
             "language_diversity": 0.0
         }
         
-        if not self.rig.components:
+        if not self.rig._components:
             return metrics
         
         # Evidence coverage
-        components_with_evidence = sum(1 for c in self.rig.components if c.evidence and c.evidence.file_path)
-        metrics["evidence_coverage"] = (components_with_evidence / len(self.rig.components)) * 100
+        components_with_evidence = sum(1 for c in self.rig._components if c.evidence and c.evidence.file_path)
+        metrics["evidence_coverage"] = (components_with_evidence / len(self.rig._components)) * 100
         
         # Component diversity (unique types / total types)
-        unique_types = len(set(c.component_type for c in self.rig.components))
+        unique_types = len(set(c.component_type for c in self.rig._components))
         total_possible_types = 6  # executable, library, test, aggregator, runner, utility
         metrics["component_diversity"] = (unique_types / total_possible_types) * 100
         
         # Relationship density (relationships / components)
         if self.rig.relationships:
-            metrics["relationship_density"] = len(self.rig.relationships) / len(self.rig.components)
+            metrics["relationship_density"] = len(self.rig.relationships) / len(self.rig._components)
         
         # Language diversity
-        unique_languages = len(set(c.language for c in self.rig.components if c.language))
+        unique_languages = len(set(c.language for c in self.rig._components if c.language))
         metrics["language_diversity"] = unique_languages
         
         return metrics

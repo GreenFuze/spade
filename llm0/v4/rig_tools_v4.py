@@ -49,7 +49,7 @@ class RIGToolsV4:
             )
             
             # Set in RIG
-            self.rig.repository = repo_info
+            self.rig._repository_info = repo_info
             return f"Added repository info: {name} ({type}, {primary_language})"
         except Exception as e:
             self.logger.error(f"Failed to add repository info: {e}")
@@ -66,7 +66,7 @@ class RIGToolsV4:
                 build_type=build_type
             )
             
-            self.rig.build_system = build_info
+            self.rig._build_system_info = build_info
             return f"Added build system info: {name} {version} ({build_type})"
         except Exception as e:
             self.logger.error(f"Failed to add build system info: {e}")
@@ -102,8 +102,6 @@ class RIGToolsV4:
                 source_files=[Path(f) for f in (source_files or [])],
                 external_packages=[],  # Default empty list
                 locations=[],  # Default empty list
-                test_link_id=None,
-                test_link_name=None,
                 evidence=evidence_obj,
                 depends_on=[]  # Default empty list
             )
@@ -158,15 +156,15 @@ class RIGToolsV4:
     def get_rig_state(self) -> str:
         """Get current RIG state summary."""
         try:
-            components_count = len(self.rig.components) if self.rig.components else 0
-            tests_count = len(self.rig.tests) if self.rig.tests else 0
+            components_count = len(self.rig._components) if self.rig._components else 0
+            tests_count = len(self.rig._tests) if self.rig._tests else 0
             
             state = f"RIG State: {components_count} components, {tests_count} tests"
             
-            if self.rig.repository:
-                state += f", Repository: {self.rig.repository.name}"
-            if self.rig.build_system:
-                state += f", Build System: {self.rig.build_system.name}"
+            if self.rig._repository_info:
+                state += f", Repository: {self.rig._repository_info.name}"
+            if self.rig._build_system_info:
+                state += f", Build System: {self.rig._build_system_info.name}"
             
             return state
         except Exception as e:
@@ -184,21 +182,21 @@ class RIGToolsV4:
             }
             
             # Check repository info
-            if not self.rig.repository:
+            if not self.rig._repository_info:
                 validation_result["errors"].append("Missing repository information")
                 validation_result["is_valid"] = False
             
             # Check build system info
-            if not self.rig.build_system:
+            if not self.rig._build_system_info:
                 validation_result["warnings"].append("Missing build system information")
             
             # Check components
-            if not self.rig.components or len(self.rig.components) == 0:
+            if not self.rig._components or len(self.rig._components) == 0:
                 validation_result["errors"].append("No components found")
                 validation_result["is_valid"] = False
             
             # Check tests
-            if not self.rig.tests or len(self.rig.tests) == 0:
+            if not self.rig._tests or len(self.rig._tests) == 0:
                 validation_result["warnings"].append("No tests found")
             
             # Relationships are handled through component dependencies
@@ -206,10 +204,10 @@ class RIGToolsV4:
             
             # Summary
             validation_result["summary"] = {
-                "components": len(self.rig.components) if self.rig.components else 0,
-                "tests": len(self.rig.tests) if self.rig.tests else 0,
-                "repository": self.rig.repository.name if self.rig.repository else "Missing",
-                "build_system": self.rig.build_system.name if self.rig.build_system else "Missing"
+                "components": len(self.rig._components) if self.rig._components else 0,
+                "tests": len(self.rig._tests) if self.rig._tests else 0,
+                "repository": self.rig._repository_info.name if self.rig._repository_info else "Missing",
+                "build_system": self.rig._build_system_info.name if self.rig._build_system_info else "Missing"
             }
             
             return validation_result

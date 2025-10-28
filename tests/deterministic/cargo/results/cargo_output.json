@@ -1,0 +1,90 @@
+# Repository Build Analysis
+
+## Repository Information
+- **Repository**: cargo_workspace
+- **Root Path**: C:\src\github.com\GreenFuze\spade\tests\test_repos\cargo_workspace
+- **Build System**: cargo
+- **Scope**: ['./']
+- **Detection Mode**: configure_only
+- **Configure Command**: cargo check
+- **Test Discovery Command**: cargo test
+
+## Build Data
+
+The following JSON contains the complete build analysis data:
+
+```json
+{
+  "repo": {
+    "name": "cargo_workspace",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\cargo_workspace"
+  },
+  "build": {
+    "system": "cargo",
+    "generator": null,
+    "type": "UNKNOWN",
+    "configure_cmd": "cargo check",
+    "test_cmd": "cargo test"
+  },
+  "components": [
+    {
+      "id": 0,
+      "name": "core",
+      "type": "static_library",
+      "language": "rust",
+      "runtime": "Runtime.PYTHON",
+      "output": "core",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\cargo_workspace\\core\\target\\release\\libcore.rlib",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "Cargo.toml: core\\Cargo.toml"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    },
+    {
+      "id": 1,
+      "name": "proc-macro-utils",
+      "type": "static_library",
+      "language": "rust",
+      "runtime": "Runtime.PYTHON",
+      "output": "proc-macro-utils",
+      "output_path": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\cargo_workspace\\proc-macro-utils\\target\\release\\libproc-macro-utils.rlib",
+      "source_files": [
+        "src"
+      ],
+      "depends_on": [],
+      "externals": [],
+      "evidence": [
+        {
+          "call_stack": [
+            "Cargo.toml: proc-macro-utils\\Cargo.toml"
+          ]
+        }
+      ],
+      "test_link_id": null,
+      "test_link_name": null
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [],
+  "gaps": {
+    "missing_sources": [],
+    "missing_outputs": [],
+    "orphans": {
+      "aggregators": [],
+      "tests": []
+    },
+    "risky_runners": []
+  }
+}
+```

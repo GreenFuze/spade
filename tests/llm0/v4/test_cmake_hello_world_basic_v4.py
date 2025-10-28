@@ -43,8 +43,8 @@ async def test_v4_rig_generation_cmake_hello_world():
             logger.error("Generated object is not a RIG instance")
             return False
         
-        logger.info(f"SUCCESS: Generated RIG with repository: {rig.repository.name}")
-        logger.info(f"Build system: {rig.build_system.name}")
+        logger.info(f"SUCCESS: Generated RIG with repository: {rig._repository_info.name}")
+        logger.info(f"Build system: {rig._build_system_info.name}")
         
         return True
         
