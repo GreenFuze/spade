@@ -1,0 +1,141 @@
+[
+  {
+    "id": 1,
+    "answer": "CMakeHelloWorld"
+  },
+  {
+    "id": 2,
+    "answer": "3.10"
+  },
+  {
+    "id": 3,
+    "answer": 2
+  },
+  {
+    "id": 4,
+    "answer": 1
+  },
+  {
+    "id": 5,
+    "answer": "src"
+  },
+  {
+    "id": 6,
+    "answer": 1
+  },
+  {
+    "id": 7,
+    "answer": 1
+  },
+  {
+    "id": 8,
+    "answer": "yes"
+  },
+  {
+    "id": 9,
+    "answer": 16
+  },
+  {
+    "id": 10,
+    "answer": 0
+  },
+  {
+    "id": 11,
+    "answer": 2
+  },
+  {
+    "id": 12,
+    "answer": [
+      "hello_world.exe",
+      "utils.lib"
+    ]
+  },
+  {
+    "id": 13,
+    "answer": [
+      "executable",
+      "static_library"
+    ]
+  },
+  {
+    "id": 14,
+    "answer": "hello_world.exe"
+  },
+  {
+    "id": 15,
+    "answer": "utils.lib"
+  },
+  {
+    "id": 16,
+    "answer": [
+      "src\\main.cpp"
+    ]
+  },
+  {
+    "id": 17,
+    "answer": [
+      "src\\utils.cpp"
+    ]
+  },
+  {
+    "id": 18,
+    "answer": [
+      "utils.lib"
+    ]
+  },
+  {
+    "id": 19,
+    "answer": 1
+  },
+  {
+    "id": 20,
+    "answer": "test_hello_world"
+  },
+  {
+    "id": 21,
+    "answer": [
+      "utils.lib",
+      "hello_world.exe"
+    ]
+  },
+  {
+    "id": 22,
+    "answer": "no"
+  },
+  {
+    "id": 23,
+    "answer": [
+      "hello_world.exe"
+    ]
+  },
+  {
+    "id": 24,
+    "answer": 1
+  },
+  {
+    "id": 25,
+    "answer": [
+      "hello_world.exe"
+    ]
+  },
+  {
+    "id": 26,
+    "answer": "cxx"
+  },
+  {
+    "id": 27,
+    "answer": "hello_world.exe"
+  },
+  {
+    "id": 28,
+    "answer": "CTest"
+  },
+  {
+    "id": 29,
+    "answer": 0
+  },
+  {
+    "id": 30,
+    "answer": "yes"
+  }
+]

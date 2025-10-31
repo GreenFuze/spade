@@ -72,6 +72,11 @@ class CMakeTargetWrapper:
 
         tt: TargetType = self._cmake_target.target.type
         if tt == TargetType.UTILITY:
+            # Check if this UTILITY target is a custom artifact (JAR, DLL, etc.)
+            from deterministic.cmake.custom_target_detector import CustomTargetDetector
+            detector = CustomTargetDetector(self._cmake_target.target, self._repo_root)
+            if detector.is_custom_artifact():
+                return core.schemas.NodeType.COMPONENT
             return None
         else:
             return core.schemas.NodeType.COMPONENT
@@ -128,6 +133,25 @@ class CMakeTargetWrapper:
             depends_on.append(dep_node)
             depends_on_ids.add(dep_node.id)
 
+        # Parse runtime dependencies from target properties (CLASSPATH, PATH, etc.)
+        # This catches dependencies specified via set_target_properties() that aren't
+        # in the cmake-file-api dependencies array (e.g., JARs in CLASSPATH)
+        from deterministic.cmake.runtime_dependency_parser import RuntimeDependencyParser
+
+        parser = RuntimeDependencyParser()
+        cmake_lists_path = self._cmake_target.target.backtrace.file
+        runtime_deps = parser.parse_dependencies(
+            self._cmake_target.target.name,
+            cmake_lists_path,
+            findings
+        )
+
+        # Add runtime dependencies (avoiding duplicates)
+        for runtime_dep in runtime_deps:
+            if runtime_dep.id not in depends_on_ids:
+                depends_on.append(runtime_dep)
+                depends_on_ids.add(runtime_dep.id)
+
         return depends_on, depends_on_ids
 
     def _cache_node(
@@ -173,10 +197,16 @@ class CMakeTargetWrapper:
         # Resolve dependencies (handles cycle detection)
         depends_on, depends_on_ids = self._resolve_dependencies(findings, visited, target_id)
 
-        # Lazy import to avoid circular dependency
-        from deterministic.cmake.cmake_target_rig_component import CMakeTargetRigComponent
+        # Branch between regular targets and custom UTILITY targets
+        if self._cmake_target.target.type == TargetType.UTILITY:
+            # Custom artifact target (JAR, DLL, etc.)
+            from deterministic.cmake.custom_target_rig_component import CustomTargetRigComponent
+            cmake_rig_component = CustomTargetRigComponent(self, self._cmake_cache)
+        else:
+            # Regular CMake target (EXECUTABLE, STATIC_LIBRARY, SHARED_LIBRARY)
+            from deterministic.cmake.cmake_target_rig_component import CMakeTargetRigComponent
+            cmake_rig_component = CMakeTargetRigComponent(self, self._cmake_cache)
 
-        cmake_rig_component = CMakeTargetRigComponent(self, self._cmake_cache)
         component_type = cmake_rig_component.get_component_type()
         component_programming_language = cmake_rig_component.get_programming_language()
         component_source_files = cmake_rig_component.get_source_files()
@@ -185,7 +215,13 @@ class CMakeTargetWrapper:
         component_external_packages = cmake_rig_component.get_external_packages()
         component_evidence = cmake_rig_component.get_evidence()
 
-        component = Component(name=self.name, type=component_type, programming_language=component_programming_language,
+        # For custom targets, name comes from artifact (nameOnDisk is empty for UTILITY)
+        if self._cmake_target.target.type == TargetType.UTILITY:
+            component_name = cmake_rig_component._artifact_info.name
+        else:
+            component_name = self.name
+
+        component = Component(name=component_name, type=component_type, programming_language=component_programming_language,
             source_files=component_source_files, relative_path=component_relative_path,
             depends_on=depends_on, evidence=component_evidence, locations=component_locations,
             external_packages=component_external_packages)

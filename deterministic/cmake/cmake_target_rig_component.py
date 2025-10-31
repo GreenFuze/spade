@@ -5,6 +5,7 @@ from cmake_file_api.kinds.cache.v2 import CacheV2
 from cmake_file_api.kinds.codemodel.target.v2 import TargetType
 
 from core.schemas import ComponentType, ExternalPackage, Evidence
+from deterministic.cmake.backtrace_walker import BacktraceWalker
 from deterministic.cmake.cmake_target import CMakeTargetWrapper
 
 
@@ -83,11 +84,31 @@ class CMakeTargetRigComponent:
         return []
     
     def get_external_packages(self) -> List[ExternalPackage]|None:
-        return []
+        from deterministic.cmake.external_package_detector import ExternalPackageDetector
+
+        # Build paths
+        cmake_cache_path = self._target.repo_root / "spade_build" / "CMakeCache.txt"
+
+        # Use the repo's main CMakeLists.txt (backtrace might point to external modules)
+        cmake_lists_path = self._target.repo_root / "CMakeLists.txt"
+
+        # Detect packages (fail-fast - let exceptions propagate)
+        detector = ExternalPackageDetector()
+        return detector.detect_packages_for_target(
+            self._target.cmake_target.target,
+            cmake_cache_path,
+            cmake_lists_path
+        )
     
     def get_evidence(self) -> List[Evidence]:
-        file_path: Path = self._target.cmake_target.target.backtrace.file
-        evidence_line = self._target.cmake_target.target.backtrace.line
-        
-        return [Evidence(line=[f'{file_path}:{evidence_line}'], call_stack=None)]
+        """Get evidence pointing to user's actual function call in CMakeLists.txt.
+
+        Uses backtrace walker to find the user's call site rather than
+        internal implementation details.
+        """
+        evidence = BacktraceWalker.get_user_call_site(
+            self._target.cmake_target.target.backtrace,
+            self._target.repo_root
+        )
+        return [evidence]
     

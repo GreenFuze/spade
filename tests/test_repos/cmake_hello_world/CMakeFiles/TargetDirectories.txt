@@ -1,5 +1,0 @@
-C:/src/github.com/GreenFuze/spade/tests/test_repos/cmake_hello_world/CMakeFiles/hello_world.dir
-C:/src/github.com/GreenFuze/spade/tests/test_repos/cmake_hello_world/CMakeFiles/utils.dir
-C:/src/github.com/GreenFuze/spade/tests/test_repos/cmake_hello_world/CMakeFiles/RUN_TESTS.dir
-C:/src/github.com/GreenFuze/spade/tests/test_repos/cmake_hello_world/CMakeFiles/ALL_BUILD.dir
-C:/src/github.com/GreenFuze/spade/tests/test_repos/cmake_hello_world/CMakeFiles/ZERO_CHECK.dir

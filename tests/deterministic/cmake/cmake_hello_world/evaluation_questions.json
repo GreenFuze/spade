@@ -4,151 +4,244 @@
 	"description": "Evaluation questions for cmake_hello_world repository",
 	"questions": [
 		{
-			"id": "components_count",
-			"category": "component_identification",
-			"question": "How many components (executables, libraries, etc.) are in this repository?",
-			"expected_answer": "2",
-			"difficulty": "easy"
-		},
-		{
-			"id": "component_names",
-			"category": "component_identification",
-			"question": "What are the names of all the components in this repository?",
-			"expected_answer": "hello_world, utils",
-			"difficulty": "easy"
-		},
-		{
-			"id": "component_types",
-			"category": "component_identification",
-			"question": "What types of components are in this repository?",
-			"expected_answer": "executable, static_library",
-			"difficulty": "medium"
-		},
-		{
-			"id": "programming_languages",
-			"category": "component_identification",
-			"question": "What programming languages are used in this repository?",
-			"expected_answer": "cpp, c++",
-			"difficulty": "easy"
-		},
-		{
-			"id": "build_system",
+			"id": 1,
+			"name": "project_name",
 			"category": "build_system",
-			"question": "What build system is used in this repository?",
-			"expected_answer": "cmake",
+			"question": "What is the CMake project name?",
+			"expected_answer": "CMakeHelloWorld",
 			"difficulty": "easy"
 		},
 		{
-			"id": "cmake_targets",
-			"category": "cmake_specific",
-			"question": "What CMake targets are defined in this project?",
-			"expected_answer": "hello_world, utils",
-			"difficulty": "medium"
-		},
-		{
-			"id": "cmake_outputs",
-			"category": "cmake_specific",
-			"question": "What are the expected output files from the CMake build?",
-			"expected_answer": "hello_world.exe, utils.lib",
-			"difficulty": "medium"
-		},
-		{
-			"id": "source_files_count",
-			"category": "source_analysis",
-			"question": "How many source files are in the src/ directory?",
-			"expected_answer": "3",
-			"difficulty": "easy"
-		},
-		{
-			"id": "source_file_extensions",
-			"category": "source_analysis",
-			"question": "What file extensions are used for source files in this project?",
-			"expected_answer": ".cpp, .h",
-			"difficulty": "easy"
-		},
-		{
-			"id": "executable_component",
-			"category": "component_identification",
-			"question": "Which component is the executable?",
-			"expected_answer": "hello_world",
-			"difficulty": "easy"
-		},
-		{
-			"id": "library_component",
-			"category": "component_identification",
-			"question": "Which component is the library?",
-			"expected_answer": "utils",
-			"difficulty": "easy"
-		},
-		{
-			"id": "library_type",
-			"category": "component_identification",
-			"question": "What type of library is the utils component?",
-			"expected_answer": "static_library",
-			"difficulty": "medium"
-		},
-		{
-			"id": "dependencies",
-			"category": "dependency_analysis",
-			"question": "Does the hello_world component depend on the utils component?",
-			"expected_answer": "yes",
-			"difficulty": "medium"
-		},
-		{
-			"id": "test_targets",
-			"category": "testing",
-			"question": "How many test targets are defined in this project?",
-			"expected_answer": "1",
-			"difficulty": "medium"
-		},
-		{
-			"id": "test_name",
-			"category": "testing",
-			"question": "What is the name of the test target?",
-			"expected_answer": "test_hello_world",
-			"difficulty": "medium"
-		},
-		{
-			"id": "cmake_version",
+			"id": 2,
+			"name": "cmake_version",
 			"category": "build_system",
 			"question": "What is the minimum CMake version required?",
 			"expected_answer": "3.10",
-			"difficulty": "medium"
-		},
-		{
-			"id": "project_name",
-			"category": "build_system",
-			"question": "What is the CMake project name?",
-			"expected_answer": "TestProject",
 			"difficulty": "easy"
 		},
 		{
-			"id": "external_packages",
-			"category": "dependency_analysis",
-			"question": "How many external packages does this project depend on?",
-			"expected_answer": "0",
-			"difficulty": "easy"
-		},
-		{
-			"id": "component_dependencies",
-			"category": "dependency_analysis",
-			"question": "How many dependency relationships exist between components?",
-			"expected_answer": "1",
-			"difficulty": "medium"
-		},
-		{
-			"id": "source_file_locations",
+			"id": 3,
+			"name": "cpp_files_count",
 			"category": "source_analysis",
-			"question": "In which directory are the source files located?",
+			"question": "How many .cpp files are in the src/ directory?",
+			"expected_answer": 2,
+			"difficulty": "easy"
+		},
+		{
+			"id": 4,
+			"name": "h_files_count",
+			"category": "source_analysis",
+			"question": "How many .h files are in the src/ directory?",
+			"expected_answer": 1,
+			"difficulty": "easy"
+		},
+		{
+			"id": 5,
+			"name": "source_directory",
+			"category": "source_analysis",
+			"question": "What directory contains the source files?",
 			"expected_answer": "src",
 			"difficulty": "easy"
 		},
 		{
-			"id": "test_framework",
+			"id": 6,
+			"name": "add_test_count",
 			"category": "testing",
-			"question": "What test framework is used in this project?",
-			"expected_answer": "CTest",
+			"question": "How many add_test commands are in the CMakeLists.txt?",
+			"expected_answer": 1,
+			"difficulty": "easy"
+		},
+		{
+			"id": 7,
+			"name": "target_link_libraries_count",
+			"category": "cmake_specific",
+			"question": "How many target_link_libraries commands are in the CMakeLists.txt?",
+			"expected_answer": 1,
+			"difficulty": "easy"
+		},
+		{
+			"id": 8,
+			"name": "testing_enabled",
+			"category": "testing",
+			"question": "Is enable_testing() called in this project?",
+			"expected_answer": "yes",
+			"difficulty": "easy"
+		},
+		{
+			"id": 9,
+			"name": "cmakelists_lines",
+			"category": "build_system",
+			"question": "How many lines are in the CMakeLists.txt file?",
+			"expected_answer": 16,
+			"difficulty": "easy"
+		},
+		{
+			"id": 10,
+			"name": "find_package_count",
+			"category": "dependency_analysis",
+			"question": "How many find_package commands are in the CMakeLists.txt?",
+			"expected_answer": 0,
+			"difficulty": "easy"
+		},
+		{
+			"id": 11,
+			"name": "components_count",
+			"category": "component_identification",
+			"question": "How many buildable components are in this repository?",
+			"expected_answer": 2,
 			"difficulty": "medium"
+		},
+		{
+			"id": 12,
+			"name": "output_artifacts",
+			"category": "component_identification",
+			"question": "What are the names of all output artifacts produced by this build?",
+			"expected_answer": ["hello_world.exe", "utils.lib"],
+			"difficulty": "medium"
+		},
+		{
+			"id": 13,
+			"name": "component_types",
+			"category": "component_identification",
+			"question": "What types of components are built in this repository?",
+			"expected_answer": ["executable", "static_library"],
+			"difficulty": "medium"
+		},
+		{
+			"id": 14,
+			"name": "executable_component",
+			"category": "component_identification",
+			"question": "Which component is the executable?",
+			"expected_answer": "hello_world.exe",
+			"difficulty": "medium"
+		},
+		{
+			"id": 15,
+			"name": "library_component",
+			"category": "component_identification",
+			"question": "Which component is the library?",
+			"expected_answer": "utils.lib",
+			"difficulty": "medium"
+		},
+		{
+			"id": 16,
+			"name": "hello_world_sources",
+			"category": "source_analysis",
+			"question": "What source files are used to build the hello_world component?",
+			"expected_answer": ["src/main.cpp"],
+			"difficulty": "medium"
+		},
+		{
+			"id": 17,
+			"name": "utils_sources",
+			"category": "source_analysis",
+			"question": "What source files are used to build the utils component?",
+			"expected_answer": ["src/utils.cpp"],
+			"difficulty": "medium"
+		},
+		{
+			"id": 18,
+			"name": "hello_world_dependencies",
+			"category": "dependency_analysis",
+			"question": "List all components that hello_world depends on.",
+			"expected_answer": ["utils.lib"],
+			"difficulty": "medium"
+		},
+		{
+			"id": 19,
+			"name": "hello_world_dependency_count",
+			"category": "dependency_analysis",
+			"question": "How many components does hello_world directly depend on?",
+			"expected_answer": 1,
+			"difficulty": "medium"
+		},
+		{
+			"id": 20,
+			"name": "test_name",
+			"category": "testing",
+			"question": "What is the name of the test in this repository?",
+			"expected_answer": "test_hello_world",
+			"difficulty": "medium"
+		},
+		{
+			"id": 21,
+			"name": "build_order",
+			"category": "dependency_analysis",
+			"question": "In what order must the components be built to satisfy all dependencies?",
+			"expected_answer": ["utils.lib", "hello_world.exe"],
+			"difficulty": "hard"
+		},
+		{
+			"id": 22,
+			"name": "parallel_build",
+			"category": "dependency_analysis",
+			"question": "Can both components be built in parallel?",
+			"expected_answer": "no",
+			"difficulty": "hard"
+		},
+		{
+			"id": 23,
+			"name": "utils_failure_impact",
+			"category": "dependency_analysis",
+			"question": "If the utils component fails to build, which other components would also fail?",
+			"expected_answer": ["hello_world.exe"],
+			"difficulty": "hard"
+		},
+		{
+			"id": 24,
+			"name": "zero_dependency_count",
+			"category": "dependency_analysis",
+			"question": "How many components have zero dependencies?",
+			"expected_answer": 1,
+			"difficulty": "hard"
+		},
+		{
+			"id": 25,
+			"name": "leaf_components",
+			"category": "dependency_analysis",
+			"question": "Which component(s) have no other components depending on them?",
+			"expected_answer": ["hello_world.exe"],
+			"difficulty": "hard"
+		},
+		{
+			"id": 26,
+			"name": "programming_language",
+			"category": "component_identification",
+			"question": "What programming language is used for the components?",
+			"expected_answer": "cxx",
+			"difficulty": "hard"
+		},
+		{
+			"id": 27,
+			"name": "test_executable",
+			"category": "testing",
+			"question": "Which component does the test execute?",
+			"expected_answer": "hello_world.exe",
+			"difficulty": "hard"
+		},
+		{
+			"id": 28,
+			"name": "test_framework",
+			"category": "testing",
+			"question": "What test framework is used?",
+			"expected_answer": "CTest",
+			"difficulty": "hard"
+		},
+		{
+			"id": 29,
+			"name": "external_packages_count",
+			"category": "dependency_analysis",
+			"question": "How many external packages does this repository depend on?",
+			"expected_answer": 0,
+			"difficulty": "hard"
+		},
+		{
+			"id": 30,
+			"name": "unused_source_files",
+			"category": "source_analysis",
+			"question": "Are there any source files in src/ that are not used by any component?",
+			"expected_answer": "yes",
+			"difficulty": "hard"
 		}
 	],
 	"ground_truth_file": "tests/deterministic/cmake/cmake_hello_world/ground_truth_summary.json"

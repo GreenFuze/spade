@@ -1,0 +1,178 @@
+{
+  "repo": {
+    "name": "JNIHelloWorld",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\jni_hello_world"
+  },
+  "build": {
+    "system": "CMake",
+    "generator": null,
+    "type": "Debug",
+    "configure_cmd": null,
+    "test_cmd": null
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "java_hello_lib-1.0.0.jar",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "spade_build\\java_hello_lib-1.0.0.jar",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "java",
+      "source_files": [
+        "src\\java\\HelloWorld.java",
+        "src\\java\\HelloWorldJNI.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-2",
+      "name": "math_lib-1.0.0.jar",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "spade_build\\math_lib-1.0.0.jar",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "java",
+      "source_files": [
+        "src\\java\\MathUtils.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-3",
+      "name": "libhello.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "spade_build\\libhello.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "go",
+      "source_files": [
+        "src\\go\\hello.go"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-4",
+      "name": "jni_hello_world.exe",
+      "depends_on_ids": [
+        "comp-1",
+        "comp-3",
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "spade_build\\Debug\\jni_hello_world.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "src\\cpp\\main.cpp",
+        "src\\cpp\\jni_wrapper.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-5",
+      "name": "test_jni_wrapper.exe",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "spade_build\\Debug\\test_jni_wrapper.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "tests\\cpp\\test_jni_wrapper.cpp",
+        "src\\cpp\\jni_wrapper.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-2"
+      ]
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "test_jni_wrapper_cpp",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [
+        "comp-4"
+      ],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "src\\main.cpp"
+      ],
+      "test_framework": "CTest"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-2",
+      "name": "JNI"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-1",
+      "name": "CMake",
+      "package_name": "JNI"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "CMakeLists.txt:36"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "CMakeLists.txt:82"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "CMakeLists.txt:107"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "CMakeLists.txt:30"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "CMakeLists.txt:60"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "CMakeLists.txt:75"
+      ]
+    }
+  ]
+}

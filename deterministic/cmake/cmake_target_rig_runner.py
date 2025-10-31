@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List, Union
 
 from core.schemas import Evidence, Component, Aggregator, Runner, TestDefinition
+from deterministic.cmake.backtrace_walker import BacktraceWalker
 # Note: CMakeTargetWrapper not imported to avoid circular import - using string literal type hint
 
 
@@ -19,11 +20,16 @@ class CMakeTargetRigRunner:
         return self._target._cmake_target.name
 
     def get_evidence(self) -> List[Evidence]:
-        """Extract evidence from target backtrace."""
-        file_path: Path = self._target._cmake_target.target.backtrace.file
-        evidence_line = self._target._cmake_target.target.backtrace.line
+        """Get evidence pointing to user's actual function call in CMakeLists.txt.
 
-        return [Evidence(line=[f'{file_path}:{evidence_line}'], call_stack=None)]
+        Uses backtrace walker to find the user's call site rather than
+        internal implementation details.
+        """
+        evidence = BacktraceWalker.get_user_call_site(
+            self._target._cmake_target.target.backtrace,
+            self._target.repo_root
+        )
+        return [evidence]
 
     def get_arguments(self) -> List[str]:
         """Get command-line arguments for runner.

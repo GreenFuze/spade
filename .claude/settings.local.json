@@ -1,7 +1,25 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(cmake --build:*)",
+      "Read(//c/Program Files/CMake/share/cmake-4.0/Modules/**)",
+      "Bash(cat:*)",
+      "WebSearch",
+      "WebFetch(domain:pypi.org)",
+      "Bash(wsl.exe -e bash -c \"python3 -c ''try: import claude_code_sdk; print(\"\"Claude SDK: True\"\"); except: print(\"\"Claude SDK: False\"\")''\")",
+      "Bash(wsl.exe -e bash -c \"python3 -c ''try: import cursor_agent; print(\"\"Cursor SDK: True\"\"); except: print(\"\"Cursor SDK: False\"\")''\")",
+      "Bash(wsl.exe -e bash -c \"python3 -c ''try:\n    import claude_code_sdk\n    print(\"\"Claude SDK: True\"\")\nexcept ImportError:\n    print(\"\"Claude SDK: False\"\")''\")",
+      "Bash(wsl.exe -e bash -c \"pip3 list | grep -i claude\")",
+      "Bash(wsl.exe -e bash -c \"pip3 list | grep -i cursor\")",
+      "Bash(wsl.exe -e bash -c \"pip3 list | grep -i agent\")",
+      "Bash(wsl.exe -e bash -c \"pip3 list | grep sdk\")",
+      "Bash(tee:*)",
+      "Bash(find:*)",
+      "Bash(wsl.exe -e bash -c \"python3 -c ''import cursor_agent; print(dir(cursor_agent))''\")",
+      "Bash(wsl.exe -e bash -c \"python3 -c ''import pkgutil, cursor_agent; print([name for _, name, _ in pkgutil.iter_modules(cursor_agent.__path__)])''\")",
+      "Bash(wsl.exe -e bash -c \"which cursor-agent 2>&1 || echo ''cursor-agent not found in PATH''\")",
+      "Bash(timeout 60 python:*)"
     ],
     "deny": [],
     "ask": []
