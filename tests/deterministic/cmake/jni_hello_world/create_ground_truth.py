@@ -19,7 +19,7 @@ def main() -> None:
     rig = RIG()
 
     # Resolve the repository root for the test repo
-    repo_root = test_repos_root / "jni_hello_world"
+    repo_root = test_repos_root / "cmake" / "jni_hello_world"
 
     # Set repository and build system info via public setters
     rig.set_repository_info(
@@ -55,7 +55,28 @@ def main() -> None:
         package_manager=jni_package_manager
     )
 
-    # Component 1: JAR library (no dependencies)
+    # Create external packages for JUnit and Hamcrest
+    junit_package_manager = PackageManager(
+        name="Maven",
+        package_name="junit:junit:4.13.2"
+    )
+
+    junit_external_package = ExternalPackage(
+        name="junit-4.13.2.jar",
+        package_manager=junit_package_manager
+    )
+
+    hamcrest_package_manager = PackageManager(
+        name="Maven",
+        package_name="org.hamcrest:hamcrest-core:1.3"
+    )
+
+    hamcrest_external_package = ExternalPackage(
+        name="hamcrest-core-1.3.jar",
+        package_manager=hamcrest_package_manager
+    )
+
+    # Component 1: Java JAR library (built via add_jar at line 36)
     java_hello_lib = Component(
         name="java_hello_lib-1.0.0.jar",
         type=ComponentType.PACKAGE_LIBRARY,
@@ -70,7 +91,7 @@ def main() -> None:
         locations=[],
     )
 
-    # Component 2: math_lib JAR (built with custom commands)
+    # Component 2: Math JAR library (built via add_custom_jar at line 82)
     math_lib = Component(
         name="math_lib-1.0.0.jar",
         type=ComponentType.PACKAGE_LIBRARY,
@@ -84,7 +105,7 @@ def main() -> None:
         locations=[],
     )
 
-    # Component 3: Go shared library (built with go build -buildmode=c-shared)
+    # Component 3: Go shared library (built via add_go_shared_library at line 107)
     hello_go_lib = Component(
         name="libhello.dll",
         type=ComponentType.SHARED_LIBRARY,
@@ -98,7 +119,11 @@ def main() -> None:
         locations=[],
     )
 
-    # Component 4: C++ executable that uses JAR (runtime dependency)
+    # Component 4: Main C++ executable (built via add_executable at line 30)
+    # Dependencies:
+    #   - hello_go_lib: add_dependencies at line 127
+    #   - java_hello_lib, math_lib: runtime classpath dependencies at line 123
+    #   - JNI: external package via target_link_libraries at line 112
     jni_hello_world = Component(
         name="jni_hello_world.exe",
         type=ComponentType.EXECUTABLE,
@@ -114,7 +139,8 @@ def main() -> None:
         depends_on=[java_hello_lib, math_lib, hello_go_lib]
     )
 
-    # Component 5: Test executable
+    # Component 5: C++ test executable (built via add_executable at line 138)
+    # Links to JNI via target_link_libraries at line 143
     test_jni_wrapper = Component(
         name="test_jni_wrapper.exe",
         type=ComponentType.EXECUTABLE,
@@ -125,8 +151,25 @@ def main() -> None:
             Path("src/cpp/jni_wrapper.cpp")
         ],
         external_packages=[jni_external_package],
-        evidence=[Evidence(line=["CMakeLists.txt:60"])],
+        evidence=[Evidence(line=["CMakeLists.txt:138"])],
         locations=[],
+    )
+
+    # Component 6: Java JUnit test class (built via add_custom_command at line 161)
+    # This compiles HelloWorldTest.java to .class file
+    # Depends on java_hello_lib and uses junit and hamcrest
+    hello_world_test_java = Component(
+        name="HelloWorldTest.class",
+        type=ComponentType.PACKAGE_LIBRARY,
+        programming_language="java",
+        relative_path=Path("spade_build/test_classes/HelloWorldTest.class"),
+        source_files=[
+            Path("tests/java/HelloWorldTest.java")
+        ],
+        external_packages=[junit_external_package, hamcrest_external_package],
+        evidence=[Evidence(line=["CMakeLists.txt:161"])],
+        locations=[],
+        depends_on=[java_hello_lib]
     )
 
 
@@ -135,18 +178,57 @@ def main() -> None:
     rig.add_component(hello_go_lib)
     rig.add_component(jni_hello_world)
     rig.add_component(test_jni_wrapper)
+    rig.add_component(hello_world_test_java)
 
-    # Add the test: add_test(NAME test_jni_wrapper_cpp COMMAND test_jni_wrapper)
+    # Add the CTest test: add_test(NAME test_jni_wrapper_cpp COMMAND test_jni_wrapper) at line 153
+    # This test runs test_jni_wrapper.exe which tests the JNI wrapper functionality
     ctest_test = TestDefinition(
         name="test_jni_wrapper_cpp",
         test_executable_component=test_jni_wrapper,
         test_executable_component_id=None,
-        test_components=[jni_hello_world],
+        test_components=[],
         test_framework="CTest",
-        source_files=[Path("src/main.cpp")],
-        evidence=[Evidence(line=["CMakeLists.txt:75"])],
+        source_files=[
+            Path("tests/cpp/test_jni_wrapper.cpp"),
+            Path("src/cpp/jni_wrapper.cpp")
+        ],
+        evidence=[Evidence(line=["CMakeLists.txt:153"])],
     )
     rig.add_test(ctest_test)
+
+    # Add the JUnit test: add_test(NAME test_hello_world_java ...) at line 185
+    # This test runs JUnit on HelloWorldTest.class
+    # The test_executable_component is HelloWorldTest.class which is executed by java/JUnit
+    junit_test = TestDefinition(
+        name="test_hello_world_java",
+        test_executable_component=hello_world_test_java,
+        test_executable_component_id=None,
+        test_components=[],
+        test_framework="JUnit",
+        source_files=[
+            Path("tests/java/HelloWorldTest.java")
+        ],
+        evidence=[Evidence(line=["CMakeLists.txt:185"])],
+    )
+    rig.add_test(junit_test)
+
+    # Add the Go test: add_test(NAME test_hello_go ...) at line 193
+    # This test runs 'go test' on the Go source files
+    # For Go tests, there's no single executable - it's the test framework running the test files
+    # We'll use hello_go_lib as a proxy for what's being tested
+    go_test = TestDefinition(
+        name="test_hello_go",
+        test_executable_component=hello_go_lib,
+        test_executable_component_id=None,
+        test_components=[],
+        test_framework="Go",
+        source_files=[
+            Path("src/go/hello_test.go"),
+            Path("src/go/hello.go")
+        ],
+        evidence=[Evidence(line=["CMakeLists.txt:193"])],
+    )
+    rig.add_test(go_test)
 
     # Validate before saving/writing outputs (fail-fast on errors)
     validation_errors = rig.validate()

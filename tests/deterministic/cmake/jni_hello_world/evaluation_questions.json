@@ -1,0 +1,248 @@
+{
+	"repository_name": "jni_hello_world",
+	"build_system": "cmake",
+	"description": "Evaluation questions for jni_hello_world - multi-language CMake project with C++/Java/Go integration",
+	"questions": [
+		{
+			"id": 1,
+			"name": "project_name",
+			"category": "build_system",
+			"question": "What is the CMake project name?",
+			"expected_answer": "JNIHelloWorld",
+			"difficulty": "easy"
+		},
+		{
+			"id": 2,
+			"name": "cmake_version",
+			"category": "build_system",
+			"question": "What is the minimum CMake version required?",
+			"expected_answer": "3.16",
+			"difficulty": "easy"
+		},
+		{
+			"id": 3,
+			"name": "cpp_files_count",
+			"category": "source_analysis",
+			"question": "How many .cpp files are in the src/cpp/ directory?",
+			"expected_answer": 2,
+			"difficulty": "easy"
+		},
+		{
+			"id": 4,
+			"name": "java_files_total",
+			"category": "source_analysis",
+			"question": "How many .java files are in the entire repository?",
+			"expected_answer": 4,
+			"difficulty": "easy"
+		},
+		{
+			"id": 5,
+			"name": "go_files_count",
+			"category": "source_analysis",
+			"question": "How many .go files are in src/go/?",
+			"expected_answer": 2,
+			"difficulty": "easy"
+		},
+		{
+			"id": 6,
+			"name": "add_test_count",
+			"category": "testing",
+			"question": "How many add_test commands are in the CMakeLists.txt?",
+			"expected_answer": 3,
+			"difficulty": "easy"
+		},
+		{
+			"id": 7,
+			"name": "find_package_count",
+			"category": "dependency_analysis",
+			"question": "How many find_package commands are in the CMakeLists.txt?",
+			"expected_answer": 2,
+			"difficulty": "easy"
+		},
+		{
+			"id": 8,
+			"name": "testing_enabled",
+			"category": "testing",
+			"question": "Is enable_testing() called in this project? (Answer yes or no)",
+			"expected_answer": "yes",
+			"difficulty": "easy"
+		},
+		{
+			"id": 9,
+			"name": "cmakelists_lines",
+			"category": "build_system",
+			"question": "How many lines are in the CMakeLists.txt file?",
+			"expected_answer": [196, 197, 198],
+			"difficulty": "easy"
+		},
+		{
+			"id": 10,
+			"name": "jar_files_built",
+			"category": "source_analysis",
+			"question": "How many .jar files are built by this project?",
+			"expected_answer": 2,
+			"difficulty": "easy"
+		},
+		{
+			"id": 11,
+			"name": "components_count",
+			"category": "component_identification",
+			"question": "How many components are built in this repository?",
+			"expected_answer": 6,
+			"difficulty": "medium"
+		},
+		{
+			"id": 12,
+			"name": "jni_hello_world_sources",
+			"category": "source_analysis",
+			"question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)",
+			"expected_answer": [["src/cpp/main.cpp", "src/cpp/jni_wrapper.cpp"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 13,
+			"name": "java_hello_lib_sources",
+			"category": "source_analysis",
+			"question": "What source files are used to build the java_hello_lib component? (Provide a list)",
+			"expected_answer": [["src/java/HelloWorld.java", "src/java/HelloWorldJNI.java"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 14,
+			"name": "custom_function_components",
+			"category": "component_identification",
+			"question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)",
+			"expected_answer": [["libhello.dll", "math_lib-1.0.0.jar"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 15,
+			"name": "jni_hello_world_external_packages",
+			"category": "dependency_analysis",
+			"question": "What external packages does the jni_hello_world component depend on? (Provide a list)",
+			"expected_answer": [["JNI"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 16,
+			"name": "test_jni_wrapper_sources",
+			"category": "source_analysis",
+			"question": "What source files are used to build the test_jni_wrapper component? (Provide a list)",
+			"expected_answer": [["tests/cpp/test_jni_wrapper.cpp", "src/cpp/jni_wrapper.cpp"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 17,
+			"name": "test_executable_mapping",
+			"category": "testing",
+			"question": "Which component does the test_jni_wrapper_cpp test execute? (use Windows artifact name)",
+			"expected_answer": "test_jni_wrapper.exe",
+			"difficulty": "medium"
+		},
+		{
+			"id": 18,
+			"name": "junit_test_framework",
+			"category": "testing",
+			"question": "What test framework is used for test_hello_world_java?",
+			"expected_answer": [["JUnit"], ["junit"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 19,
+			"name": "components_using_jni",
+			"category": "dependency_analysis",
+			"question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)",
+			"expected_answer": [["jni_hello_world.exe", "test_jni_wrapper.exe"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 20,
+			"name": "output_artifacts",
+			"category": "component_identification",
+			"question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)",
+			"expected_answer": [["jni_hello_world.exe", "java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll", "test_jni_wrapper.exe", "HelloWorldTest.class"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 21,
+			"name": "build_order_independent",
+			"category": "dependency_analysis",
+			"question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)",
+			"expected_answer": [["java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll", "test_jni_wrapper.exe"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 22,
+			"name": "jni_hello_world_dependencies",
+			"category": "dependency_analysis",
+			"question": "List all components that jni_hello_world depends on (use Windows artifact names).",
+			"expected_answer": [["java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 23,
+			"name": "parallel_build_analysis",
+			"category": "dependency_analysis",
+			"question": "Can java_hello_lib and libhello.dll be built in parallel? (Answer yes or no)",
+			"expected_answer": "yes",
+			"difficulty": "hard"
+		},
+		{
+			"id": 24,
+			"name": "failure_impact_analysis",
+			"category": "dependency_analysis",
+			"question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)",
+			"expected_answer": [["jni_hello_world.exe"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 25,
+			"name": "language_main_entry_point",
+			"category": "component_identification",
+			"question": "In which programming language is the main() entry point of the application implemented?",
+			"expected_answer": [["cxx"], ["c++"], ["cpp"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 26,
+			"name": "language_caller_pattern",
+			"category": "dependency_analysis",
+			"question": "Which programming language calls Java code in this project?",
+			"expected_answer": [["cxx"], ["c++"], ["cpp"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 27,
+			"name": "test_frameworks_used",
+			"category": "testing",
+			"question": "What test frameworks are used in this repository? (Provide a list)",
+			"expected_answer": [["CTest", "JUnit", "Go"], ["CTest", "JUnit", "go test"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 28,
+			"name": "multi_language_component_count",
+			"category": "component_identification",
+			"question": "How many different programming languages are used across all buildable components?",
+			"expected_answer": 3,
+			"difficulty": "hard"
+		},
+		{
+			"id": 29,
+			"name": "junit_component_dependency",
+			"category": "dependency_analysis",
+			"question": "Which component does HelloWorldTest depend on? (use Windows artifact name)",
+			"expected_answer": "java_hello_lib-1.0.0.jar",
+			"difficulty": "hard"
+		},
+		{
+			"id": 30,
+			"name": "custom_cmake_functions",
+			"category": "cmake_specific",
+			"question": "How many custom CMake functions are defined in CMakeLists.txt (using function/endfunction keywords)?",
+			"expected_answer": 2,
+			"difficulty": "hard"
+		}
+	],
+	"ground_truth_file": "tests/deterministic/cmake/jni_hello_world/jni_hello_world_ground_truth.json"
+}

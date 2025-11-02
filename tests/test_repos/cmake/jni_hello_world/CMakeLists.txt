@@ -152,3 +152,46 @@ target_include_directories(test_jni_wrapper PRIVATE
 # Register tests
 add_test(NAME test_jni_wrapper_cpp COMMAND test_jni_wrapper)
 
+# Compile and run JUnit test
+set(JUNIT_JAR "${CMAKE_CURRENT_SOURCE_DIR}/tests/java/junit-4.13.2.jar")
+set(HAMCREST_JAR "${CMAKE_CURRENT_SOURCE_DIR}/tests/java/hamcrest-core-1.3.jar")
+set(TEST_JAVA_DIR "${CMAKE_CURRENT_BINARY_DIR}/test_classes")
+
+# Set platform-specific classpath separator
+if(WIN32)
+    set(CP_SEP ";")
+else()
+    set(CP_SEP ":")
+endif()
+
+# Compile HelloWorldTest.java to .class file
+add_custom_command(
+    OUTPUT ${TEST_JAVA_DIR}/HelloWorldTest.class
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${TEST_JAVA_DIR}
+    COMMAND ${Java_JAVAC_EXECUTABLE} -d ${TEST_JAVA_DIR}
+            -cp "${JUNIT_JAR}${CP_SEP}${HAMCREST_JAR}${CP_SEP}${CMAKE_CURRENT_BINARY_DIR}/java_hello_lib-1.0.0.jar"
+            ${CMAKE_CURRENT_SOURCE_DIR}/tests/java/HelloWorldTest.java
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/tests/java/HelloWorldTest.java
+            java_hello_lib
+    COMMENT "Compiling HelloWorldTest.java"
+)
+
+# Create custom target for the test class
+add_custom_target(hello_world_test_java ALL
+    DEPENDS ${TEST_JAVA_DIR}/HelloWorldTest.class
+)
+
+# Register JUnit test
+add_test(NAME test_hello_world_java
+    COMMAND ${Java_JAVA_EXECUTABLE}
+            -cp "${JUNIT_JAR}${CP_SEP}${HAMCREST_JAR}${CP_SEP}${CMAKE_CURRENT_BINARY_DIR}/java_hello_lib-1.0.0.jar${CP_SEP}${TEST_JAVA_DIR}"
+            org.junit.runner.JUnitCore HelloWorldTest
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+# Register Go test
+add_test(NAME test_hello_go
+    COMMAND go test -v
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/go
+)
+

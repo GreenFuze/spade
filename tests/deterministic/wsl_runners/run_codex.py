@@ -18,10 +18,34 @@ import os
 import subprocess
 import sys
 import time
+import json
+from pathlib import Path
 from validation import validate_answers_file, extract_question_ids_from_prompt
+from file_watcher import FileStabilityWatcher
 
 
-def run_codex_with_polling(prompt: str, working_dir: str, expected_ids: list, codex_path: str, timeout: int = 240) -> str:
+def write_timing_metadata(working_dir: str, completion_time: float) -> None:
+    """
+    Write timing metadata to answers_metadata.json.
+
+    Args:
+        working_dir: Directory where metadata file should be written
+        completion_time: Agent completion time in seconds
+    """
+    metadata_path = Path(working_dir) / "answers_metadata.json"
+    metadata = {
+        "agent_completion_time_seconds": round(completion_time, 2)
+    }
+
+    try:
+        with open(metadata_path, 'w', encoding='utf-8') as f:
+            json.dump(metadata, f, indent=2)
+        print(f"[LOG] Wrote timing metadata: {completion_time:.2f} seconds")
+    except Exception as e:
+        print(f"[WARNING] Failed to write timing metadata: {e}", file=sys.stderr)
+
+
+def run_codex_with_polling(prompt: str, working_dir: str, expected_ids: list, codex_path: str, timeout: int = 300) -> str:
     """
     Run codex CLI with the given prompt, polling for completion.
 
@@ -30,7 +54,7 @@ def run_codex_with_polling(prompt: str, working_dir: str, expected_ids: list, co
         working_dir: Working directory for codex
         expected_ids: List of expected question IDs to validate
         codex_path: Absolute path to codex executable
-        timeout: Maximum seconds to wait (default 240 = 4 minutes)
+        timeout: Maximum seconds to wait (default 300 = 5 minutes)
 
     Returns:
         Combined stdout/stderr from codex
@@ -58,12 +82,18 @@ def run_codex_with_polling(prompt: str, working_dir: str, expected_ids: list, co
     except Exception as e:
         raise RuntimeError(f"Failed to start codex: {e}")
 
-    # Poll for answers.json completion
+    # Poll for answers.json completion with file stability checking
     start_time = time.time()
-    poll_interval = 10  # Check every 10 seconds
+    poll_interval = 0.5  # Check every 0.5 seconds
+    stability_duration = 5.0  # File must be stable for 5 seconds
     answers_path = os.path.join(working_dir, "answers.json")
+    file_watcher = FileStabilityWatcher(answers_path, stability_duration=stability_duration, check_interval=poll_interval)
 
     print(f"[LOG] Polling for answers.json every {poll_interval} seconds (timeout: {timeout}s)...")
+    print(f"[LOG] File must be stable for {stability_duration} seconds before considered complete")
+
+    last_validation_status = None
+    stable_file_detected_at = None
 
     while True:
         elapsed = time.time() - start_time
@@ -104,21 +134,30 @@ def run_codex_with_polling(prompt: str, working_dir: str, expected_ids: list, co
 
             raise TimeoutError(f"codex did not complete within {timeout} seconds")
 
-        # Check if answers.json is complete
+        # Check if answers.json is valid
         if os.path.exists(answers_path):
             is_valid, error_msg = validate_answers_file(working_dir, expected_ids)
-            if is_valid:
-                print(f"[LOG] SUCCESS: answers.json is complete after {elapsed:.1f} seconds!")
-                print("[LOG] Terminating codex...")
 
+            if is_valid and last_validation_status != "valid":
+                print(f"[LOG] answers.json is valid, waiting for file stability...")
+                last_validation_status = "valid"
+
+            # Check file stability
+            stability_time = file_watcher.get_file_stability_time()
+            if is_valid and stability_time is not None and stability_time >= stability_duration:
+                if stable_file_detected_at is None:
+                    stable_file_detected_at = time.time()
+                    completion_time = stable_file_detected_at - start_time
+                    print(f"[LOG] SUCCESS: answers.json is stable after {completion_time:.2f} seconds!")
+                    write_timing_metadata(working_dir, completion_time)
+
+                print("[LOG] Terminating codex...")
                 stdout = ""
                 stderr = ""
 
                 try:
                     proc.terminate()
-                    # Wait for process to terminate and read output
                     proc.wait(timeout=5)
-                    # Read remaining output from pipes
                     stdout = proc.stdout.read() if proc.stdout else ""
                     stderr = proc.stderr.read() if proc.stderr else ""
                 except subprocess.TimeoutExpired:
@@ -141,14 +180,18 @@ def run_codex_with_polling(prompt: str, working_dir: str, expected_ids: list, co
                     print(f"[CODEX-STDERR] {stderr}", file=sys.stderr)
 
                 return f"STDOUT:\n{stdout}\n\nSTDERR:\n{stderr}\n\nREADY!"
-            else:
+            elif not is_valid and last_validation_status != "invalid":
                 print(f"[LOG] answers.json exists but incomplete: {error_msg}")
+                last_validation_status = "invalid"
         else:
-            print(f"[LOG] answers.json not found yet (elapsed: {elapsed:.1f}s)")
+            if last_validation_status is not None:
+                last_validation_status = None
 
-        # Check if process died unexpectedly
+        # Check if process exited
         if proc.poll() is not None:
-            # Process has exited, read remaining output
+            exit_code = proc.returncode
+
+            # Read remaining output
             stdout = ""
             stderr = ""
             try:
@@ -157,20 +200,31 @@ def run_codex_with_polling(prompt: str, working_dir: str, expected_ids: list, co
             except Exception as e:
                 print(f"[LOG] Warning: Failed to read output from exited process: {e}")
 
-            print(f"[LOG] codex exited unexpectedly, captured output:")
-            if stdout:
-                print(f"[CODEX-STDOUT] {stdout}")
-            if stderr:
-                print(f"[CODEX-STDERR] {stderr}", file=sys.stderr)
+            print(f"[LOG] codex exited with code {exit_code}")
 
-            # Flush output before raising exception
-            sys.stdout.flush()
-            sys.stderr.flush()
+            # If process exited successfully (code 0) and we're waiting for stability, continue waiting
+            if exit_code == 0 and last_validation_status == "valid":
+                print(f"[LOG] Process exited successfully, continuing to wait for file stability...")
+                # Don't raise error, continue polling loop
+            else:
+                # Process died with error or answers incomplete
+                completion_time = time.time() - start_time
+                write_timing_metadata(working_dir, completion_time)
 
-            raise RuntimeError(
-                f"codex exited unexpectedly with code {proc.returncode}\n"
-                f"STDOUT:\n{stdout}\n\nSTDERR:\n{stderr}"
-            )
+                print(f"[LOG] codex exited unexpectedly:")
+                if stdout:
+                    print(f"[CODEX-STDOUT] {stdout}")
+                if stderr:
+                    print(f"[CODEX-STDERR] {stderr}", file=sys.stderr)
+
+                # Flush output before raising exception
+                sys.stdout.flush()
+                sys.stderr.flush()
+
+                raise RuntimeError(
+                    f"codex exited with code {exit_code} before answers were stable\n"
+                    f"STDOUT:\n{stdout}\n\nSTDERR:\n{stderr}"
+                )
 
         # Sleep before next check
         time.sleep(poll_interval)

@@ -354,7 +354,15 @@ class AnalysisRunner:
 
         # Load answers
         with open(answer_file, 'r', encoding='utf-8') as f:
-            answers = json.load(f)
+            data = json.load(f)
+
+        # Extract timing data if present
+        completion_time = None
+        if isinstance(data, dict) and "agent_completion_time_seconds" in data:
+            completion_time = data["agent_completion_time_seconds"]
+            answers = data.get("answers", [])
+        else:
+            answers = data
 
         # Score each answer
         question_scores = []
@@ -400,13 +408,21 @@ class AnalysisRunner:
         max_score = len(self.questions)
 
         print(f"[LOG] {agent_name}: {total_score}/{max_score} points")
+        if completion_time is not None:
+            print(f"[LOG] {agent_name}: completed in {completion_time}s")
 
-        return {
+        result = {
             "total_score": total_score,
             "max_score": max_score,
             "by_difficulty": difficulty_scores,
             "questions": question_scores
         }
+
+        # Add timing data if available
+        if completion_time is not None:
+            result["completion_time_seconds"] = completion_time
+
+        return result
 
     def run_analysis(self) -> Dict[str, Any]:
         """
@@ -518,6 +534,28 @@ class AnalysisRunner:
                     elif q_without_rig["score"] == 1 and q_with_rig["score"] == 0:
                         questions_broken.append(q_id)
 
+            # Build timing analysis
+            timing_analysis = {}
+            time_with_rig = with_rig.get("completion_time_seconds")
+            time_without_rig = without_rig.get("completion_time_seconds")
+
+            if time_with_rig is not None and time_without_rig is not None:
+                time_saved = time_without_rig - time_with_rig
+                time_reduction_percentage = self.calculate_percentage(time_saved, time_without_rig)
+
+                # Calculate efficiency (score per second)
+                efficiency_with_rig = with_rig["total_score"] / time_with_rig if time_with_rig > 0 else 0
+                efficiency_without_rig = without_rig["total_score"] / time_without_rig if time_without_rig > 0 else 0
+
+                timing_analysis = {
+                    "time_with_rig_seconds": time_with_rig,
+                    "time_without_rig_seconds": time_without_rig,
+                    "time_saved_seconds": round(time_saved, 2),
+                    "time_reduction_percentage": round(time_reduction_percentage, 1),
+                    "efficiency_with_rig_score_per_second": round(efficiency_with_rig, 4),
+                    "efficiency_without_rig_score_per_second": round(efficiency_without_rig, 4)
+                }
+
             # Build agent analysis
             analysis[base_name] = {
                 "with_rig": {
@@ -562,6 +600,10 @@ class AnalysisRunner:
                 "questions_fixed_by_rig": questions_fixed,
                 "questions_broken_by_rig": questions_broken
             }
+
+            # Add timing analysis if available
+            if timing_analysis:
+                analysis[base_name]["timing"] = timing_analysis
 
         return analysis
 
@@ -629,7 +671,7 @@ class AnalysisRunner:
         avg_without_rig = sum(a["without_rig"]["percentage"] for a in analysis.values()) / len(analysis)
         avg_improvement = sum(a["rig_improvement"]["percentage"] for a in analysis.values()) / len(analysis)
 
-        return {
+        summary = {
             "best_overall_with_rig": {
                 "agent": best_with_rig[0],
                 "percentage": best_with_rig[1]["with_rig"]["percentage"]
@@ -650,6 +692,46 @@ class AnalysisRunner:
             "average_without_rig": round(avg_without_rig, 1),
             "average_rig_improvement": round(avg_improvement, 1)
         }
+
+        # Calculate timing statistics if available
+        agents_with_timing = [a for a in analysis.values() if "timing" in a]
+        if agents_with_timing:
+            avg_time_with_rig = sum(a["timing"]["time_with_rig_seconds"] for a in agents_with_timing) / len(agents_with_timing)
+            avg_time_without_rig = sum(a["timing"]["time_without_rig_seconds"] for a in agents_with_timing) / len(agents_with_timing)
+            avg_time_saved = sum(a["timing"]["time_saved_seconds"] for a in agents_with_timing) / len(agents_with_timing)
+            avg_time_reduction = sum(a["timing"]["time_reduction_percentage"] for a in agents_with_timing) / len(agents_with_timing)
+
+            # Find fastest and most time saved
+            fastest_with_rig = min(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_with_rig_seconds", float('inf')))
+            fastest_without_rig = min(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_without_rig_seconds", float('inf')))
+            most_time_saved = max(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_saved_seconds", 0))
+            highest_time_reduction = max(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_reduction_percentage", 0))
+
+            summary["timing"] = {
+                "average_time_with_rig_seconds": round(avg_time_with_rig, 2),
+                "average_time_without_rig_seconds": round(avg_time_without_rig, 2),
+                "average_time_saved_seconds": round(avg_time_saved, 2),
+                "average_time_reduction_percentage": round(avg_time_reduction, 1),
+                "fastest_with_rig": {
+                    "agent": fastest_with_rig[0],
+                    "time_seconds": fastest_with_rig[1].get("timing", {}).get("time_with_rig_seconds", 0)
+                },
+                "fastest_without_rig": {
+                    "agent": fastest_without_rig[0],
+                    "time_seconds": fastest_without_rig[1].get("timing", {}).get("time_without_rig_seconds", 0)
+                },
+                "most_time_saved": {
+                    "agent": most_time_saved[0],
+                    "time_saved_seconds": most_time_saved[1].get("timing", {}).get("time_saved_seconds", 0),
+                    "time_reduction_percentage": most_time_saved[1].get("timing", {}).get("time_reduction_percentage", 0)
+                },
+                "highest_time_reduction_percentage": {
+                    "agent": highest_time_reduction[0],
+                    "time_reduction_percentage": highest_time_reduction[1].get("timing", {}).get("time_reduction_percentage", 0)
+                }
+            }
+
+        return summary
 
     def build_category_analysis(self, results: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -912,6 +994,93 @@ class AnalysisRunner:
             }
         }
 
+    def analyze_timing_insights(self, comparative_analysis: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Analyze timing patterns and correlations.
+
+        Args:
+            comparative_analysis: Comparative analysis dictionary
+
+        Returns:
+            Timing insights dictionary
+        """
+        agents_with_timing = {name: data for name, data in comparative_analysis.items() if "timing" in data}
+
+        if not agents_with_timing:
+            return {"note": "No timing data available"}
+
+        # Speed vs Accuracy correlation (with RIG)
+        speed_accuracy_with_rig = []
+        for name, data in agents_with_timing.items():
+            speed_accuracy_with_rig.append({
+                "agent": name,
+                "time_seconds": data["timing"]["time_with_rig_seconds"],
+                "score_percentage": data["with_rig"]["percentage"],
+                "efficiency_score_per_second": data["timing"]["efficiency_with_rig_score_per_second"]
+            })
+        speed_accuracy_with_rig.sort(key=lambda x: x["time_seconds"])
+
+        # Speed vs Accuracy correlation (without RIG)
+        speed_accuracy_without_rig = []
+        for name, data in agents_with_timing.items():
+            speed_accuracy_without_rig.append({
+                "agent": name,
+                "time_seconds": data["timing"]["time_without_rig_seconds"],
+                "score_percentage": data["without_rig"]["percentage"],
+                "efficiency_score_per_second": data["timing"]["efficiency_without_rig_score_per_second"]
+            })
+        speed_accuracy_without_rig.sort(key=lambda x: x["time_seconds"])
+
+        # Time reduction vs score improvement correlation
+        time_vs_score_improvement = []
+        for name, data in agents_with_timing.items():
+            time_vs_score_improvement.append({
+                "agent": name,
+                "time_reduction_percentage": data["timing"]["time_reduction_percentage"],
+                "score_improvement_percentage": data["rig_improvement"]["percentage"],
+                "time_saved_seconds": data["timing"]["time_saved_seconds"],
+                "score_points_gained": data["rig_improvement"]["absolute"]
+            })
+
+        # Sort by time reduction to show pattern
+        time_vs_score_improvement.sort(key=lambda x: x["time_reduction_percentage"], reverse=True)
+
+        # Calculate correlation note
+        if len(time_vs_score_improvement) >= 2:
+            highest_time_reduction = time_vs_score_improvement[0]
+            lowest_time_reduction = time_vs_score_improvement[-1]
+
+            if highest_time_reduction["score_improvement_percentage"] > lowest_time_reduction["score_improvement_percentage"]:
+                correlation_note = "Greater time reduction correlates with better score improvement"
+            elif highest_time_reduction["score_improvement_percentage"] < lowest_time_reduction["score_improvement_percentage"]:
+                correlation_note = "Greater time reduction correlates with less score improvement"
+            else:
+                correlation_note = "No clear correlation between time reduction and score improvement"
+        else:
+            correlation_note = "Insufficient data for correlation"
+
+        # Calculate efficiency stats
+        efficiencies_with_rig = [data["timing"]["efficiency_with_rig_score_per_second"] for data in agents_with_timing.values()]
+        efficiencies_without_rig = [data["timing"]["efficiency_without_rig_score_per_second"] for data in agents_with_timing.values()]
+
+        avg_efficiency_with_rig = sum(efficiencies_with_rig) / len(efficiencies_with_rig)
+        avg_efficiency_without_rig = sum(efficiencies_without_rig) / len(efficiencies_without_rig)
+        efficiency_improvement = ((avg_efficiency_with_rig - avg_efficiency_without_rig) / avg_efficiency_without_rig * 100) if avg_efficiency_without_rig > 0 else 0
+
+        return {
+            "speed_vs_accuracy_with_rig": speed_accuracy_with_rig,
+            "speed_vs_accuracy_without_rig": speed_accuracy_without_rig,
+            "time_reduction_vs_score_improvement": {
+                "correlation_note": correlation_note,
+                "data": time_vs_score_improvement
+            },
+            "efficiency_analysis": {
+                "avg_efficiency_with_rig_score_per_second": round(avg_efficiency_with_rig, 4),
+                "avg_efficiency_without_rig_score_per_second": round(avg_efficiency_without_rig, 4),
+                "efficiency_improvement_percentage": round(efficiency_improvement, 1)
+            }
+        }
+
     def save_results(self, results: Dict[str, Any]) -> None:
         """
         Save analysis results to answers_analysis.json.
@@ -979,6 +1148,10 @@ def main() -> int:
         print("[LOG] Analyzing RIG effectiveness patterns...")
         rig_effectiveness = runner.analyze_rig_effectiveness(comparative_analysis)
 
+        # Analyze timing insights
+        print("[LOG] Analyzing timing patterns and correlations...")
+        timing_insights = runner.analyze_timing_insights(comparative_analysis)
+
         # Build summary
         print("[LOG] Building summary statistics...")
         summary = runner.build_summary(comparative_analysis)
@@ -991,6 +1164,7 @@ def main() -> int:
                 "by_category": category_analysis,
                 "question_insights": question_insights,
                 "rig_effectiveness": rig_effectiveness,
+                "timing_insights": timing_insights,
                 "summary": summary
             }
         }
@@ -1013,6 +1187,30 @@ def main() -> int:
             stats = rig_effectiveness.get("by_difficulty", {}).get(difficulty, {})
             print(f"  {difficulty.capitalize()}: avg improvement = {stats.get('avg_improvement', 0)}%")
         print()
+
+        # Print timing summary if available
+        if "timing" in summary:
+            print("Timing Summary:")
+            timing = summary["timing"]
+            print(f"  Average time with RIG: {timing.get('average_time_with_rig_seconds', 0)}s")
+            print(f"  Average time without RIG: {timing.get('average_time_without_rig_seconds', 0)}s")
+            print(f"  Average time saved: {timing.get('average_time_saved_seconds', 0)}s ({timing.get('average_time_reduction_percentage', 0)}% faster)")
+            print(f"  Fastest with RIG: {timing.get('fastest_with_rig', {}).get('agent', 'N/A')} ({timing.get('fastest_with_rig', {}).get('time_seconds', 0)}s)")
+            print(f"  Most time saved: {timing.get('most_time_saved', {}).get('agent', 'N/A')} ({timing.get('most_time_saved', {}).get('time_saved_seconds', 0)}s / {timing.get('most_time_saved', {}).get('time_reduction_percentage', 0)}%)")
+
+            # Print timing insights if available
+            if "note" not in timing_insights:
+                print()
+                print("Timing Insights:")
+                efficiency = timing_insights.get("efficiency_analysis", {})
+                print(f"  Efficiency with RIG: {efficiency.get('avg_efficiency_with_rig_score_per_second', 0)} score/second")
+                print(f"  Efficiency without RIG: {efficiency.get('avg_efficiency_without_rig_score_per_second', 0)} score/second")
+                print(f"  Efficiency improvement: {efficiency.get('efficiency_improvement_percentage', 0)}%")
+
+                correlation = timing_insights.get("time_reduction_vs_score_improvement", {})
+                print(f"  Time vs Score correlation: {correlation.get('correlation_note', 'N/A')}")
+            print()
+
         print(f"Hardest questions: {len(question_insights.get('hardest_questions', []))} questions")
         print(f"Most RIG-sensitive: {len(question_insights.get('most_rig_sensitive', []))} questions")
         print("=" * 60)

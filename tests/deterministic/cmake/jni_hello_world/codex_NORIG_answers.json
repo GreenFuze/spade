@@ -1,0 +1,163 @@
+{
+  "answers": [
+    {
+      "id": 1,
+      "answer": "JNIHelloWorld"
+    },
+    {
+      "id": 2,
+      "answer": "3.16"
+    },
+    {
+      "id": 3,
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "answer": 4
+    },
+    {
+      "id": 5,
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "answer": 3
+    },
+    {
+      "id": 7,
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "answer": "yes"
+    },
+    {
+      "id": 9,
+      "answer": 197
+    },
+    {
+      "id": 10,
+      "answer": 2
+    },
+    {
+      "id": 11,
+      "answer": 6
+    },
+    {
+      "id": 12,
+      "answer": [
+        "src/cpp/main.cpp",
+        "src/cpp/jni_wrapper.cpp"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": [
+        "src/java/HelloWorld.java",
+        "src/java/HelloWorldJNI.java"
+      ]
+    },
+    {
+      "id": 14,
+      "answer": [
+        "math_lib-1.0.0.jar",
+        "libhello.dll"
+      ]
+    },
+    {
+      "id": 15,
+      "answer": [
+        "JNI"
+      ]
+    },
+    {
+      "id": 16,
+      "answer": [
+        "tests/cpp/test_jni_wrapper.cpp",
+        "src/cpp/jni_wrapper.cpp"
+      ]
+    },
+    {
+      "id": 17,
+      "answer": "test_jni_wrapper.exe"
+    },
+    {
+      "id": 18,
+      "answer": "JUnit 4"
+    },
+    {
+      "id": 19,
+      "answer": [
+        "jni_hello_world.exe",
+        "test_jni_wrapper.exe"
+      ]
+    },
+    {
+      "id": 20,
+      "answer": [
+        "jni_hello_world.exe",
+        "test_jni_wrapper.exe",
+        "java_hello_lib-1.0.0.jar",
+        "math_lib-1.0.0.jar",
+        "libhello.dll",
+        "HelloWorldTest.class"
+      ]
+    },
+    {
+      "id": 21,
+      "answer": [
+        "java_hello_lib-1.0.0.jar",
+        "math_lib-1.0.0.jar",
+        "libhello.dll",
+        "test_jni_wrapper.exe"
+      ]
+    },
+    {
+      "id": 22,
+      "answer": [
+        "libhello.dll",
+        "java_hello_lib-1.0.0.jar",
+        "math_lib-1.0.0.jar"
+      ]
+    },
+    {
+      "id": 23,
+      "answer": "yes"
+    },
+    {
+      "id": 24,
+      "answer": [
+        "jni_hello_world.exe"
+      ]
+    },
+    {
+      "id": 25,
+      "answer": "C++"
+    },
+    {
+      "id": 26,
+      "answer": "C++"
+    },
+    {
+      "id": 27,
+      "answer": [
+        "JUnit 4",
+        "Go testing"
+      ]
+    },
+    {
+      "id": 28,
+      "answer": 3
+    },
+    {
+      "id": 29,
+      "answer": "java_hello_lib-1.0.0.jar"
+    },
+    {
+      "id": 30,
+      "answer": 2
+    }
+  ],
+  "agent_completion_time_seconds": 216.66
+}

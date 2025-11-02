@@ -68,6 +68,7 @@ class AgentExecutor(ABC):
         """
         # Create temp copy for isolation
         temp_repo_path = self._create_temp_repo_copy(repo_path)
+        cleanup_workspace = True  # Only cleanup if successful
 
         try:
             # Execute the agent
@@ -95,15 +96,22 @@ class AgentExecutor(ABC):
                 return result
             else:
                 print(f"[EXECUTOR-LOG] ✗ Answers incomplete: {error_msg}")
+                cleanup_workspace = False  # Keep workspace for debugging
+                print(f"[EXECUTOR-LOG] Workspace preserved for debugging at: {temp_repo_path}")
                 return {"error": f"{self.agent_name} timed out and answers incomplete: {error_msg}"}
 
         except Exception as e:
             # Return error result
+            cleanup_workspace = False  # Keep workspace for debugging
+            print(f"[EXECUTOR-LOG] Error occurred, workspace preserved for debugging at: {temp_repo_path}")
             return {"error": f"{self.agent_name} execution failed: {str(e)}"}
 
         finally:
-            # Always cleanup temp directory
-            self._cleanup_temp_repo(temp_repo_path)
+            # Only cleanup if successful
+            if cleanup_workspace:
+                self._cleanup_temp_repo(temp_repo_path)
+            else:
+                print(f"[EXECUTOR-LOG] Skipping workspace cleanup due to error")
 
     @abstractmethod
     def _run_agent(self, prompt: str, repo_path: str) -> None:
@@ -186,13 +194,14 @@ class AgentExecutor(ABC):
 
     def _parse_json_response(self, repo_path: str) -> Dict[str, Any]:
         """
-        Parse the answers.json file created by the agent.
+        Parse the answers.json file created by the agent and merge with timing metadata.
 
         Args:
             repo_path: Path to the repository where answers.json should be
 
         Returns:
-            Parsed JSON dictionary
+            Parsed JSON dictionary with timing metadata merged at top level.
+            If answers.json is an array, it's wrapped as {"answers": [...], "agent_completion_time_seconds": X}
 
         Raises:
             FileNotFoundError if answers.json doesn't exist
@@ -204,14 +213,36 @@ class AgentExecutor(ABC):
         if not os.path.exists(answers_file):
             raise FileNotFoundError(f"Agent did not create answers.json at: {answers_file}")
 
-        # Read and parse JSON
+        # Read and parse answers JSON
         with open(answers_file, 'r', encoding='utf-8') as f:
             content = f.read()
 
         # Parse JSON (will raise JSONDecodeError if invalid)
-        answers = json.loads(content)
+        answers_data = json.loads(content)
 
-        return answers
+        # Wrap in object if it's an array
+        if isinstance(answers_data, list):
+            result = {"answers": answers_data}
+        elif isinstance(answers_data, dict):
+            result = answers_data
+        else:
+            raise ValueError(f"Unexpected answers.json format: {type(answers_data)}")
+
+        # Read timing metadata if it exists
+        metadata_file = os.path.join(repo_path, "answers_metadata.json")
+        if os.path.exists(metadata_file):
+            try:
+                with open(metadata_file, 'r', encoding='utf-8') as f:
+                    metadata = json.load(f)
+
+                # Merge timing info at top level
+                if "agent_completion_time_seconds" in metadata:
+                    result["agent_completion_time_seconds"] = metadata["agent_completion_time_seconds"]
+                    print(f"[EXECUTOR-LOG] Merged timing metadata: {metadata['agent_completion_time_seconds']} seconds")
+            except Exception as e:
+                print(f"[EXECUTOR-LOG] Warning: Failed to read timing metadata: {e}")
+
+        return result
 
     def _convert_to_wsl_path(self, win_path: str) -> str:
         """
@@ -267,7 +298,7 @@ class AgentExecutor(ABC):
                 capture_output=True,
                 text=True,
                 check=True,
-                timeout=420  # 7 minutes - generous timeout for agent execution (240s cursor + buffer)
+                timeout=420  # 7 minutes - generous timeout for agent execution (300s agent + buffer)
             )
 
             print(f"[EXECUTOR-LOG] WSL command completed with return code: {result.returncode}")
@@ -320,10 +351,108 @@ class AgentExecutor(ABC):
 
 
 class ClaudeAgentExecutor(AgentExecutor):
-    """Executor for Claude CLI agent using claude-agent-sdk."""
+    """
+    Executor for Claude CLI agent using claude-agent-sdk.
+
+    Uses a fixed workspace directory (tests/deterministic/wsl_runners/_claude_workspace)
+    for easier debugging and consistency with other agents.
+    """
 
     def __init__(self):
         super().__init__("claude")
+
+    def _create_temp_repo_copy(self, repo_path: str) -> str:
+        """
+        Create a fixed workspace copy for claude (for easier debugging).
+
+        Unlike the base class which creates random temp directories, this uses a
+        fixed directory that persists for debugging, similar to cursor and codex.
+
+        The workspace is cleaned before each run to ensure test isolation.
+
+        Args:
+            repo_path: Path to the original repository
+
+        Returns:
+            Path to the workspace repository copy
+
+        Raises:
+            FileNotFoundError if repo_path doesn't exist
+            OSError if copy operation fails
+        """
+        # Validate source exists
+        if not os.path.exists(repo_path):
+            raise FileNotFoundError(f"Repository not found: {repo_path}")
+
+        # Fixed workspace directory for claude
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        workspace_dir = os.path.join(script_dir, "wsl_runners", "_claude_workspace")
+
+        # Create workspace directory if it doesn't exist
+        os.makedirs(workspace_dir, exist_ok=True)
+
+        # Clean workspace contents if it exists
+        if os.path.exists(workspace_dir):
+            print(f"[EXECUTOR-LOG] Cleaning existing claude workspace contents: {workspace_dir}")
+            for item in os.listdir(workspace_dir):
+                item_path = os.path.join(workspace_dir, item)
+                try:
+                    if os.path.isfile(item_path) or os.path.islink(item_path):
+                        os.unlink(item_path)
+                    elif os.path.isdir(item_path):
+                        shutil.rmtree(item_path)
+                except Exception as e:
+                    print(f"[EXECUTOR-LOG] Warning: Failed to delete {item_path}: {e}")
+
+        # Copy repository contents
+        try:
+            # Get repo name from path
+            repo_name = os.path.basename(os.path.normpath(repo_path))
+            workspace_repo_path = os.path.join(workspace_dir, repo_name)
+
+            # Copy entire directory tree
+            shutil.copytree(repo_path, workspace_repo_path, symlinks=True)
+
+            print(f"[EXECUTOR-LOG] Created claude workspace at: {workspace_repo_path}")
+            return workspace_repo_path
+
+        except Exception as e:
+            # Cleanup contents on failure but keep directory
+            for item in os.listdir(workspace_dir):
+                item_path = os.path.join(workspace_dir, item)
+                try:
+                    if os.path.isfile(item_path) or os.path.islink(item_path):
+                        os.unlink(item_path)
+                    elif os.path.isdir(item_path):
+                        shutil.rmtree(item_path)
+                except:
+                    pass
+            raise OSError(f"Failed to create claude workspace copy: {str(e)}")
+
+    def _cleanup_temp_repo(self, temp_path: str) -> None:
+        """
+        Clean up the claude workspace contents.
+
+        Removes the workspace contents but keeps the _claude_workspace directory itself
+        (for easier debugging and re-runs).
+
+        Args:
+            temp_path: Path to the workspace repository
+        """
+        if os.path.exists(temp_path):
+            # Get the workspace directory (parent of the repo copy)
+            workspace_dir = os.path.dirname(temp_path)
+            print(f"[EXECUTOR-LOG] Cleaning claude workspace contents: {workspace_dir}")
+            # Remove all contents but keep the directory itself
+            for item in os.listdir(workspace_dir):
+                item_path = os.path.join(workspace_dir, item)
+                try:
+                    if os.path.isfile(item_path) or os.path.islink(item_path):
+                        os.unlink(item_path)
+                    elif os.path.isdir(item_path):
+                        shutil.rmtree(item_path)
+                except Exception as e:
+                    print(f"[EXECUTOR-LOG] Warning: Failed to delete {item_path}: {e}")
 
     def _run_agent(self, prompt: str, repo_path: str) -> None:
         """

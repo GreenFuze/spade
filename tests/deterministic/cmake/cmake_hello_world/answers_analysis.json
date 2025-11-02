@@ -1,7 +1,7 @@
 {
   "results": {
     "claude_NORIG": {
-      "total_score": 30,
+      "total_score": 29,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -13,7 +13,7 @@
           "max": 10
         },
         "hard": {
-          "score": 10,
+          "score": 9,
           "max": 10
         }
       },
@@ -46,7 +46,7 @@
           "id": 5,
           "score": 1,
           "expected": "src",
-          "actual": "src"
+          "actual": "src/"
         },
         {
           "id": 6,
@@ -252,7 +252,7 @@
         },
         {
           "id": 30,
-          "score": 1,
+          "score": 0,
           "expected": [
             [
               "main.h"
@@ -269,12 +269,11 @@
               "src/main.h"
             ]
           ],
-          "actual": [
-            "main.h"
-          ],
+          "actual": "none",
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
         }
-      ]
+      ],
+      "completion_time_seconds": 54.06
     },
     "claude_RIG": {
       "total_score": 30,
@@ -546,12 +545,13 @@
             ]
           ],
           "actual": [
-            "main.h",
-            "utils.h"
+            "src\\main.h",
+            "src\\utils.h"
           ],
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
         }
-      ]
+      ],
+      "completion_time_seconds": 42.04
     },
     "codex_NORIG": {
       "total_score": 29,
@@ -825,10 +825,11 @@
           "actual": "none",
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
         }
-      ]
+      ],
+      "completion_time_seconds": 74.97
     },
     "codex_RIG": {
-      "total_score": 30,
+      "total_score": 29,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -840,7 +841,7 @@
           "max": 10
         },
         "hard": {
-          "score": 10,
+          "score": 9,
           "max": 10
         }
       },
@@ -1057,7 +1058,7 @@
           "id": 26,
           "score": 1,
           "expected": "cxx",
-          "actual": "cxx"
+          "actual": "C++"
         },
         {
           "id": 27,
@@ -1079,7 +1080,7 @@
         },
         {
           "id": 30,
-          "score": 1,
+          "score": 0,
           "expected": [
             [
               "main.h"
@@ -1096,13 +1097,11 @@
               "src/main.h"
             ]
           ],
-          "actual": [
-            "src/main.h",
-            "src/utils.h"
-          ],
+          "actual": "none",
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
         }
-      ]
+      ],
+      "completion_time_seconds": 87.13
     },
     "cursor_NORIG": {
       "total_score": 28,
@@ -1150,7 +1149,7 @@
           "id": 5,
           "score": 1,
           "expected": "src",
-          "actual": "src/"
+          "actual": "src"
         },
         {
           "id": 6,
@@ -1380,7 +1379,8 @@
           ],
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
         }
-      ]
+      ],
+      "completion_time_seconds": 24.97
     },
     "cursor_RIG": {
       "total_score": 29,
@@ -1523,7 +1523,7 @@
             "src/main.cpp"
           ],
           "actual": [
-            "src\\main.cpp"
+            "src/main.cpp"
           ],
           "question": "What source files are used to build the hello_world component? (Provide a list)"
         },
@@ -1534,7 +1534,7 @@
             "src/utils.cpp"
           ],
           "actual": [
-            "src\\utils.cpp"
+            "src/utils.cpp"
           ],
           "question": "What source files are used to build the utils component? (Provide a list)"
         },
@@ -1653,122 +1653,17 @@
             ]
           ],
           "actual": [
-            "src\\main.h"
+            "src/main.h"
           ],
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
         }
-      ]
+      ],
+      "completion_time_seconds": 22.91
     }
   },
   "analysis": {
     "by_agent": {
       "claude": {
-        "with_rig": {
-          "score": 30,
-          "max_score": 30,
-          "percentage": 100.0,
-          "by_difficulty": {
-            "easy": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            }
-          }
-        },
-        "without_rig": {
-          "score": 30,
-          "max_score": 30,
-          "percentage": 100.0,
-          "by_difficulty": {
-            "easy": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            }
-          }
-        },
-        "rig_improvement": {
-          "absolute": 0,
-          "percentage": 0.0,
-          "by_difficulty": {
-            "easy": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "medium": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "hard": {
-              "absolute": 0,
-              "percentage": 0.0
-            }
-          }
-        },
-        "mistakes_without_rig": {
-          "total": 0,
-          "by_difficulty": {
-            "easy": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            }
-          }
-        },
-        "mistakes_with_rig": {
-          "total": 0,
-          "by_difficulty": {
-            "easy": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            }
-          }
-        },
-        "questions_fixed_by_rig": [],
-        "questions_broken_by_rig": []
-      },
-      "codex": {
         "with_rig": {
           "score": 30,
           "max_score": 30,
@@ -1876,7 +1771,133 @@
         "questions_fixed_by_rig": [
           30
         ],
-        "questions_broken_by_rig": []
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 42.04,
+          "time_without_rig_seconds": 54.06,
+          "time_saved_seconds": 12.02,
+          "time_reduction_percentage": 22.2,
+          "efficiency_with_rig_score_per_second": 0.7136,
+          "efficiency_without_rig_score_per_second": 0.5364
+        }
+      },
+      "codex": {
+        "with_rig": {
+          "score": 29,
+          "max_score": 30,
+          "percentage": 96.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 29,
+          "max_score": 30,
+          "percentage": 96.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 0,
+          "percentage": 0.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "hard": {
+              "absolute": 0,
+              "percentage": 0.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 1,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                30
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 1,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                30
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 87.13,
+          "time_without_rig_seconds": 74.97,
+          "time_saved_seconds": -12.16,
+          "time_reduction_percentage": -16.2,
+          "efficiency_with_rig_score_per_second": 0.3328,
+          "efficiency_without_rig_score_per_second": 0.3868
+        }
       },
       "cursor": {
         "with_rig": {
@@ -1989,7 +2010,15 @@
         "questions_fixed_by_rig": [
           28
         ],
-        "questions_broken_by_rig": []
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 22.91,
+          "time_without_rig_seconds": 24.97,
+          "time_saved_seconds": 2.06,
+          "time_reduction_percentage": 8.2,
+          "efficiency_with_rig_score_per_second": 1.2658,
+          "efficiency_without_rig_score_per_second": 1.1213
+        }
       }
     },
     "by_category": {
@@ -2030,14 +2059,14 @@
       "source_analysis": {
         "total_questions": 6,
         "with_rig": {
-          "score": 18,
-          "max": 18,
-          "percentage": 100.0
-        },
-        "without_rig": {
           "score": 17,
           "max": 18,
           "percentage": 94.4
+        },
+        "without_rig": {
+          "score": 16,
+          "max": 18,
+          "percentage": 88.9
         },
         "improvement": {
           "absolute": 1,
@@ -2046,13 +2075,13 @@
         "per_agent": {
           "claude": {
             "with_rig": 100.0,
-            "without_rig": 100.0,
-            "improvement": 0.0
-          },
-          "codex": {
-            "with_rig": 100.0,
             "without_rig": 83.3,
             "improvement": 16.7
+          },
+          "codex": {
+            "with_rig": 83.3,
+            "without_rig": 83.3,
+            "improvement": 0.0
           },
           "cursor": {
             "with_rig": 100.0,
@@ -2216,6 +2245,22 @@
             "codex"
           ],
           "avg_improvement": 0.0
+        },
+        {
+          "id": 30,
+          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
+          "difficulty": "hard",
+          "category": "source_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "cursor"
+          ],
+          "avg_improvement": 33.3
         }
       ],
       "easiest_questions": [
@@ -2749,27 +2794,25 @@
             "cursor"
           ],
           "avg_improvement": 0.0
-        },
+        }
+      ],
+      "most_rig_sensitive": [
         {
           "id": 30,
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
           "difficulty": "hard",
           "category": "source_analysis",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 66.7,
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 33.3,
           "agents_correct_with_rig": [
             "claude",
-            "codex",
             "cursor"
           ],
           "agents_correct_without_rig": [
-            "claude",
             "cursor"
           ],
           "avg_improvement": 33.3
-        }
-      ],
-      "most_rig_sensitive": [
+        },
         {
           "id": 28,
           "question": "What test framework is used?",
@@ -2785,24 +2828,6 @@
           "agents_correct_without_rig": [
             "claude",
             "codex"
-          ],
-          "avg_improvement": 33.3
-        },
-        {
-          "id": 30,
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
-          "difficulty": "hard",
-          "category": "source_analysis",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 66.7,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "claude",
-            "cursor"
           ],
           "avg_improvement": 33.3
         }
@@ -3358,17 +3383,17 @@
         }
       },
       "correlation": {
-        "pattern": "Agents with higher baseline show less improvement from RIG",
+        "pattern": "No clear correlation between baseline performance and RIG improvement",
         "data": [
           {
             "agent": "claude",
-            "baseline_pct": 100.0,
-            "improvement_pct": 0.0
+            "baseline_pct": 96.7,
+            "improvement_pct": 3.3
           },
           {
             "agent": "codex",
             "baseline_pct": 96.7,
-            "improvement_pct": 3.3
+            "improvement_pct": 0.0
           },
           {
             "agent": "cursor",
@@ -3378,6 +3403,79 @@
         ]
       }
     },
+    "timing_insights": {
+      "speed_vs_accuracy_with_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 22.91,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 1.2658
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 42.04,
+          "score_percentage": 100.0,
+          "efficiency_score_per_second": 0.7136
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 87.13,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 0.3328
+        }
+      ],
+      "speed_vs_accuracy_without_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 24.97,
+          "score_percentage": 93.3,
+          "efficiency_score_per_second": 1.1213
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 54.06,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 0.5364
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 74.97,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 0.3868
+        }
+      ],
+      "time_reduction_vs_score_improvement": {
+        "correlation_note": "Greater time reduction correlates with better score improvement",
+        "data": [
+          {
+            "agent": "claude",
+            "time_reduction_percentage": 22.2,
+            "score_improvement_percentage": 3.3,
+            "time_saved_seconds": 12.02,
+            "score_points_gained": 1
+          },
+          {
+            "agent": "cursor",
+            "time_reduction_percentage": 8.2,
+            "score_improvement_percentage": 3.3,
+            "time_saved_seconds": 2.06,
+            "score_points_gained": 1
+          },
+          {
+            "agent": "codex",
+            "time_reduction_percentage": -16.2,
+            "score_improvement_percentage": 0.0,
+            "time_saved_seconds": -12.16,
+            "score_points_gained": 0
+          }
+        ]
+      },
+      "efficiency_analysis": {
+        "avg_efficiency_with_rig_score_per_second": 0.7707,
+        "avg_efficiency_without_rig_score_per_second": 0.6815,
+        "efficiency_improvement_percentage": 13.1
+      }
+    },
     "summary": {
       "best_overall_with_rig": {
         "agent": "claude",
@@ -3385,19 +3483,42 @@
       },
       "best_overall_without_rig": {
         "agent": "claude",
-        "percentage": 100.0
+        "percentage": 96.7
       },
       "most_rig_improvement": {
-        "agent": "codex",
+        "agent": "claude",
         "improvement_percentage": 3.3
       },
       "least_rig_improvement": {
-        "agent": "claude",
+        "agent": "codex",
         "improvement_percentage": 0.0
       },
-      "average_with_rig": 98.9,
-      "average_without_rig": 96.7,
-      "average_rig_improvement": 2.2
+      "average_with_rig": 97.8,
+      "average_without_rig": 95.6,
+      "average_rig_improvement": 2.2,
+      "timing": {
+        "average_time_with_rig_seconds": 50.69,
+        "average_time_without_rig_seconds": 51.33,
+        "average_time_saved_seconds": 0.64,
+        "average_time_reduction_percentage": 4.7,
+        "fastest_with_rig": {
+          "agent": "cursor",
+          "time_seconds": 22.91
+        },
+        "fastest_without_rig": {
+          "agent": "cursor",
+          "time_seconds": 24.97
+        },
+        "most_time_saved": {
+          "agent": "claude",
+          "time_saved_seconds": 12.02,
+          "time_reduction_percentage": 22.2
+        },
+        "highest_time_reduction_percentage": {
+          "agent": "claude",
+          "time_reduction_percentage": 22.2
+        }
+      }
     }
   }
 }
