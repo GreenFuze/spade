@@ -32,7 +32,7 @@
 			"name": "h_files_count",
 			"category": "source_analysis",
 			"question": "How many .h files are in the src/ directory?",
-			"expected_answer": 1,
+			"expected_answer": 2,
 			"difficulty": "easy"
 		},
 		{
@@ -63,7 +63,7 @@
 			"id": 8,
 			"name": "testing_enabled",
 			"category": "testing",
-			"question": "Is enable_testing() called in this project?",
+			"question": "Is enable_testing() called in this project? (Answer yes or no)",
 			"expected_answer": "yes",
 			"difficulty": "easy"
 		},
@@ -72,7 +72,7 @@
 			"name": "cmakelists_lines",
 			"category": "build_system",
 			"question": "How many lines are in the CMakeLists.txt file?",
-			"expected_answer": 16,
+			"expected_answer": [15,16],
 			"difficulty": "easy"
 		},
 		{
@@ -95,23 +95,23 @@
 			"id": 12,
 			"name": "output_artifacts",
 			"category": "component_identification",
-			"question": "What are the names of all output artifacts produced by this build?",
-			"expected_answer": ["hello_world.exe", "utils.lib"],
+			"question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)",
+			"expected_answer": [["hello_world.exe", "utils.lib"]],
 			"difficulty": "medium"
 		},
 		{
 			"id": 13,
 			"name": "component_types",
 			"category": "component_identification",
-			"question": "What types of components are built in this repository?",
-			"expected_answer": ["executable", "static_library"],
+			"question": "What types of components are built in this repository? (Provide a list)",
+			"expected_answer": [["executable", "static_library"], ["executable", "static library"]],
 			"difficulty": "medium"
 		},
 		{
 			"id": 14,
 			"name": "executable_component",
 			"category": "component_identification",
-			"question": "Which component is the executable?",
+			"question": "Which component is the executable on Windows? (state executable name with extension)",
 			"expected_answer": "hello_world.exe",
 			"difficulty": "medium"
 		},
@@ -119,7 +119,7 @@
 			"id": 15,
 			"name": "library_component",
 			"category": "component_identification",
-			"question": "Which component is the library?",
+			"question": "Which component is the library on Windows? (state library name with extension)",
 			"expected_answer": "utils.lib",
 			"difficulty": "medium"
 		},
@@ -127,7 +127,7 @@
 			"id": 16,
 			"name": "hello_world_sources",
 			"category": "source_analysis",
-			"question": "What source files are used to build the hello_world component?",
+			"question": "What source files are used to build the hello_world component? (Provide a list)",
 			"expected_answer": ["src/main.cpp"],
 			"difficulty": "medium"
 		},
@@ -135,7 +135,7 @@
 			"id": 17,
 			"name": "utils_sources",
 			"category": "source_analysis",
-			"question": "What source files are used to build the utils component?",
+			"question": "What source files are used to build the utils component? (Provide a list)",
 			"expected_answer": ["src/utils.cpp"],
 			"difficulty": "medium"
 		},
@@ -143,7 +143,7 @@
 			"id": 18,
 			"name": "hello_world_dependencies",
 			"category": "dependency_analysis",
-			"question": "List all components that hello_world depends on.",
+			"question": "List all components that hello_world depends on (use Windows artifact names).",
 			"expected_answer": ["utils.lib"],
 			"difficulty": "medium"
 		},
@@ -167,7 +167,7 @@
 			"id": 21,
 			"name": "build_order",
 			"category": "dependency_analysis",
-			"question": "In what order must the components be built to satisfy all dependencies?",
+			"question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)",
 			"expected_answer": ["utils.lib", "hello_world.exe"],
 			"difficulty": "hard"
 		},
@@ -175,7 +175,7 @@
 			"id": 22,
 			"name": "parallel_build",
 			"category": "dependency_analysis",
-			"question": "Can both components be built in parallel?",
+			"question": "Can both components be built in parallel? (Answer yes or no)",
 			"expected_answer": "no",
 			"difficulty": "hard"
 		},
@@ -183,7 +183,7 @@
 			"id": 23,
 			"name": "utils_failure_impact",
 			"category": "dependency_analysis",
-			"question": "If the utils component fails to build, which other components would also fail?",
+			"question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)",
 			"expected_answer": ["hello_world.exe"],
 			"difficulty": "hard"
 		},
@@ -199,7 +199,7 @@
 			"id": 25,
 			"name": "leaf_components",
 			"category": "dependency_analysis",
-			"question": "Which component(s) have no other components depending on them?",
+			"question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)",
 			"expected_answer": ["hello_world.exe"],
 			"difficulty": "hard"
 		},
@@ -215,7 +215,7 @@
 			"id": 27,
 			"name": "test_executable",
 			"category": "testing",
-			"question": "Which component does the test execute?",
+			"question": "Which component does the test execute on Windows? (use Windows artifact name)",
 			"expected_answer": "hello_world.exe",
 			"difficulty": "hard"
 		},
@@ -239,8 +239,8 @@
 			"id": 30,
 			"name": "unused_source_files",
 			"category": "source_analysis",
-			"question": "Are there any source files in src/ that are not used by any component?",
-			"expected_answer": "yes",
+			"question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
+			"expected_answer": [["main.h"], ["utils.h", "main.h"], ["src/main.h"], ["src/utils.h", "src/main.h"]],
 			"difficulty": "hard"
 		}
 	],

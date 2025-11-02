@@ -13,11 +13,11 @@
   },
   {
     "id": 4,
-    "answer": 1
+    "answer": 2
   },
   {
     "id": 5,
-    "answer": "src/"
+    "answer": "src"
   },
   {
     "id": 6,
@@ -120,7 +120,7 @@
   },
   {
     "id": 26,
-    "answer": "c++"
+    "answer": "cxx"
   },
   {
     "id": 27,
@@ -136,6 +136,9 @@
   },
   {
     "id": 30,
-    "answer": "no"
+    "answer": [
+      "src/main.h",
+      "src/utils.h"
+    ]
   }
 ]

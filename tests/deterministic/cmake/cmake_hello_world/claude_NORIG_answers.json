@@ -13,7 +13,7 @@
   },
   {
     "id": 4,
-    "answer": 1
+    "answer": 2
   },
   {
     "id": 5,
@@ -46,8 +46,8 @@
   {
     "id": 12,
     "answer": [
-      "hello_world",
-      "utils"
+      "hello_world.exe",
+      "utils.lib"
     ]
   },
   {
@@ -59,11 +59,11 @@
   },
   {
     "id": 14,
-    "answer": "hello_world"
+    "answer": "hello_world.exe"
   },
   {
     "id": 15,
-    "answer": "utils"
+    "answer": "utils.lib"
   },
   {
     "id": 16,
@@ -80,7 +80,7 @@
   {
     "id": 18,
     "answer": [
-      "utils"
+      "utils.lib"
     ]
   },
   {
@@ -94,8 +94,8 @@
   {
     "id": 21,
     "answer": [
-      "utils",
-      "hello_world"
+      "utils.lib",
+      "hello_world.exe"
     ]
   },
   {
@@ -105,7 +105,7 @@
   {
     "id": 23,
     "answer": [
-      "hello_world"
+      "hello_world.exe"
     ]
   },
   {
@@ -115,7 +115,7 @@
   {
     "id": 25,
     "answer": [
-      "hello_world"
+      "hello_world.exe"
     ]
   },
   {
@@ -124,7 +124,7 @@
   },
   {
     "id": 27,
-    "answer": "hello_world"
+    "answer": "hello_world.exe"
   },
   {
     "id": 28,
@@ -136,6 +136,8 @@
   },
   {
     "id": 30,
-    "answer": "no"
+    "answer": [
+      "main.h"
+    ]
   }
 ]

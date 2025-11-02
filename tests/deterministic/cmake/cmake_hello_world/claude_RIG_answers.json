@@ -13,7 +13,7 @@
   },
   {
     "id": 4,
-    "answer": 1
+    "answer": 2
   },
   {
     "id": 5,
@@ -136,6 +136,9 @@
   },
   {
     "id": 30,
-    "answer": "yes"
+    "answer": [
+      "main.h",
+      "utils.h"
+    ]
   }
 ]
