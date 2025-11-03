@@ -1,0 +1,248 @@
+{
+	"repository_name": "metaffi",
+	"build_system": "cmake",
+	"description": "Evaluation questions for metaffi - complex multi-language CMake project with hierarchical aggregators and plugin architecture",
+	"questions": [
+		{
+			"id": 1,
+			"name": "project_name",
+			"category": "build_system",
+			"question": "What is the CMake project name?",
+			"expected_answer": "MetaFFI",
+			"difficulty": "easy"
+		},
+		{
+			"id": 2,
+			"name": "project_version",
+			"category": "build_system",
+			"question": "What is the project version?",
+			"expected_answer": "0.3.1",
+			"difficulty": "easy"
+		},
+		{
+			"id": 3,
+			"name": "cmake_version",
+			"category": "build_system",
+			"question": "What is the minimum CMake version required?",
+			"expected_answer": "3.10",
+			"difficulty": "easy"
+		},
+		{
+			"id": 4,
+			"name": "testing_enabled",
+			"category": "build_system",
+			"question": "Is enable_testing() called in this project? (Answer yes or no)",
+			"expected_answer": "yes",
+			"difficulty": "easy"
+		},
+		{
+			"id": 5,
+			"name": "jar_files_count",
+			"category": "source_analysis",
+			"question": "How many .jar files are built by this project?",
+			"expected_answer": 4,
+			"difficulty": "easy"
+		},
+		{
+			"id": 6,
+			"name": "exe_files_count",
+			"category": "source_analysis",
+			"question": "How many .exe files are built?",
+			"expected_answer": 9,
+			"difficulty": "easy"
+		},
+		{
+			"id": 7,
+			"name": "dll_files_count",
+			"category": "source_analysis",
+			"question": "How many .dll files are built?",
+			"expected_answer": 11,
+			"difficulty": "easy"
+		},
+		{
+			"id": 8,
+			"name": "tests_count",
+			"category": "testing",
+			"question": "How many tests are defined in total?",
+			"expected_answer": 16,
+			"difficulty": "easy"
+		},
+		{
+			"id": 9,
+			"name": "aggregator_names",
+			"category": "aggregator_structure",
+			"question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)",
+			"expected_answer": [["metaffi-core", "python311", "openjdk", "go"]],
+			"difficulty": "easy"
+		},
+		{
+			"id": 10,
+			"name": "commented_subdirectories",
+			"category": "build_system",
+			"question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)",
+			"expected_answer": [["lang-plugin-c", "metaffi-installer"]],
+			"difficulty": "easy"
+		},
+		{
+			"id": 11,
+			"name": "cdts_test_sources",
+			"category": "source_analysis",
+			"question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)",
+			"expected_answer": [["metaffi-core/plugin-sdk/runtime/cdts_test.cpp"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 12,
+			"name": "python_runtime_test_sources",
+			"category": "source_analysis",
+			"question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)",
+			"expected_answer": [["lang-plugin-python311/runtime/python_runtime_test.cpp"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 13,
+			"name": "xllr_external_packages",
+			"category": "dependency_analysis",
+			"question": "What external packages does xllr.dll depend on? (Provide a list)",
+			"expected_answer": [["Boost.filesystem", "Boost.thread"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 14,
+			"name": "metaffi_cli_external_packages",
+			"category": "dependency_analysis",
+			"question": "What external packages does metaffi.exe depend on? (Provide a list)",
+			"expected_answer": [["Boost.program_options", "Boost.filesystem"], ["Boost.filesystem", "Boost.program_options"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 15,
+			"name": "idl_extractor_external_packages",
+			"category": "dependency_analysis",
+			"question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)",
+			"expected_answer": [["gson-2.10.1.jar", "asm-9.6.jar", "asm-tree-9.6.jar", "javaparser-core-3.24.4.jar"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 16,
+			"name": "jni_dependent_components",
+			"category": "dependency_analysis",
+			"question": "How many components depend on JNI?",
+			"expected_answer": 7,
+			"difficulty": "medium"
+		},
+		{
+			"id": 17,
+			"name": "doctest_dependent_components",
+			"category": "dependency_analysis",
+			"question": "How many components depend on doctest?",
+			"expected_answer": 10,
+			"difficulty": "medium"
+		},
+		{
+			"id": 18,
+			"name": "python_unittest_framework",
+			"category": "testing",
+			"question": "What test framework is used for python3_api_unitest?",
+			"expected_answer": [["Python"], ["unittest"], ["python"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 19,
+			"name": "python_compiler_language",
+			"category": "component_identification",
+			"question": "What programming language is metaffi.compiler.python311.dll written in?",
+			"expected_answer": [["go"], ["Go"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 20,
+			"name": "openjdk_java_components",
+			"category": "component_identification",
+			"question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)",
+			"expected_answer": [["xllr.openjdk.bridge", "metaffi.api", "openjdk_idl_extractor", "test_data_classes", "java_tests_classes", "java_tests_run", "openjdk_api_cross_pl_tests"]],
+			"difficulty": "medium"
+		},
+		{
+			"id": 21,
+			"name": "metaffi_api_dependency_chain",
+			"category": "dependency_analysis",
+			"question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A → B → C' with Windows artifact names, or describe it as 'A depends on B which depends on C')",
+			"expected_answer": [["metaffi.api.jar → xllr.openjdk.bridge.jar → xllr.openjdk.jni.bridge.dll → xllr.openjdk.dll"], ["metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 22,
+			"name": "parallel_buildable_components",
+			"category": "dependency_analysis",
+			"question": "How many components can be built in parallel because they have zero inter-component dependencies?",
+			"expected_answer": 30,
+			"difficulty": "hard"
+		},
+		{
+			"id": 23,
+			"name": "xllr_openjdk_failure_impact",
+			"category": "dependency_analysis",
+			"question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)",
+			"expected_answer": [["xllr.openjdk.jni.bridge.dll", "xllr.openjdk.bridge.jar", "metaffi.api.jar", "openjdk_api_test.exe", "cdts_java_test.exe", "python_runtime_test.exe"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 24,
+			"name": "parallel_build_xllr_analysis",
+			"category": "dependency_analysis",
+			"question": "Can xllr.python311.dll and xllr.openjdk.dll be built in parallel? (Answer yes or no)",
+			"expected_answer": "yes",
+			"difficulty": "hard"
+		},
+		{
+			"id": 25,
+			"name": "python311_aggregator_dependencies",
+			"category": "aggregator_structure",
+			"question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)",
+			"expected_answer": [["xllr.python311.dll", "python_runtime_test.exe", "metaffi.idl.python311.dll", "python311_idl_plugin_test.exe", "metaffi.compiler.python311.dll"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 26,
+			"name": "openjdk_aggregator_dependencies",
+			"category": "aggregator_structure",
+			"question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)",
+			"expected_answer": [["xllr.openjdk.dll", "xllr.openjdk.jni.bridge.dll", "xllr.openjdk.bridge.jar", "metaffi.api.jar", "openjdk_api_test.exe", "cdts_java_test.exe", "metaffi.idl.openjdk.dll", "metaffi.compiler.openjdk.dll"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 27,
+			"name": "metaffi_top_aggregator_dependencies",
+			"category": "aggregator_structure",
+			"question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)",
+			"expected_answer": [["metaffi-core", "python311", "openjdk", "go"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 28,
+			"name": "python311_plugin_components",
+			"category": "plugin_architecture",
+			"question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)",
+			"expected_answer": [["xllr.python311.dll", "metaffi.idl.python311.dll", "metaffi.compiler.python311.dll"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 29,
+			"name": "complete_plugin_languages",
+			"category": "plugin_architecture",
+			"question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)",
+			"expected_answer": [["python311", "openjdk", "go"]],
+			"difficulty": "hard"
+		},
+		{
+			"id": 30,
+			"name": "maximum_dependency_depth",
+			"category": "dependency_analysis",
+			"question": "What is the maximum dependency depth in the project? (i.e., the longest chain from any component to its deepest dependency)",
+			"expected_answer": 5,
+			"difficulty": "hard"
+		}
+	],
+	"ground_truth_file": "tests/deterministic/cmake/metaffi/metaffi_ground_truth.json"
+}

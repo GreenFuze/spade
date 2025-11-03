@@ -1,0 +1,1379 @@
+{
+  "repo": {
+    "name": "MetaFFI",
+    "root": "/mnt/c/src/github.com/GreenFuze/spade/tests/test_repos/cmake/metaffi"
+  },
+  "build": {
+    "system": "CMake",
+    "generator": null,
+    "type": "Debug",
+    "configure_cmd": null,
+    "test_cmd": null
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "plugin-sdk",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "metaffi-core/plugin-sdk",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-2",
+      "name": "xllr.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "cmake-build-debug/metaffi-core/XLLR/Debug/xllr.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-4",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-3",
+      "name": "metaffi.exe",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "cmake-build-debug/metaffi-core/CLI/Debug/metaffi.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-6",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-4",
+      "name": "cdts_test.exe",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "cmake-build-debug/metaffi-core/plugin-sdk/Debug/cdts_test.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "metaffi-core/plugin-sdk/runtime/cdts_test.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-5",
+      "name": "xllr_capi_test.exe",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "cmake-build-debug/metaffi-core/plugin-sdk/Debug/xllr_capi_test.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "metaffi-core/plugin-sdk/runtime/xllr_capi_test.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-6",
+      "name": "metaffi-core",
+      "depends_on_ids": [
+        "comp-5",
+        "comp-3",
+        "comp-2",
+        "comp-4"
+      ],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "relative_path": "metaffi-core",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-7",
+      "name": "xllr.python311.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-7"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-python311/runtime/Debug/python311/xllr.python311.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-8",
+      "name": "python_runtime_test.exe",
+      "depends_on_ids": [
+        "comp-7"
+      ],
+      "evidence_ids": [
+        "evidence-8"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-python311/runtime/Debug/python_runtime_test.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "lang-plugin-python311/runtime/python_runtime_test.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-9",
+      "name": "metaffi.idl.python311.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-9"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-python311/idl/Debug/python311/metaffi.idl.python311.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-10",
+      "name": "python311_idl_plugin_test.exe",
+      "depends_on_ids": [
+        "comp-9"
+      ],
+      "evidence_ids": [
+        "evidence-10"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-python311/idl/Debug/python311_idl_plugin_test.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "lang-plugin-python311/idl/idl_plugin_test.cpp",
+        "lang-plugin-python311/idl/python_idl_plugin.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-11",
+      "name": "metaffi.compiler.python311.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-11"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-python311/compiler/Debug/python311/metaffi.compiler.python311.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-12",
+      "name": "python3_api_unitest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-12"
+      ],
+      "relative_path": "lang-plugin-python311/api",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "python",
+      "source_files": [
+        "lang-plugin-python311/api/unittest/test_python311_api.py"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-13",
+      "name": "python3_api_cross_pl_tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-13"
+      ],
+      "relative_path": "lang-plugin-python311/api",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "python",
+      "source_files": [
+        "lang-plugin-python311/api/tests/run_api_tests.py"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-14",
+      "name": "python311.publish",
+      "depends_on_ids": [
+        "comp-7"
+      ],
+      "evidence_ids": [
+        "evidence-14"
+      ],
+      "relative_path": "lang-plugin-python311/api",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "python",
+      "source_files": [
+        "lang-plugin-python311/api/publish_python_package.py"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-15",
+      "name": "metaffi_compiler_python311_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-15"
+      ],
+      "relative_path": "lang-plugin-python311/compiler",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-16",
+      "name": "python311",
+      "depends_on_ids": [
+        "comp-9",
+        "comp-11",
+        "comp-7",
+        "comp-8",
+        "comp-10"
+      ],
+      "evidence_ids": [
+        "evidence-16"
+      ],
+      "relative_path": "lang-plugin-python311",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-17",
+      "name": "xllr.openjdk.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-17"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/runtime/Debug/openjdk/xllr.openjdk.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-8",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-18",
+      "name": "cdts_java_test.exe",
+      "depends_on_ids": [
+        "comp-17"
+      ],
+      "evidence_ids": [
+        "evidence-18"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/runtime/Debug/cdts_java_test.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "lang-plugin-openjdk/runtime/cdts_java_test.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-8",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-19",
+      "name": "openjdk_api_test.exe",
+      "depends_on_ids": [
+        "comp-17"
+      ],
+      "evidence_ids": [
+        "evidence-19"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/runtime/Debug/openjdk_api_test.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "lang-plugin-openjdk/runtime/cdts_java_test.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-8",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-20",
+      "name": "xllr.openjdk.jni.bridge.dll",
+      "depends_on_ids": [
+        "comp-17"
+      ],
+      "evidence_ids": [
+        "evidence-20"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/xllr-openjdk-bridge/Debug/openjdk/xllr.openjdk.jni.bridge.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-8",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-21",
+      "name": "xllr.openjdk.bridge.jar",
+      "depends_on_ids": [
+        "comp-20"
+      ],
+      "evidence_ids": [
+        "evidence-21"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/xllr-openjdk-bridge/Debug/openjdk/xllr.openjdk.bridge.jar",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "java",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-22",
+      "name": "metaffi.api.jar",
+      "depends_on_ids": [
+        "comp-21"
+      ],
+      "evidence_ids": [
+        "evidence-22"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/api/Debug/openjdk/metaffi.api.jar",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "java",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-23",
+      "name": "openjdk_idl_extractor.jar",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-23"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/idl/Debug/openjdk/openjdk_idl_extractor.jar",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "java",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-12",
+        "pkg-14",
+        "pkg-18",
+        "pkg-16"
+      ]
+    },
+    {
+      "id": "comp-24",
+      "name": "metaffi.idl.openjdk.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-24"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/idl/Debug/openjdk/metaffi.idl.openjdk.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cxx",
+      "source_files": [
+        "lang-plugin-openjdk/idl/openjdk_idl_plugin.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-8"
+      ]
+    },
+    {
+      "id": "comp-25",
+      "name": "test_data_classes",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-25"
+      ],
+      "relative_path": "lang-plugin-openjdk/idl/test/testdata",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "java",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-26",
+      "name": "java_tests_classes",
+      "depends_on_ids": [
+        "comp-25"
+      ],
+      "evidence_ids": [
+        "evidence-26"
+      ],
+      "relative_path": "lang-plugin-openjdk/idl/test/java_extractor",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "java",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-27",
+      "name": "java_tests_run",
+      "depends_on_ids": [
+        "comp-26"
+      ],
+      "evidence_ids": [
+        "evidence-27"
+      ],
+      "relative_path": "lang-plugin-openjdk/idl",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "java",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-28",
+      "name": "metaffi.compiler.openjdk.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-28"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-openjdk/compiler/Debug/openjdk/metaffi.compiler.openjdk.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-29",
+      "name": "openjdk_api_cross_pl_tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-29"
+      ],
+      "relative_path": "lang-plugin-openjdk/api",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "python",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-30",
+      "name": "openjdk_compiler_go_tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-30"
+      ],
+      "relative_path": "lang-plugin-openjdk/compiler",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-31",
+      "name": "openjdk",
+      "depends_on_ids": [
+        "comp-28",
+        "comp-21",
+        "comp-17",
+        "comp-19",
+        "comp-18",
+        "comp-24",
+        "comp-22",
+        "comp-20"
+      ],
+      "evidence_ids": [
+        "evidence-31"
+      ],
+      "relative_path": "lang-plugin-openjdk",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-32",
+      "name": "xllr.go.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-32"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-go/runtime/Debug/go/xllr.go.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-33",
+      "name": "build_go_guest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-33"
+      ],
+      "relative_path": "lang-plugin-go/runtime/test",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "go",
+      "source_files": [
+        "lang-plugin-go/runtime/test/TestRuntime.go",
+        "lang-plugin-go/runtime/test/build_guest.py"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-34",
+      "name": "go_api_test.exe",
+      "depends_on_ids": [
+        "comp-33",
+        "comp-32"
+      ],
+      "evidence_ids": [
+        "evidence-34"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-go/runtime/Debug/go_api_test.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cxx",
+      "source_files": [
+        "lang-plugin-go/runtime/go_api_test.cpp"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-35",
+      "name": "metaffi.compiler.go.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-35"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-go/compiler/Debug/go/metaffi.compiler.go.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-36",
+      "name": "metaffi.idl.go.dll",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-36"
+      ],
+      "relative_path": "cmake-build-debug/lang-plugin-go/idl/Debug/go/metaffi.idl.go.dll",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-37",
+      "name": "metaffi_compiler_go_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-37"
+      ],
+      "relative_path": "lang-plugin-go/compiler",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-38",
+      "name": "metaffi_idl_go_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-38"
+      ],
+      "relative_path": "lang-plugin-go/idl",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "go",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-39",
+      "name": "go_runtime_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-39"
+      ],
+      "relative_path": "lang-plugin-go/go-runtime/test",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "go",
+      "source_files": [
+        "lang-plugin-go/go-runtime/test/run_test.py"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-40",
+      "name": "go",
+      "depends_on_ids": [
+        "comp-36",
+        "comp-35",
+        "comp-34",
+        "comp-32"
+      ],
+      "evidence_ids": [
+        "evidence-40"
+      ],
+      "relative_path": "lang-plugin-go",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-41",
+      "name": "MetaFFI",
+      "depends_on_ids": [
+        "comp-31",
+        "comp-6",
+        "comp-16",
+        "comp-40"
+      ],
+      "evidence_ids": [
+        "evidence-41"
+      ],
+      "relative_path": ".",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "cxx",
+      "source_files": [],
+      "external_packages_ids": []
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "cdts_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-42"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "metaffi-core/plugin-sdk/runtime/cdts_test.cpp"
+      ],
+      "test_framework": "CTest"
+    },
+    {
+      "id": "test-2",
+      "name": "xllr_capi_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-43"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "metaffi-core/plugin-sdk/runtime/xllr_capi_test.cpp"
+      ],
+      "test_framework": "CTest"
+    },
+    {
+      "id": "test-3",
+      "name": "python_runtime_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-44"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-python311/runtime/python_runtime_test.cpp"
+      ],
+      "test_framework": "CTest"
+    },
+    {
+      "id": "test-4",
+      "name": "idl_plugin_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-45"
+      ],
+      "test_executable_component_id": "comp-10",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-python311/idl/idl_plugin_test.cpp"
+      ],
+      "test_framework": "CTest"
+    },
+    {
+      "id": "test-5",
+      "name": "python3_api_unitest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-46"
+      ],
+      "test_executable_component_id": "comp-12",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-python311/api/unittest/test_python311_api.py"
+      ],
+      "test_framework": "Python"
+    },
+    {
+      "id": "test-6",
+      "name": "python3_api_cross_pl_tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-47"
+      ],
+      "test_executable_component_id": "comp-13",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-python311/api/tests/run_api_tests.py"
+      ],
+      "test_framework": "Python"
+    },
+    {
+      "id": "test-7",
+      "name": "metaffi_compiler_python311_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-48"
+      ],
+      "test_executable_component_id": "comp-15",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-8",
+      "name": "cdts_java_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-49"
+      ],
+      "test_executable_component_id": "comp-18",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-openjdk/runtime/cdts_java_test.cpp"
+      ],
+      "test_framework": "CTest"
+    },
+    {
+      "id": "test-9",
+      "name": "openjdk_api_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-50"
+      ],
+      "test_executable_component_id": "comp-19",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-openjdk/runtime/cdts_java_test.cpp"
+      ],
+      "test_framework": "CTest"
+    },
+    {
+      "id": "test-10",
+      "name": "openjdk_idl_plugin_java_tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-51"
+      ],
+      "test_executable_component_id": "comp-27",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [],
+      "test_framework": "JUnit"
+    },
+    {
+      "id": "test-11",
+      "name": "openjdk_api_cross_pl_tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-52"
+      ],
+      "test_executable_component_id": "comp-29",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [],
+      "test_framework": "Python"
+    },
+    {
+      "id": "test-12",
+      "name": "openjdk_compiler_go_tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-53"
+      ],
+      "test_executable_component_id": "comp-30",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-13",
+      "name": "go_api_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-54"
+      ],
+      "test_executable_component_id": "comp-34",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-go/runtime/go_api_test.cpp"
+      ],
+      "test_framework": "CTest"
+    },
+    {
+      "id": "test-14",
+      "name": "metaffi_compiler_go_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-55"
+      ],
+      "test_executable_component_id": "comp-37",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-15",
+      "name": "metaffi_idl_go_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-56"
+      ],
+      "test_executable_component_id": "comp-38",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-16",
+      "name": "go_runtime_test",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-57"
+      ],
+      "test_executable_component_id": "comp-39",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "lang-plugin-go/go-runtime/test/run_test.py"
+      ],
+      "test_framework": "Go"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-2",
+      "name": "Boost.filesystem"
+    },
+    {
+      "id": "pkg-4",
+      "name": "Boost.thread"
+    },
+    {
+      "id": "pkg-6",
+      "name": "Boost.program_options"
+    },
+    {
+      "id": "pkg-10",
+      "name": "doctest"
+    },
+    {
+      "id": "pkg-8",
+      "name": "JNI"
+    },
+    {
+      "id": "pkg-12",
+      "name": "gson-2.10.1.jar"
+    },
+    {
+      "id": "pkg-14",
+      "name": "asm-9.6.jar"
+    },
+    {
+      "id": "pkg-16",
+      "name": "asm-tree-9.6.jar"
+    },
+    {
+      "id": "pkg-18",
+      "name": "javaparser-core-3.24.4.jar"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-1",
+      "name": "vcpkg",
+      "package_name": "boost-filesystem"
+    },
+    {
+      "id": "pkg-3",
+      "name": "vcpkg",
+      "package_name": "boost-thread"
+    },
+    {
+      "id": "pkg-5",
+      "name": "vcpkg",
+      "package_name": "boost-program-options"
+    },
+    {
+      "id": "pkg-9",
+      "name": "vcpkg",
+      "package_name": "doctest"
+    },
+    {
+      "id": "pkg-7",
+      "name": "CMake",
+      "package_name": "JNI"
+    },
+    {
+      "id": "pkg-11",
+      "name": "Maven",
+      "package_name": "com.google.code.gson:gson:2.10.1"
+    },
+    {
+      "id": "pkg-13",
+      "name": "Maven",
+      "package_name": "org.ow2.asm:asm:9.6"
+    },
+    {
+      "id": "pkg-15",
+      "name": "Maven",
+      "package_name": "org.ow2.asm:asm-tree:9.6"
+    },
+    {
+      "id": "pkg-17",
+      "name": "Maven",
+      "package_name": "com.github.javaparser:javaparser-core:3.24.4"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "metaffi-core/plugin-sdk/CMakeLists.txt:3"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "metaffi-core/XLLR/CMakeLists.txt:7"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "metaffi-core/CLI/CMakeLists.txt:6"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "metaffi-core/plugin-sdk/run_sdk_tests.cmake:6"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "metaffi-core/plugin-sdk/run_sdk_tests.cmake:15"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "metaffi-core/CMakeLists.txt:15"
+      ]
+    },
+    {
+      "id": "evidence-7",
+      "line": [
+        "lang-plugin-python311/runtime/CMakeLists.txt:10"
+      ]
+    },
+    {
+      "id": "evidence-8",
+      "line": [
+        "lang-plugin-python311/runtime/CMakeLists.txt:19"
+      ]
+    },
+    {
+      "id": "evidence-9",
+      "line": [
+        "lang-plugin-python311/idl/CMakeLists.txt:13"
+      ]
+    },
+    {
+      "id": "evidence-10",
+      "line": [
+        "lang-plugin-python311/idl/CMakeLists.txt:22"
+      ]
+    },
+    {
+      "id": "evidence-11",
+      "line": [
+        "lang-plugin-python311/compiler/CMakeLists.txt:6"
+      ]
+    },
+    {
+      "id": "evidence-12",
+      "line": [
+        "lang-plugin-python311/api/CMakeLists.txt:5"
+      ]
+    },
+    {
+      "id": "evidence-13",
+      "line": [
+        "lang-plugin-python311/api/CMakeLists.txt:12"
+      ]
+    },
+    {
+      "id": "evidence-14",
+      "line": [
+        "lang-plugin-python311/api/CMakeLists.txt:19"
+      ]
+    },
+    {
+      "id": "evidence-15",
+      "line": [
+        "lang-plugin-python311/compiler/CMakeLists.txt:19"
+      ]
+    },
+    {
+      "id": "evidence-16",
+      "line": [
+        "lang-plugin-python311/CMakeLists.txt:18"
+      ]
+    },
+    {
+      "id": "evidence-17",
+      "line": [
+        "lang-plugin-openjdk/runtime/CMakeLists.txt:10"
+      ]
+    },
+    {
+      "id": "evidence-18",
+      "line": [
+        "lang-plugin-openjdk/runtime/CMakeLists.txt:19"
+      ]
+    },
+    {
+      "id": "evidence-19",
+      "line": [
+        "lang-plugin-openjdk/runtime/CMakeLists.txt:28"
+      ]
+    },
+    {
+      "id": "evidence-20",
+      "line": [
+        "lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt:9"
+      ]
+    },
+    {
+      "id": "evidence-21",
+      "line": [
+        "lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt:19"
+      ]
+    },
+    {
+      "id": "evidence-22",
+      "line": [
+        "lang-plugin-openjdk/api/CMakeLists.txt:9"
+      ]
+    },
+    {
+      "id": "evidence-23",
+      "line": [
+        "lang-plugin-openjdk/idl/CMakeLists.txt:15"
+      ]
+    },
+    {
+      "id": "evidence-24",
+      "line": [
+        "lang-plugin-openjdk/idl/CMakeLists.txt:23"
+      ]
+    },
+    {
+      "id": "evidence-25",
+      "line": [
+        "lang-plugin-openjdk/idl/CMakeLists.txt:31"
+      ]
+    },
+    {
+      "id": "evidence-26",
+      "line": [
+        "lang-plugin-openjdk/idl/CMakeLists.txt:40"
+      ]
+    },
+    {
+      "id": "evidence-27",
+      "line": [
+        "lang-plugin-openjdk/idl/CMakeLists.txt:49"
+      ]
+    },
+    {
+      "id": "evidence-28",
+      "line": [
+        "lang-plugin-openjdk/compiler/CMakeLists.txt:4"
+      ]
+    },
+    {
+      "id": "evidence-29",
+      "line": [
+        "lang-plugin-openjdk/api/CMakeLists.txt:23"
+      ]
+    },
+    {
+      "id": "evidence-30",
+      "line": [
+        "lang-plugin-openjdk/compiler/CMakeLists.txt:12"
+      ]
+    },
+    {
+      "id": "evidence-31",
+      "line": [
+        "lang-plugin-openjdk/CMakeLists.txt:20"
+      ]
+    },
+    {
+      "id": "evidence-32",
+      "line": [
+        "lang-plugin-go/runtime/CMakeLists.txt:11"
+      ]
+    },
+    {
+      "id": "evidence-33",
+      "line": [
+        "lang-plugin-go/runtime/CMakeLists.txt:20"
+      ]
+    },
+    {
+      "id": "evidence-34",
+      "line": [
+        "lang-plugin-go/runtime/CMakeLists.txt:29"
+      ]
+    },
+    {
+      "id": "evidence-35",
+      "line": [
+        "lang-plugin-go/compiler/CMakeLists.txt:7"
+      ]
+    },
+    {
+      "id": "evidence-36",
+      "line": [
+        "lang-plugin-go/idl/CMakeLists.txt:3"
+      ]
+    },
+    {
+      "id": "evidence-37",
+      "line": [
+        "lang-plugin-go/compiler/CMakeLists.txt:21"
+      ]
+    },
+    {
+      "id": "evidence-38",
+      "line": [
+        "lang-plugin-go/idl/CMakeLists.txt:16"
+      ]
+    },
+    {
+      "id": "evidence-39",
+      "line": [
+        "lang-plugin-go/go-runtime/CMakeLists.txt:7"
+      ]
+    },
+    {
+      "id": "evidence-40",
+      "line": [
+        "lang-plugin-go/CMakeLists.txt:20"
+      ]
+    },
+    {
+      "id": "evidence-41",
+      "line": [
+        "CMakeLists.txt:77"
+      ]
+    },
+    {
+      "id": "evidence-42",
+      "line": [
+        "metaffi-core/plugin-sdk/run_sdk_tests.cmake:11"
+      ]
+    },
+    {
+      "id": "evidence-43",
+      "line": [
+        "metaffi-core/plugin-sdk/run_sdk_tests.cmake:20"
+      ]
+    },
+    {
+      "id": "evidence-44",
+      "line": [
+        "lang-plugin-python311/runtime/CMakeLists.txt:35"
+      ]
+    },
+    {
+      "id": "evidence-45",
+      "line": [
+        "lang-plugin-python311/idl/CMakeLists.txt:32"
+      ]
+    },
+    {
+      "id": "evidence-46",
+      "line": [
+        "lang-plugin-python311/api/CMakeLists.txt:5"
+      ]
+    },
+    {
+      "id": "evidence-47",
+      "line": [
+        "lang-plugin-python311/api/CMakeLists.txt:12"
+      ]
+    },
+    {
+      "id": "evidence-48",
+      "line": [
+        "lang-plugin-python311/compiler/CMakeLists.txt:19"
+      ]
+    },
+    {
+      "id": "evidence-49",
+      "line": [
+        "lang-plugin-openjdk/runtime/CMakeLists.txt:25"
+      ]
+    },
+    {
+      "id": "evidence-50",
+      "line": [
+        "lang-plugin-openjdk/runtime/CMakeLists.txt:34"
+      ]
+    },
+    {
+      "id": "evidence-51",
+      "line": [
+        "lang-plugin-openjdk/idl/CMakeLists.txt:78"
+      ]
+    },
+    {
+      "id": "evidence-52",
+      "line": [
+        "lang-plugin-openjdk/api/CMakeLists.txt:23"
+      ]
+    },
+    {
+      "id": "evidence-53",
+      "line": [
+        "lang-plugin-openjdk/compiler/CMakeLists.txt:12"
+      ]
+    },
+    {
+      "id": "evidence-54",
+      "line": [
+        "lang-plugin-go/runtime/CMakeLists.txt:40"
+      ]
+    },
+    {
+      "id": "evidence-55",
+      "line": [
+        "lang-plugin-go/compiler/CMakeLists.txt:21"
+      ]
+    },
+    {
+      "id": "evidence-56",
+      "line": [
+        "lang-plugin-go/idl/CMakeLists.txt:16"
+      ]
+    },
+    {
+      "id": "evidence-57",
+      "line": [
+        "lang-plugin-go/go-runtime/CMakeLists.txt:7"
+      ]
+    }
+  ]
+}
