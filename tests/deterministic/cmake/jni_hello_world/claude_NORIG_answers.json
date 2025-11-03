@@ -18,7 +18,7 @@
     },
     {
       "id": 5,
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 6,
@@ -42,7 +42,7 @@
     },
     {
       "id": 11,
-      "answer": 5
+      "answer": 6
     },
     {
       "id": 12,
@@ -100,7 +100,8 @@
         "java_hello_lib-1.0.0.jar",
         "math_lib-1.0.0.jar",
         "libhello.dll",
-        "test_jni_wrapper.exe"
+        "test_jni_wrapper.exe",
+        "HelloWorldTest.class"
       ]
     },
     {
@@ -108,7 +109,8 @@
       "answer": [
         "java_hello_lib-1.0.0.jar",
         "math_lib-1.0.0.jar",
-        "libhello.dll"
+        "libhello.dll",
+        "test_jni_wrapper.exe"
       ]
     },
     {
@@ -139,7 +141,6 @@
       "id": 27,
       "answer": [
         "JUnit",
-        "doctest",
         "Go testing"
       ]
     },
@@ -156,5 +157,5 @@
       "answer": 2
     }
   ],
-  "agent_completion_time_seconds": 134.61
+  "agent_completion_time_seconds": 266.8
 }

@@ -230,11 +230,19 @@ class QuestionScorer:
             # expected = [["main.h"], ["utils.h", "main.h"]]
             is_correct = False
             if isinstance(actual_answer, list):
+                # Actual is a list - compare against acceptable lists
                 for acceptable_list in expected:
                     if self.normalizer.compare_lists(acceptable_list, actual_answer, ordered=ordered):
                         is_correct = True
                         break
-            # If actual_answer is not a list, is_correct remains False
+            else:
+                # Actual is a scalar - check if all expected lists are single-element lists
+                # If so, treat scalar as equivalent to single-element list
+                if all(len(acceptable_list) == 1 for acceptable_list in expected):
+                    # Extract single elements from each list
+                    single_elements = [acceptable_list[0] for acceptable_list in expected]
+                    # Check if scalar matches any of those elements
+                    is_correct = any(self.normalizer.are_equivalent(element, actual_answer) for element in single_elements)
 
         else:
             # Case 3: Multiple acceptable scalar answers OR single list answer

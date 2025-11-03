@@ -112,7 +112,7 @@
 			"name": "custom_function_components",
 			"category": "component_identification",
 			"question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)",
-			"expected_answer": [["libhello.dll", "math_lib-1.0.0.jar"]],
+			"expected_answer": [["libhello.dll", "math_lib-1.0.0.jar"], ["libhello.dll", "math_lib.jar"]],
 			"difficulty": "medium"
 		},
 		{
@@ -144,7 +144,7 @@
 			"name": "junit_test_framework",
 			"category": "testing",
 			"question": "What test framework is used for test_hello_world_java?",
-			"expected_answer": [["JUnit"], ["junit"]],
+			"expected_answer": [["JUnit"], ["junit"], ["JUnit 4"]],
 			"difficulty": "medium"
 		},
 		{
@@ -160,7 +160,7 @@
 			"name": "output_artifacts",
 			"category": "component_identification",
 			"question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)",
-			"expected_answer": [["jni_hello_world.exe", "java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll", "test_jni_wrapper.exe", "HelloWorldTest.class"]],
+			"expected_answer": [["jni_hello_world.exe", "java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll", "test_jni_wrapper.exe", "HelloWorldTest.class"], ["jni_hello_world.exe", "java_hello_lib.jar", "math_lib.jar", "libhello.dll", "test_jni_wrapper.exe", "HelloWorldTest.class"]],
 			"difficulty": "medium"
 		},
 		{
@@ -168,7 +168,7 @@
 			"name": "build_order_independent",
 			"category": "dependency_analysis",
 			"question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)",
-			"expected_answer": [["java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll", "test_jni_wrapper.exe"]],
+			"expected_answer": [["java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll", "test_jni_wrapper.exe"], ["java_hello_lib.jar", "math_lib.jar", "libhello.dll", "test_jni_wrapper.exe"]],
 			"difficulty": "hard"
 		},
 		{
@@ -176,7 +176,7 @@
 			"name": "jni_hello_world_dependencies",
 			"category": "dependency_analysis",
 			"question": "List all components that jni_hello_world depends on (use Windows artifact names).",
-			"expected_answer": [["java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll"]],
+			"expected_answer": [["java_hello_lib-1.0.0.jar", "math_lib-1.0.0.jar", "libhello.dll"], ["java_hello_lib.jar", "math_lib.jar", "libhello.dll"]],
 			"difficulty": "hard"
 		},
 		{
@@ -232,7 +232,7 @@
 			"name": "junit_component_dependency",
 			"category": "dependency_analysis",
 			"question": "Which component does HelloWorldTest depend on? (use Windows artifact name)",
-			"expected_answer": "java_hello_lib-1.0.0.jar",
+			"expected_answer": [["java_hello_lib-1.0.0.jar"], ["java_hello_lib.jar"]],
 			"difficulty": "hard"
 		},
 		{

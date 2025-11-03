@@ -98,9 +98,9 @@
       "answer": [
         "jni_hello_world.exe",
         "test_jni_wrapper.exe",
+        "libhello.dll",
         "java_hello_lib-1.0.0.jar",
         "math_lib-1.0.0.jar",
-        "libhello.dll",
         "HelloWorldTest.class"
       ]
     },
@@ -159,5 +159,5 @@
       "answer": 2
     }
   ],
-  "agent_completion_time_seconds": 216.66
+  "agent_completion_time_seconds": 290.24
 }
