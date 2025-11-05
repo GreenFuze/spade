@@ -85,7 +85,7 @@ def write_timing_metadata(working_dir: str, completion_time: float) -> None:
         print(f"[WARNING] Failed to write timing metadata: {e}", file=sys.stderr)
 
 
-def run_cursor_with_polling(prompt: str, working_dir: str, expected_ids: list, cursor_agent_path: str, timeout: int = 300) -> str:
+def run_cursor_with_polling(prompt: str, working_dir: str, expected_ids: list, cursor_agent_path: str, timeout: int = 1200) -> str:
     """
     Run cursor-agent CLI with the given prompt, polling for completion.
 
@@ -94,7 +94,7 @@ def run_cursor_with_polling(prompt: str, working_dir: str, expected_ids: list, c
         working_dir: Working directory for cursor-agent
         expected_ids: List of expected question IDs to validate
         cursor_agent_path: Absolute path to cursor-agent executable
-        timeout: Maximum seconds to wait (default 300 = 5 minutes)
+        timeout: Maximum seconds to wait (default 1200 = 20 minutes)
 
     Returns:
         Combined stdout/stderr from cursor-agent

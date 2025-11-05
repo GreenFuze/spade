@@ -1,0 +1,189 @@
+{
+  "answers": [
+    {
+      "id": 1,
+      "answer": "MetaFFI"
+    },
+    {
+      "id": 2,
+      "answer": "0.3.1"
+    },
+    {
+      "id": 3,
+      "answer": "3.10"
+    },
+    {
+      "id": 4,
+      "answer": "yes"
+    },
+    {
+      "id": 5,
+      "answer": 3
+    },
+    {
+      "id": 6,
+      "answer": 8
+    },
+    {
+      "id": 7,
+      "answer": 11
+    },
+    {
+      "id": 8,
+      "answer": 17
+    },
+    {
+      "id": 9,
+      "answer": [
+        "metaffi-core",
+        "python311",
+        "openjdk",
+        "go"
+      ]
+    },
+    {
+      "id": 10,
+      "answer": [
+        "lang-plugin-c",
+        "metaffi-installer"
+      ]
+    },
+    {
+      "id": 11,
+      "answer": [
+        "runtime/cdts_test.cpp",
+        "sdk_src"
+      ]
+    },
+    {
+      "id": 12,
+      "answer": [
+        "python_runtime_test.cpp",
+        "xllr.python311_src",
+        "sdk_src"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": [
+        "Boost::filesystem",
+        "Boost::thread"
+      ]
+    },
+    {
+      "id": 14,
+      "answer": [
+        "Boost::filesystem",
+        "Boost::program_options"
+      ]
+    },
+    {
+      "id": 15,
+      "answer": [
+        "gson-2.10.1.jar",
+        "asm-9.6.jar",
+        "asm-tree-9.6.jar",
+        "javaparser-core-3.24.4.jar"
+      ]
+    },
+    {
+      "id": 16,
+      "answer": 5
+    },
+    {
+      "id": 17,
+      "answer": 16
+    },
+    {
+      "id": 18,
+      "answer": "unittest"
+    },
+    {
+      "id": 19,
+      "answer": "Go"
+    },
+    {
+      "id": 20,
+      "answer": [
+        "metaffi.api",
+        "xllr.openjdk.bridge"
+      ]
+    },
+    {
+      "id": 21,
+      "answer": "metaffi.api.jar ? xllr.openjdk.bridge.jar ? xllr.openjdk.jni.bridge.dll ? xllr.openjdk.dll ? xllr.dll"
+    },
+    {
+      "id": 22,
+      "answer": 4
+    },
+    {
+      "id": 23,
+      "answer": [
+        "xllr.openjdk.jni.bridge.dll",
+        "xllr.openjdk.bridge.jar",
+        "metaffi.api.jar",
+        "cdts_java_test.exe",
+        "openjdk_api_test.exe",
+        "openjdk"
+      ]
+    },
+    {
+      "id": 24,
+      "answer": "yes"
+    },
+    {
+      "id": 25,
+      "answer": [
+        "xllr.python311.dll",
+        "python_runtime_test.exe",
+        "metaffi.idl.python311.dll",
+        "python311_idl_plugin_test.exe",
+        "metaffi.compiler.python311.dll"
+      ]
+    },
+    {
+      "id": 26,
+      "answer": [
+        "xllr.openjdk.dll",
+        "xllr.openjdk.jni.bridge.dll",
+        "xllr.openjdk.bridge.jar",
+        "metaffi.api.jar",
+        "openjdk_api_test.exe",
+        "cdts_java_test.exe",
+        "metaffi.idl.openjdk.dll",
+        "metaffi.compiler.openjdk.dll"
+      ]
+    },
+    {
+      "id": 27,
+      "answer": [
+        "metaffi-core",
+        "python311",
+        "openjdk",
+        "go"
+      ]
+    },
+    {
+      "id": 28,
+      "answer": [
+        "xllr.python311.dll",
+        "metaffi.idl.python311.dll",
+        "metaffi.compiler.python311.dll"
+      ]
+    },
+    {
+      "id": 29,
+      "answer": [
+        "python311",
+        "openjdk",
+        "go"
+      ]
+    },
+    {
+      "id": 30,
+      "answer": 5
+    }
+  ],
+  "agent_completion_time_seconds": 78.03
+}

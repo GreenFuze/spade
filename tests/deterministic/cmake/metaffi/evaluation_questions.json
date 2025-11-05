@@ -88,7 +88,19 @@
 			"name": "cdts_test_sources",
 			"category": "source_analysis",
 			"question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)",
-			"expected_answer": [["metaffi-core/plugin-sdk/runtime/cdts_test.cpp"]],
+			"expected_answer": [[
+				"metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
+				"metaffi-core/plugin-sdk/runtime/cdt.cpp",
+				"metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
+				"metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
+				"metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
+				"metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
+				"metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
+				"metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
+				"metaffi-core/plugin-sdk/utils/expand_env.cpp",
+				"metaffi-core/plugin-sdk/utils/library_loader.cpp",
+				"metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
+			]],
 			"difficulty": "medium"
 		},
 		{
@@ -96,7 +108,36 @@
 			"name": "python_runtime_test_sources",
 			"category": "source_analysis",
 			"question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)",
-			"expected_answer": [["lang-plugin-python311/runtime/python_runtime_test.cpp"]],
+			"expected_answer": [[
+				"lang-plugin-python311/runtime/python_runtime_test.cpp",
+				"lang-plugin-python311/runtime/call_xcall.cpp",
+				"lang-plugin-python311/runtime/cdts_python3.cpp",
+				"lang-plugin-python311/runtime/host_cdts_converter.cpp",
+				"lang-plugin-python311/runtime/metaffi_package_importer.cpp",
+				"lang-plugin-python311/runtime/py_bool.cpp",
+				"lang-plugin-python311/runtime/py_bytes.cpp",
+				"lang-plugin-python311/runtime/py_float.cpp",
+				"lang-plugin-python311/runtime/py_int.cpp",
+				"lang-plugin-python311/runtime/py_list.cpp",
+				"lang-plugin-python311/runtime/py_metaffi_callable.cpp",
+				"lang-plugin-python311/runtime/py_metaffi_handle.cpp",
+				"lang-plugin-python311/runtime/py_object.cpp",
+				"lang-plugin-python311/runtime/py_str.cpp",
+				"lang-plugin-python311/runtime/py_tuple.cpp",
+				"lang-plugin-python311/runtime/python3_api_wrapper.cpp",
+				"lang-plugin-python311/runtime/python_api.cpp",
+				"lang-plugin-python311/runtime/utils.cpp",
+				"lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
+				"lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
+				"lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
+				"lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
+				"lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
+				"lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
+				"lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
+				"lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
+				"lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
+				"lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
+			]],
 			"difficulty": "medium"
 		},
 		{
@@ -128,7 +169,7 @@
 			"name": "jni_dependent_components",
 			"category": "dependency_analysis",
 			"question": "How many components depend on JNI?",
-			"expected_answer": 7,
+			"expected_answer": 5,
 			"difficulty": "medium"
 		},
 		{
@@ -136,7 +177,7 @@
 			"name": "doctest_dependent_components",
 			"category": "dependency_analysis",
 			"question": "How many components depend on doctest?",
-			"expected_answer": 10,
+			"expected_answer": 7,
 			"difficulty": "medium"
 		},
 		{

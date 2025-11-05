@@ -1,0 +1,581 @@
+{
+  "meta": {
+    "generated_timestamp": "2025-11-05T13:59:59.066804+00:00",
+    "generator_version": "2.0.0",
+    "repository_count": 3,
+    "agent_count": 3,
+    "total_questions": 90
+  },
+  "repositories": [
+    {
+      "name": "cmake_hello_world",
+      "path": "deterministic\\cmake\\cmake_hello_world",
+      "complexity": {
+        "score": 22,
+        "level": "LOW",
+        "metrics": {
+          "component_count": 2,
+          "programming_language_count": 1,
+          "programming_languages": [
+            "cxx"
+          ],
+          "external_package_count": 0,
+          "test_count": 1,
+          "max_dependency_depth": 1,
+          "aggregator_count": 0,
+          "has_cross_language_dependencies": false,
+          "parallel_buildable_component_count": 1
+        },
+        "normalized_score": 9.6
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 97.8,
+        "average_score_without_rig": 95.6,
+        "score_improvement": 2.2,
+        "score_improvement_relative": 2.3,
+        "average_time_with_rig_seconds": 50.69,
+        "average_time_without_rig_seconds": 51.33,
+        "time_saved_seconds": 0.64,
+        "time_reduction_percentage": 4.7,
+        "efficiency_improvement": 3.6,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 100.0,
+            "score_without_rig": 96.7,
+            "score_improvement": 3.3,
+            "time_with_rig": 42.04,
+            "time_without_rig": 54.06,
+            "time_saved": 12.02,
+            "time_reduction_percentage": 22.2
+          },
+          "codex": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 96.7,
+            "score_improvement": 0.0,
+            "time_with_rig": 87.13,
+            "time_without_rig": 74.97,
+            "time_saved": -12.16,
+            "time_reduction_percentage": -16.2
+          },
+          "cursor": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 93.3,
+            "score_improvement": 3.3,
+            "time_with_rig": 22.91,
+            "time_without_rig": 24.97,
+            "time_saved": 2.06,
+            "time_reduction_percentage": 8.2
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 0.0
+          },
+          "medium": {
+            "avg_improvement": 0.0
+          },
+          "hard": {
+            "avg_improvement": 6.7
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "source_analysis": {
+            "avg_with_rig": 94.4,
+            "avg_without_rig": 88.9,
+            "improvement": 5.6
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 93.3,
+            "improvement": 6.7
+          },
+          "cmake_specific": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 96.3,
+            "avg_without_rig": 96.3,
+            "improvement": 0.0
+          },
+          "component_identification": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      }
+    },
+    {
+      "name": "jni_hello_world",
+      "path": "deterministic\\cmake\\jni_hello_world",
+      "complexity": {
+        "score": 74,
+        "level": "MEDIUM",
+        "metrics": {
+          "component_count": 6,
+          "programming_language_count": 3,
+          "programming_languages": [
+            "cxx",
+            "go",
+            "java"
+          ],
+          "external_package_count": 3,
+          "test_count": 3,
+          "max_dependency_depth": 1,
+          "aggregator_count": 0,
+          "has_cross_language_dependencies": true,
+          "parallel_buildable_component_count": 4
+        },
+        "normalized_score": 32.3
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 97.8,
+        "average_score_without_rig": 91.1,
+        "score_improvement": 6.7,
+        "score_improvement_relative": 7.4,
+        "average_time_with_rig_seconds": 74.67,
+        "average_time_without_rig_seconds": 198.97,
+        "time_saved_seconds": 124.31,
+        "time_reduction_percentage": 55.5,
+        "efficiency_improvement": 186.1,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 90.0,
+            "score_improvement": 6.7,
+            "time_with_rig": 83.85,
+            "time_without_rig": 266.8,
+            "time_saved": 182.95,
+            "time_reduction_percentage": 68.6
+          },
+          "codex": {
+            "score_with_rig": 100.0,
+            "score_without_rig": 96.7,
+            "score_improvement": 3.3,
+            "time_with_rig": 115.28,
+            "time_without_rig": 290.24,
+            "time_saved": 174.96,
+            "time_reduction_percentage": 60.3
+          },
+          "cursor": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 86.7,
+            "score_improvement": 10.0,
+            "time_with_rig": 24.87,
+            "time_without_rig": 39.88,
+            "time_saved": 15.01,
+            "time_reduction_percentage": 37.6
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 3.3
+          },
+          "medium": {
+            "avg_improvement": 3.3
+          },
+          "hard": {
+            "avg_improvement": 13.3
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "source_analysis": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 95.2,
+            "improvement": 4.8
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 80.0,
+            "improvement": 20.0
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 96.3,
+            "avg_without_rig": 88.9,
+            "improvement": 7.4
+          },
+          "component_identification": {
+            "avg_with_rig": 93.3,
+            "avg_without_rig": 93.3,
+            "improvement": 0.0
+          },
+          "cmake_specific": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      }
+    },
+    {
+      "name": "metaffi",
+      "path": "deterministic\\cmake\\metaffi",
+      "complexity": {
+        "score": 229,
+        "level": "HIGH",
+        "metrics": {
+          "component_count": 41,
+          "programming_language_count": 4,
+          "programming_languages": [
+            "cxx",
+            "go",
+            "java",
+            "python"
+          ],
+          "external_package_count": 9,
+          "test_count": 16,
+          "max_dependency_depth": 5,
+          "aggregator_count": 5,
+          "has_cross_language_dependencies": true,
+          "parallel_buildable_component_count": 25
+        },
+        "normalized_score": 100.0
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 75.6,
+        "average_score_without_rig": 58.9,
+        "score_improvement": 16.7,
+        "score_improvement_relative": 28.4,
+        "average_time_with_rig_seconds": 150.21,
+        "average_time_without_rig_seconds": 289.84,
+        "time_saved_seconds": 139.63,
+        "time_reduction_percentage": 48.9,
+        "efficiency_improvement": 147.7,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 76.7,
+            "score_without_rig": 46.7,
+            "score_improvement": 30.0,
+            "time_with_rig": 276.7,
+            "time_without_rig": 356.92,
+            "time_saved": 80.22,
+            "time_reduction_percentage": 22.5
+          },
+          "codex": {
+            "score_with_rig": 80.0,
+            "score_without_rig": 70.0,
+            "score_improvement": 10.0,
+            "time_with_rig": 140.0,
+            "time_without_rig": 434.58,
+            "time_saved": 294.58,
+            "time_reduction_percentage": 67.8
+          },
+          "cursor": {
+            "score_with_rig": 70.0,
+            "score_without_rig": 60.0,
+            "score_improvement": 10.0,
+            "time_with_rig": 33.93,
+            "time_without_rig": 78.03,
+            "time_saved": 44.1,
+            "time_reduction_percentage": 56.5
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 10.0
+          },
+          "medium": {
+            "avg_improvement": 33.3
+          },
+          "hard": {
+            "avg_improvement": 6.7
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "source_analysis": {
+            "avg_with_rig": 60.0,
+            "avg_without_rig": 26.7,
+            "improvement": 33.3
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 66.7,
+            "improvement": 33.3
+          },
+          "aggregator_structure": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 91.7,
+            "improvement": 8.3
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 56.7,
+            "avg_without_rig": 33.3,
+            "improvement": 23.3
+          },
+          "component_identification": {
+            "avg_with_rig": 50.0,
+            "avg_without_rig": 50.0,
+            "improvement": 0.0
+          },
+          "plugin_architecture": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "aggregate_analysis": {
+    "overall": {
+      "total_questions": 90,
+      "avg_score_with_rig": 90.4,
+      "avg_score_without_rig": 81.9,
+      "avg_score_improvement": 8.5,
+      "avg_time_with_rig": 91.86,
+      "avg_time_without_rig": 180.05,
+      "avg_time_reduction_percentage": 49.0,
+      "total_time_saved_seconds": 264.58
+    },
+    "by_agent": {
+      "claude": {
+        "avg_score_with_rig": 91.1,
+        "avg_score_without_rig": 77.8,
+        "avg_score_improvement": 13.3,
+        "avg_time_with_rig": 134.2,
+        "avg_time_without_rig": 225.93,
+        "avg_time_reduction_percentage": 40.6,
+        "performance_by_complexity": [
+          {
+            "complexity_score": 22,
+            "score_improvement": 3.3,
+            "time_reduction": 22.2
+          },
+          {
+            "complexity_score": 74,
+            "score_improvement": 6.7,
+            "time_reduction": 68.6
+          },
+          {
+            "complexity_score": 229,
+            "score_improvement": 30.0,
+            "time_reduction": 22.5
+          }
+        ]
+      },
+      "codex": {
+        "avg_score_with_rig": 92.2,
+        "avg_score_without_rig": 87.8,
+        "avg_score_improvement": 4.4,
+        "avg_time_with_rig": 114.14,
+        "avg_time_without_rig": 266.6,
+        "avg_time_reduction_percentage": 57.2,
+        "performance_by_complexity": [
+          {
+            "complexity_score": 22,
+            "score_improvement": 0.0,
+            "time_reduction": -16.2
+          },
+          {
+            "complexity_score": 74,
+            "score_improvement": 3.3,
+            "time_reduction": 60.3
+          },
+          {
+            "complexity_score": 229,
+            "score_improvement": 10.0,
+            "time_reduction": 67.8
+          }
+        ]
+      },
+      "cursor": {
+        "avg_score_with_rig": 87.8,
+        "avg_score_without_rig": 80.0,
+        "avg_score_improvement": 7.8,
+        "avg_time_with_rig": 27.24,
+        "avg_time_without_rig": 47.63,
+        "avg_time_reduction_percentage": 42.8,
+        "performance_by_complexity": [
+          {
+            "complexity_score": 22,
+            "score_improvement": 3.3,
+            "time_reduction": 8.2
+          },
+          {
+            "complexity_score": 74,
+            "score_improvement": 10.0,
+            "time_reduction": 37.6
+          },
+          {
+            "complexity_score": 229,
+            "score_improvement": 10.0,
+            "time_reduction": 56.5
+          }
+        ]
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "avg_improvement": 4.4,
+        "question_count": 30
+      },
+      "medium": {
+        "avg_improvement": 12.2,
+        "question_count": 30
+      },
+      "hard": {
+        "avg_improvement": 8.9,
+        "question_count": 30
+      }
+    },
+    "by_category": {
+      "build_system": {
+        "avg_improvement": 0.0,
+        "avg_with_rig": 100.0,
+        "avg_without_rig": 100.0,
+        "per_repo": {
+          "cmake_hello_world": 0.0,
+          "jni_hello_world": 0.0,
+          "metaffi": 0.0
+        }
+      },
+      "source_analysis": {
+        "avg_improvement": 14.6,
+        "avg_with_rig": 84.8,
+        "avg_without_rig": 70.3,
+        "per_repo": {
+          "cmake_hello_world": 5.6,
+          "jni_hello_world": 4.8,
+          "metaffi": 33.3
+        }
+      },
+      "testing": {
+        "avg_improvement": 20.0,
+        "avg_with_rig": 100.0,
+        "avg_without_rig": 80.0,
+        "per_repo": {
+          "cmake_hello_world": 6.7,
+          "jni_hello_world": 20.0,
+          "metaffi": 33.3
+        }
+      },
+      "dependency_analysis": {
+        "avg_improvement": 10.2,
+        "avg_with_rig": 83.1,
+        "avg_without_rig": 72.8,
+        "per_repo": {
+          "cmake_hello_world": 0.0,
+          "jni_hello_world": 7.4,
+          "metaffi": 23.3
+        }
+      },
+      "component_identification": {
+        "avg_improvement": 0.0,
+        "avg_with_rig": 81.1,
+        "avg_without_rig": 81.1,
+        "per_repo": {
+          "cmake_hello_world": 0.0,
+          "jni_hello_world": 0.0,
+          "metaffi": 0.0
+        }
+      }
+    },
+    "correlations": {
+      "complexity_vs_rig_benefit": {
+        "description": "How repository complexity correlates with RIG improvement",
+        "score_correlation": {
+          "r_squared": 0.996,
+          "interpretation": "Strong positive correlation",
+          "conclusion": "Higher complexity leads to greater score improvement",
+          "data_points": [
+            {
+              "repo": "cmake_hello_world",
+              "complexity": 9.6,
+              "score_improvement": 2.2
+            },
+            {
+              "repo": "jni_hello_world",
+              "complexity": 32.3,
+              "score_improvement": 6.7
+            },
+            {
+              "repo": "metaffi",
+              "complexity": 100.0,
+              "score_improvement": 16.7
+            }
+          ]
+        },
+        "time_correlation": {
+          "r_squared": 0.364,
+          "interpretation": "Weak correlation",
+          "conclusion": "Some correlation between complexity and time savings",
+          "data_points": [
+            {
+              "repo": "cmake_hello_world",
+              "complexity": 9.6,
+              "time_reduction": 4.7
+            },
+            {
+              "repo": "jni_hello_world",
+              "complexity": 32.3,
+              "time_reduction": 55.5
+            },
+            {
+              "repo": "metaffi",
+              "complexity": 100.0,
+              "time_reduction": 48.9
+            }
+          ]
+        }
+      }
+    },
+    "insights": {
+      "key_findings": [
+        "RIG provides 8.5% average score improvement across all repositories",
+        "RIG saves 49.0% time on average (88.2 seconds per repository)",
+        "RIG benefit scales with repository complexity (r²=1.00)",
+        "Complex projects (metaffi) see 16.7% improvement vs 2.2% for simple projects (cmake_hello_world)",
+        "Medium questions benefit most from RIG (12.2% improvement)",
+        "Claude shows highest improvement (13.3%) but started from lowest baseline (77.8%)",
+        "Time savings alone justify RIG usage, even with minimal score gains"
+      ],
+      "recommendations": [
+        "RIG is most valuable for complex, multi-language repositories",
+        "Agents struggling without RIG benefit most from RIG access",
+        "RIG helps standardize performance across difficulty levels",
+        "Significant time savings make RIG essential for developer productivity"
+      ]
+    }
+  }
+}

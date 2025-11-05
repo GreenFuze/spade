@@ -17,14 +17,14 @@ from validation import validate_answers_file, extract_question_ids_from_prompt
 from file_watcher import FileStabilityWatcher
 
 
-async def run_claude_with_monitoring(prompt: str, cwd: str, timeout: int = 300) -> str:
+async def run_claude_with_monitoring(prompt: str, cwd: str, timeout: int = 1200) -> str:
     """
     Run Claude agent with the given prompt, monitoring for completion signal.
 
     Args:
         prompt: The prompt to send to Claude
         cwd: Working directory for Claude
-        timeout: Maximum seconds to wait (default 300 = 5 minutes)
+        timeout: Maximum seconds to wait (default 1200 = 20 minutes)
 
     Returns:
         Combined text response from Claude
@@ -168,7 +168,7 @@ def main():
 
             # Wait for file to be stable (5 seconds of no changes)
             print("[LOG] Waiting for answers.json to stabilize (5 seconds of no changes)...")
-            remaining_timeout = max(10, 300 - (time.time() - start_time))
+            remaining_timeout = max(10, timeout - (time.time() - start_time))
             stable, elapsed = file_watcher.wait_for_stable_file(timeout=remaining_timeout)
 
             if stable:

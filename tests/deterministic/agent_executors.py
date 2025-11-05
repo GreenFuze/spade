@@ -298,7 +298,7 @@ class AgentExecutor(ABC):
                 capture_output=True,
                 text=True,
                 check=True,
-                timeout=420  # 7 minutes - generous timeout for agent execution (300s agent + buffer)
+                timeout=1320  # 22 minutes - generous timeout for agent execution (1200s agent + buffer)
             )
 
             print(f"[EXECUTOR-LOG] WSL command completed with return code: {result.returncode}")
@@ -339,7 +339,7 @@ class AgentExecutor(ABC):
             raise RuntimeError(error_msg)
 
         except subprocess.TimeoutExpired as e:
-            print(f"[EXECUTOR-LOG] WSL command TIMED OUT after 420 seconds")
+            print(f"[EXECUTOR-LOG] WSL command TIMED OUT after 1320 seconds")
             print(f"[EXECUTOR-LOG] Agent {self.agent_name} did not complete in time")
             if e.stdout:
                 print(f"[EXECUTOR-LOG] Partial stdout ({len(e.stdout)} chars):")
@@ -347,7 +347,7 @@ class AgentExecutor(ABC):
             if e.stderr:
                 print(f"[EXECUTOR-LOG] Partial stderr ({len(e.stderr)} chars):")
                 print(e.stderr.decode() if isinstance(e.stderr, bytes) else e.stderr)
-            raise TimeoutError(f"{self.agent_name} execution timed out after 420 seconds")
+            raise TimeoutError(f"{self.agent_name} execution timed out after 1320 seconds")
 
 
 class ClaudeAgentExecutor(AgentExecutor):

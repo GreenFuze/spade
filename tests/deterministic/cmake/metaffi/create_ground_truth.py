@@ -14,6 +14,125 @@ from core.schemas import (
 )
 
 from tests.test_utils import test_repos_root
+from typing import List
+
+
+# ==================== CMake Variable Expansion Helpers ====================
+
+
+def collect_c_cpp_files(base_dirs: List[Path], repo_root: Path, exclude_tests: bool = True) -> List[Path]:
+    """
+    Simulate CMake's collect_c_cpp_files() macro.
+
+    Scans directories for .c, .cpp files.
+    Optionally filters out test files (*_test.cpp, *_test.c).
+
+    This matches the behavior of the CMake macro defined in cmake/CPP.cmake:30-59
+    which uses file(GLOB ...) to collect source files.
+
+    Args:
+        base_dirs: List of directories to scan (non-recursive)
+        repo_root: Repository root path to compute relative paths
+        exclude_tests: If True, filter out *_test.c and *_test.cpp files
+
+    Returns:
+        List of source files (.c, .cpp) as relative paths from repo root, sorted for deterministic order
+    """
+    source_files = []
+    extensions = [".c", ".cpp"]
+
+    for base_dir in base_dirs:
+        if not base_dir.exists():
+            continue
+
+        for ext in extensions:
+            # Use glob for non-recursive scan (matches CMake file(GLOB ...) behavior)
+            for file in base_dir.glob(f"*{ext}"):
+                # Exclude test files (matching CMake macro logic)
+                if exclude_tests and file.stem.endswith("_test"):
+                    continue
+                # Convert to relative path from repo root
+                relative_file = file.relative_to(repo_root)
+                source_files.append(relative_file)
+
+    return sorted(source_files)  # Sort for deterministic order
+
+
+# CMake variable to directory mappings
+# These map to collect_c_cpp_files() calls throughout the CMakeLists.txt files
+REPO_PATH = test_repos_root / "cmake" / "metaffi"
+
+CMAKE_VARS = {
+    # ${sdk_src} - defined in each plugin-sdk/CMakeLists.txt
+    # collect_c_cpp_files("${CMAKE_CURRENT_LIST_DIR};.../compiler;.../runtime;.../utils" sdk)
+    "sdk_src": {
+        "metaffi-core": [
+            REPO_PATH / "metaffi-core/plugin-sdk",
+            REPO_PATH / "metaffi-core/plugin-sdk/compiler",
+            REPO_PATH / "metaffi-core/plugin-sdk/runtime",
+            REPO_PATH / "metaffi-core/plugin-sdk/utils",
+        ],
+        "lang-plugin-c": [
+            REPO_PATH / "lang-plugin-c/plugin-sdk",
+            REPO_PATH / "lang-plugin-c/plugin-sdk/compiler",
+            REPO_PATH / "lang-plugin-c/plugin-sdk/runtime",
+            REPO_PATH / "lang-plugin-c/plugin-sdk/utils",
+        ],
+        "lang-plugin-go": [
+            REPO_PATH / "lang-plugin-go/plugin-sdk",
+            REPO_PATH / "lang-plugin-go/plugin-sdk/compiler",
+            REPO_PATH / "lang-plugin-go/plugin-sdk/runtime",
+            REPO_PATH / "lang-plugin-go/plugin-sdk/utils",
+        ],
+        "lang-plugin-openjdk": [
+            REPO_PATH / "lang-plugin-openjdk/plugin-sdk",
+            REPO_PATH / "lang-plugin-openjdk/plugin-sdk/compiler",
+            REPO_PATH / "lang-plugin-openjdk/plugin-sdk/runtime",
+            REPO_PATH / "lang-plugin-openjdk/plugin-sdk/utils",
+        ],
+        "lang-plugin-python311": [
+            REPO_PATH / "lang-plugin-python311/plugin-sdk",
+            REPO_PATH / "lang-plugin-python311/plugin-sdk/compiler",
+            REPO_PATH / "lang-plugin-python311/plugin-sdk/runtime",
+            REPO_PATH / "lang-plugin-python311/plugin-sdk/utils",
+        ],
+    },
+    # ${xllr_src} - metaffi-core/XLLR/CMakeLists.txt:4
+    "xllr_src": [REPO_PATH / "metaffi-core/XLLR"],
+    # ${cli_src} - metaffi-core/CLI/CMakeLists.txt:4
+    "cli_src": [REPO_PATH / "metaffi-core/CLI"],
+    # ${xllr.python311_src} - lang-plugin-python311/runtime/CMakeLists.txt:4
+    "xllr.python311_src": [REPO_PATH / "lang-plugin-python311/runtime"],
+    # ${xllr.openjdk_src} - lang-plugin-openjdk/runtime/CMakeLists.txt:4
+    "xllr.openjdk_src": [REPO_PATH / "lang-plugin-openjdk/runtime"],
+    # ${xllr.go_src} - lang-plugin-go/runtime/CMakeLists.txt:4
+    "xllr.go_src": [REPO_PATH / "lang-plugin-go/runtime"],
+    # ${xllr.c_src} - lang-plugin-c/runtime/CMakeLists.txt:4
+    "xllr.c_src": [REPO_PATH / "lang-plugin-c/runtime"],
+    # ${idl.c_src} - lang-plugin-c/idl/CMakeLists.txt:4
+    "idl.c_src": [REPO_PATH / "lang-plugin-c/idl"],
+    # ${metaffi_idl_python311_src} - lang-plugin-python311/idl/CMakeLists.txt:4
+    "metaffi_idl_python311_src": [REPO_PATH / "lang-plugin-python311/idl"],
+    # ${xllr.openjdk.jni.bridge_src} - lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt:4
+    "xllr.openjdk.jni.bridge_src": [REPO_PATH / "lang-plugin-openjdk/xllr-openjdk-bridge"],
+}
+
+# Pre-compute file lists for reuse (this is done once at module load time)
+CMAKE_VAR_FILES = {}
+print("Expanding CMake variables...")
+for var_name, dirs in CMAKE_VARS.items():
+    if isinstance(dirs, dict):
+        # sdk_src has per-plugin variants
+        CMAKE_VAR_FILES[var_name] = {}
+        for plugin, plugin_dirs in dirs.items():
+            files = collect_c_cpp_files(plugin_dirs, REPO_PATH)
+            CMAKE_VAR_FILES[var_name][plugin] = files
+            print(f"  ${var_name}[{plugin}]: {len(files)} files")
+    else:
+        files = collect_c_cpp_files(dirs, REPO_PATH)
+        CMAKE_VAR_FILES[var_name] = files
+        print(f"  ${var_name}: {len(files)} files")
+
 
 def main() -> None:
     rig = RIG()
@@ -99,10 +218,8 @@ def main() -> None:
         type=ComponentType.SHARED_LIBRARY,
         programming_language="cxx",
         relative_path=Path("cmake-build-debug/metaffi-core/XLLR/Debug/xllr.dll"),
-        source_files=[
-            # Source files collected from metaffi-core/XLLR/ and plugin-sdk
-            # TODO: Enumerate all source files
-        ],
+        source_files=CMAKE_VAR_FILES["xllr_src"]  # ${xllr_src} expansion (5 files)
+                     + CMAKE_VAR_FILES["sdk_src"]["metaffi-core"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, boost_thread],
         evidence=[Evidence(line=["metaffi-core/XLLR/CMakeLists.txt:7"])],
         locations=[],
@@ -114,10 +231,8 @@ def main() -> None:
         type=ComponentType.EXECUTABLE,
         programming_language="cxx",
         relative_path=Path("cmake-build-debug/metaffi-core/CLI/Debug/metaffi.exe"),
-        source_files=[
-            # Source files from metaffi-core/CLI/ and plugin-sdk
-            # TODO: Enumerate all source files
-        ],
+        source_files=CMAKE_VAR_FILES["cli_src"]  # ${cli_src} expansion (8 files)
+                     + CMAKE_VAR_FILES["sdk_src"]["metaffi-core"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, boost_program_options],
         evidence=[Evidence(line=["metaffi-core/CLI/CMakeLists.txt:6"])],
         locations=[],
@@ -131,8 +246,7 @@ def main() -> None:
         relative_path=Path("cmake-build-debug/metaffi-core/plugin-sdk/Debug/cdts_test.exe"),
         source_files=[
             Path("metaffi-core/plugin-sdk/runtime/cdts_test.cpp"),
-            # Plus sdk_src files
-        ],
+        ] + CMAKE_VAR_FILES["sdk_src"]["metaffi-core"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, doctest_package],
         evidence=[Evidence(line=["metaffi-core/plugin-sdk/run_sdk_tests.cmake:6"])],
         locations=[],
@@ -146,8 +260,7 @@ def main() -> None:
         relative_path=Path("cmake-build-debug/metaffi-core/plugin-sdk/Debug/xllr_capi_test.exe"),
         source_files=[
             Path("metaffi-core/plugin-sdk/runtime/xllr_capi_test.cpp"),
-            # Plus sdk_src files
-        ],
+        ] + CMAKE_VAR_FILES["sdk_src"]["metaffi-core"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, doctest_package],
         evidence=[Evidence(line=["metaffi-core/plugin-sdk/run_sdk_tests.cmake:15"])],
         locations=[],
@@ -175,10 +288,8 @@ def main() -> None:
         type=ComponentType.SHARED_LIBRARY,
         programming_language="cxx",
         relative_path=Path("cmake-build-debug/lang-plugin-python311/runtime/Debug/python311/xllr.python311.dll"),
-        source_files=[
-            # Source files from lang-plugin-python311/runtime/ and plugin-sdk
-            # TODO: Enumerate all source files
-        ],
+        source_files=CMAKE_VAR_FILES["xllr.python311_src"]  # ${xllr.python311_src} expansion (17 files)
+                     + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-python311"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem],
         evidence=[Evidence(line=["lang-plugin-python311/runtime/CMakeLists.txt:10"])],
         locations=[],
@@ -192,8 +303,8 @@ def main() -> None:
         relative_path=Path("cmake-build-debug/lang-plugin-python311/runtime/Debug/python_runtime_test.exe"),
         source_files=[
             Path("lang-plugin-python311/runtime/python_runtime_test.cpp"),
-            # Plus xllr.python311_src and sdk_src
-        ],
+        ] + CMAKE_VAR_FILES["xllr.python311_src"]  # ${xllr.python311_src} expansion (17 files)
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-python311"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, doctest_package],
         evidence=[Evidence(line=["lang-plugin-python311/runtime/CMakeLists.txt:19"])],
         locations=[],
@@ -206,10 +317,9 @@ def main() -> None:
         type=ComponentType.SHARED_LIBRARY,
         programming_language="cxx",
         relative_path=Path("cmake-build-debug/lang-plugin-python311/idl/Debug/python311/metaffi.idl.python311.dll"),
-        source_files=[
-            # Source files from lang-plugin-python311/idl/
-            # TODO: Enumerate all source files
-        ],
+        source_files=CMAKE_VAR_FILES["metaffi_idl_python311_src"]  # ${metaffi_idl_python311_src} expansion (1 file)
+                     + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-python311"]  # ${sdk_src} expansion (10 files)
+                     + [Path("lang-plugin-python311/runtime/python3_api_wrapper.cpp")],  # ../runtime/python3_api_wrapper.cpp
         external_packages=[boost_filesystem],
         evidence=[Evidence(line=["lang-plugin-python311/idl/CMakeLists.txt:13"])],
         locations=[],
@@ -224,8 +334,7 @@ def main() -> None:
         source_files=[
             Path("lang-plugin-python311/idl/idl_plugin_test.cpp"),
             Path("lang-plugin-python311/idl/python_idl_plugin.cpp"),
-            # Plus sdk files
-        ],
+        ] + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-python311"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, doctest_package],
         evidence=[Evidence(line=["lang-plugin-python311/idl/CMakeLists.txt:22"])],
         locations=[],
@@ -322,10 +431,8 @@ def main() -> None:
         type=ComponentType.SHARED_LIBRARY,
         programming_language="cxx",
         relative_path=Path("cmake-build-debug/lang-plugin-openjdk/runtime/Debug/openjdk/xllr.openjdk.dll"),
-        source_files=[
-            # Source files from lang-plugin-openjdk/runtime/ and plugin-sdk
-            # TODO: Enumerate all source files
-        ],
+        source_files=CMAKE_VAR_FILES["xllr.openjdk_src"]  # ${xllr.openjdk_src} expansion (21 files)
+                     + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-openjdk"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, jni_package],
         evidence=[Evidence(line=["lang-plugin-openjdk/runtime/CMakeLists.txt:10"])],
         locations=[],
@@ -339,8 +446,8 @@ def main() -> None:
         relative_path=Path("cmake-build-debug/lang-plugin-openjdk/runtime/Debug/cdts_java_test.exe"),
         source_files=[
             Path("lang-plugin-openjdk/runtime/cdts_java_test.cpp"),
-            # Plus xllr.openjdk_src and sdk_src
-        ],
+        ] + CMAKE_VAR_FILES["xllr.openjdk_src"]  # ${xllr.openjdk_src} expansion (21 files)
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-openjdk"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, doctest_package, jni_package],
         evidence=[Evidence(line=["lang-plugin-openjdk/runtime/CMakeLists.txt:19"])],
         locations=[],
@@ -355,8 +462,8 @@ def main() -> None:
         relative_path=Path("cmake-build-debug/lang-plugin-openjdk/runtime/Debug/openjdk_api_test.exe"),
         source_files=[
             Path("lang-plugin-openjdk/runtime/cdts_java_test.cpp"),
-            # Plus xllr.openjdk_src and sdk_src
-        ],
+        ] + CMAKE_VAR_FILES["xllr.openjdk_src"]  # ${xllr.openjdk_src} expansion (21 files)
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-openjdk"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, doctest_package, jni_package],
         evidence=[Evidence(line=["lang-plugin-openjdk/runtime/CMakeLists.txt:28"])],
         locations=[],
@@ -369,10 +476,8 @@ def main() -> None:
         type=ComponentType.SHARED_LIBRARY,
         programming_language="cxx",
         relative_path=Path("cmake-build-debug/lang-plugin-openjdk/xllr-openjdk-bridge/Debug/openjdk/xllr.openjdk.jni.bridge.dll"),
-        source_files=[
-            # Source files from lang-plugin-openjdk/xllr-openjdk-bridge/
-            # TODO: Enumerate all source files
-        ],
+        source_files=CMAKE_VAR_FILES["xllr.openjdk.jni.bridge_src"]  # ${xllr.openjdk.jni.bridge_src} expansion (1 file)
+                     + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-openjdk"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, jni_package],
         evidence=[Evidence(line=["lang-plugin-openjdk/xllr-openjdk-bridge/CMakeLists.txt:9"])],
         locations=[],
@@ -549,10 +654,8 @@ def main() -> None:
         type=ComponentType.SHARED_LIBRARY,
         programming_language="cxx",
         relative_path=Path("cmake-build-debug/lang-plugin-go/runtime/Debug/go/xllr.go.dll"),
-        source_files=[
-            # Source files from lang-plugin-go/runtime/ and plugin-sdk
-            # TODO: Enumerate all source files
-        ],
+        source_files=CMAKE_VAR_FILES["xllr.go_src"]  # ${xllr.go_src} expansion (3 files)
+                     + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-go"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem],
         evidence=[Evidence(line=["lang-plugin-go/runtime/CMakeLists.txt:11"])],
         locations=[],
@@ -581,8 +684,8 @@ def main() -> None:
         relative_path=Path("cmake-build-debug/lang-plugin-go/runtime/Debug/go_api_test.exe"),
         source_files=[
             Path("lang-plugin-go/runtime/go_api_test.cpp"),
-            # Plus xllr.openjdk_src and sdk_src
-        ],
+        ] + CMAKE_VAR_FILES["xllr.go_src"]  # ${xllr.go_src} expansion (3 files) - NOTE: CMake has bug using xllr.openjdk_src
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-go"],  # ${sdk_src} expansion (10 files)
         external_packages=[boost_filesystem, doctest_package],
         evidence=[Evidence(line=["lang-plugin-go/runtime/CMakeLists.txt:29"])],
         locations=[],
@@ -757,7 +860,9 @@ def main() -> None:
         test_executable_component_id=None,
         test_components=[],
         test_framework="CTest",
-        source_files=[Path("metaffi-core/plugin-sdk/runtime/cdts_test.cpp")],
+        source_files=[
+            Path("metaffi-core/plugin-sdk/runtime/cdts_test.cpp"),
+        ] + CMAKE_VAR_FILES["sdk_src"]["metaffi-core"],  # ${sdk_src} expansion (10 files)
         evidence=[Evidence(line=["metaffi-core/plugin-sdk/run_sdk_tests.cmake:11"])],
     )
     rig.add_test(cdts_test_def)
@@ -769,7 +874,9 @@ def main() -> None:
         test_executable_component_id=None,
         test_components=[],
         test_framework="CTest",
-        source_files=[Path("metaffi-core/plugin-sdk/runtime/xllr_capi_test.cpp")],
+        source_files=[
+            Path("metaffi-core/plugin-sdk/runtime/xllr_capi_test.cpp"),
+        ] + CMAKE_VAR_FILES["sdk_src"]["metaffi-core"],  # ${sdk_src} expansion (10 files)
         evidence=[Evidence(line=["metaffi-core/plugin-sdk/run_sdk_tests.cmake:20"])],
     )
     rig.add_test(xllr_capi_test_def)
@@ -783,7 +890,10 @@ def main() -> None:
         test_executable_component_id=None,
         test_components=[],
         test_framework="CTest",
-        source_files=[Path("lang-plugin-python311/runtime/python_runtime_test.cpp")],
+        source_files=[
+            Path("lang-plugin-python311/runtime/python_runtime_test.cpp"),
+        ] + CMAKE_VAR_FILES["xllr.python311_src"]  # ${xllr.python311_src} expansion (17 files)
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-python311"],  # ${sdk_src} expansion (10 files)
         evidence=[Evidence(line=["lang-plugin-python311/runtime/CMakeLists.txt:35"])],
     )
     rig.add_test(python_runtime_test_def)
@@ -795,7 +905,10 @@ def main() -> None:
         test_executable_component_id=None,
         test_components=[],
         test_framework="CTest",
-        source_files=[Path("lang-plugin-python311/idl/idl_plugin_test.cpp")],
+        source_files=[
+            Path("lang-plugin-python311/idl/idl_plugin_test.cpp"),
+            Path("lang-plugin-python311/idl/python_idl_plugin.cpp"),
+        ] + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-python311"],  # ${sdk_src} expansion (10 files)
         evidence=[Evidence(line=["lang-plugin-python311/idl/CMakeLists.txt:32"])],
     )
     rig.add_test(idl_plugin_test_def)
@@ -845,7 +958,10 @@ def main() -> None:
         test_executable_component_id=None,
         test_components=[],
         test_framework="CTest",
-        source_files=[Path("lang-plugin-openjdk/runtime/cdts_java_test.cpp")],
+        source_files=[
+            Path("lang-plugin-openjdk/runtime/cdts_java_test.cpp"),
+        ] + CMAKE_VAR_FILES["xllr.openjdk_src"]  # ${xllr.openjdk_src} expansion (21 files)
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-openjdk"],  # ${sdk_src} expansion (10 files)
         evidence=[Evidence(line=["lang-plugin-openjdk/runtime/CMakeLists.txt:25"])],
     )
     rig.add_test(cdts_java_test_def)
@@ -857,7 +973,10 @@ def main() -> None:
         test_executable_component_id=None,
         test_components=[],
         test_framework="CTest",
-        source_files=[Path("lang-plugin-openjdk/runtime/cdts_java_test.cpp")],
+        source_files=[
+            Path("lang-plugin-openjdk/runtime/cdts_java_test.cpp"),
+        ] + CMAKE_VAR_FILES["xllr.openjdk_src"]  # ${xllr.openjdk_src} expansion (21 files)
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-openjdk"],  # ${sdk_src} expansion (10 files)
         evidence=[Evidence(line=["lang-plugin-openjdk/runtime/CMakeLists.txt:34"])],
     )
     rig.add_test(openjdk_api_test_def)
@@ -911,7 +1030,10 @@ def main() -> None:
         test_executable_component_id=None,
         test_components=[],
         test_framework="CTest",
-        source_files=[Path("lang-plugin-go/runtime/go_api_test.cpp")],
+        source_files=[
+            Path("lang-plugin-go/runtime/go_api_test.cpp"),
+        ] + CMAKE_VAR_FILES["xllr.go_src"]  # ${xllr.go_src} expansion (3 files)
+          + CMAKE_VAR_FILES["sdk_src"]["lang-plugin-go"],  # ${sdk_src} expansion (10 files)
         evidence=[Evidence(line=["lang-plugin-go/runtime/CMakeLists.txt:40"])],
     )
     rig.add_test(go_api_test_def)
