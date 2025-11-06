@@ -1,0 +1,388 @@
+{
+	"repository_name": "npm_monorepo_sample",
+	"build_system": "npm",
+	"description": "Evaluation questions for a multi-package npm monorepo with frontend, backend, libraries, a Rust wasm module, and a Python tool. Includes aggregators and cross-language edges.",
+	"questions": [
+		{
+			"id": 1,
+			"name": "root_project_name",
+			"category": "build_system",
+			"question": "What is the root npm project name (from package.json)?",
+			"expected_answer": "npm_monorepo_sample",
+			"difficulty": "easy"
+		},
+		{
+			"id": 2,
+			"name": "workspace_globs_count",
+			"category": "build_system",
+			"question": "How many workspaces patterns are defined in the root package.json?",
+			"expected_answer": 5,
+			"difficulty": "easy"
+		},
+		{
+			"id": 3,
+			"name": "workspace_globs_list",
+			"category": "build_system",
+			"question": "List the workspaces patterns defined in the root package.json.",
+			"expected_answer": [
+				[
+					"backend/*",
+					"frontend/*",
+					"libs/*",
+					"modules/*",
+					"tools/*"
+				]
+			],
+			"difficulty": "easy"
+		},
+		{
+			"id": 4,
+			"name": "backend_packages",
+			"category": "source_analysis",
+			"question": "What are the backend workspace package names? (Provide a list)",
+			"expected_answer": [
+				[
+					"api-server",
+					"worker",
+					"proxy-server"
+				],
+				[
+					"worker",
+					"api-server",
+					"proxy-server"
+				],
+				[
+					"proxy-server",
+					"api-server",
+					"worker"
+				]
+			],
+			"difficulty": "easy"
+		},
+		{
+			"id": 5,
+			"name": "frontend_packages",
+			"category": "source_analysis",
+			"question": "What are the frontend workspace package names? (Provide a list)",
+			"expected_answer": [
+				[
+					"web-app",
+					"admin-portal"
+				],
+				[
+					"admin-portal",
+					"web-app"
+				]
+			],
+			"difficulty": "easy"
+		},
+		{
+			"id": 6,
+			"name": "libs_packages",
+			"category": "source_analysis",
+			"question": "List the library package names under libs/. (Provide a list)",
+			"expected_answer": [
+				[
+					"shared-ui",
+					"i18n-lib",
+					"shared-lib",
+					"auth-lib",
+					"data-access",
+					"logging-lib",
+					"metrics-lib"
+				]
+			],
+			"difficulty": "easy"
+		},
+		{
+			"id": 7,
+			"name": "wasm_module_name",
+			"category": "source_analysis",
+			"question": "What is the name of the Rust-based wasm module under modules/?",
+			"expected_answer": "wasm-module",
+			"difficulty": "easy"
+		},
+		{
+			"id": 8,
+			"name": "python_tool_name",
+			"category": "source_analysis",
+			"question": "What is the name of the Python tool under tools/?",
+			"expected_answer": "codegen",
+			"difficulty": "easy"
+		},
+		{
+			"id": 9,
+			"name": "test_files_count",
+			"category": "testing",
+			"question": "How many test files are present across the repo?",
+			"expected_answer": 5,
+			"difficulty": "easy"
+		},
+		{
+			"id": 10,
+			"name": "proxy_server_main_entry",
+			"category": "artifact",
+			"question": "What is the main entry file for proxy-server (from its package.json)?",
+			"expected_answer": "index.js",
+			"difficulty": "easy"
+		},
+		{
+			"id": 11,
+			"name": "api_server_sources",
+			"category": "source_analysis",
+			"question": "What source files are used to build api-server? (Exclude test files; provide a list)",
+			"expected_answer": [
+				[
+					"backend/api-server/src/index.ts"
+				]
+			],
+			"difficulty": "medium"
+		},
+		{
+			"id": 12,
+			"name": "web_app_dependencies",
+			"category": "dependency_analysis",
+			"question": "Which components does web-app depend on? (Provide a list)",
+			"expected_answer": [
+				[
+					"shared-ui",
+					"i18n-lib",
+					"wasm-module",
+					"shared-lib"
+				],
+				[
+					"shared-ui",
+					"shared-lib",
+					"i18n-lib",
+					"wasm-module"
+				]
+			],
+			"difficulty": "medium"
+		},
+		{
+			"id": 13,
+			"name": "api_server_external_packages",
+			"category": "dependency_analysis",
+			"question": "What external packages (npm/dev) does api-server use? (Provide a list)",
+			"expected_answer": [
+				[
+					"express",
+					"axios",
+					"typescript",
+					"jest"
+				]
+			],
+			"difficulty": "medium"
+		},
+		{
+			"id": 14,
+			"name": "web_app_artifact_path",
+			"category": "artifact",
+			"question": "What is the artifact path (relative_path) produced by web-app?",
+			"expected_answer": "frontend/web-app/dist/main.js",
+			"difficulty": "medium"
+		},
+		{
+			"id": 15,
+			"name": "logging_lib_dependents_count",
+			"category": "dependency_analysis",
+			"question": "How many non-aggregator components directly depend on logging-lib?",
+			"expected_answer": 4,
+			"difficulty": "medium"
+		},
+		{
+			"id": 16,
+			"name": "executables_count",
+			"category": "component_identification",
+			"question": "How many executable components are defined (type=executable)?",
+			"expected_answer": 6,
+			"difficulty": "medium"
+		},
+		{
+			"id": 17,
+			"name": "aggregators_count",
+			"category": "component_identification",
+			"question": "How many aggregator components are defined (interpreted with multiple dependencies)?",
+			"expected_answer": 2,
+			"difficulty": "medium"
+		},
+		{
+			"id": 18,
+			"name": "max_dependency_depth",
+			"category": "graph_reasoning",
+			"question": "What is the maximum dependency depth across components?",
+			"expected_answer": 4,
+			"difficulty": "medium"
+		},
+		{
+			"id": 19,
+			"name": "programming_languages",
+			"category": "component_identification",
+			"question": "List the programming languages used across components. (Provide a list)",
+			"expected_answer": [
+				[
+					"js",
+					"python",
+					"rust",
+					"ts"
+				],
+				[
+					"ts",
+					"js",
+					"rust",
+					"python"
+				]
+			],
+			"difficulty": "medium"
+		},
+		{
+			"id": 20,
+			"name": "no_build_same_src_artifact",
+			"category": "artifact",
+			"question": "Which component has the same path for source and artifact (no build step)?",
+			"expected_answer": "proxy-server",
+			"difficulty": "medium"
+		},
+		{
+			"id": 21,
+			"name": "affected_by_shared_lib_failure",
+			"category": "graph_reasoning",
+			"question": "If shared-lib fails to build, which executable components would be unable to build? (Provide a list)",
+			"expected_answer": [
+				[
+					"api-server",
+					"worker",
+					"proxy-server",
+					"web-app",
+					"admin-portal"
+				]
+			],
+			"difficulty": "hard"
+		},
+		{
+			"id": 22,
+			"name": "affected_by_logging_lib_failure",
+			"category": "graph_reasoning",
+			"question": "If logging-lib fails, which non-aggregator components are affected (cannot build)? (Provide a list)",
+			"expected_answer": [
+				[
+					"shared-lib",
+					"shared-ui",
+					"i18n-lib",
+					"data-access",
+					"api-server",
+					"worker",
+					"proxy-server",
+					"web-app",
+					"admin-portal"
+				]
+			],
+			"difficulty": "hard"
+		},
+		{
+			"id": 23,
+			"name": "longest_chain_from_api_server",
+			"category": "graph_reasoning",
+			"question": "Provide a longest dependency chain starting from api-server. (Provide a list of component names in order)",
+			"expected_answer": [
+				[
+					"api-server",
+					"data-access",
+					"shared-lib",
+					"logging-lib"
+				]
+			],
+			"difficulty": "hard"
+		},
+		{
+			"id": 24,
+			"name": "cross_language_components_count",
+			"category": "dependency_analysis",
+			"question": "How many non-aggregator components have at least one cross-language dependency?",
+			"expected_answer": 3,
+			"difficulty": "hard"
+		},
+		{
+			"id": 25,
+			"name": "reachable_from_build_all",
+			"category": "graph_reasoning",
+			"question": "How many components are directly depended on by build-all (excluding itself)?",
+			"expected_answer": 14,
+			"difficulty": "hard"
+		},
+		{
+			"id": 26,
+			"name": "leaf_components",
+			"category": "dependency_analysis",
+			"question": "Which components have no dependencies? (Provide a list)",
+			"expected_answer": [
+				[
+					"logging-lib",
+					"metrics-lib",
+					"auth-lib",
+					"codegen",
+					"wasm-module"
+				],
+				[
+					"auth-lib",
+					"logging-lib",
+					"metrics-lib",
+					"codegen",
+					"wasm-module"
+				]
+			],
+			"difficulty": "hard"
+		},
+		{
+			"id": 27,
+			"name": "exactly_two_dependents",
+			"category": "dependency_analysis",
+			"question": "Which non-aggregator components are depended on by exactly two other components? (Provide a list)",
+			"expected_answer": [
+				[
+					"data-access",
+					"shared-ui"
+				],
+				[
+					"shared-ui",
+					"data-access"
+				]
+			],
+			"difficulty": "hard"
+		},
+		{
+			"id": 28,
+			"name": "ts_dist_artifacts_count",
+			"category": "artifact",
+			"question": "How many TypeScript components produce artifacts under a dist/ directory?",
+			"expected_answer": 11,
+			"difficulty": "hard"
+		},
+		{
+			"id": 29,
+			"name": "executables_artifact_paths",
+			"category": "artifact",
+			"question": "List the artifact paths for all executable components. (Provide a list)",
+			"expected_answer": [
+				[
+					"backend/api-server/dist/index.js",
+					"backend/worker/dist/index.js",
+					"backend/proxy-server/index.js",
+					"frontend/web-app/dist/main.js",
+					"frontend/admin-portal/dist/main.js",
+					"tools/codegen/main.py"
+				]
+			],
+			"difficulty": "hard"
+		},
+		{
+			"id": 30,
+			"name": "shortest_path_api_to_logging",
+			"category": "graph_reasoning",
+			"question": "What is the length (in edges) of the shortest dependency path from api-server to logging-lib?",
+			"expected_answer": 1,
+			"difficulty": "hard"
+		}
+	]
+}
+

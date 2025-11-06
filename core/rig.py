@@ -331,8 +331,11 @@ class RIG:
         visualizer = RIGVisualizer(self)
         visualizer.show_graph(validate_before_show)
 
-    def generate_prompts_json_data(self, optimize: bool = True) -> str:
+    def generate_prompts_json_data(self, optimize: bool = False) -> str:
         """Generate the JSON data section for the prompts."""
+        
+        assert not optimize, "Optimization of the prompt seems to reach lower scores in testing, so it is disabled for now."
+        
         # Basic repository info
         repo_info = {"name": self._repository_info.name if self._repository_info else "Unknown", "root": str(self._repository_info.root_path) if self._repository_info else "Unknown"}
 
@@ -375,8 +378,6 @@ class RIG:
             evidence=evidence
         )
 
-        # Apply optimization if requested
-        # TODO: re-enable optimization once optimization method is fixed
         if optimize:
             rig_data = self._optimize_json_for_llm(rig_data)
 
@@ -905,6 +906,7 @@ class RIG:
         # Done with test mapping passes.
 
     
+    # IMPORTANT: Research shows optimized JSON reaches lower scored compare to non-optimized.
     def _optimize_json_for_llm(self, data: RIGPromptData) -> RIGPromptData:
         """Return the same RIGPromptData object, but make its JSON output LLM-friendly.
 

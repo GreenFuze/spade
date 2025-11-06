@@ -1,0 +1,632 @@
+{
+  "repo": {
+    "name": "npm_monorepo_sample",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\npm"
+  },
+  "build": {
+    "system": "npm",
+    "generator": null,
+    "type": null,
+    "configure_cmd": "npm install",
+    "test_cmd": "npm test --workspaces"
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "api-server",
+      "depends_on_ids": [
+        "comp-11",
+        "comp-12",
+        "comp-8",
+        "comp-9",
+        "comp-10"
+      ],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "backend\\api-server\\dist\\index.js",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "ts",
+      "source_files": [
+        "backend\\api-server\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-6",
+        "pkg-8",
+        "pkg-10",
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-9",
+      "name": "auth-lib",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-9"
+      ],
+      "relative_path": "libs\\auth-lib\\dist\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "ts",
+      "source_files": [
+        "libs\\auth-lib\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-10",
+      "name": "data-access",
+      "depends_on_ids": [
+        "comp-8",
+        "comp-14"
+      ],
+      "evidence_ids": [
+        "evidence-10"
+      ],
+      "relative_path": "libs\\data-access\\dist\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "ts",
+      "source_files": [
+        "libs\\data-access\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-6",
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-8",
+      "name": "shared-lib",
+      "depends_on_ids": [
+        "comp-11"
+      ],
+      "evidence_ids": [
+        "evidence-8"
+      ],
+      "relative_path": "libs\\shared-lib\\dist\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "ts",
+      "source_files": [
+        "libs\\shared-lib\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-11",
+      "name": "logging-lib",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-11"
+      ],
+      "relative_path": "libs\\logging-lib\\dist\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "ts",
+      "source_files": [
+        "libs\\logging-lib\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-14",
+      "name": "codegen",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-14"
+      ],
+      "relative_path": "tools\\codegen\\main.py",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "python",
+      "source_files": [
+        "tools\\codegen\\main.py"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-12",
+      "name": "metrics-lib",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-12"
+      ],
+      "relative_path": "libs\\metrics-lib\\dist\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "ts",
+      "source_files": [
+        "libs\\metrics-lib\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-2",
+      "name": "worker",
+      "depends_on_ids": [
+        "comp-8",
+        "comp-11",
+        "comp-10"
+      ],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "backend\\worker\\dist\\index.js",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "ts",
+      "source_files": [
+        "backend\\worker\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-6",
+        "pkg-8",
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-3",
+      "name": "proxy-server",
+      "depends_on_ids": [
+        "comp-8",
+        "comp-11"
+      ],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "backend\\proxy-server\\index.js",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "js",
+      "source_files": [
+        "backend\\proxy-server\\index.js"
+      ],
+      "external_packages_ids": [
+        "pkg-2"
+      ]
+    },
+    {
+      "id": "comp-4",
+      "name": "web-app",
+      "depends_on_ids": [
+        "comp-8",
+        "comp-7",
+        "comp-13",
+        "comp-6"
+      ],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "frontend\\web-app\\dist\\main.js",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "ts",
+      "source_files": [
+        "frontend\\web-app\\src\\main.tsx"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-12",
+        "pkg-8",
+        "pkg-4",
+        "pkg-6"
+      ]
+    },
+    {
+      "id": "comp-6",
+      "name": "shared-ui",
+      "depends_on_ids": [
+        "comp-8"
+      ],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "relative_path": "libs\\shared-ui\\dist\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "ts",
+      "source_files": [
+        "libs\\shared-ui\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-4",
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-7",
+      "name": "i18n-lib",
+      "depends_on_ids": [
+        "comp-8"
+      ],
+      "evidence_ids": [
+        "evidence-7"
+      ],
+      "relative_path": "libs\\i18n-lib\\dist\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "ts",
+      "source_files": [
+        "libs\\i18n-lib\\src\\index.ts"
+      ],
+      "external_packages_ids": [
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-13",
+      "name": "wasm-module",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-13"
+      ],
+      "relative_path": "modules\\wasm-module\\pkg\\index.js",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "rust",
+      "source_files": [
+        "modules\\wasm-module\\src\\lib.rs"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-5",
+      "name": "admin-portal",
+      "depends_on_ids": [
+        "comp-8",
+        "comp-6"
+      ],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "frontend\\admin-portal\\dist\\main.js",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "ts",
+      "source_files": [
+        "frontend\\admin-portal\\src\\main.tsx"
+      ],
+      "external_packages_ids": [
+        "pkg-8",
+        "pkg-4",
+        "pkg-10",
+        "pkg-12"
+      ]
+    },
+    {
+      "id": "comp-15",
+      "name": "build-all",
+      "depends_on_ids": [
+        "comp-11",
+        "comp-2",
+        "comp-13",
+        "comp-4",
+        "comp-6",
+        "comp-1",
+        "comp-8",
+        "comp-12",
+        "comp-14",
+        "comp-9",
+        "comp-5",
+        "comp-3",
+        "comp-10",
+        "comp-7"
+      ],
+      "evidence_ids": [
+        "evidence-15"
+      ],
+      "relative_path": "package.json",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "js",
+      "source_files": [],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-16",
+      "name": "test-all",
+      "depends_on_ids": [
+        "comp-8",
+        "comp-1",
+        "comp-4",
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-16"
+      ],
+      "relative_path": "package.json",
+      "locations": [],
+      "type": "interpreted",
+      "programming_language": "js",
+      "source_files": [],
+      "external_packages_ids": [
+        "pkg-8"
+      ]
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "api_server_unit",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-17"
+      ],
+      "test_executable_component_id": "comp-1",
+      "test_components_ids": [
+        "comp-1"
+      ],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "backend\\api-server\\src\\index.test.ts"
+      ],
+      "test_framework": "jest"
+    },
+    {
+      "id": "test-2",
+      "name": "web_app_unit",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-18"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [
+        "comp-4"
+      ],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "frontend\\web-app\\src\\app.test.tsx"
+      ],
+      "test_framework": "jest"
+    },
+    {
+      "id": "test-3",
+      "name": "shared_lib_unit",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-19"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [
+        "comp-8"
+      ],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "libs\\shared-lib\\src\\index.test.ts"
+      ],
+      "test_framework": "jest"
+    },
+    {
+      "id": "test-4",
+      "name": "data_access_integration",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-20"
+      ],
+      "test_executable_component_id": "comp-10",
+      "test_components_ids": [
+        "comp-10"
+      ],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "libs\\data-access\\src\\index.test.ts"
+      ],
+      "test_framework": "jest"
+    },
+    {
+      "id": "test-5",
+      "name": "worker_unit",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-21"
+      ],
+      "test_executable_component_id": "comp-2",
+      "test_components_ids": [
+        "comp-2"
+      ],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "backend\\worker\\src\\index.test.ts"
+      ],
+      "test_framework": "jest"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-2",
+      "name": "express"
+    },
+    {
+      "id": "pkg-6",
+      "name": "axios"
+    },
+    {
+      "id": "pkg-10",
+      "name": "typescript"
+    },
+    {
+      "id": "pkg-8",
+      "name": "jest"
+    },
+    {
+      "id": "pkg-4",
+      "name": "react"
+    },
+    {
+      "id": "pkg-12",
+      "name": "webpack"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-1",
+      "name": "npm",
+      "package_name": "express"
+    },
+    {
+      "id": "pkg-5",
+      "name": "npm",
+      "package_name": "axios"
+    },
+    {
+      "id": "pkg-9",
+      "name": "npm",
+      "package_name": "typescript"
+    },
+    {
+      "id": "pkg-7",
+      "name": "npm",
+      "package_name": "jest"
+    },
+    {
+      "id": "pkg-3",
+      "name": "npm",
+      "package_name": "react"
+    },
+    {
+      "id": "pkg-11",
+      "name": "npm",
+      "package_name": "webpack"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "backend/api-server/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-9",
+      "line": [
+        "libs/auth-lib/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-10",
+      "line": [
+        "libs/data-access/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-8",
+      "line": [
+        "libs/shared-lib/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-11",
+      "line": [
+        "libs/logging-lib/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-14",
+      "line": [
+        "tools/codegen/pyproject.toml:1"
+      ]
+    },
+    {
+      "id": "evidence-12",
+      "line": [
+        "libs/metrics-lib/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "backend/worker/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "backend/proxy-server/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "frontend/web-app/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "libs/shared-ui/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-7",
+      "line": [
+        "libs/i18n-lib/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-13",
+      "line": [
+        "modules/wasm-module/Cargo.toml:1"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "frontend/admin-portal/package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-15",
+      "line": [
+        "package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-16",
+      "line": [
+        "package.json:1"
+      ]
+    },
+    {
+      "id": "evidence-17",
+      "line": [
+        "backend/api-server/package.json:10"
+      ]
+    },
+    {
+      "id": "evidence-18",
+      "line": [
+        "frontend/web-app/package.json:12"
+      ]
+    },
+    {
+      "id": "evidence-19",
+      "line": [
+        "libs/shared-lib/package.json:10"
+      ]
+    },
+    {
+      "id": "evidence-20",
+      "line": [
+        "libs/data-access/package.json:10"
+      ]
+    },
+    {
+      "id": "evidence-21",
+      "line": [
+        "backend/worker/package.json:10"
+      ]
+    }
+  ]
+}

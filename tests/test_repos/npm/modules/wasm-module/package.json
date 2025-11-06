@@ -1,0 +1,10 @@
+{
+  "name": "wasm-module",
+  "version": "1.0.0",
+  "main": "pkg/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "echo build wasm-module"
+  }
+}
+

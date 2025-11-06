@@ -1,7 +1,7 @@
 {
   "repo": {
     "name": "CMakeHelloWorld",
-    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\cmake_hello_world"
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\cmake\\cmake_hello_world"
   },
   "build": {
     "system": "CMake",

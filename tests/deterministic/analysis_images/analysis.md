@@ -305,7 +305,7 @@ The following sections provide detailed analysis for each individual repository.
 **Repository**: `cmake_hello_world`
 **Agents Tested**: Claude, Codex, Cursor
 **Total Questions**: 30
-**Generated**: 2025-11-05 13:59 UTC
+**Generated**: 2025-11-06 09:19 UTC
 
 ---
 
@@ -465,7 +465,7 @@ RIG demonstrates measurable value for the **cmake_hello_world** repository:
 **Repository**: `jni_hello_world`
 **Agents Tested**: Claude, Codex, Cursor
 **Total Questions**: 30
-**Generated**: 2025-11-05 13:59 UTC
+**Generated**: 2025-11-06 09:19 UTC
 
 ---
 
@@ -625,7 +625,7 @@ RIG demonstrates measurable value for the **jni_hello_world** repository:
 **Repository**: `metaffi`
 **Agents Tested**: Claude, Codex, Cursor
 **Total Questions**: 30
-**Generated**: 2025-11-05 13:59 UTC
+**Generated**: 2025-11-06 09:20 UTC
 
 ---
 
@@ -781,4 +781,4 @@ RIG demonstrates measurable value for the **metaffi** repository:
 
 ---
 
-*This report was automatically generated on 2025-11-05 14:00 UTC*
+*This report was automatically generated on 2025-11-06 09:20 UTC*

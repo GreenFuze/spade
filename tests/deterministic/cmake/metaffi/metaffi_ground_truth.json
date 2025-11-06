@@ -90,8 +90,8 @@
         "metaffi-core\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
       ],
       "external_packages_ids": [
-        "pkg-2",
-        "pkg-6"
+        "pkg-6",
+        "pkg-2"
       ]
     },
     {
@@ -119,8 +119,8 @@
         "metaffi-core\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
       ],
       "external_packages_ids": [
-        "pkg-10",
-        "pkg-2"
+        "pkg-2",
+        "pkg-10"
       ]
     },
     {
@@ -148,18 +148,18 @@
         "metaffi-core\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
       ],
       "external_packages_ids": [
-        "pkg-10",
-        "pkg-2"
+        "pkg-2",
+        "pkg-10"
       ]
     },
     {
       "id": "comp-6",
       "name": "metaffi-core",
       "depends_on_ids": [
+        "comp-2",
         "comp-4",
-        "comp-3",
         "comp-5",
-        "comp-2"
+        "comp-3"
       ],
       "evidence_ids": [
         "evidence-6"
@@ -259,8 +259,8 @@
         "lang-plugin-python311\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
       ],
       "external_packages_ids": [
-        "pkg-10",
-        "pkg-2"
+        "pkg-2",
+        "pkg-10"
       ]
     },
     {
@@ -320,8 +320,8 @@
         "lang-plugin-python311\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
       ],
       "external_packages_ids": [
-        "pkg-10",
-        "pkg-2"
+        "pkg-2",
+        "pkg-10"
       ]
     },
     {
@@ -406,11 +406,11 @@
       "id": "comp-16",
       "name": "python311",
       "depends_on_ids": [
-        "comp-7",
         "comp-11",
-        "comp-10",
+        "comp-7",
+        "comp-9",
         "comp-8",
-        "comp-9"
+        "comp-10"
       ],
       "evidence_ids": [
         "evidence-16"
@@ -520,8 +520,8 @@
       ],
       "external_packages_ids": [
         "pkg-8",
-        "pkg-10",
-        "pkg-2"
+        "pkg-2",
+        "pkg-10"
       ]
     },
     {
@@ -573,8 +573,8 @@
       ],
       "external_packages_ids": [
         "pkg-8",
-        "pkg-10",
-        "pkg-2"
+        "pkg-2",
+        "pkg-10"
       ]
     },
     {
@@ -653,10 +653,10 @@
       "programming_language": "java",
       "source_files": [],
       "external_packages_ids": [
-        "pkg-14",
+        "pkg-16",
         "pkg-12",
         "pkg-18",
-        "pkg-16"
+        "pkg-14"
       ]
     },
     {
@@ -769,14 +769,14 @@
       "id": "comp-31",
       "name": "openjdk",
       "depends_on_ids": [
-        "comp-17",
-        "comp-24",
-        "comp-21",
         "comp-22",
-        "comp-20",
+        "comp-28",
+        "comp-21",
         "comp-19",
+        "comp-20",
+        "comp-17",
         "comp-18",
-        "comp-28"
+        "comp-24"
       ],
       "evidence_ids": [
         "evidence-31"
@@ -866,8 +866,8 @@
         "lang-plugin-go\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
       ],
       "external_packages_ids": [
-        "pkg-10",
-        "pkg-2"
+        "pkg-2",
+        "pkg-10"
       ]
     },
     {
@@ -947,9 +947,9 @@
       "name": "go",
       "depends_on_ids": [
         "comp-32",
+        "comp-36",
         "comp-35",
-        "comp-34",
-        "comp-36"
+        "comp-34"
       ],
       "evidence_ids": [
         "evidence-40"
@@ -965,10 +965,10 @@
       "id": "comp-41",
       "name": "MetaFFI",
       "depends_on_ids": [
-        "comp-40",
-        "comp-16",
+        "comp-31",
         "comp-6",
-        "comp-31"
+        "comp-40",
+        "comp-16"
       ],
       "evidence_ids": [
         "evidence-41"

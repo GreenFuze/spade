@@ -1,0 +1,23 @@
+{
+  "name": "web-app",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "build": "echo build web-app",
+    "test": "echo test web-app"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "axios": "^1.6.7",
+    "webpack": "^5.89.0",
+    "shared-ui": "1.0.0",
+    "i18n-lib": "1.0.0",
+    "shared-lib": "1.0.0",
+    "wasm-module": "1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "jest": "^29.7.0"
+  }
+}

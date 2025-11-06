@@ -17,7 +17,7 @@ def main() -> None:
     rig = RIG()
 
     # Resolve the repository root for the test repo
-    repo_root = test_repos_root / "cmake_hello_world"
+    repo_root = test_repos_root / "cmake" / "cmake_hello_world"
 
     # Set repository and build system info via public setters
     rig.set_repository_info(
