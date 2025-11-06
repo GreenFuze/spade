@@ -331,7 +331,7 @@ class RIG:
         visualizer = RIGVisualizer(self)
         visualizer.show_graph(validate_before_show)
 
-    def generate_prompts_json_data(self, optimize: bool = False) -> str:
+    def generate_prompts_json_data(self, optimize: bool = True) -> str:
         """Generate the JSON data section for the prompts."""
         # Basic repository info
         repo_info = {"name": self._repository_info.name if self._repository_info else "Unknown", "root": str(self._repository_info.root_path) if self._repository_info else "Unknown"}
@@ -377,8 +377,8 @@ class RIG:
 
         # Apply optimization if requested
         # TODO: re-enable optimization once optimization method is fixed
-        # if optimize:
-        #     data = self._optimize_json_for_llm(data)
+        if optimize:
+            rig_data = self._optimize_json_for_llm(rig_data)
 
         # Use Pydantic's JSON serialization (handles sets → lists automatically)
         # exclude_none=True removes null fields for more efficient LLM processing
@@ -748,6 +748,35 @@ class RIG:
         )
         diff_text = "\n".join(diff)
         return diff_text
+    
+    def save(self, db_path: Union[str, Path], description: str = "RIG Export") -> None:
+        """
+        Save RIG to SQLite database.
+        Replaces any existing RIG in the database.
+
+        Args:
+            db_path: Path to SQLite database file
+            description: Description for this RIG export
+        """
+        from core.rig_store import save_rig
+        save_rig(self, db_path, description)
+    
+    @staticmethod
+    def load(db_path: Union[str, Path]) -> 'RIG':
+        """
+        Load RIG from SQLite database.
+
+        Args:
+            db_path: Path to SQLite database file
+
+        Returns:
+            Loaded RIG object
+
+        Raises:
+            ValueError: If database contains 0 or >1 RIGs
+        """
+        from core.rig_store import load_rig
+        return load_rig(db_path)
 
     def analyze(self) -> None:
         """
@@ -876,190 +905,128 @@ class RIG:
         # Done with test mapping passes.
 
     
-    # def _optimize_json_for_llm(self, data: Dict[str, Any]) -> Dict[str, Any]:
-    #     """
-    #     Optimize JSON data for LLM consumption by reducing token count.
-    #
-    #     This method implements token reduction strategies:
-    #     - Deduplicate file paths (biggest token saver)
-    #     - Deduplicate evidence call stacks
-    #     - Map repeated strings to IDs
-    #     - Use compact keys in JSON
-    #     - Preserve readability for critical fields
-    #
-    #     Args:
-    #         data: Original JSON data dictionary
-    #
-    #     Returns:
-    #         Optimized JSON data with mappings
-    #     """
-    #     import json
-    #
-    #     # Collect file paths and evidence for deduplication
-    #     file_paths = set()
-    #     evidence_stacks = set()
-    #     string_counts = {}
-    #
-    #     def analyze_data(obj, path=""):
-    #         """Analyze data to find optimization opportunities."""
-    #         if isinstance(obj, str):
-    #             # Count string occurrences
-    #             string_counts[obj] = string_counts.get(obj, 0) + 1
-    #
-    #             # Collect file paths (biggest token consumers)
-    #             if (obj.endswith(('.cpp', '.c', '.h', '.hpp', '.py', '.java', '.go', '.cs', '.js', '.ts')) or
-    #                 '/' in obj or '\\' in obj):
-    #                 file_paths.add(obj)
-    #
-    #             # Collect evidence call stacks
-    #             if path.endswith('.call_stack') or 'call_stack' in path:
-    #                 evidence_stacks.add(obj)
-    #
-    #         elif isinstance(obj, dict):
-    #             for key, value in obj.items():
-    #                 analyze_data(value, f"{path}.{key}")
-    #         elif isinstance(obj, list):
-    #             for i, item in enumerate(obj):
-    #                 analyze_data(item, f"{path}[{i}]")
-    #
-    #     # Analyze the data
-    #     analyze_data(data)
-    #
-    #     # Create mappings for repeated strings (only if repeated 3+ times and >5 chars)
-    #     string_to_id = {}
-    #     id_counter = 1
-    #
-    #     for string, count in string_counts.items():
-    #         if count >= 3 and len(string) > 5 and string not in file_paths:
-    #             string_to_id[string] = f"s{id_counter}"
-    #             id_counter += 1
-    #
-    #     # Create file path mappings
-    #     path_to_id = {}
-    #     for i, path in enumerate(sorted(file_paths), 1):
-    #         path_to_id[path] = f"p{i}"
-    #
-    #     # Create evidence mappings
-    #     evidence_to_id = {}
-    #     for i, stack in enumerate(sorted(evidence_stacks), 1):
-    #         evidence_to_id[stack] = f"e{i}"
-    #
-    #     # Comprehensive key mappings
-    #     key_mappings = {
-    #         # Top-level sections
-    #                 "repo": "r",
-    #                 "build": "b",
-    #                 "components": "c",
-    #                 "aggregators": "a",
-    #                 "runners": "rn",
-    #                 "tests": "t",
-    #         "external_packages": "ep",
-    #         "package_managers": "pm",
-    #         "evidence": "ev",
-    #
-    #         # Component fields
-    #                 "name": "n",
-    #                 "type": "ty",
-    #         "programming_language": "lang",
-    #                 "source_files": "sf",
-    #         "depends_on_ids": "doi",
-    #         "evidence_ids": "eid",
-    #         "external_packages_ids": "epi",
-    #         "test_executable_component_id": "teci",
-    #         "test_components_ids": "tci",
-    #         "components_being_tested_ids": "cbti",
-    #         "test_framework": "tf",
-    #
-    #         # Repository fields
-    #         "root": "root",
-    #         "system": "sys",
-    #         "configure_cmd": "ccmd",
-    #         "test_cmd": "tcmd",
-    #
-    #         # Evidence fields
-    #         "line": "line",
-    #         "call_stack": "cs",
-    #
-    #         # Package fields
-    #         "package_name": "pkg",
-    #         "package_manager": "pmgr"
-    #     }
-    #
-    #     def optimize_object(obj, path=""):
-    #         """Recursively optimize objects."""
-    #         if isinstance(obj, str):
-    #             # Apply mappings in order of priority
-    #             if obj in path_to_id:
-    #                 return path_to_id[obj]
-    #             elif obj in evidence_to_id:
-    #                 return evidence_to_id[obj]
-    #             elif obj in string_to_id:
-    #                 return string_to_id[obj]
-    #             else:
-    #                 return obj
-    #         elif isinstance(obj, dict):
-    #             optimized_dict = {}
-    #             for key, value in obj.items():
-    #                 # Use compact key if available
-    #                 compact_key = key_mappings.get(key, key)
-    #                 optimized_dict[compact_key] = optimize_object(value, f"{path}.{key}")
-    #             return optimized_dict
-    #         elif isinstance(obj, list):
-    #             return [optimize_object(item, f"{path}[{i}]") for i, item in enumerate(obj)]
-    #         else:
-    #             return obj
-    #
-    #     # Create optimized structure
-    #     optimized_data = optimize_object(data)
-    #
-    #     # Add mappings at the top
-    #     optimized = {
-    #         "mappings": {
-    #             "paths": path_to_id,
-    #             "evidence": evidence_to_id,
-    #             "strings": string_to_id,
-    #             "keys": key_mappings
-    #         }
-    #     }
-    #     if isinstance(optimized_data, dict):
-    #     optimized.update(optimized_data)
-    #
-    #     # Check if optimization actually reduces size
-    #     original_size = len(json.dumps(data, separators=(',', ':')))
-    #     optimized_size = len(json.dumps(optimized, separators=(',', ':')))
-    #
-    #     # Only return optimized version if it's actually smaller
-    #     if optimized_size < original_size:
-    #         return optimized
-    #     else:
-    #         # Return original data if optimization doesn't help
-    #         return data
+    def _optimize_json_for_llm(self, data: RIGPromptData) -> RIGPromptData:
+        """Return the same RIGPromptData object, but make its JSON output LLM-friendly.
 
-    def save(self, db_path: Union[str, Path], description: str = "RIG Export") -> None:
+        - Deduplicate path-like and frequent long strings via lookup tables.
+        - Apply short key aliases for high-frequency inner keys in the JSON view.
+        - Do not mutate semantic content; only override serialization.
+        - If optimized output is not smaller, leave serialization intact.
         """
-        Save RIG to SQLite database.
-        Replaces any existing RIG in the database.
+        from collections import Counter
+        import json
+        import types
 
-        Args:
-            db_path: Path to SQLite database file
-            description: Description for this RIG export
-        """
-        from core.rig_store import save_rig
-        save_rig(self, db_path, description)
+        # Build a plain dict from the model
+        base_dict = data.model_dump(exclude_none=True, mode="json")
 
-    @staticmethod
-    def load(db_path: Union[str, Path]) -> 'RIG':
-        """
-        Load RIG from SQLite database.
+        # Collect strings and identify paths
+        string_counter: Counter[str] = Counter()
+        path_candidates: set[str] = set()
 
-        Args:
-            db_path: Path to SQLite database file
+        path_suffixes = {
+            'c', 'cc', 'cpp', 'cxx', 'h', 'hpp', 'hxx', 'py', 'java', 'go', 'cs',
+            'js', 'ts', 'json', 'yaml', 'yml', 'toml', 'cmake', 'ini', 'cfg', 'dll', 'exe'
+        }
 
-        Returns:
-            Loaded RIG object
+        def is_path(value: str) -> bool:
+            if len(value) < 4:
+                return False
+            if '/' in value or '\\' in value:
+                return True
+            if '.' not in value:
+                return False
+            ext = value.rsplit('.', 1)[-1].lower()
+            return ext in path_suffixes
 
-        Raises:
-            ValueError: If database contains 0 or >1 RIGs
-        """
-        from core.rig_store import load_rig
-        return load_rig(db_path)
+        def scan(node):
+            if isinstance(node, str):
+                string_counter[node] += 1
+                if is_path(node):
+                    path_candidates.add(node)
+                return
+            if isinstance(node, dict):
+                for v in node.values():
+                    scan(v)
+                return
+            if isinstance(node, list):
+                for v in node:
+                    scan(v)
+
+        scan(base_dict)
+
+        # Lookups (stable order)
+        sorted_paths = sorted(path_candidates)
+        path_to_idx = {p: i for i, p in enumerate(sorted_paths)}
+
+        frequent_strings = [s for s, c in string_counter.items() if c >= 3 and len(s) > 12 and s not in path_to_idx]
+        sorted_strings = sorted(frequent_strings)
+        string_to_idx = {s: i for i, s in enumerate(sorted_strings)}
+
+        # Compact key aliases
+        key_alias = {
+            'components': 'comp',
+            'aggregators': 'agg',
+            'runners': 'run',
+            'tests': 'test',
+            'external_packages': 'extpkg',
+            'package_managers': 'pkgmgr',
+            'source_files': 'sf',
+            'depends_on_ids': 'deps',
+            'external_packages_ids': 'extdeps',
+            'evidence_ids': 'evid',
+            'programming_language': 'lang',
+            'relative_path': 'rel',
+            'test_components_ids': 'tcomp',
+            'components_being_tested_ids': 'cbt',
+            'test_executable_component_id': 'texe',
+            'call_stack': 'cs',
+            'package_name': 'pkg',
+            'package_manager': 'pm',
+            'configure_cmd': 'cfg',
+            'test_cmd': 'tcmd',
+            'test_framework': 'tf',
+        }
+        reverse_key_alias = {alias: key for key, alias in key_alias.items()}
+
+        def transform(node):
+            if isinstance(node, str):
+                if node in path_to_idx:
+                    return f"$p{path_to_idx[node]}"
+                if node in string_to_idx:
+                    return f"$s{string_to_idx[node]}"
+                return node
+            if isinstance(node, list):
+                return [transform(v) for v in node]
+            if isinstance(node, dict):
+                out = {}
+                for k, v in node.items():
+                    k2 = key_alias.get(k, k)
+                    out[k2] = transform(v)
+                return out
+            return node
+
+        optimized_payload = transform(base_dict)
+        lookups = { 'paths': sorted_paths, 'strings': sorted_strings, 'keys': reverse_key_alias }
+        optimized = { 'lookups': lookups, 'data': optimized_payload }
+
+        optimized_compact = json.dumps(optimized, separators=(',', ':'), ensure_ascii=False)
+        original_compact = data.model_dump_json(exclude_none=True, indent=None)
+
+        if len(optimized_compact) >= len(original_compact):
+            # No improvement; keep original serializer
+            return data
+
+        # Return a subclass instance that overrides JSON serialization only.
+        from typing import Any as _Any
+        class _OptimizedRIGPromptData(type(data)):
+            def model_dump_json(self, *args: _Any, **kwargs: _Any) -> str:  # type: ignore[override]
+                indent = kwargs.get('indent') if 'indent' in kwargs else (args[0] if args else None)
+                if indent is None:
+                    return optimized_compact
+                import json as _json
+                return _json.dumps(optimized, indent=indent, ensure_ascii=False)
+
+        return _OptimizedRIGPromptData(**data.model_dump(exclude_none=False))
+
+
