@@ -1,0 +1,65 @@
+You are an expert at analyzing code repositories and build systems.
+
+Please answer the following questions about this repository. Analyze the repository structure, build files, and source code to provide accurate answers.
+
+When answering questions, you should understand these common build system terms:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component generates an artifact from source files, or is the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps (e.g., "build-all" targets).
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Tests**: Test suites that use a component for testing or a runner that executes the test.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. What is the Go module name in go.mod? (Provide the module name)
+2. What Go version is specified in go.mod? (Provide the version number)
+3. How many executable services are in the cmd/ directory? (Provide the count)
+4. How many packages with actual code used by the services are in the internal/common/ directory? (Provide the count)
+5. How many external package dependencies are listed in go.mod? (Provide the count)
+6. How many *_test.go files are in the repository? (Provide the count)
+7. How many aggregators are defined in the build system? (Provide the count)
+8. What is the default port for the API Gateway service? (Provide the port number)
+9. What is the default port for the Auth Service? (Provide the port number)
+10. What web framework package is used for HTTP routing? (Provide the full package name as it appears in go.mod)
+11. How many components are built in this repository? (Provide the count)
+12. What source files does the api-gateway component use? (Provide a list)
+13. What source files does the user-service component use? (Provide a list)
+14. What external packages does the api-gateway component use? (Provide a list of full package names as they appear in go.mod)
+15. What external packages does the user-service component use? (Provide a list of full package names as they appear in go.mod or their source)
+16. What programming language does the auth-service component use? (Provide the language name)
+17. What programming languages does the user-service component use? (Provide a comma-separated list or space-separated list)
+18. What is the name of the Scala library component? (Provide the component name)
+19. What component does java-utils depend on? (Provide the component name)
+20. What component does user-service depend on? (Provide the component name)
+21. What is the maximum dependency depth in this repository? (i.e., the longest chain from any component to its deepest dependency)
+22. List all components (including transitive dependencies) that user-service depends on. (Provide a list)
+23. If the scala-utils library fails to build, which components would also fail? (Provide a list)
+24. If the java-utils library fails to build, which components would be affected? (Provide a list)
+25. Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list)
+26. Can api-gateway and auth-service be built in parallel? (Answer yes or no)
+27. What does the deploy aggregator depend on? (Provide a list)
+28. Which external package is used by the most components? (Provide the full package name as it appears in go.mod. If multiple packages are tied, provide any one of them)
+29. What components does the build-all aggregator build? (Provide a list of service names)
+30. In what order must scala-utils, java-utils, and user-service be built? (Provide the build order as a list starting with the component that has no dependencies)
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

@@ -1,0 +1,22 @@
+[package]
+name = "lsp-server"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "lsp-server"
+path = "src/main.rs"
+
+[dependencies]
+lexer = { path = "../lexer" }
+parser = { path = "../parser" }
+semantic-analyzer = { path = "../semantic-analyzer" }
+type-checker = { path = "../type-checker" }
+ast = { path = "../ast" }
+span-interner = { path = "../span-interner" }
+common-types = { path = "../common-types" }
+error-reporting = { path = "../error-reporting" }
+tokio.workspace = true
+async-trait.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true

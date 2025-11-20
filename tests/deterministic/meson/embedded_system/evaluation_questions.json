@@ -1,0 +1,342 @@
+{
+  "repository_name": "embedded_system",
+  "build_system": "meson",
+  "description": "Evaluation questions for embedded_system - Meson build with code generation and subprojects",
+  "questions": [
+    {
+      "id": 1,
+      "name": "project_name",
+      "category": "build_system",
+      "question": "What is the Meson project name defined in the root meson.build? (Provide the project name as a string)",
+      "expected_answer": "embedded_system",
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "name": "project_version",
+      "category": "build_system",
+      "question": "What is the project version? (Provide the version string)",
+      "expected_answer": "1.0.0",
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "name": "c_source_count",
+      "category": "source_analysis",
+      "question": "How many .c files are in the src/ directory (excluding generated files)? (Provide the count)",
+      "expected_answer": 4,
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "name": "cpp_source_count",
+      "category": "source_analysis",
+      "question": "How many .cpp files are in the src/ directory? (Provide the count)",
+      "expected_answer": 2,
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "name": "test_count",
+      "category": "testing",
+      "question": "How many test files are in the tests/ directory? (Provide the count)",
+      "expected_answer": 2,
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "name": "subprojects_count",
+      "category": "build_system",
+      "question": "How many Meson wrap files are in the subprojects/ directory? (Provide the count)",
+      "expected_answer": 1,
+      "difficulty": "easy"
+    },
+    {
+      "id": 7,
+      "name": "json_dependency",
+      "category": "dependency_analysis",
+      "question": "What JSON library is used via Meson subproject? (Provide the library name)",
+      "expected_answer": "json-c",
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "name": "c_test_framework",
+      "category": "testing",
+      "question": "What testing framework is used for C tests? (Provide the framework name)",
+      "expected_answer": [
+        "cmocka",
+        "CMocka",
+        "cmockA",
+        "CMOCKA"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "name": "cpp_test_framework",
+      "category": "testing",
+      "question": "What testing framework is used for C++ tests? (Provide the framework name)",
+      "expected_answer": [
+        "gtest",
+        "GTest",
+        "googletest",
+        "GoogleTest",
+        "Google Test"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": 10,
+      "name": "proto_file",
+      "category": "source_analysis",
+      "question": "What is the name of the protocol definition file used for code generation? (Provide the filename)",
+      "expected_answer": "protocol.proto",
+      "difficulty": "easy"
+    },
+    {
+      "id": 11,
+      "name": "components_count",
+      "category": "component_identification",
+      "question": "How many buildable components are in this repository? (Provide the count)",
+      "expected_answer": 6,
+      "difficulty": "medium"
+    },
+    {
+      "id": 12,
+      "name": "library_count",
+      "category": "component_identification",
+      "question": "How many libraries (static or shared) are built in this project? (Provide the count)",
+      "expected_answer": 3,
+      "difficulty": "medium"
+    },
+    {
+      "id": 13,
+      "name": "libcore_type",
+      "category": "component_identification",
+      "question": "Is libcore a static or shared library? (Answer 'static' or 'shared')",
+      "expected_answer": [
+        "static",
+        "Static",
+        "static library",
+        "STATIC"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 14,
+      "name": "libdrivers_type",
+      "category": "component_identification",
+      "question": "Is libdrivers a static or shared library? (Answer 'static' or 'shared')",
+      "expected_answer": [
+        "shared",
+        "Shared",
+        "shared library",
+        "dynamic",
+        "SHARED"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 15,
+      "name": "libcore_language",
+      "category": "component_identification",
+      "question": "What programming language is libcore.a written in? (Provide the language name)",
+      "expected_answer": [
+        "c",
+        "C"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 16,
+      "name": "libdrivers_language",
+      "category": "component_identification",
+      "question": "What programming language is libdrivers.so written in? (Provide the language name)",
+      "expected_answer": [
+        [
+          "cpp"
+        ],
+        [
+          "c++"
+        ],
+        [
+          "C++"
+        ],
+        [
+          "CPP"
+        ],
+        [
+          "cxx"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 17,
+      "name": "generated_files",
+      "category": "build_system",
+      "question": "What C files are generated by the protocol code generator? (Provide a list of filenames)",
+      "expected_answer": [
+        [
+          "protocol_generated.c",
+          "protocol_generated.h"
+        ],
+        [
+          "protocol_generated.h",
+          "protocol_generated.c"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 18,
+      "name": "config_template",
+      "category": "build_system",
+      "question": "What is the name of the template file used by configure_file()? (Provide the filename)",
+      "expected_answer": "config.h.in",
+      "difficulty": "medium"
+    },
+    {
+      "id": 19,
+      "name": "libcore_dependencies",
+      "category": "dependency_analysis",
+      "question": "What external packages does libcore.a depend on? (Provide a list)",
+      "expected_answer": [
+        [
+          "json-c",
+          "m"
+        ],
+        [
+          "m",
+          "json-c"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 20,
+      "name": "firmware_dependencies",
+      "category": "dependency_analysis",
+      "question": "What components does firmware.elf directly depend on? (Provide a list of component names)",
+      "expected_answer": [
+        [
+          "libcore.a",
+          "libdrivers.so",
+          "libprotocol.a"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 21,
+      "name": "max_dependency_depth",
+      "category": "dependency_analysis",
+      "question": "What is the maximum dependency depth in this repository? (Provide a number)",
+      "expected_answer": 2,
+      "difficulty": "hard"
+    },
+    {
+      "id": 22,
+      "name": "build_order",
+      "category": "dependency_analysis",
+      "question": "In what order must the libraries be built? (Provide the build order as a list, starting with libraries that have no dependencies on other repository components)",
+      "expected_answer": [
+        [
+          "libcore.a",
+          "libdrivers.so",
+          "libprotocol.a"
+        ],
+        [
+          "libcore.a",
+          "libprotocol.a",
+          "libdrivers.so"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 23,
+      "name": "parallel_build_libraries",
+      "category": "dependency_analysis",
+      "question": "Can libdrivers.so and libprotocol.a be built in parallel? (Answer yes or no)",
+      "expected_answer": [
+        "yes",
+        "Yes",
+        "y",
+        "true",
+        "TRUE"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 24,
+      "name": "cascade_failure_libcore",
+      "category": "dependency_analysis",
+      "question": "If libcore.a fails to build, which other components would also fail? (Provide a list)",
+      "expected_answer": [
+        "libdrivers.so",
+        "libprotocol.a",
+        "firmware.elf",
+        "test_system",
+        "test_drivers"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 25,
+      "name": "test_dependencies",
+      "category": "testing",
+      "question": "What component does test_drivers depend on? (Provide the component name)",
+      "expected_answer": "libdrivers.so",
+      "difficulty": "hard"
+    },
+    {
+      "id": 26,
+      "name": "protocol_generator_script",
+      "category": "build_system",
+      "question": "What Python script is used to generate protocol code? (Provide the relative path)",
+      "expected_answer": "tools/generate_protocol.py",
+      "difficulty": "hard"
+    },
+    {
+      "id": 27,
+      "name": "aggregators_count",
+      "category": "build_system",
+      "question": "How many aggregators are defined in this build system? (Provide the count)",
+      "expected_answer": 1,
+      "difficulty": "hard"
+    },
+    {
+      "id": 28,
+      "name": "cross_language",
+      "category": "component_identification",
+      "question": "Does this repository have cross-language dependencies? (Answer yes or no)",
+      "expected_answer": [
+        "yes",
+        "Yes",
+        "y",
+        "true",
+        "TRUE"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 29,
+      "name": "total_external_packages",
+      "category": "dependency_analysis",
+      "question": "How many unique external packages are used across all components? (Provide the count)",
+      "expected_answer": 6,
+      "difficulty": "hard"
+    },
+    {
+      "id": 30,
+      "name": "language_count",
+      "category": "source_analysis",
+      "question": "How many different programming languages are used in this repository? (Provide the count)",
+      "expected_answer": 2,
+      "difficulty": "hard"
+    }
+  ],
+  "ground_truth_file": "tests/deterministic/meson/embedded_system/embedded_system_ground_truth.json"
+}

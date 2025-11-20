@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 383.0,
   "answers": [
     {
       "id": 1,
@@ -52,49 +53,15 @@
       "id": 11,
       "answer": [
         "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
-        "metaffi-core/plugin-sdk/runtime/cdt.cpp",
-        "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-        "metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
-        "metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
-        "metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
-        "metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-        "metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
-        "metaffi-core/plugin-sdk/utils/expand_env.cpp",
-        "metaffi-core/plugin-sdk/utils/library_loader.cpp",
-        "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
+        "Shared SDK sources gathered as sdk_src from metaffi-core/plugin-sdk and its compiler/runtime/utils folders"
       ]
     },
     {
       "id": 12,
       "answer": [
         "lang-plugin-python311/runtime/python_runtime_test.cpp",
-        "lang-plugin-python311/runtime/call_xcall.cpp",
-        "lang-plugin-python311/runtime/cdts_python3.cpp",
-        "lang-plugin-python311/runtime/host_cdts_converter.cpp",
-        "lang-plugin-python311/runtime/metaffi_package_importer.cpp",
-        "lang-plugin-python311/runtime/py_bool.cpp",
-        "lang-plugin-python311/runtime/py_bytes.cpp",
-        "lang-plugin-python311/runtime/py_float.cpp",
-        "lang-plugin-python311/runtime/py_int.cpp",
-        "lang-plugin-python311/runtime/py_list.cpp",
-        "lang-plugin-python311/runtime/py_metaffi_callable.cpp",
-        "lang-plugin-python311/runtime/py_metaffi_handle.cpp",
-        "lang-plugin-python311/runtime/py_object.cpp",
-        "lang-plugin-python311/runtime/py_str.cpp",
-        "lang-plugin-python311/runtime/py_tuple.cpp",
-        "lang-plugin-python311/runtime/python3_api_wrapper.cpp",
-        "lang-plugin-python311/runtime/python_api.cpp",
-        "lang-plugin-python311/runtime/utils.cpp",
-        "lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
-        "lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-        "lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
-        "lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
-        "lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
-        "lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-        "lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
-        "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
-        "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
-        "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
+        "xllr.python311_src (all lang-plugin-python311/runtime sources except deps)",
+        "sdk_src from lang-plugin-python311/plugin-sdk (compiler/, runtime/, utils/ support code)"
       ]
     },
     {
@@ -114,10 +81,10 @@
     {
       "id": 15,
       "answer": [
-        "libs/gson-2.10.1.jar",
-        "libs/asm-9.6.jar",
-        "libs/asm-tree-9.6.jar",
-        "libs/javaparser-core-3.24.4.jar"
+        "gson-2.10.1.jar",
+        "asm-9.6.jar",
+        "asm-tree-9.6.jar",
+        "javaparser-core-3.24.4.jar"
       ]
     },
     {
@@ -130,7 +97,7 @@
     },
     {
       "id": 18,
-      "answer": "unittest"
+      "answer": "Python unittest"
     },
     {
       "id": 19,
@@ -145,7 +112,7 @@
     },
     {
       "id": 21,
-      "answer": "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
+      "answer": "metaffi.api.jar -> xllr.openjdk.bridge.jar -> xllr.openjdk.jni.bridge.dll -> xllr.openjdk.dll"
     },
     {
       "id": 22,
@@ -215,8 +182,7 @@
     },
     {
       "id": 30,
-      "answer": "5 (MetaFFI \u2192 openjdk \u2192 metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll)"
+      "answer": "6 (MetaFFI -> openjdk -> metaffi.api.jar -> xllr.openjdk.bridge.jar -> xllr.openjdk.jni.bridge.dll -> xllr.openjdk.dll)"
     }
-  ],
-  "agent_completion_time_seconds": 434.58
+  ]
 }

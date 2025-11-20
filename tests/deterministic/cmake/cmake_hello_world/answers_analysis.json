@@ -1,7 +1,828 @@
 {
   "results": {
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the CMake project name?",
+        "expected": "CMakeHelloWorld",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 2,
+        "question": "What is the minimum CMake version required?",
+        "expected": "3.10",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 3,
+        "question": "How many .cpp files are in the src/ directory?",
+        "expected": 2,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 4,
+        "question": "How many .h files are in the src/ directory?",
+        "expected": 2,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 5,
+        "question": "What directory contains the source files?",
+        "expected": "src",
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 6,
+        "question": "How many add_test commands are in the CMakeLists.txt?",
+        "expected": 1,
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 7,
+        "question": "How many target_link_libraries commands are in the CMakeLists.txt?",
+        "expected": 1,
+        "difficulty": "easy",
+        "category": "cmake_specific",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 8,
+        "question": "Is enable_testing() called in this project? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 9,
+        "question": "How many lines are in the CMakeLists.txt file?",
+        "expected": [
+          15,
+          16
+        ],
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 10,
+        "question": "How many find_package commands are in the CMakeLists.txt?",
+        "expected": 0,
+        "difficulty": "easy",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 11,
+        "question": "How many buildable components are in this repository?",
+        "expected": 2,
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 12,
+        "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)",
+        "expected": [
+          [
+            "hello_world.exe",
+            "utils.lib"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 13,
+        "question": "What types of components are built in this repository? (Provide a list)",
+        "expected": [
+          [
+            "executable",
+            "static_library"
+          ],
+          [
+            "executable",
+            "static library"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 14,
+        "question": "Which component is the executable on Windows? (state executable name with extension)",
+        "expected": "hello_world.exe",
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 15,
+        "question": "Which component is the library on Windows? (state library name with extension)",
+        "expected": "utils.lib",
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 16,
+        "question": "What source files are used to build the hello_world component? (Provide a list)",
+        "expected": [
+          "src/main.cpp"
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 17,
+        "question": "What source files are used to build the utils component? (Provide a list)",
+        "expected": [
+          "src/utils.cpp"
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 18,
+        "question": "List all components that hello_world depends on (use Windows artifact names).",
+        "expected": [
+          "utils.lib"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 19,
+        "question": "How many components does hello_world directly depend on?",
+        "expected": 1,
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 20,
+        "question": "What is the name of the test in this repository?",
+        "expected": "test_hello_world",
+        "difficulty": "medium",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 21,
+        "question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)",
+        "expected": [
+          "utils.lib",
+          "hello_world.exe"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 22,
+        "question": "Can both components be built in parallel? (Answer yes or no)",
+        "expected": [
+          "no",
+          "No",
+          "n",
+          "false",
+          "FALSE"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": "yes"
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 23,
+        "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)",
+        "expected": [
+          "hello_world.exe"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 24,
+        "question": "How many components have zero dependencies?",
+        "expected": 1,
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 25,
+        "question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)",
+        "expected": [
+          "hello_world.exe"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 26,
+        "question": "What programming language is used for the components?",
+        "expected": [
+          "cxx",
+          "c++",
+          "cpp",
+          "C++",
+          "CPP"
+        ],
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 27,
+        "question": "Which component does the test execute on Windows? (use Windows artifact name)",
+        "expected": "hello_world.exe",
+        "difficulty": "hard",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 28,
+        "question": "What test framework is used?",
+        "expected": [
+          "CTest",
+          "ctest",
+          "cmake test",
+          "CMake Test"
+        ],
+        "difficulty": "hard",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 29,
+        "question": "How many external packages does this repository depend on?",
+        "expected": 0,
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 30,
+        "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
+        "expected": [
+          [
+            "main.h"
+          ],
+          [
+            "utils.h",
+            "main.h"
+          ],
+          [
+            "src/main.h"
+          ],
+          [
+            "src/utils.h",
+            "src/main.h"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      }
+    ],
     "claude_NORIG": {
-      "total_score": 29,
+      "total_score": 30,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -13,267 +834,11 @@
           "max": 10
         },
         "hard": {
-          "score": 9,
+          "score": 10,
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "CMakeHelloWorld",
-          "actual": "CMakeHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": "src",
-          "actual": "src/"
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            15,
-            16
-          ],
-          "actual": 15,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "hello_world.exe",
-              "utils.lib"
-            ]
-          ],
-          "actual": [
-            "hello_world.exe",
-            "utils.lib"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "executable",
-              "static_library"
-            ],
-            [
-              "executable",
-              "static library"
-            ]
-          ],
-          "actual": [
-            "executable",
-            "library"
-          ],
-          "question": "What types of components are built in this repository? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": "utils.lib",
-          "actual": "utils.lib"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            "src/main.cpp"
-          ],
-          "actual": [
-            "src/main.cpp"
-          ],
-          "question": "What source files are used to build the hello_world component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": [
-            "src/utils.cpp"
-          ],
-          "actual": [
-            "src/utils.cpp"
-          ],
-          "question": "What source files are used to build the utils component? (Provide a list)"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            "utils.lib"
-          ],
-          "actual": [
-            "utils.lib"
-          ],
-          "question": "List all components that hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": "test_hello_world",
-          "actual": "test_hello_world"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "actual": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": "no",
-          "actual": "no"
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": "cxx",
-          "actual": "C++"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": "CTest",
-          "actual": "CTest"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 30,
-          "score": 0,
-          "expected": [
-            [
-              "main.h"
-            ],
-            [
-              "utils.h",
-              "main.h"
-            ],
-            [
-              "src/main.h"
-            ],
-            [
-              "src/utils.h",
-              "src/main.h"
-            ]
-          ],
-          "actual": "none",
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
-        }
-      ],
-      "completion_time_seconds": 54.06
+      "completion_time_seconds": 71.0
     },
     "claude_RIG": {
       "total_score": 30,
@@ -292,269 +857,10 @@
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "CMakeHelloWorld",
-          "actual": "CMakeHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": "src",
-          "actual": "src"
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            15,
-            16
-          ],
-          "actual": 16,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "hello_world.exe",
-              "utils.lib"
-            ]
-          ],
-          "actual": [
-            "hello_world.exe",
-            "utils.lib"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "executable",
-              "static_library"
-            ],
-            [
-              "executable",
-              "static library"
-            ]
-          ],
-          "actual": [
-            "executable",
-            "static_library"
-          ],
-          "question": "What types of components are built in this repository? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": "utils.lib",
-          "actual": "utils.lib"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            "src/main.cpp"
-          ],
-          "actual": [
-            "src\\main.cpp"
-          ],
-          "question": "What source files are used to build the hello_world component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": [
-            "src/utils.cpp"
-          ],
-          "actual": [
-            "src\\utils.cpp"
-          ],
-          "question": "What source files are used to build the utils component? (Provide a list)"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            "utils.lib"
-          ],
-          "actual": [
-            "utils.lib"
-          ],
-          "question": "List all components that hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": "test_hello_world",
-          "actual": "test_hello_world"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "actual": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": "no",
-          "actual": "no"
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": "cxx",
-          "actual": "cxx"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": "CTest",
-          "actual": "CTest"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": [
-            [
-              "main.h"
-            ],
-            [
-              "utils.h",
-              "main.h"
-            ],
-            [
-              "src/main.h"
-            ],
-            [
-              "src/utils.h",
-              "src/main.h"
-            ]
-          ],
-          "actual": [
-            "src\\main.h",
-            "src\\utils.h"
-          ],
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
-        }
-      ],
-      "completion_time_seconds": 42.04
+      "completion_time_seconds": 68.0
     },
     "codex_NORIG": {
-      "total_score": 29,
+      "total_score": 30,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -566,270 +872,14 @@
           "max": 10
         },
         "hard": {
-          "score": 9,
+          "score": 10,
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "CMakeHelloWorld",
-          "actual": "CMakeHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": "src",
-          "actual": "src"
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            15,
-            16
-          ],
-          "actual": 15,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "hello_world.exe",
-              "utils.lib"
-            ]
-          ],
-          "actual": [
-            "hello_world.exe",
-            "utils.lib"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "executable",
-              "static_library"
-            ],
-            [
-              "executable",
-              "static library"
-            ]
-          ],
-          "actual": [
-            "executable",
-            "static library"
-          ],
-          "question": "What types of components are built in this repository? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": "utils.lib",
-          "actual": "utils.lib"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            "src/main.cpp"
-          ],
-          "actual": [
-            "src/main.cpp"
-          ],
-          "question": "What source files are used to build the hello_world component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": [
-            "src/utils.cpp"
-          ],
-          "actual": [
-            "src/utils.cpp"
-          ],
-          "question": "What source files are used to build the utils component? (Provide a list)"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            "utils.lib"
-          ],
-          "actual": [
-            "utils.lib"
-          ],
-          "question": "List all components that hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": "test_hello_world",
-          "actual": "test_hello_world"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "actual": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": "no",
-          "actual": "no"
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": "cxx",
-          "actual": "C++"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": "CTest",
-          "actual": "CTest"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 30,
-          "score": 0,
-          "expected": [
-            [
-              "main.h"
-            ],
-            [
-              "utils.h",
-              "main.h"
-            ],
-            [
-              "src/main.h"
-            ],
-            [
-              "src/utils.h",
-              "src/main.h"
-            ]
-          ],
-          "actual": "none",
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
-        }
-      ],
-      "completion_time_seconds": 74.97
+      "completion_time_seconds": 79.0
     },
     "codex_RIG": {
-      "total_score": 29,
+      "total_score": 30,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -841,548 +891,13 @@
           "max": 10
         },
         "hard": {
-          "score": 9,
+          "score": 10,
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "CMakeHelloWorld",
-          "actual": "CMakeHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": "src",
-          "actual": "src"
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            15,
-            16
-          ],
-          "actual": 15,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "hello_world.exe",
-              "utils.lib"
-            ]
-          ],
-          "actual": [
-            "hello_world.exe",
-            "utils.lib"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "executable",
-              "static_library"
-            ],
-            [
-              "executable",
-              "static library"
-            ]
-          ],
-          "actual": [
-            "executable",
-            "static_library"
-          ],
-          "question": "What types of components are built in this repository? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": "utils.lib",
-          "actual": "utils.lib"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            "src/main.cpp"
-          ],
-          "actual": [
-            "src/main.cpp"
-          ],
-          "question": "What source files are used to build the hello_world component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": [
-            "src/utils.cpp"
-          ],
-          "actual": [
-            "src/utils.cpp"
-          ],
-          "question": "What source files are used to build the utils component? (Provide a list)"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            "utils.lib"
-          ],
-          "actual": [
-            "utils.lib"
-          ],
-          "question": "List all components that hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": "test_hello_world",
-          "actual": "test_hello_world"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "actual": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": "no",
-          "actual": "no"
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": "cxx",
-          "actual": "C++"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": "CTest",
-          "actual": "CTest"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 30,
-          "score": 0,
-          "expected": [
-            [
-              "main.h"
-            ],
-            [
-              "utils.h",
-              "main.h"
-            ],
-            [
-              "src/main.h"
-            ],
-            [
-              "src/utils.h",
-              "src/main.h"
-            ]
-          ],
-          "actual": "none",
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
-        }
-      ],
-      "completion_time_seconds": 87.13
+      "completion_time_seconds": 53.0
     },
     "cursor_NORIG": {
-      "total_score": 28,
-      "max_score": 30,
-      "by_difficulty": {
-        "easy": {
-          "score": 10,
-          "max": 10
-        },
-        "medium": {
-          "score": 10,
-          "max": 10
-        },
-        "hard": {
-          "score": 8,
-          "max": 10
-        }
-      },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "CMakeHelloWorld",
-          "actual": "CMakeHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": "src",
-          "actual": "src"
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            15,
-            16
-          ],
-          "actual": 16,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "hello_world.exe",
-              "utils.lib"
-            ]
-          ],
-          "actual": [
-            "hello_world.exe",
-            "utils.lib"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "executable",
-              "static_library"
-            ],
-            [
-              "executable",
-              "static library"
-            ]
-          ],
-          "actual": [
-            "executable",
-            "library"
-          ],
-          "question": "What types of components are built in this repository? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": "utils.lib",
-          "actual": "utils.lib"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            "src/main.cpp"
-          ],
-          "actual": [
-            "src/main.cpp"
-          ],
-          "question": "What source files are used to build the hello_world component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": [
-            "src/utils.cpp"
-          ],
-          "actual": [
-            "src/utils.cpp"
-          ],
-          "question": "What source files are used to build the utils component? (Provide a list)"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            "utils.lib"
-          ],
-          "actual": [
-            "utils.lib"
-          ],
-          "question": "List all components that hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": "test_hello_world",
-          "actual": "test_hello_world"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "actual": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": "no",
-          "actual": "yes",
-          "question": "Can both components be built in parallel? (Answer yes or no)"
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": "cxx",
-          "actual": "C++"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 28,
-          "score": 0,
-          "expected": "CTest",
-          "actual": "none",
-          "question": "What test framework is used?"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": [
-            [
-              "main.h"
-            ],
-            [
-              "utils.h",
-              "main.h"
-            ],
-            [
-              "src/main.h"
-            ],
-            [
-              "src/utils.h",
-              "src/main.h"
-            ]
-          ],
-          "actual": [
-            "src/main.h"
-          ],
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
-        }
-      ],
-      "completion_time_seconds": 24.97
-    },
-    "cursor_RIG": {
       "total_score": 29,
       "max_score": 30,
       "by_difficulty": {
@@ -1399,271 +914,259 @@
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "CMakeHelloWorld",
-          "actual": "CMakeHelloWorld"
+      "completion_time_seconds": 18.0
+    },
+    "cursor_RIG": {
+      "total_score": 30,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 10,
+          "max": 10
         },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
+        "medium": {
+          "score": 10,
+          "max": 10
         },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": "src",
-          "actual": "src"
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            15,
-            16
-          ],
-          "actual": 16,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "hello_world.exe",
-              "utils.lib"
-            ]
-          ],
-          "actual": [
-            "hello_world.exe",
-            "utils.lib"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "executable",
-              "static_library"
-            ],
-            [
-              "executable",
-              "static library"
-            ]
-          ],
-          "actual": [
-            "executable",
-            "static_library"
-          ],
-          "question": "What types of components are built in this repository? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": "utils.lib",
-          "actual": "utils.lib"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            "src/main.cpp"
-          ],
-          "actual": [
-            "src/main.cpp"
-          ],
-          "question": "What source files are used to build the hello_world component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": [
-            "src/utils.cpp"
-          ],
-          "actual": [
-            "src/utils.cpp"
-          ],
-          "question": "What source files are used to build the utils component? (Provide a list)"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            "utils.lib"
-          ],
-          "actual": [
-            "utils.lib"
-          ],
-          "question": "List all components that hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": "test_hello_world",
-          "actual": "test_hello_world"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "actual": [
-            "utils.lib",
-            "hello_world.exe"
-          ],
-          "question": "In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": "no",
-          "actual": "yes",
-          "question": "Can both components be built in parallel? (Answer yes or no)"
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": 1,
-          "actual": 1
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            "hello_world.exe"
-          ],
-          "actual": [
-            "hello_world.exe"
-          ],
-          "question": "Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": "cxx",
-          "actual": "cxx"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": "hello_world.exe",
-          "actual": "hello_world.exe"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": "CTest",
-          "actual": "CTest"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": 0,
-          "actual": 0
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": [
-            [
-              "main.h"
-            ],
-            [
-              "utils.h",
-              "main.h"
-            ],
-            [
-              "src/main.h"
-            ],
-            [
-              "src/utils.h",
-              "src/main.h"
-            ]
-          ],
-          "actual": [
-            "src/main.h"
-          ],
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)"
+        "hard": {
+          "score": 10,
+          "max": 10
         }
-      ],
-      "completion_time_seconds": 22.91
+      },
+      "completion_time_seconds": 12.0
     }
   },
   "analysis": {
     "by_agent": {
       "claude": {
+        "with_rig": {
+          "score": 30,
+          "max_score": 30,
+          "percentage": 100.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 30,
+          "max_score": 30,
+          "percentage": 100.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 0,
+          "percentage": 0.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "hard": {
+              "absolute": 0,
+              "percentage": 0.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 0,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 0,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "questions_fixed_by_rig": [],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 68.0,
+          "time_without_rig_seconds": 71.0,
+          "time_saved_seconds": 3.0,
+          "time_reduction_percentage": 4.2,
+          "efficiency_with_rig_score_per_second": 0.4412,
+          "efficiency_without_rig_score_per_second": 0.4225
+        }
+      },
+      "codex": {
+        "with_rig": {
+          "score": 30,
+          "max_score": 30,
+          "percentage": 100.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 30,
+          "max_score": 30,
+          "percentage": 100.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 0,
+          "percentage": 0.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "hard": {
+              "absolute": 0,
+              "percentage": 0.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 0,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 0,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "questions_fixed_by_rig": [],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 53.0,
+          "time_without_rig_seconds": 79.0,
+          "time_saved_seconds": 26.0,
+          "time_reduction_percentage": 32.9,
+          "efficiency_with_rig_score_per_second": 0.566,
+          "efficiency_without_rig_score_per_second": 0.3797
+        }
+      },
+      "cursor": {
         "with_rig": {
           "score": 30,
           "max_score": 30,
@@ -1743,7 +1246,7 @@
               "count": 1,
               "percentage": 10.0,
               "question_ids": [
-                30
+                22
               ]
             }
           }
@@ -1769,255 +1272,16 @@
           }
         },
         "questions_fixed_by_rig": [
-          30
+          22
         ],
         "questions_broken_by_rig": [],
         "timing": {
-          "time_with_rig_seconds": 42.04,
-          "time_without_rig_seconds": 54.06,
-          "time_saved_seconds": 12.02,
-          "time_reduction_percentage": 22.2,
-          "efficiency_with_rig_score_per_second": 0.7136,
-          "efficiency_without_rig_score_per_second": 0.5364
-        }
-      },
-      "codex": {
-        "with_rig": {
-          "score": 29,
-          "max_score": 30,
-          "percentage": 96.7,
-          "by_difficulty": {
-            "easy": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 9,
-              "max": 10,
-              "percentage": 90.0
-            }
-          }
-        },
-        "without_rig": {
-          "score": 29,
-          "max_score": 30,
-          "percentage": 96.7,
-          "by_difficulty": {
-            "easy": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 9,
-              "max": 10,
-              "percentage": 90.0
-            }
-          }
-        },
-        "rig_improvement": {
-          "absolute": 0,
-          "percentage": 0.0,
-          "by_difficulty": {
-            "easy": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "medium": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "hard": {
-              "absolute": 0,
-              "percentage": 0.0
-            }
-          }
-        },
-        "mistakes_without_rig": {
-          "total": 1,
-          "by_difficulty": {
-            "easy": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 1,
-              "percentage": 10.0,
-              "question_ids": [
-                30
-              ]
-            }
-          }
-        },
-        "mistakes_with_rig": {
-          "total": 1,
-          "by_difficulty": {
-            "easy": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 1,
-              "percentage": 10.0,
-              "question_ids": [
-                30
-              ]
-            }
-          }
-        },
-        "questions_fixed_by_rig": [],
-        "questions_broken_by_rig": [],
-        "timing": {
-          "time_with_rig_seconds": 87.13,
-          "time_without_rig_seconds": 74.97,
-          "time_saved_seconds": -12.16,
-          "time_reduction_percentage": -16.2,
-          "efficiency_with_rig_score_per_second": 0.3328,
-          "efficiency_without_rig_score_per_second": 0.3868
-        }
-      },
-      "cursor": {
-        "with_rig": {
-          "score": 29,
-          "max_score": 30,
-          "percentage": 96.7,
-          "by_difficulty": {
-            "easy": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 9,
-              "max": 10,
-              "percentage": 90.0
-            }
-          }
-        },
-        "without_rig": {
-          "score": 28,
-          "max_score": 30,
-          "percentage": 93.3,
-          "by_difficulty": {
-            "easy": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 8,
-              "max": 10,
-              "percentage": 80.0
-            }
-          }
-        },
-        "rig_improvement": {
-          "absolute": 1,
-          "percentage": 3.3,
-          "by_difficulty": {
-            "easy": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "medium": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "hard": {
-              "absolute": 1,
-              "percentage": 10.0
-            }
-          }
-        },
-        "mistakes_without_rig": {
-          "total": 2,
-          "by_difficulty": {
-            "easy": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 2,
-              "percentage": 20.0,
-              "question_ids": [
-                22,
-                28
-              ]
-            }
-          }
-        },
-        "mistakes_with_rig": {
-          "total": 1,
-          "by_difficulty": {
-            "easy": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 1,
-              "percentage": 10.0,
-              "question_ids": [
-                22
-              ]
-            }
-          }
-        },
-        "questions_fixed_by_rig": [
-          28
-        ],
-        "questions_broken_by_rig": [],
-        "timing": {
-          "time_with_rig_seconds": 22.91,
-          "time_without_rig_seconds": 24.97,
-          "time_saved_seconds": 2.06,
-          "time_reduction_percentage": 8.2,
-          "efficiency_with_rig_score_per_second": 1.2658,
-          "efficiency_without_rig_score_per_second": 1.1213
+          "time_with_rig_seconds": 12.0,
+          "time_without_rig_seconds": 18.0,
+          "time_saved_seconds": 6.0,
+          "time_reduction_percentage": 33.3,
+          "efficiency_with_rig_score_per_second": 2.5,
+          "efficiency_without_rig_score_per_second": 1.6111
         }
       }
     },
@@ -2059,28 +1323,28 @@
       "source_analysis": {
         "total_questions": 6,
         "with_rig": {
-          "score": 17,
+          "score": 18,
           "max": 18,
-          "percentage": 94.4
+          "percentage": 100.0
         },
         "without_rig": {
-          "score": 16,
+          "score": 18,
           "max": 18,
-          "percentage": 88.9
+          "percentage": 100.0
         },
         "improvement": {
-          "absolute": 1,
-          "percentage": 5.6
+          "absolute": 0,
+          "percentage": 0.0
         },
         "per_agent": {
           "claude": {
             "with_rig": 100.0,
-            "without_rig": 83.3,
-            "improvement": 16.7
+            "without_rig": 100.0,
+            "improvement": 0.0
           },
           "codex": {
-            "with_rig": 83.3,
-            "without_rig": 83.3,
+            "with_rig": 100.0,
+            "without_rig": 100.0,
             "improvement": 0.0
           },
           "cursor": {
@@ -2098,13 +1362,13 @@
           "percentage": 100.0
         },
         "without_rig": {
-          "score": 14,
+          "score": 15,
           "max": 15,
-          "percentage": 93.3
+          "percentage": 100.0
         },
         "improvement": {
-          "absolute": 1,
-          "percentage": 6.7
+          "absolute": 0,
+          "percentage": 0.0
         },
         "per_agent": {
           "claude": {
@@ -2119,8 +1383,8 @@
           },
           "cursor": {
             "with_rig": 100.0,
-            "without_rig": 80.0,
-            "improvement": 20.0
+            "without_rig": 100.0,
+            "improvement": 0.0
           }
         }
       },
@@ -2161,9 +1425,9 @@
       "dependency_analysis": {
         "total_questions": 9,
         "with_rig": {
-          "score": 26,
+          "score": 27,
           "max": 27,
-          "percentage": 96.3
+          "percentage": 100.0
         },
         "without_rig": {
           "score": 26,
@@ -2171,8 +1435,8 @@
           "percentage": 96.3
         },
         "improvement": {
-          "absolute": 0,
-          "percentage": 0.0
+          "absolute": 1,
+          "percentage": 3.7
         },
         "per_agent": {
           "claude": {
@@ -2186,9 +1450,9 @@
             "improvement": 0.0
           },
           "cursor": {
-            "with_rig": 88.9,
+            "with_rig": 100.0,
             "without_rig": 88.9,
-            "improvement": 0.0
+            "improvement": 11.1
           }
         }
       },
@@ -2228,41 +1492,7 @@
       }
     },
     "question_insights": {
-      "hardest_questions": [
-        {
-          "id": 22,
-          "question": "Can both components be built in parallel? (Answer yes or no)",
-          "difficulty": "hard",
-          "category": "dependency_analysis",
-          "success_rate_with_rig": 66.7,
-          "success_rate_without_rig": 66.7,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex"
-          ],
-          "agents_correct_without_rig": [
-            "claude",
-            "codex"
-          ],
-          "avg_improvement": 0.0
-        },
-        {
-          "id": 30,
-          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
-          "difficulty": "hard",
-          "category": "source_analysis",
-          "success_rate_with_rig": 66.7,
-          "success_rate_without_rig": 33.3,
-          "agents_correct_with_rig": [
-            "claude",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "cursor"
-          ],
-          "avg_improvement": 33.3
-        }
-      ],
+      "hardest_questions": [],
       "easiest_questions": [
         {
           "id": 1,
@@ -2664,6 +1894,24 @@
           "avg_improvement": 0.0
         },
         {
+          "id": 22,
+          "question": "Can both components be built in parallel? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
           "id": 23,
           "question": "If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)",
           "difficulty": "hard",
@@ -2764,7 +2012,7 @@
           "difficulty": "hard",
           "category": "testing",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 66.7,
+          "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
             "claude",
             "codex",
@@ -2772,9 +2020,10 @@
           ],
           "agents_correct_without_rig": [
             "claude",
-            "codex"
+            "codex",
+            "cursor"
           ],
-          "avg_improvement": 33.3
+          "avg_improvement": 0.0
         },
         {
           "id": 29,
@@ -2794,30 +2043,33 @@
             "cursor"
           ],
           "avg_improvement": 0.0
-        }
-      ],
-      "most_rig_sensitive": [
+        },
         {
           "id": 30,
           "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
           "difficulty": "hard",
           "category": "source_analysis",
-          "success_rate_with_rig": 66.7,
-          "success_rate_without_rig": 33.3,
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
             "claude",
+            "codex",
             "cursor"
           ],
           "agents_correct_without_rig": [
+            "claude",
+            "codex",
             "cursor"
           ],
-          "avg_improvement": 33.3
-        },
+          "avg_improvement": 0.0
+        }
+      ],
+      "most_rig_sensitive": [
         {
-          "id": 28,
-          "question": "What test framework is used?",
+          "id": 22,
+          "question": "Can both components be built in parallel? (Answer yes or no)",
           "difficulty": "hard",
-          "category": "testing",
+          "category": "dependency_analysis",
           "success_rate_with_rig": 100.0,
           "success_rate_without_rig": 66.7,
           "agents_correct_with_rig": [
@@ -2833,23 +2085,6 @@
         }
       ],
       "rig_insensitive": [
-        {
-          "id": 22,
-          "question": "Can both components be built in parallel? (Answer yes or no)",
-          "difficulty": "hard",
-          "category": "dependency_analysis",
-          "success_rate_with_rig": 66.7,
-          "success_rate_without_rig": 66.7,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex"
-          ],
-          "agents_correct_without_rig": [
-            "claude",
-            "codex"
-          ],
-          "avg_improvement": 0.0
-        },
         {
           "id": 1,
           "question": "What is the CMake project name?",
@@ -3345,10 +2580,48 @@
           "avg_improvement": 0.0
         },
         {
+          "id": 28,
+          "question": "What test framework is used?",
+          "difficulty": "hard",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
           "id": 29,
           "question": "How many external packages does this repository depend on?",
           "difficulty": "hard",
           "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 30,
+          "question": "What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)",
+          "difficulty": "hard",
+          "category": "source_analysis",
           "success_rate_with_rig": 100.0,
           "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
@@ -3378,26 +2651,26 @@
           "agents_benefited": 0
         },
         "hard": {
-          "avg_improvement": 6.7,
-          "agents_benefited": 2
+          "avg_improvement": 3.3,
+          "agents_benefited": 1
         }
       },
       "correlation": {
-        "pattern": "No clear correlation between baseline performance and RIG improvement",
+        "pattern": "Agents with higher baseline show less improvement from RIG",
         "data": [
           {
             "agent": "claude",
-            "baseline_pct": 96.7,
-            "improvement_pct": 3.3
+            "baseline_pct": 100.0,
+            "improvement_pct": 0.0
           },
           {
             "agent": "codex",
-            "baseline_pct": 96.7,
+            "baseline_pct": 100.0,
             "improvement_pct": 0.0
           },
           {
             "agent": "cursor",
-            "baseline_pct": 93.3,
+            "baseline_pct": 96.7,
             "improvement_pct": 3.3
           }
         ]
@@ -3407,73 +2680,73 @@
       "speed_vs_accuracy_with_rig": [
         {
           "agent": "cursor",
-          "time_seconds": 22.91,
-          "score_percentage": 96.7,
-          "efficiency_score_per_second": 1.2658
-        },
-        {
-          "agent": "claude",
-          "time_seconds": 42.04,
+          "time_seconds": 12.0,
           "score_percentage": 100.0,
-          "efficiency_score_per_second": 0.7136
+          "efficiency_score_per_second": 2.5
         },
         {
           "agent": "codex",
-          "time_seconds": 87.13,
-          "score_percentage": 96.7,
-          "efficiency_score_per_second": 0.3328
+          "time_seconds": 53.0,
+          "score_percentage": 100.0,
+          "efficiency_score_per_second": 0.566
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 68.0,
+          "score_percentage": 100.0,
+          "efficiency_score_per_second": 0.4412
         }
       ],
       "speed_vs_accuracy_without_rig": [
         {
           "agent": "cursor",
-          "time_seconds": 24.97,
-          "score_percentage": 93.3,
-          "efficiency_score_per_second": 1.1213
+          "time_seconds": 18.0,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 1.6111
         },
         {
           "agent": "claude",
-          "time_seconds": 54.06,
-          "score_percentage": 96.7,
-          "efficiency_score_per_second": 0.5364
+          "time_seconds": 71.0,
+          "score_percentage": 100.0,
+          "efficiency_score_per_second": 0.4225
         },
         {
           "agent": "codex",
-          "time_seconds": 74.97,
-          "score_percentage": 96.7,
-          "efficiency_score_per_second": 0.3868
+          "time_seconds": 79.0,
+          "score_percentage": 100.0,
+          "efficiency_score_per_second": 0.3797
         }
       ],
       "time_reduction_vs_score_improvement": {
         "correlation_note": "Greater time reduction correlates with better score improvement",
         "data": [
           {
-            "agent": "claude",
-            "time_reduction_percentage": 22.2,
-            "score_improvement_percentage": 3.3,
-            "time_saved_seconds": 12.02,
-            "score_points_gained": 1
-          },
-          {
             "agent": "cursor",
-            "time_reduction_percentage": 8.2,
+            "time_reduction_percentage": 33.3,
             "score_improvement_percentage": 3.3,
-            "time_saved_seconds": 2.06,
+            "time_saved_seconds": 6.0,
             "score_points_gained": 1
           },
           {
             "agent": "codex",
-            "time_reduction_percentage": -16.2,
+            "time_reduction_percentage": 32.9,
             "score_improvement_percentage": 0.0,
-            "time_saved_seconds": -12.16,
+            "time_saved_seconds": 26.0,
+            "score_points_gained": 0
+          },
+          {
+            "agent": "claude",
+            "time_reduction_percentage": 4.2,
+            "score_improvement_percentage": 0.0,
+            "time_saved_seconds": 3.0,
             "score_points_gained": 0
           }
         ]
       },
       "efficiency_analysis": {
-        "avg_efficiency_with_rig_score_per_second": 0.7707,
-        "avg_efficiency_without_rig_score_per_second": 0.6815,
-        "efficiency_improvement_percentage": 13.1
+        "avg_efficiency_with_rig_score_per_second": 1.1691,
+        "avg_efficiency_without_rig_score_per_second": 0.8044,
+        "efficiency_improvement_percentage": 45.3
       }
     },
     "summary": {
@@ -3483,40 +2756,40 @@
       },
       "best_overall_without_rig": {
         "agent": "claude",
-        "percentage": 96.7
+        "percentage": 100.0
       },
       "most_rig_improvement": {
-        "agent": "claude",
+        "agent": "cursor",
         "improvement_percentage": 3.3
       },
       "least_rig_improvement": {
-        "agent": "codex",
+        "agent": "claude",
         "improvement_percentage": 0.0
       },
-      "average_with_rig": 97.8,
-      "average_without_rig": 95.6,
-      "average_rig_improvement": 2.2,
+      "average_with_rig": 100.0,
+      "average_without_rig": 98.9,
+      "average_rig_improvement": 1.1,
       "timing": {
-        "average_time_with_rig_seconds": 50.69,
-        "average_time_without_rig_seconds": 51.33,
-        "average_time_saved_seconds": 0.64,
-        "average_time_reduction_percentage": 4.7,
+        "average_time_with_rig_seconds": 44.33,
+        "average_time_without_rig_seconds": 56.0,
+        "average_time_saved_seconds": 11.67,
+        "average_time_reduction_percentage": 23.5,
         "fastest_with_rig": {
           "agent": "cursor",
-          "time_seconds": 22.91
+          "time_seconds": 12.0
         },
         "fastest_without_rig": {
           "agent": "cursor",
-          "time_seconds": 24.97
+          "time_seconds": 18.0
         },
         "most_time_saved": {
-          "agent": "claude",
-          "time_saved_seconds": 12.02,
-          "time_reduction_percentage": 22.2
+          "agent": "codex",
+          "time_saved_seconds": 26.0,
+          "time_reduction_percentage": 32.9
         },
         "highest_time_reduction_percentage": {
-          "agent": "claude",
-          "time_reduction_percentage": 22.2
+          "agent": "cursor",
+          "time_reduction_percentage": 33.3
         }
       }
     }

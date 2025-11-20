@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 98.0,
   "answers": [
     {
       "id": 1,
@@ -26,11 +27,11 @@
     },
     {
       "id": 7,
-      "answer": 11
+      "answer": 7
     },
     {
       "id": 8,
-      "answer": 17
+      "answer": 16
     },
     {
       "id": 9,
@@ -51,16 +52,48 @@
     {
       "id": 11,
       "answer": [
-        "runtime/cdts_test.cpp",
-        "sdk_src"
+        "cdts_test.cpp",
+        "cdt.cpp",
+        "cdts_traverse_construct.cpp",
+        "cdts_wrapper.cpp",
+        "metaffi_primitives.cpp",
+        "xllr_static_capi_loader.cpp",
+        "entity_path_parser.cpp",
+        "expand_env.cpp",
+        "library_loader.cpp",
+        "xllr_api_wrapper.cpp"
       ]
     },
     {
       "id": 12,
       "answer": [
         "python_runtime_test.cpp",
-        "xllr.python311_src",
-        "sdk_src"
+        "call_xcall.cpp",
+        "cdts_python3.cpp",
+        "host_cdts_converter.cpp",
+        "metaffi_package_importer.cpp",
+        "py_bool.cpp",
+        "py_bytes.cpp",
+        "py_float.cpp",
+        "py_int.cpp",
+        "py_list.cpp",
+        "py_metaffi_callable.cpp",
+        "py_metaffi_handle.cpp",
+        "py_object.cpp",
+        "py_str.cpp",
+        "py_tuple.cpp",
+        "python_api.cpp",
+        "python3_api_wrapper.cpp",
+        "utils.cpp",
+        "cdt.cpp",
+        "cdts_traverse_construct.cpp",
+        "cdts_wrapper.cpp",
+        "metaffi_primitives.cpp",
+        "xllr_static_capi_loader.cpp",
+        "entity_path_parser.cpp",
+        "expand_env.cpp",
+        "library_loader.cpp",
+        "xllr_api_wrapper.cpp"
       ]
     },
     {
@@ -92,7 +125,7 @@
     },
     {
       "id": 17,
-      "answer": 16
+      "answer": 7
     },
     {
       "id": 18,
@@ -105,17 +138,18 @@
     {
       "id": 20,
       "answer": [
+        "openjdk_idl_extractor",
         "metaffi.api",
         "xllr.openjdk.bridge"
       ]
     },
     {
       "id": 21,
-      "answer": "metaffi.api.jar ? xllr.openjdk.bridge.jar ? xllr.openjdk.jni.bridge.dll ? xllr.openjdk.dll ? xllr.dll"
+      "answer": "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll \u2192 SDK (sdk_src)"
     },
     {
       "id": 22,
-      "answer": 4
+      "answer": 14
     },
     {
       "id": 23,
@@ -124,8 +158,7 @@
         "xllr.openjdk.bridge.jar",
         "metaffi.api.jar",
         "cdts_java_test.exe",
-        "openjdk_api_test.exe",
-        "openjdk"
+        "openjdk_api_test.exe"
       ]
     },
     {
@@ -182,8 +215,7 @@
     },
     {
       "id": 30,
-      "answer": 5
+      "answer": 3
     }
-  ],
-  "agent_completion_time_seconds": 78.03
+  ]
 }

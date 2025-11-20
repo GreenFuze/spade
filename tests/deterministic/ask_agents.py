@@ -9,9 +9,11 @@ This script:
 
 Usage:
     python ask_agents.py <relative_path>
+    python ask_agents.py all
 
-Example:
-    python ask_agents.py cmake/cmake_hello_world
+Examples:
+    python ask_agents.py cmake/cmake_hello_world  # Process single repo
+    python ask_agents.py all                       # Process all repos from config.py
 
 The relative path maps to:
     - Questions: tests/deterministic/{relative_path}/evaluation_questions.json
@@ -28,6 +30,26 @@ from pathlib import Path
 from typing import Dict, List, Any, Tuple
 
 from agent_executors import ClaudeAgentExecutor, CursorAgentExecutor, CodexAgentExecutor
+
+# Import REPOS from config.py
+sys.path.insert(0, str(Path(__file__).parent / "summary_analysis"))
+from config import REPOS
+
+
+def get_relative_path_from_config(repo_config: Dict[str, Any]) -> str:
+    """
+    Convert config.REPOS path to relative path string for ask_agents.py.
+
+    Args:
+        repo_config: Repository configuration dictionary from REPOS
+
+    Returns:
+        Relative path string (e.g., "cmake/cmake_hello_world")
+    """
+    repo_path = Path(repo_config["path"])
+    script_dir = Path(__file__).parent  # tests/deterministic
+    relative_path = repo_path.relative_to(script_dir)
+    return str(relative_path)
 
 
 def find_ground_truth_file(deterministic_path: str) -> str:
@@ -114,6 +136,13 @@ def build_prompt_without_rig(questions: List[Dict[str, Any]]) -> str:
 
 Please answer the following questions about this repository. Analyze the repository structure, build files, and source code to provide accurate answers.
 
+When answering questions, you should understand these common build system terms:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component generates an artifact from source files, or is the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps (e.g., "build-all" targets).
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Tests**: Test suites that use a component for testing or a runner that executes the test.
+
 IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
 
 The answers.json file must be a JSON array with this exact format:
@@ -160,13 +189,20 @@ def build_prompt_with_rig(questions: List[Dict[str, Any]], ground_truth: Dict[st
 
     prompt = f"""You are an expert at analyzing code repositories and build systems.
 
-You have been provided with a Repository Information Graph (RIG) that contains structured metadata about this repository:
+You have been provided with structured metadata about this repository in the following JSON:
+
+In the following JSON, you'll find these entity types:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component must generate an artifact from source files, or be the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps.
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Test Definitions**: Tests that contain a component used for testing or a runner that executes the test.
 
 ```json
 {rig_json}
 ```
 
-Please answer the following questions about this repository using the RIG data above and by analyzing the repository files.
+Please answer the following questions about this repository using the metadata above and by analyzing the repository files.
 
 IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
 
@@ -217,7 +253,7 @@ def run_evaluation(
     ground_truth: Dict[str, Any],
     repo_path: str,
     output_dir: str
-) -> None:
+) -> List[str]:
     """
     Run evaluation for one agent (both WITH and WITHOUT RIG).
 
@@ -228,7 +264,11 @@ def run_evaluation(
         ground_truth: Ground truth data (RIG)
         repo_path: Path to the repository
         output_dir: Directory to save answer files
+
+    Returns:
+        List of failed runs (e.g., ["codex with RIG"])
     """
+    failed_runs = []
     print(f"\n=== Evaluating {agent_name.upper()} ===")
     print(f"[MAIN-LOG] Repository: {repo_path}")
     print(f"[MAIN-LOG] Output directory: {output_dir}")
@@ -250,6 +290,7 @@ def run_evaluation(
         print(f"[MAIN-LOG] Execution completed. Result type: {type(answers_norig)}")
         if isinstance(answers_norig, dict) and "error" in answers_norig:
             print(f"[MAIN-LOG] WARNING: Agent returned error: {answers_norig['error']}")
+            failed_runs.append(f"{agent_name} without RIG")
 
         save_answers(answers_norig, norig_output)
         print(f"[MAIN-LOG] SUCCESS: Saved answers to: {norig_output}")
@@ -271,9 +312,95 @@ def run_evaluation(
         print(f"[MAIN-LOG] Execution completed. Result type: {type(answers_rig)}")
         if isinstance(answers_rig, dict) and "error" in answers_rig:
             print(f"[MAIN-LOG] WARNING: Agent returned error: {answers_rig['error']}")
+            failed_runs.append(f"{agent_name} with RIG")
 
         save_answers(answers_rig, rig_output)
         print(f"[MAIN-LOG] SUCCESS: Saved answers to: {rig_output}")
+
+    return failed_runs
+
+
+def process_repository(relative_path: str, script_dir: str, tests_root: str) -> Tuple[bool, List[str]]:
+    """
+    Process a single repository - load questions, ground truth, and run agents.
+
+    Args:
+        relative_path: Relative path to repository (e.g., "cmake/cmake_hello_world")
+        script_dir: Path to tests/deterministic directory
+        tests_root: Path to tests directory
+
+    Returns:
+        Tuple of (success: bool, failed_runs: List[str])
+        - success: True if at least some runs completed, False if entire repo failed
+        - failed_runs: List of failed agent runs (e.g., ["codex with RIG"])
+    """
+    all_failed_runs = []
+    try:
+        # Build paths
+        deterministic_path = os.path.join(script_dir, relative_path)
+        repo_path = os.path.join(tests_root, "test_repos", relative_path)
+
+        print(f"[MAIN-LOG] Script directory: {script_dir}")
+        print(f"[MAIN-LOG] Deterministic path: {deterministic_path}")
+        print(f"[MAIN-LOG] Repository path: {repo_path}")
+
+        # Validate repository exists
+        if not os.path.exists(repo_path):
+            print(f"[MAIN-LOG] WARNING: Repository not found: {repo_path}")
+            print(f"[MAIN-LOG] Skipping...")
+            return (False, [])
+
+        # Find and load ground truth
+        try:
+            ground_truth_file = find_ground_truth_file(deterministic_path)
+            print(f"[MAIN-LOG] Ground truth file: {ground_truth_file}")
+            ground_truth = load_ground_truth(ground_truth_file)
+        except FileNotFoundError as e:
+            print(f"[MAIN-LOG] WARNING: {str(e)}")
+            print(f"[MAIN-LOG] Skipping...")
+            return (False, [])
+
+        # Load evaluation questions
+        try:
+            questions_data = load_evaluation_questions(deterministic_path)
+            questions = questions_data.get("questions", [])
+
+            if not questions:
+                print(f"[MAIN-LOG] WARNING: No questions found in evaluation_questions.json")
+                print(f"[MAIN-LOG] Skipping...")
+                return (False, [])
+
+            print(f"[MAIN-LOG] Loaded {len(questions)} evaluation questions")
+        except FileNotFoundError as e:
+            print(f"[MAIN-LOG] WARNING: {str(e)}")
+            print(f"[MAIN-LOG] Skipping...")
+            return (False, [])
+
+        # Create agent executors
+        executors = {
+            "claude": ClaudeAgentExecutor(),
+            "cursor": CursorAgentExecutor(),
+            "codex": CodexAgentExecutor()
+        }
+
+        # Run evaluation for each agent
+        for agent_name, executor in executors.items():
+            failed_runs = run_evaluation(
+                agent_name=agent_name,
+                executor=executor,
+                questions=questions,
+                ground_truth=ground_truth,
+                repo_path=repo_path,
+                output_dir=deterministic_path
+            )
+            all_failed_runs.extend(failed_runs)
+
+        print(f"[MAIN-LOG] === Evaluation Complete for {relative_path} ===")
+        return (True, all_failed_runs)
+
+    except Exception as e:
+        print(f"[MAIN-LOG] ERROR processing {relative_path}: {str(e)}", file=sys.stderr)
+        return (False, [])
 
 
 def main() -> int:
@@ -289,70 +416,78 @@ def main() -> int:
     )
     parser.add_argument(
         "relative_path",
-        help="Relative path (e.g., 'cmake/cmake_hello_world')"
+        help="Relative path (e.g., 'cmake/cmake_hello_world') or 'all' to process all repos from config.py"
     )
     args = parser.parse_args()
 
-    try:
+    # Get script directory and project root
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    tests_root = os.path.dirname(script_dir)  # tests/
+
+    # Check if processing all repositories
+    if args.relative_path.lower() == "all":
+        print("[MAIN-LOG] ========================================")
+        print("[MAIN-LOG] Processing ALL repositories from config.py")
+        print(f"[MAIN-LOG] Total repositories: {len(REPOS)}")
+        print("[MAIN-LOG] ========================================\n")
+
+        results = []
+        for repo_config in REPOS:
+            relative_path = get_relative_path_from_config(repo_config)
+            print(f"\n{'='*60}")
+            print(f"[MAIN-LOG] Processing repository: {repo_config['name']}")
+            print(f"[MAIN-LOG] Relative path: {relative_path}")
+            print(f"{'='*60}\n")
+
+            success, failed_runs = process_repository(relative_path, script_dir, tests_root)
+            results.append({
+                "name": repo_config['name'],
+                "path": relative_path,
+                "success": success,
+                "failed_runs": failed_runs
+            })
+
+        # Print summary
+        print(f"\n\n{'='*60}")
+        print("[MAIN-LOG] SUMMARY")
+        print(f"{'='*60}")
+        for result in results:
+            if result['success']:
+                if result['failed_runs']:
+                    failed_list = "', '".join(result['failed_runs'])
+                    status = f"[OK] PARTIAL: {result['name']} ({result['path']}). Failed runs: '{failed_list}'"
+                else:
+                    status = f"[OK] SUCCESS: {result['name']} ({result['path']})"
+            else:
+                status = f"[X] FAILED: {result['name']} ({result['path']})"
+            print(status)
+
+        failed_count = sum(1 for r in results if not r['success'])
+        success_count = len(results) - failed_count
+        print(f"\n[MAIN-LOG] Total: {len(results)} repositories")
+        print(f"[MAIN-LOG] Success: {success_count}")
+        print(f"[MAIN-LOG] Failed: {failed_count}")
+        print(f"{'='*60}")
+
+        return 0 if failed_count == 0 else 1
+
+    else:
+        # Process single repository (existing behavior)
         print("[MAIN-LOG] ========================================")
         print(f"[MAIN-LOG] Starting evaluation for: {args.relative_path}")
-        print("[MAIN-LOG] ========================================")
+        print("[MAIN-LOG] ========================================\n")
 
-        # Get script directory and project root
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        tests_root = os.path.dirname(script_dir)  # tests/
-        project_root = os.path.dirname(tests_root)  # project root
+        success, failed_runs = process_repository(args.relative_path, script_dir, tests_root)
 
-        # Build paths
-        deterministic_path = os.path.join(script_dir, args.relative_path)
-        repo_path = os.path.join(tests_root, "test_repos", args.relative_path)
-
-        print(f"[MAIN-LOG] Script directory: {script_dir}")
-        print(f"[MAIN-LOG] Deterministic path: {deterministic_path}")
-        print(f"[MAIN-LOG] Repository path: {repo_path}")
-
-        # Validate repository exists
-        if not os.path.exists(repo_path):
-            raise FileNotFoundError(f"Repository not found: {repo_path}")
-
-        # Find and load ground truth
-        ground_truth_file = find_ground_truth_file(deterministic_path)
-        print(f"Ground truth file: {ground_truth_file}")
-        ground_truth = load_ground_truth(ground_truth_file)
-
-        # Load evaluation questions
-        questions_data = load_evaluation_questions(deterministic_path)
-        questions = questions_data.get("questions", [])
-
-        if not questions:
-            raise ValueError("No questions found in evaluation_questions.json")
-
-        print(f"Loaded {len(questions)} evaluation questions")
-
-        # Create agent executors
-        executors = {
-            "claude": ClaudeAgentExecutor(),
-            "cursor": CursorAgentExecutor(),
-            "codex": CodexAgentExecutor()
-        }
-
-        # Run evaluation for each agent
-        for agent_name, executor in executors.items():
-            run_evaluation(
-                agent_name=agent_name,
-                executor=executor,
-                questions=questions,
-                ground_truth=ground_truth,
-                repo_path=repo_path,
-                output_dir=deterministic_path
-            )
-
-        print("\n=== Evaluation Complete ===")
-        return 0
-
-    except Exception as e:
-        print(f"ERROR: {str(e)}", file=sys.stderr)
-        return 1
+        if success:
+            if failed_runs:
+                print(f"\n[MAIN-LOG] === Evaluation Complete with {len(failed_runs)} failed run(s) ===")
+                print(f"[MAIN-LOG] Failed runs: {', '.join(failed_runs)}")
+            else:
+                print("\n[MAIN-LOG] === Evaluation Complete ===")
+            return 0
+        else:
+            return 1
 
 
 if __name__ == "__main__":

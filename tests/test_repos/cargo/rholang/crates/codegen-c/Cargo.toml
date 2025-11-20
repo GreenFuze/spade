@@ -1,0 +1,10 @@
+[package]
+name = "codegen-c"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ir-gen = { path = "../ir-gen" }
+optimizer = { path = "../optimizer" }
+common-types = { path = "../common-types" }
+indexmap.workspace = true

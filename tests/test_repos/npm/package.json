@@ -1,18 +1,25 @@
 {
-  "name": "npm_monorepo_sample",
+  "name": "npm-complex-monorepo",
+  "version": "1.0.0",
   "private": true,
+  "description": "High complexity npm monorepo with multiple languages and cross-language dependencies",
   "workspaces": [
-    "backend/*",
-    "frontend/*",
+    "packages/*",
+    "services/*",
+    "apps/*",
     "libs/*",
     "modules/*",
-    "tools/*"
+    "tools/*",
+    "aggregators/*"
   ],
   "scripts": {
-    "build": "echo building all workspaces",
-    "test": "echo testing all workspaces",
-    "build-all": "npm run build --workspaces",
-    "test-all": "npm run test --workspaces"
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "build-all": "npm run build",
+    "test-all": "npm run test"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.10.0"
   }
 }
-

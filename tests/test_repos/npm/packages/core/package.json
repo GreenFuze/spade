@@ -1,21 +1,16 @@
 {
-	"name": "@monorepo/core",
-	"version": "1.0.0",
-	"description": "Core business logic package",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"scripts": {
-		"build": "tsc",
-		"test": "jest",
-		"clean": "rm -rf dist"
-	},
-	"dependencies": {
-		"lodash": "^4.17.21"
-	},
-	"devDependencies": {
-		"@types/lodash": "^4.14.0",
-		"typescript": "^5.0.0",
-		"jest": "^29.0.0",
-		"@types/jest": "^29.0.0"
-	}
+  "name": "@monorepo/core",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.10.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.0"
+  }
 }

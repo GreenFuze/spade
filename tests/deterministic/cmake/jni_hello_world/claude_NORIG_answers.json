@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 113.0,
   "answers": [
     {
       "id": 1,
@@ -18,7 +19,7 @@
     },
     {
       "id": 5,
-      "answer": 1
+      "answer": 2
     },
     {
       "id": 6,
@@ -62,7 +63,8 @@
       "id": 14,
       "answer": [
         "math_lib-1.0.0.jar",
-        "libhello.dll"
+        "libhello.dll",
+        "HelloWorldTest.class"
       ]
     },
     {
@@ -156,6 +158,5 @@
       "id": 30,
       "answer": 2
     }
-  ],
-  "agent_completion_time_seconds": 266.8
+  ]
 }

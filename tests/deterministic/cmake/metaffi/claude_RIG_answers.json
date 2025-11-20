@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 96.0,
   "answers": [
     {
       "id": 1,
@@ -18,19 +19,19 @@
     },
     {
       "id": 5,
-      "answer": 3
+      "answer": "3"
     },
     {
       "id": 6,
-      "answer": 7
+      "answer": "8"
     },
     {
       "id": 7,
-      "answer": 11
+      "answer": "11"
     },
     {
       "id": 8,
-      "answer": 16
+      "answer": "16"
     },
     {
       "id": 9,
@@ -100,33 +101,33 @@
     {
       "id": 13,
       "answer": [
-        "Boost.filesystem",
-        "Boost.thread"
+        "Boost.thread",
+        "Boost.filesystem"
       ]
     },
     {
       "id": 14,
       "answer": [
-        "Boost.filesystem",
-        "Boost.program_options"
+        "Boost.program_options",
+        "Boost.filesystem"
       ]
     },
     {
       "id": 15,
       "answer": [
-        "asm-9.6.jar",
+        "asm-tree-9.6.jar",
         "gson-2.10.1.jar",
         "javaparser-core-3.24.4.jar",
-        "asm-tree-9.6.jar"
+        "asm-9.6.jar"
       ]
     },
     {
       "id": 16,
-      "answer": 4
+      "answer": "5"
     },
     {
       "id": 17,
-      "answer": 5
+      "answer": "7"
     },
     {
       "id": 18,
@@ -140,8 +141,7 @@
       "id": 20,
       "answer": [
         "xllr.openjdk.bridge",
-        "metaffi.api",
-        "openjdk_idl_extractor"
+        "metaffi.api"
       ]
     },
     {
@@ -150,16 +150,16 @@
     },
     {
       "id": 22,
-      "answer": 14
+      "answer": "24"
     },
     {
       "id": 23,
       "answer": [
+        "cdts_java_test.exe",
+        "openjdk_api_test.exe",
         "xllr.openjdk.jni.bridge.dll",
         "xllr.openjdk.bridge.jar",
-        "metaffi.api.jar",
-        "cdts_java_test.exe",
-        "openjdk_api_test.exe"
+        "metaffi.api.jar"
       ]
     },
     {
@@ -169,33 +169,33 @@
     {
       "id": 25,
       "answer": [
-        "xllr.python311.dll",
         "metaffi.compiler.python311.dll",
-        "python311_idl_plugin_test.exe",
+        "xllr.python311.dll",
+        "metaffi.idl.python311.dll",
         "python_runtime_test.exe",
-        "metaffi.idl.python311.dll"
+        "python311_idl_plugin_test.exe"
       ]
     },
     {
       "id": 26,
       "answer": [
-        "xllr.openjdk.dll",
-        "xllr.openjdk.jni.bridge.dll",
-        "xllr.openjdk.bridge.jar",
         "metaffi.api.jar",
+        "metaffi.compiler.openjdk.dll",
+        "xllr.openjdk.bridge.jar",
         "openjdk_api_test.exe",
+        "xllr.openjdk.jni.bridge.dll",
+        "xllr.openjdk.dll",
         "cdts_java_test.exe",
-        "metaffi.idl.openjdk.dll",
-        "metaffi.compiler.openjdk.dll"
+        "metaffi.idl.openjdk.dll"
       ]
     },
     {
       "id": 27,
       "answer": [
-        "metaffi-core",
-        "python311",
         "openjdk",
-        "go"
+        "metaffi-core",
+        "go",
+        "python311"
       ]
     },
     {
@@ -216,8 +216,7 @@
     },
     {
       "id": 30,
-      "answer": 5
+      "answer": "5"
     }
-  ],
-  "agent_completion_time_seconds": 276.7
+  ]
 }

@@ -1,0 +1,643 @@
+{
+  "repo": {
+    "name": "task-manager",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\maven"
+  },
+  "build": {
+    "system": "Maven",
+    "generator": null,
+    "type": null,
+    "configure_cmd": "mvn clean compile",
+    "test_cmd": "mvn test"
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "common",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "common\\target\\common.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "common\\src\\main\\java\\com\\example\\common\\CommonUtils.java"
+      ],
+      "external_packages_ids": [
+        "pkg-16",
+        "pkg-4",
+        "pkg-2",
+        "pkg-18"
+      ]
+    },
+    {
+      "id": "comp-2",
+      "name": "domain",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "domain\\target\\domain.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "domain\\src\\main\\java\\com\\example\\domain\\Task.java",
+        "domain\\src\\main\\java\\com\\example\\domain\\User.java"
+      ],
+      "external_packages_ids": [
+        "pkg-8"
+      ]
+    },
+    {
+      "id": "comp-3",
+      "name": "integration-email",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "integration-email\\target\\integration-email.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "integration-email\\src\\main\\java\\com\\example\\email\\EmailService.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-4",
+      "name": "integration-storage",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "integration-storage\\target\\integration-storage.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "integration-storage\\src\\main\\java\\com\\example\\storage\\StorageService.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-5",
+      "name": "persistence",
+      "depends_on_ids": [
+        "comp-2",
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "persistence\\target\\persistence.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "persistence\\src\\main\\java\\com\\example\\persistence\\TaskRepository.java"
+      ],
+      "external_packages_ids": [
+        "pkg-14",
+        "pkg-12"
+      ]
+    },
+    {
+      "id": "comp-6",
+      "name": "service-auth",
+      "depends_on_ids": [
+        "comp-2",
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "relative_path": "service-auth\\target\\service-auth.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "service-auth\\src\\main\\java\\com\\example\\auth\\AuthService.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-7",
+      "name": "service-notification",
+      "depends_on_ids": [
+        "comp-2",
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-7"
+      ],
+      "relative_path": "service-notification\\target\\service-notification.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "service-notification\\src\\main\\java\\com\\example\\notification\\NotificationService.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-8",
+      "name": "service-task",
+      "depends_on_ids": [
+        "comp-5",
+        "comp-2",
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-8"
+      ],
+      "relative_path": "service-task\\target\\service-task.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "service-task\\src\\main\\java\\com\\example\\task\\TaskService.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-9",
+      "name": "api-gateway",
+      "depends_on_ids": [
+        "comp-7",
+        "comp-2",
+        "comp-8",
+        "comp-1",
+        "comp-6"
+      ],
+      "evidence_ids": [
+        "evidence-9"
+      ],
+      "relative_path": "api-gateway\\target\\api-gateway.jar",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "java",
+      "source_files": [
+        "api-gateway\\src\\main\\java\\com\\example\\api\\TaskController.java"
+      ],
+      "external_packages_ids": [
+        "pkg-10"
+      ]
+    },
+    {
+      "id": "comp-10",
+      "name": "app-web",
+      "depends_on_ids": [
+        "comp-7",
+        "comp-2",
+        "comp-3",
+        "comp-4",
+        "comp-8",
+        "comp-1",
+        "comp-5",
+        "comp-9",
+        "comp-6"
+      ],
+      "evidence_ids": [
+        "evidence-10"
+      ],
+      "relative_path": "app-web\\target\\app-web.war",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "java",
+      "source_files": [
+        "app-web\\src\\main\\java\\com\\example\\web\\WebApplication.java",
+        "app-web\\src\\main\\webapp\\WEB-INF\\web.xml"
+      ],
+      "external_packages_ids": [
+        "pkg-20",
+        "pkg-6"
+      ]
+    }
+  ],
+  "aggregators": [
+    {
+      "id": "agg-1",
+      "name": "task-manager",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-7",
+        "comp-2",
+        "comp-4",
+        "comp-3",
+        "comp-8",
+        "comp-1",
+        "comp-5",
+        "comp-9",
+        "comp-10"
+      ],
+      "evidence_ids": [
+        "evidence-11"
+      ]
+    }
+  ],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "CommonUtilsTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-12"
+      ],
+      "test_executable_component_id": "comp-1",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-1"
+      ],
+      "source_files": [
+        "common\\src\\test\\java\\com\\example\\common\\CommonUtilsTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-2",
+      "name": "DomainModelTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-13"
+      ],
+      "test_executable_component_id": "comp-2",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-2"
+      ],
+      "source_files": [
+        "domain\\src\\test\\java\\com\\example\\domain\\DomainModelTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-3",
+      "name": "PersistenceServiceTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-14"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-5"
+      ],
+      "source_files": [
+        "persistence\\src\\test\\java\\com\\example\\persistence\\PersistenceServiceTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-4",
+      "name": "AuthServiceTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-15"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-6"
+      ],
+      "source_files": [
+        "service-auth\\src\\test\\java\\com\\example\\auth\\AuthServiceTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-5",
+      "name": "TaskServiceTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-16"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-8"
+      ],
+      "source_files": [
+        "service-task\\src\\test\\java\\com\\example\\task\\TaskServiceTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-6",
+      "name": "NotificationServiceTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-17"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-7"
+      ],
+      "source_files": [
+        "service-notification\\src\\test\\java\\com\\example\\notification\\NotificationServiceTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-7",
+      "name": "ApiGatewayTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-18"
+      ],
+      "test_executable_component_id": "comp-9",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-9"
+      ],
+      "source_files": [
+        "api-gateway\\src\\test\\java\\com\\example\\api\\ApiGatewayTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-8",
+      "name": "EmailIntegrationTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-19"
+      ],
+      "test_executable_component_id": "comp-3",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-3"
+      ],
+      "source_files": [
+        "integration-email\\src\\test\\java\\com\\example\\email\\EmailIntegrationTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-9",
+      "name": "StorageIntegrationTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-20"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-4"
+      ],
+      "source_files": [
+        "integration-storage\\src\\test\\java\\com\\example\\storage\\StorageIntegrationTest.java"
+      ],
+      "test_framework": "JUnit5"
+    },
+    {
+      "id": "test-10",
+      "name": "WebAppIntegrationTest",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-21"
+      ],
+      "test_executable_component_id": "comp-10",
+      "test_components_ids": [],
+      "components_being_tested_ids": [
+        "comp-10"
+      ],
+      "source_files": [
+        "app-web\\src\\test\\java\\com\\example\\web\\WebAppIntegrationTest.java"
+      ],
+      "test_framework": "JUnit5"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-2",
+      "name": "guava"
+    },
+    {
+      "id": "pkg-4",
+      "name": "slf4j-api"
+    },
+    {
+      "id": "pkg-16",
+      "name": "junit-jupiter"
+    },
+    {
+      "id": "pkg-18",
+      "name": "mockito-core"
+    },
+    {
+      "id": "pkg-8",
+      "name": "jackson-databind"
+    },
+    {
+      "id": "pkg-12",
+      "name": "hibernate-core"
+    },
+    {
+      "id": "pkg-14",
+      "name": "h2"
+    },
+    {
+      "id": "pkg-10",
+      "name": "spring-web"
+    },
+    {
+      "id": "pkg-6",
+      "name": "logback-classic"
+    },
+    {
+      "id": "pkg-20",
+      "name": "jakarta-servlet-api"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-1",
+      "name": "maven",
+      "package_name": "com.google.guava:guava:32.1.2-jre"
+    },
+    {
+      "id": "pkg-3",
+      "name": "maven",
+      "package_name": "org.slf4j:slf4j-api:2.0.9"
+    },
+    {
+      "id": "pkg-15",
+      "name": "maven",
+      "package_name": "org.junit.jupiter:junit-jupiter:5.10.0"
+    },
+    {
+      "id": "pkg-17",
+      "name": "maven",
+      "package_name": "org.mockito:mockito-core:5.5.0"
+    },
+    {
+      "id": "pkg-7",
+      "name": "maven",
+      "package_name": "com.fasterxml.jackson.core:jackson-databind:2.15.2"
+    },
+    {
+      "id": "pkg-11",
+      "name": "maven",
+      "package_name": "org.hibernate.orm:hibernate-core:6.2.7.Final"
+    },
+    {
+      "id": "pkg-13",
+      "name": "maven",
+      "package_name": "com.h2database:h2:2.2.224"
+    },
+    {
+      "id": "pkg-9",
+      "name": "maven",
+      "package_name": "org.springframework:spring-web:6.0.11"
+    },
+    {
+      "id": "pkg-5",
+      "name": "maven",
+      "package_name": "ch.qos.logback:logback-classic:1.4.11"
+    },
+    {
+      "id": "pkg-19",
+      "name": "maven",
+      "package_name": "jakarta.servlet:jakarta.servlet-api:6.0.0"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "common/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "domain/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "integration-email/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "integration-storage/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "persistence/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "service-auth/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-7",
+      "line": [
+        "service-notification/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-8",
+      "line": [
+        "service-task/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-9",
+      "line": [
+        "api-gateway/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-10",
+      "line": [
+        "app-web/pom.xml:14"
+      ]
+    },
+    {
+      "id": "evidence-11",
+      "line": [
+        "pom.xml:11"
+      ]
+    },
+    {
+      "id": "evidence-12",
+      "line": [
+        "common/src/test/java/com/example/common/CommonUtilsTest.java:8"
+      ]
+    },
+    {
+      "id": "evidence-13",
+      "line": [
+        "domain/src/test/java/com/example/domain/DomainModelTest.java:8"
+      ]
+    },
+    {
+      "id": "evidence-14",
+      "line": [
+        "persistence/src/test/java/com/example/persistence/PersistenceServiceTest.java:10"
+      ]
+    },
+    {
+      "id": "evidence-15",
+      "line": [
+        "service-auth/src/test/java/com/example/auth/AuthServiceTest.java:10"
+      ]
+    },
+    {
+      "id": "evidence-16",
+      "line": [
+        "service-task/src/test/java/com/example/task/TaskServiceTest.java:11"
+      ]
+    },
+    {
+      "id": "evidence-17",
+      "line": [
+        "service-notification/src/test/java/com/example/notification/NotificationServiceTest.java:9"
+      ]
+    },
+    {
+      "id": "evidence-18",
+      "line": [
+        "api-gateway/src/test/java/com/example/api/ApiGatewayTest.java:13"
+      ]
+    },
+    {
+      "id": "evidence-19",
+      "line": [
+        "integration-email/src/test/java/com/example/email/EmailIntegrationTest.java:8"
+      ]
+    },
+    {
+      "id": "evidence-20",
+      "line": [
+        "integration-storage/src/test/java/com/example/storage/StorageIntegrationTest.java:8"
+      ]
+    },
+    {
+      "id": "evidence-21",
+      "line": [
+        "app-web/src/test/java/com/example/web/WebAppIntegrationTest.java:8"
+      ]
+    }
+  ]
+}

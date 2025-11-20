@@ -1,0 +1,425 @@
+You are an expert at analyzing code repositories and build systems.
+
+You have been provided with structured metadata about this repository in the following JSON:
+
+In the following JSON, you'll find these entity types:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component must generate an artifact from source files, or be the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps.
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Test Definitions**: Tests that contain a component used for testing or a runner that executes the test.
+
+```json
+{
+  "repo": {
+    "name": "embedded_system",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\meson\\embedded_system"
+  },
+  "build": {
+    "system": "meson",
+    "generator": null,
+    "type": "Release",
+    "configure_cmd": "meson setup build",
+    "test_cmd": "meson test -C build"
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "libcore.a",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "build\\src\\core\\libcore.a",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "c",
+      "source_files": [
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-7",
+        "pkg-11"
+      ]
+    },
+    {
+      "id": "comp-2",
+      "name": "libdrivers.so",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "build\\src\\drivers\\libdrivers.so",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cpp",
+      "source_files": [
+        "src\\drivers\\uart.cpp",
+        "src\\drivers\\uart.hpp",
+        "src\\drivers\\spi.cpp",
+        "src\\drivers\\spi.hpp",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-7",
+        "pkg-11",
+        "pkg-12"
+      ]
+    },
+    {
+      "id": "comp-3",
+      "name": "libprotocol.a",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "build\\src\\protocol\\libprotocol.a",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "c",
+      "source_files": [
+        "src\\protocol\\handler.c",
+        "src\\protocol\\handler.h",
+        "src\\protocol\\protocol.proto",
+        "tools\\generate_protocol.py",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-7",
+        "pkg-11"
+      ]
+    },
+    {
+      "id": "comp-4",
+      "name": "firmware.elf",
+      "depends_on_ids": [
+        "comp-3",
+        "comp-1",
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "build\\src\\app\\firmware.elf",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "c",
+      "source_files": [
+        "src\\app\\main.c",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in",
+        "src\\drivers\\uart.cpp",
+        "src\\drivers\\uart.hpp",
+        "src\\drivers\\spi.cpp",
+        "src\\drivers\\spi.hpp",
+        "src\\protocol\\handler.c",
+        "src\\protocol\\handler.h",
+        "src\\protocol\\protocol.proto",
+        "tools\\generate_protocol.py"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-7",
+        "pkg-11",
+        "pkg-12"
+      ]
+    },
+    {
+      "id": "comp-5",
+      "name": "test_system",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "build\\tests\\test_system",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "c",
+      "source_files": [
+        "tests\\test_system.c",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-8",
+        "pkg-7",
+        "pkg-11"
+      ]
+    },
+    {
+      "id": "comp-6",
+      "name": "test_drivers",
+      "depends_on_ids": [
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "relative_path": "build\\tests\\test_drivers",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cpp",
+      "source_files": [
+        "tests\\test_drivers.cpp",
+        "src\\drivers\\uart.cpp",
+        "src\\drivers\\uart.hpp",
+        "src\\drivers\\spi.cpp",
+        "src\\drivers\\spi.hpp",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-9",
+        "pkg-7",
+        "pkg-11",
+        "pkg-12"
+      ]
+    }
+  ],
+  "aggregators": [
+    {
+      "id": "agg-1",
+      "name": "build-all",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-5",
+        "comp-4"
+      ],
+      "evidence_ids": [
+        "evidence-7"
+      ]
+    }
+  ],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "Core System Tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-8"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "tests\\test_system.c"
+      ],
+      "test_framework": "cmocka"
+    },
+    {
+      "id": "test-2",
+      "name": "Driver Tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-9"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "tests\\test_drivers.cpp"
+      ],
+      "test_framework": "gtest"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-7",
+      "name": "json-c"
+    },
+    {
+      "id": "pkg-11",
+      "name": "m"
+    },
+    {
+      "id": "pkg-12",
+      "name": "dl"
+    },
+    {
+      "id": "pkg-10",
+      "name": "threads"
+    },
+    {
+      "id": "pkg-8",
+      "name": "cmocka"
+    },
+    {
+      "id": "pkg-9",
+      "name": "gtest"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-1",
+      "name": "meson",
+      "package_name": "json-c"
+    },
+    {
+      "id": "pkg-5",
+      "name": "system",
+      "package_name": "m"
+    },
+    {
+      "id": "pkg-6",
+      "name": "system",
+      "package_name": "dl"
+    },
+    {
+      "id": "pkg-4",
+      "name": "system",
+      "package_name": "threads"
+    },
+    {
+      "id": "pkg-2",
+      "name": "system",
+      "package_name": "cmocka"
+    },
+    {
+      "id": "pkg-3",
+      "name": "system",
+      "package_name": "gtest"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "src/core/meson.build:10"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "src/drivers/meson.build:10"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "src/protocol/meson.build:18"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "src/app/meson.build:7"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "tests/meson.build:6"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "tests/meson.build:16"
+      ]
+    },
+    {
+      "id": "evidence-7",
+      "line": [
+        "meson.build:43"
+      ]
+    },
+    {
+      "id": "evidence-8",
+      "line": [
+        "tests/meson.build:11"
+      ]
+    },
+    {
+      "id": "evidence-9",
+      "line": [
+        "tests/meson.build:21"
+      ]
+    }
+  ]
+}
+```
+
+Please answer the following questions about this repository using the metadata above and by analyzing the repository files.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. What is the Meson project name defined in the root meson.build? (Provide the project name as a string)
+2. What is the project version? (Provide the version string)
+3. How many .c files are in the src/ directory (excluding generated files)? (Provide the count)
+4. How many .cpp files are in the src/ directory? (Provide the count)
+5. How many test files are in the tests/ directory? (Provide the count)
+6. How many Meson wrap files are in the subprojects/ directory? (Provide the count)
+7. What JSON library is used via Meson subproject? (Provide the library name)
+8. What testing framework is used for C tests? (Provide the framework name)
+9. What testing framework is used for C++ tests? (Provide the framework name)
+10. What is the name of the protocol definition file used for code generation? (Provide the filename)
+11. How many buildable components are in this repository? (Provide the count)
+12. How many libraries (static or shared) are built in this project? (Provide the count)
+13. Is libcore a static or shared library? (Answer 'static' or 'shared')
+14. Is libdrivers a static or shared library? (Answer 'static' or 'shared')
+15. What programming language is libcore.a written in? (Provide the language name)
+16. What programming language is libdrivers.so written in? (Provide the language name)
+17. What C files are generated by the protocol code generator? (Provide a list of filenames)
+18. What is the name of the template file used by configure_file()? (Provide the filename)
+19. What external packages does libcore.a depend on? (Provide a list)
+20. What components does firmware.elf directly depend on? (Provide a list of component names)
+21. What is the maximum dependency depth in this repository? (Provide a number)
+22. In what order must the libraries be built? (Provide the build order as a list, starting with libraries that have no dependencies on other repository components)
+23. Can libdrivers.so and libprotocol.a be built in parallel? (Answer yes or no)
+24. If libcore.a fails to build, which other components would also fail? (Provide a list)
+25. What component does test_drivers depend on? (Provide the component name)
+26. What Python script is used to generate protocol code? (Provide the relative path)
+27. How many aggregators are defined in this build system? (Provide the count)
+28. Does this repository have cross-language dependencies? (Answer yes or no)
+29. How many unique external packages are used across all components? (Provide the count)
+30. How many different programming languages are used in this repository? (Provide the count)
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

@@ -451,7 +451,17 @@ def _generate_category_improvement(
     offset = width * (n_repos - 1) / 2
 
     # Create bars for each repository
-    colors_list = ['#3498DB', '#E74C3C', '#27AE60']  # Blue, Red, Green
+    # 8 distinct colorblind-friendly colors for all repositories
+    colors_list = [
+        '#3498DB',  # Blue
+        '#E67E22',  # Orange
+        '#27AE60',  # Green
+        '#9B59B6',  # Purple
+        '#E74C3C',  # Red
+        '#1ABC9C',  # Teal
+        '#F1C40F',  # Yellow
+        '#E91E63',  # Pink
+    ]
     for i, (repo_name, improvements) in enumerate(zip(repo_names, improvements_matrix)):
         position = x - offset + i * width
         bars = ax.bar(position, improvements, width, label=repo_name,
@@ -479,21 +489,103 @@ def _generate_category_improvement(
     _save_figure(fig, output_dir, 'category_improvement_comparison')
 
 
+def _generate_time_vs_score_scatter(
+    time_accuracy_analysis: Dict[str, Any],
+    output_dir: Path
+):
+    """Generate scatter plot of time vs score for all agents."""
+    print("[9/9] Time vs Score Scatter Plot...")
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    scatter_data = time_accuracy_analysis['scatter_plot_data']
+
+    # Group data by agent
+    agents = {}
+    for point in scatter_data:
+        agent = point['agent']
+        if agent not in agents:
+            agents[agent] = {'NORIG': None, 'RIG': None}
+        agents[agent][point['mode']] = point
+
+    # Plot each agent
+    for agent_name in sorted(agents.keys()):
+        agent_points = agents[agent_name]
+
+        # Plot NORIG point (circle marker)
+        if agent_points['NORIG']:
+            p = agent_points['NORIG']
+            ax.scatter(p['time_seconds'], p['score'], s=300, marker='o',
+                      color=COLORS[agent_name], alpha=0.6, edgecolors='black',
+                      linewidth=2, label=f"{AGENT_DISPLAY[agent_name]} (NORIG)")
+
+        # Plot RIG point (triangle marker)
+        if agent_points['RIG']:
+            p = agent_points['RIG']
+            ax.scatter(p['time_seconds'], p['score'], s=300, marker='^',
+                      color=COLORS[agent_name], alpha=0.9, edgecolors='black',
+                      linewidth=2, label=f"{AGENT_DISPLAY[agent_name]} (RIG)")
+
+        # Draw arrow from NORIG to RIG
+        if agent_points['NORIG'] and agent_points['RIG']:
+            ax.annotate('', xy=(agent_points['RIG']['time_seconds'], agent_points['RIG']['score']),
+                       xytext=(agent_points['NORIG']['time_seconds'], agent_points['NORIG']['score']),
+                       arrowprops=dict(arrowstyle='->', color=COLORS[agent_name], lw=1.5, alpha=0.6))
+
+    # Draw diagonal efficiency lines from origin
+    max_time = max(p['time_seconds'] for p in scatter_data)
+    max_score = max(p['score'] for p in scatter_data)
+
+    # Draw efficiency reference lines
+    efficiencies = [0.1, 0.2, 0.3, 0.4, 0.5]
+    for eff in efficiencies:
+        line_time = max_time * 1.1
+        line_score = eff * line_time
+        if line_score <= max_score * 1.2:
+            ax.plot([0, line_time], [0, line_score], '--', color='gray', alpha=0.3, linewidth=1)
+            # Label the efficiency line
+            ax.text(line_time * 0.95, line_score * 0.95, f'{eff:.1f} pts/s',
+                   fontsize=8, color='gray', alpha=0.7, rotation=np.degrees(np.arctan(eff)))
+
+    # Labels and formatting
+    ax.set_xlabel('Time (seconds)', fontsize=14, fontweight='bold')
+    ax.set_ylabel('Score (points)', fontsize=14, fontweight='bold')
+    ax.set_title('Time vs Score Analysis: Agent Performance Comparison\nArrows show NORIG → RIG improvement',
+                fontsize=16, fontweight='bold', pad=20)
+    ax.grid(True, alpha=0.3, linestyle='--')
+    ax.legend(loc='upper left', framealpha=0.95, fontsize=10, ncol=2)
+
+    # Set axis limits with some padding
+    ax.set_xlim(left=0, right=max_time * 1.1)
+    ax.set_ylim(bottom=0, top=max_score * 1.1)
+
+    # Add correlation annotation
+    corr = time_accuracy_analysis['time_score_correlation']['aggregate']
+    ax.text(0.98, 0.02, f"Correlation: r = {corr['pearson_r']:.3f} (p = {corr['p_value']:.4f})",
+           transform=ax.transAxes, fontsize=10, ha='right', va='bottom',
+           bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+
+    plt.tight_layout()
+    _save_figure(fig, output_dir, 'time_vs_score_scatter')
+
+
 def generate_all_visualizations(
     repo_data_list: List[Dict[str, Any]],
     aggregate: Dict[str, Any],
-    output_dir: Path
+    output_dir: Path,
+    time_accuracy_analysis: Dict[str, Any] = None
 ):
     """
     Generate all summary visualizations.
 
     This is the main entry point for visualization generation. It creates
-    all 8 aggregate charts showing RIG effectiveness across repositories.
+    all 9 aggregate charts showing RIG effectiveness across repositories.
 
     Args:
         repo_data_list: List of repository data dictionaries
         aggregate: Aggregate analysis dictionary
         output_dir: Directory to save visualizations
+        time_accuracy_analysis: Time vs accuracy analysis (optional)
     """
     print("\n" + "=" * 80)
     print("GENERATING VISUALIZATIONS")
@@ -516,4 +608,9 @@ def generate_all_visualizations(
     _generate_efficiency_improvement(repo_data_list, aggregate, output_dir)
     _generate_category_improvement(repo_data_list, aggregate, output_dir)
 
-    print(f"\n[OK] All 8 visualizations generated in {output_dir}")
+    # Generate time vs accuracy scatter plot if data provided
+    if time_accuracy_analysis:
+        _generate_time_vs_score_scatter(time_accuracy_analysis, output_dir)
+        print(f"\n[OK] All 9 visualizations generated in {output_dir}")
+    else:
+        print(f"\n[OK] All 8 visualizations generated in {output_dir}")

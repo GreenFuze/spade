@@ -1,0 +1,22 @@
+[package]
+name = "rholang-cli"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "rholang-cli"
+path = "src/main.rs"
+
+[dependencies]
+lexer = { path = "../lexer" }
+parser = { path = "../parser" }
+semantic-analyzer = { path = "../semantic-analyzer" }
+type-checker = { path = "../type-checker" }
+codegen-c = { path = "../codegen-c" }
+codegen-bytecode = { path = "../codegen-bytecode" }
+common-types = { path = "../common-types" }
+error-reporting = { path = "../error-reporting" }
+clap.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

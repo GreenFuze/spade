@@ -65,7 +65,7 @@ def run_command(cmd: List[str], description: str, cwd: Path = None) -> subproces
         )
 
         if result.returncode != 0:
-            print(f"\n❌ ERROR: {description} failed!")
+            print(f"\n[X] ERROR: {description} failed!")
             print(f"Exit code: {result.returncode}")
             if result.stdout:
                 print(f"\nSTDOUT:\n{result.stdout}")
@@ -73,7 +73,7 @@ def run_command(cmd: List[str], description: str, cwd: Path = None) -> subproces
                 print(f"\nSTDERR:\n{result.stderr}")
             raise AnalysisPipelineError(f"{description} failed with exit code {result.returncode}")
 
-        print(f"✅ {description} completed successfully")
+        print(f"[OK] {description} completed successfully")
         if result.stdout and result.stdout.strip():
             # Show some output but not too much
             lines = result.stdout.strip().split('\n')
@@ -88,7 +88,7 @@ def run_command(cmd: List[str], description: str, cwd: Path = None) -> subproces
         return result
 
     except FileNotFoundError as e:
-        print(f"\n❌ ERROR: Command not found: {cmd[0]}")
+        print(f"\n[X] ERROR: Command not found: {cmd[0]}")
         print(f"Details: {e}")
         raise AnalysisPipelineError(f"Command not found: {cmd[0]}")
 
@@ -159,7 +159,7 @@ def validate_repository(repo_path: Path) -> None:
             f"No evaluation_questions.json found in {repo_path}"
         )
 
-    print(f"  ✅ Validation passed: {len(answer_files)} answer files, evaluation questions present")
+    print(f"  [OK] Validation passed: {len(answer_files)} answer files, evaluation questions present")
 
 
 def run_answers_analysis(repo_path: Path, script_dir: Path) -> None:
@@ -262,13 +262,13 @@ def print_summary(repos: List[Path], script_dir: Path) -> None:
 
         print(f"\n  {relative_path}:")
         if counts["answers_analysis"]:
-            print(f"    ✅ answers_analysis.json")
+            print(f"    [OK] answers_analysis.json")
         if counts["analysis_md"]:
-            print(f"    ✅ analysis_images/analysis.md")
+            print(f"    [OK] analysis_images/analysis.md")
         if counts["png_files"]:
-            print(f"    ✅ {counts['png_files']} PNG visualizations")
+            print(f"    [OK] {counts['png_files']} PNG visualizations")
         if counts["svg_files"]:
-            print(f"    ✅ {counts['svg_files']} SVG visualizations")
+            print(f"    [OK] {counts['svg_files']} SVG visualizations")
 
     # Overall summary
     print("\n\nOverall Summary:")
@@ -276,24 +276,24 @@ def print_summary(repos: List[Path], script_dir: Path) -> None:
     if overall_analysis.exists():
         summary_json = script_dir / "summary_analysis" / "summary_analysis.json"
         if summary_json.exists():
-            print(f"  ✅ summary_analysis/summary_analysis.json")
+            print(f"  [OK] summary_analysis/summary_analysis.json")
 
         analysis_md = overall_analysis / "analysis.md"
         if analysis_md.exists():
-            print(f"  ✅ analysis_images/analysis.md")
+            print(f"  [OK] analysis_images/analysis.md")
 
         png_count = len(list(overall_analysis.glob("*.png")))
         svg_count = len(list(overall_analysis.glob("*.svg")))
         if png_count:
-            print(f"  ✅ {png_count} PNG visualizations")
+            print(f"  [OK] {png_count} PNG visualizations")
         if svg_count:
-            print(f"  ✅ {svg_count} SVG visualizations")
+            print(f"  [OK] {svg_count} SVG visualizations")
 
     # Main report location
     main_report = overall_analysis / "analysis.md"
     if main_report.exists():
         print(f"\n" + "="*80)
-        print(f"📊 Main Report: {main_report.relative_to(script_dir.parent)}")
+        print(f"Main Report: {main_report.relative_to(script_dir.parent)}")
         print("="*80)
 
 
@@ -358,12 +358,17 @@ Examples:
             # Run visualizer
             run_results_visualizer(repo, script_dir)
 
-        # Run overall summary (only if processing multiple repos)
-        if len(repos) > 1 or not args.repo:
+        # Run overall summary only in multi-repository mode
+        if not args.repo:
             print(f"\n" + "="*80)
             print("Generating Overall Summary")
             print("="*80)
             run_overall_summary(script_dir)
+        else:
+            print(f"\n" + "="*80)
+            print("Skipping Overall Summary (single repository mode)")
+            print("Run without --repo to generate overall summary across all repositories")
+            print("="*80)
 
         # Print summary
         print_summary(repos, script_dir)
@@ -372,7 +377,7 @@ Examples:
 
     except AnalysisPipelineError as e:
         print(f"\n" + "="*80)
-        print(f"❌ PIPELINE FAILED")
+        print(f"[X] PIPELINE FAILED")
         print("="*80)
         print(f"Error: {e}")
         print("\nPlease fix the error and run again.")
@@ -380,14 +385,14 @@ Examples:
 
     except KeyboardInterrupt:
         print(f"\n" + "="*80)
-        print("⚠️  PIPELINE INTERRUPTED")
+        print("[!] PIPELINE INTERRUPTED")
         print("="*80)
         print("Interrupted by user")
         return 130
 
     except Exception as e:
         print(f"\n" + "="*80)
-        print(f"❌ UNEXPECTED ERROR")
+        print(f"[X] UNEXPECTED ERROR")
         print("="*80)
         print(f"Error: {type(e).__name__}: {e}")
         import traceback

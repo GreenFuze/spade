@@ -1,0 +1,11 @@
+[package]
+name = "ir-gen"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ast = { path = "../ast" }
+type-checker = { path = "../type-checker" }
+common-types = { path = "../common-types" }
+indexmap.workspace = true
+smallvec.workspace = true

@@ -1,0 +1,11 @@
+[package]
+name = "codegen-bytecode"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ir-gen = { path = "../ir-gen" }
+optimizer = { path = "../optimizer" }
+common-types = { path = "../common-types" }
+bincode.workspace = true
+serde.workspace = true

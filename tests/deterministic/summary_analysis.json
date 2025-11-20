@@ -1,14 +1,14 @@
 {
   "meta": {
-    "generated_timestamp": "2025-11-06T09:20:04.644275+00:00",
+    "generated_timestamp": "2025-11-20T13:34:48.103676+00:00",
     "generator_version": "2.0.0",
-    "repository_count": 3,
+    "repository_count": 8,
     "agent_count": 3,
-    "total_questions": 90
+    "total_questions": 240
   },
   "repositories": [
     {
-      "name": "cmake_hello_world",
+      "name": "hello_world",
       "path": "deterministic\\cmake\\cmake_hello_world",
       "complexity": {
         "score": 22,
@@ -26,7 +26,7 @@
           "has_cross_language_dependencies": false,
           "parallel_buildable_component_count": 1
         },
-        "normalized_score": 9.6
+        "normalized_score": 8.6
       },
       "questions": {
         "total": 30,
@@ -37,42 +37,42 @@
         }
       },
       "results": {
-        "average_score_with_rig": 97.8,
-        "average_score_without_rig": 95.6,
-        "score_improvement": 2.2,
-        "score_improvement_relative": 2.3,
-        "average_time_with_rig_seconds": 50.69,
-        "average_time_without_rig_seconds": 51.33,
-        "time_saved_seconds": 0.64,
-        "time_reduction_percentage": 4.7,
-        "efficiency_improvement": 3.6,
+        "average_score_with_rig": 100.0,
+        "average_score_without_rig": 98.9,
+        "score_improvement": 1.1,
+        "score_improvement_relative": 1.1,
+        "average_time_with_rig_seconds": 44.33,
+        "average_time_without_rig_seconds": 56.0,
+        "time_saved_seconds": 11.67,
+        "time_reduction_percentage": 23.5,
+        "efficiency_improvement": 27.7,
         "by_agent": {
           "claude": {
             "score_with_rig": 100.0,
-            "score_without_rig": 96.7,
-            "score_improvement": 3.3,
-            "time_with_rig": 42.04,
-            "time_without_rig": 54.06,
-            "time_saved": 12.02,
-            "time_reduction_percentage": 22.2
+            "score_without_rig": 100.0,
+            "score_improvement": 0.0,
+            "time_with_rig": 68.0,
+            "time_without_rig": 71.0,
+            "time_saved": 3.0,
+            "time_reduction_percentage": 4.2
           },
           "codex": {
-            "score_with_rig": 96.7,
-            "score_without_rig": 96.7,
+            "score_with_rig": 100.0,
+            "score_without_rig": 100.0,
             "score_improvement": 0.0,
-            "time_with_rig": 87.13,
-            "time_without_rig": 74.97,
-            "time_saved": -12.16,
-            "time_reduction_percentage": -16.2
+            "time_with_rig": 53.0,
+            "time_without_rig": 79.0,
+            "time_saved": 26.0,
+            "time_reduction_percentage": 32.9
           },
           "cursor": {
-            "score_with_rig": 96.7,
-            "score_without_rig": 93.3,
+            "score_with_rig": 100.0,
+            "score_without_rig": 96.7,
             "score_improvement": 3.3,
-            "time_with_rig": 22.91,
-            "time_without_rig": 24.97,
-            "time_saved": 2.06,
-            "time_reduction_percentage": 8.2
+            "time_with_rig": 12.0,
+            "time_without_rig": 18.0,
+            "time_saved": 6.0,
+            "time_reduction_percentage": 33.3
           }
         },
         "by_difficulty": {
@@ -83,7 +83,7 @@
             "avg_improvement": 0.0
           },
           "hard": {
-            "avg_improvement": 6.7
+            "avg_improvement": 3.3
           }
         },
         "by_category": {
@@ -93,14 +93,14 @@
             "improvement": 0.0
           },
           "source_analysis": {
-            "avg_with_rig": 94.4,
-            "avg_without_rig": 88.9,
-            "improvement": 5.6
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
           },
           "testing": {
             "avg_with_rig": 100.0,
-            "avg_without_rig": 93.3,
-            "improvement": 6.7
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
           },
           "cmake_specific": {
             "avg_with_rig": 100.0,
@@ -108,9 +108,9 @@
             "improvement": 0.0
           },
           "dependency_analysis": {
-            "avg_with_rig": 96.3,
+            "avg_with_rig": 100.0,
             "avg_without_rig": 96.3,
-            "improvement": 0.0
+            "improvement": 3.7
           },
           "component_identification": {
             "avg_with_rig": 100.0,
@@ -121,11 +121,11 @@
       }
     },
     {
-      "name": "jni_hello_world",
+      "name": "jni",
       "path": "deterministic\\cmake\\jni_hello_world",
       "complexity": {
         "score": 74,
-        "level": "MEDIUM",
+        "level": "LOW",
         "metrics": {
           "component_count": 6,
           "programming_language_count": 3,
@@ -141,7 +141,7 @@
           "has_cross_language_dependencies": true,
           "parallel_buildable_component_count": 4
         },
-        "normalized_score": 32.3
+        "normalized_score": 28.8
       },
       "questions": {
         "total": 30,
@@ -152,53 +152,53 @@
         }
       },
       "results": {
-        "average_score_with_rig": 97.8,
-        "average_score_without_rig": 91.1,
-        "score_improvement": 6.7,
-        "score_improvement_relative": 7.4,
-        "average_time_with_rig_seconds": 74.67,
-        "average_time_without_rig_seconds": 198.97,
-        "time_saved_seconds": 124.31,
-        "time_reduction_percentage": 55.5,
-        "efficiency_improvement": 186.1,
+        "average_score_with_rig": 98.9,
+        "average_score_without_rig": 87.8,
+        "score_improvement": 11.1,
+        "score_improvement_relative": 12.6,
+        "average_time_with_rig_seconds": 47.0,
+        "average_time_without_rig_seconds": 122.67,
+        "time_saved_seconds": 75.67,
+        "time_reduction_percentage": 49.1,
+        "efficiency_improvement": 194.0,
         "by_agent": {
           "claude": {
-            "score_with_rig": 96.7,
+            "score_with_rig": 100.0,
             "score_without_rig": 90.0,
-            "score_improvement": 6.7,
-            "time_with_rig": 83.85,
-            "time_without_rig": 266.8,
-            "time_saved": 182.95,
-            "time_reduction_percentage": 68.6
+            "score_improvement": 10.0,
+            "time_with_rig": 56.0,
+            "time_without_rig": 113.0,
+            "time_saved": 57.0,
+            "time_reduction_percentage": 50.4
           },
           "codex": {
             "score_with_rig": 100.0,
-            "score_without_rig": 96.7,
-            "score_improvement": 3.3,
-            "time_with_rig": 115.28,
-            "time_without_rig": 290.24,
-            "time_saved": 174.96,
-            "time_reduction_percentage": 60.3
+            "score_without_rig": 90.0,
+            "score_improvement": 10.0,
+            "time_with_rig": 64.0,
+            "time_without_rig": 227.0,
+            "time_saved": 163.0,
+            "time_reduction_percentage": 71.8
           },
           "cursor": {
             "score_with_rig": 96.7,
-            "score_without_rig": 86.7,
-            "score_improvement": 10.0,
-            "time_with_rig": 24.87,
-            "time_without_rig": 39.88,
-            "time_saved": 15.01,
-            "time_reduction_percentage": 37.6
+            "score_without_rig": 83.3,
+            "score_improvement": 13.3,
+            "time_with_rig": 21.0,
+            "time_without_rig": 28.0,
+            "time_saved": 7.0,
+            "time_reduction_percentage": 25.0
           }
         },
         "by_difficulty": {
           "easy": {
-            "avg_improvement": 3.3
+            "avg_improvement": 0.0
           },
           "medium": {
-            "avg_improvement": 3.3
+            "avg_improvement": 10.0
           },
           "hard": {
-            "avg_improvement": 13.3
+            "avg_improvement": 23.3
           }
         },
         "by_category": {
@@ -209,8 +209,8 @@
           },
           "source_analysis": {
             "avg_with_rig": 100.0,
-            "avg_without_rig": 95.2,
-            "improvement": 4.8
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
           },
           "testing": {
             "avg_with_rig": 100.0,
@@ -219,13 +219,13 @@
           },
           "dependency_analysis": {
             "avg_with_rig": 96.3,
-            "avg_without_rig": 88.9,
-            "improvement": 7.4
+            "avg_without_rig": 81.5,
+            "improvement": 14.8
           },
           "component_identification": {
-            "avg_with_rig": 93.3,
-            "avg_without_rig": 93.3,
-            "improvement": 0.0
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 80.0,
+            "improvement": 20.0
           },
           "cmake_specific": {
             "avg_with_rig": 100.0,
@@ -257,7 +257,7 @@
           "has_cross_language_dependencies": true,
           "parallel_buildable_component_count": 25
         },
-        "normalized_score": 100.0
+        "normalized_score": 89.1
       },
       "questions": {
         "total": 30,
@@ -268,53 +268,53 @@
         }
       },
       "results": {
-        "average_score_with_rig": 75.6,
-        "average_score_without_rig": 58.9,
-        "score_improvement": 16.7,
-        "score_improvement_relative": 28.4,
-        "average_time_with_rig_seconds": 150.21,
-        "average_time_without_rig_seconds": 289.84,
-        "time_saved_seconds": 139.63,
-        "time_reduction_percentage": 48.9,
-        "efficiency_improvement": 147.7,
+        "average_score_with_rig": 83.3,
+        "average_score_without_rig": 64.4,
+        "score_improvement": 18.9,
+        "score_improvement_relative": 29.3,
+        "average_time_with_rig_seconds": 109.0,
+        "average_time_without_rig_seconds": 258.0,
+        "time_saved_seconds": 149.0,
+        "time_reduction_percentage": 57.8,
+        "efficiency_improvement": 206.2,
         "by_agent": {
           "claude": {
-            "score_with_rig": 76.7,
-            "score_without_rig": 46.7,
-            "score_improvement": 30.0,
-            "time_with_rig": 276.7,
-            "time_without_rig": 356.92,
-            "time_saved": 80.22,
-            "time_reduction_percentage": 22.5
+            "score_with_rig": 86.7,
+            "score_without_rig": 63.3,
+            "score_improvement": 23.3,
+            "time_with_rig": 96.0,
+            "time_without_rig": 293.0,
+            "time_saved": 197.0,
+            "time_reduction_percentage": 67.2
           },
           "codex": {
             "score_with_rig": 80.0,
-            "score_without_rig": 70.0,
-            "score_improvement": 10.0,
-            "time_with_rig": 140.0,
-            "time_without_rig": 434.58,
-            "time_saved": 294.58,
-            "time_reduction_percentage": 67.8
+            "score_without_rig": 66.7,
+            "score_improvement": 13.3,
+            "time_with_rig": 187.0,
+            "time_without_rig": 383.0,
+            "time_saved": 196.0,
+            "time_reduction_percentage": 51.2
           },
           "cursor": {
-            "score_with_rig": 70.0,
-            "score_without_rig": 60.0,
-            "score_improvement": 10.0,
-            "time_with_rig": 33.93,
-            "time_without_rig": 78.03,
-            "time_saved": 44.1,
-            "time_reduction_percentage": 56.5
+            "score_with_rig": 83.3,
+            "score_without_rig": 63.3,
+            "score_improvement": 20.0,
+            "time_with_rig": 44.0,
+            "time_without_rig": 98.0,
+            "time_saved": 54.0,
+            "time_reduction_percentage": 55.1
           }
         },
         "by_difficulty": {
           "easy": {
-            "avg_improvement": 10.0
+            "avg_improvement": 6.7
           },
           "medium": {
-            "avg_improvement": 33.3
+            "avg_improvement": 40.0
           },
           "hard": {
-            "avg_improvement": 6.7
+            "avg_improvement": 10.0
           }
         },
         "by_category": {
@@ -324,24 +324,24 @@
             "improvement": 0.0
           },
           "source_analysis": {
-            "avg_with_rig": 60.0,
-            "avg_without_rig": 26.7,
-            "improvement": 33.3
+            "avg_with_rig": 80.0,
+            "avg_without_rig": 33.3,
+            "improvement": 46.7
           },
           "testing": {
             "avg_with_rig": 100.0,
-            "avg_without_rig": 66.7,
-            "improvement": 33.3
+            "avg_without_rig": 83.3,
+            "improvement": 16.7
           },
           "aggregator_structure": {
             "avg_with_rig": 100.0,
-            "avg_without_rig": 91.7,
-            "improvement": 8.3
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
           },
           "dependency_analysis": {
-            "avg_with_rig": 56.7,
-            "avg_without_rig": 33.3,
-            "improvement": 23.3
+            "avg_with_rig": 70.0,
+            "avg_without_rig": 40.0,
+            "improvement": 30.0
           },
           "component_identification": {
             "avg_with_rig": 50.0,
@@ -355,159 +355,806 @@
           }
         }
       }
+    },
+    {
+      "name": "go",
+      "path": "deterministic\\go\\microservices",
+      "complexity": {
+        "score": 120,
+        "level": "MEDIUM",
+        "metrics": {
+          "component_count": 8,
+          "programming_language_count": 4,
+          "programming_languages": [
+            "go",
+            "go,c",
+            "java",
+            "scala"
+          ],
+          "external_package_count": 11,
+          "test_count": 34,
+          "max_dependency_depth": 2,
+          "aggregator_count": 0,
+          "has_cross_language_dependencies": true,
+          "parallel_buildable_component_count": 6
+        },
+        "normalized_score": 46.7
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 93.3,
+        "average_score_without_rig": 74.4,
+        "score_improvement": 18.9,
+        "score_improvement_relative": 25.4,
+        "average_time_with_rig_seconds": 82.33,
+        "average_time_without_rig_seconds": 230.0,
+        "time_saved_seconds": 147.67,
+        "time_reduction_percentage": 50.2,
+        "efficiency_improvement": 250.3,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 80.0,
+            "score_improvement": 16.7,
+            "time_with_rig": 107.0,
+            "time_without_rig": 270.0,
+            "time_saved": 163.0,
+            "time_reduction_percentage": 60.4
+          },
+          "codex": {
+            "score_with_rig": 93.3,
+            "score_without_rig": 73.3,
+            "score_improvement": 20.0,
+            "time_with_rig": 110.0,
+            "time_without_rig": 383.0,
+            "time_saved": 273.0,
+            "time_reduction_percentage": 71.3
+          },
+          "cursor": {
+            "score_with_rig": 90.0,
+            "score_without_rig": 70.0,
+            "score_improvement": 20.0,
+            "time_with_rig": 30.0,
+            "time_without_rig": 37.0,
+            "time_saved": 7.0,
+            "time_reduction_percentage": 18.9
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 0.0
+          },
+          "medium": {
+            "avg_improvement": 40.0
+          },
+          "hard": {
+            "avg_improvement": 16.7
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 66.7,
+            "avg_without_rig": 88.9,
+            "improvement": -22.2
+          },
+          "source_analysis": {
+            "avg_with_rig": 91.7,
+            "avg_without_rig": 83.3,
+            "improvement": 8.3
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 95.6,
+            "avg_without_rig": 77.8,
+            "improvement": 17.8
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "component_identification": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 52.4,
+            "improvement": 47.6
+          }
+        }
+      }
+    },
+    {
+      "name": "maven",
+      "path": "deterministic\\maven",
+      "complexity": {
+        "score": 100,
+        "level": "MEDIUM",
+        "metrics": {
+          "component_count": 10,
+          "programming_language_count": 1,
+          "programming_languages": [
+            "java"
+          ],
+          "external_package_count": 10,
+          "test_count": 10,
+          "max_dependency_depth": 5,
+          "aggregator_count": 0,
+          "has_cross_language_dependencies": false,
+          "parallel_buildable_component_count": 1
+        },
+        "normalized_score": 38.9
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 96.7,
+        "average_score_without_rig": 91.1,
+        "score_improvement": 5.5,
+        "score_improvement_relative": 6.1,
+        "average_time_with_rig_seconds": 67.67,
+        "average_time_without_rig_seconds": 104.67,
+        "time_saved_seconds": 37.0,
+        "time_reduction_percentage": 38.2,
+        "efficiency_improvement": 64.2,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 93.3,
+            "score_improvement": 3.3,
+            "time_with_rig": 94.0,
+            "time_without_rig": 127.0,
+            "time_saved": 33.0,
+            "time_reduction_percentage": 26.0
+          },
+          "codex": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 96.7,
+            "score_improvement": 0.0,
+            "time_with_rig": 91.0,
+            "time_without_rig": 152.0,
+            "time_saved": 61.0,
+            "time_reduction_percentage": 40.1
+          },
+          "cursor": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 83.3,
+            "score_improvement": 13.3,
+            "time_with_rig": 18.0,
+            "time_without_rig": 35.0,
+            "time_saved": 17.0,
+            "time_reduction_percentage": 48.6
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 0.0
+          },
+          "medium": {
+            "avg_improvement": 16.7
+          },
+          "hard": {
+            "avg_improvement": 0.0
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "component_identification": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 93.3,
+            "improvement": 6.7
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 92.9,
+            "avg_without_rig": 92.9,
+            "improvement": 0.0
+          },
+          "source_analysis": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 66.7,
+            "improvement": 33.3
+          }
+        }
+      }
+    },
+    {
+      "name": "meson",
+      "path": "deterministic\\meson\\embedded_system",
+      "complexity": {
+        "score": 81,
+        "level": "MEDIUM",
+        "metrics": {
+          "component_count": 6,
+          "programming_language_count": 2,
+          "programming_languages": [
+            "c",
+            "cpp"
+          ],
+          "external_package_count": 6,
+          "test_count": 2,
+          "max_dependency_depth": 2,
+          "aggregator_count": 0,
+          "has_cross_language_dependencies": true,
+          "parallel_buildable_component_count": 1
+        },
+        "normalized_score": 31.5
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 94.4,
+        "average_score_without_rig": 85.6,
+        "score_improvement": 8.9,
+        "score_improvement_relative": 10.3,
+        "average_time_with_rig_seconds": 73.33,
+        "average_time_without_rig_seconds": 170.33,
+        "time_saved_seconds": 97.0,
+        "time_reduction_percentage": 46.6,
+        "efficiency_improvement": 156.2,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 76.7,
+            "score_improvement": 20.0,
+            "time_with_rig": 79.0,
+            "time_without_rig": 270.0,
+            "time_saved": 191.0,
+            "time_reduction_percentage": 70.7
+          },
+          "codex": {
+            "score_with_rig": 93.3,
+            "score_without_rig": 90.0,
+            "score_improvement": 3.3,
+            "time_with_rig": 124.0,
+            "time_without_rig": 218.0,
+            "time_saved": 94.0,
+            "time_reduction_percentage": 43.1
+          },
+          "cursor": {
+            "score_with_rig": 93.3,
+            "score_without_rig": 90.0,
+            "score_improvement": 3.3,
+            "time_with_rig": 17.0,
+            "time_without_rig": 23.0,
+            "time_saved": 6.0,
+            "time_reduction_percentage": 26.1
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 0.0
+          },
+          "medium": {
+            "avg_improvement": 6.7
+          },
+          "hard": {
+            "avg_improvement": 20.0
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 85.7,
+            "avg_without_rig": 85.7,
+            "improvement": 0.0
+          },
+          "source_analysis": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 75.0,
+            "improvement": 25.0
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 91.7,
+            "improvement": 8.3
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 91.7,
+            "avg_without_rig": 79.2,
+            "improvement": 12.5
+          },
+          "component_identification": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 95.2,
+            "improvement": 4.8
+          }
+        }
+      }
+    },
+    {
+      "name": "npm",
+      "path": "deterministic\\npm",
+      "complexity": {
+        "score": 257,
+        "level": "HIGH",
+        "metrics": {
+          "component_count": 22,
+          "programming_language_count": 4,
+          "programming_languages": [
+            "go",
+            "python",
+            "rust",
+            "typescript"
+          ],
+          "external_package_count": 22,
+          "test_count": 2,
+          "max_dependency_depth": 4,
+          "aggregator_count": 12,
+          "has_cross_language_dependencies": true,
+          "parallel_buildable_component_count": 5
+        },
+        "normalized_score": 100.0
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 77.8,
+        "average_score_without_rig": 50.0,
+        "score_improvement": 27.8,
+        "score_improvement_relative": 55.6,
+        "average_time_with_rig_seconds": 114.0,
+        "average_time_without_rig_seconds": 440.0,
+        "time_saved_seconds": 326.0,
+        "time_reduction_percentage": 49.7,
+        "efficiency_improvement": 500.6,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 80.0,
+            "score_without_rig": 43.3,
+            "score_improvement": 36.7,
+            "time_with_rig": 111.0,
+            "time_without_rig": 246.0,
+            "time_saved": 135.0,
+            "time_reduction_percentage": 54.9
+          },
+          "codex": {
+            "score_with_rig": 80.0,
+            "score_without_rig": 63.3,
+            "score_improvement": 16.7,
+            "time_with_rig": 190.0,
+            "time_without_rig": 1027.0,
+            "time_saved": 837.0,
+            "time_reduction_percentage": 81.5
+          },
+          "cursor": {
+            "score_with_rig": 73.3,
+            "score_without_rig": 43.3,
+            "score_improvement": 30.0,
+            "time_with_rig": 41.0,
+            "time_without_rig": 47.0,
+            "time_saved": 6.0,
+            "time_reduction_percentage": 12.8
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 6.7
+          },
+          "medium": {
+            "avg_improvement": 36.7
+          },
+          "hard": {
+            "avg_improvement": 40.0
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "source_analysis": {
+            "avg_with_rig": 86.7,
+            "avg_without_rig": 66.7,
+            "improvement": 20.0
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 66.7,
+            "improvement": 33.3
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 64.7,
+            "avg_without_rig": 37.3,
+            "improvement": 27.5
+          },
+          "component_identification": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 33.3,
+            "improvement": 66.7
+          }
+        }
+      }
+    },
+    {
+      "name": "cargo",
+      "path": "deterministic\\cargo\\rholang",
+      "complexity": {
+        "score": 221,
+        "level": "HIGH",
+        "metrics": {
+          "component_count": 21,
+          "programming_language_count": 1,
+          "programming_languages": [
+            "rust"
+          ],
+          "external_package_count": 27,
+          "test_count": 4,
+          "max_dependency_depth": 11,
+          "aggregator_count": 0,
+          "has_cross_language_dependencies": false,
+          "parallel_buildable_component_count": 3
+        },
+        "normalized_score": 86.0
+      },
+      "questions": {
+        "total": 30,
+        "by_difficulty": {
+          "easy": 10,
+          "medium": 10,
+          "hard": 10
+        }
+      },
+      "results": {
+        "average_score_with_rig": 97.8,
+        "average_score_without_rig": 87.8,
+        "score_improvement": 10.0,
+        "score_improvement_relative": 11.4,
+        "average_time_with_rig_seconds": 100.0,
+        "average_time_without_rig_seconds": 251.33,
+        "time_saved_seconds": 151.33,
+        "time_reduction_percentage": 60.4,
+        "efficiency_improvement": 180.0,
+        "by_agent": {
+          "claude": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 86.7,
+            "score_improvement": 10.0,
+            "time_with_rig": 108.0,
+            "time_without_rig": 206.0,
+            "time_saved": 98.0,
+            "time_reduction_percentage": 47.6
+          },
+          "codex": {
+            "score_with_rig": 96.7,
+            "score_without_rig": 93.3,
+            "score_improvement": 3.3,
+            "time_with_rig": 147.0,
+            "time_without_rig": 393.0,
+            "time_saved": 246.0,
+            "time_reduction_percentage": 62.6
+          },
+          "cursor": {
+            "score_with_rig": 100.0,
+            "score_without_rig": 83.3,
+            "score_improvement": 16.7,
+            "time_with_rig": 45.0,
+            "time_without_rig": 155.0,
+            "time_saved": 110.0,
+            "time_reduction_percentage": 71.0
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "avg_improvement": 0.0
+          },
+          "medium": {
+            "avg_improvement": 10.0
+          },
+          "hard": {
+            "avg_improvement": 20.0
+          }
+        },
+        "by_category": {
+          "build_system": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "component_identification": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "source_analysis": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 88.9,
+            "improvement": 11.1
+          },
+          "dependency_analysis": {
+            "avg_with_rig": 93.9,
+            "avg_without_rig": 78.8,
+            "improvement": 15.2
+          },
+          "testing": {
+            "avg_with_rig": 100.0,
+            "avg_without_rig": 0.0,
+            "improvement": 100.0
+          }
+        }
+      }
     }
   ],
   "aggregate_analysis": {
     "overall": {
-      "total_questions": 90,
-      "avg_score_with_rig": 90.4,
-      "avg_score_without_rig": 81.9,
-      "avg_score_improvement": 8.5,
-      "avg_time_with_rig": 91.86,
-      "avg_time_without_rig": 180.05,
-      "avg_time_reduction_percentage": 49.0,
-      "total_time_saved_seconds": 264.58
+      "total_questions": 240,
+      "avg_score_with_rig": 92.8,
+      "avg_score_without_rig": 80.0,
+      "avg_score_improvement": 12.8,
+      "avg_time_with_rig": 79.71,
+      "avg_time_without_rig": 204.12,
+      "avg_time_reduction_percentage": 61.0,
+      "total_time_saved_seconds": 995.34
     },
     "by_agent": {
       "claude": {
-        "avg_score_with_rig": 91.1,
-        "avg_score_without_rig": 77.8,
-        "avg_score_improvement": 13.3,
-        "avg_time_with_rig": 134.2,
-        "avg_time_without_rig": 225.93,
-        "avg_time_reduction_percentage": 40.6,
-        "performance_by_complexity": [
-          {
-            "complexity_score": 22,
-            "score_improvement": 3.3,
-            "time_reduction": 22.2
-          },
-          {
-            "complexity_score": 74,
-            "score_improvement": 6.7,
-            "time_reduction": 68.6
-          },
-          {
-            "complexity_score": 229,
-            "score_improvement": 30.0,
-            "time_reduction": 22.5
-          }
-        ]
-      },
-      "codex": {
-        "avg_score_with_rig": 92.2,
-        "avg_score_without_rig": 87.8,
-        "avg_score_improvement": 4.4,
-        "avg_time_with_rig": 114.14,
-        "avg_time_without_rig": 266.6,
-        "avg_time_reduction_percentage": 57.2,
+        "avg_score_with_rig": 94.2,
+        "avg_score_without_rig": 79.2,
+        "avg_score_improvement": 15.0,
+        "avg_time_with_rig": 89.88,
+        "avg_time_without_rig": 199.5,
+        "avg_time_reduction_percentage": 54.9,
         "performance_by_complexity": [
           {
             "complexity_score": 22,
             "score_improvement": 0.0,
-            "time_reduction": -16.2
+            "time_reduction": 4.2
           },
           {
             "complexity_score": 74,
-            "score_improvement": 3.3,
-            "time_reduction": 60.3
+            "score_improvement": 10.0,
+            "time_reduction": 50.4
           },
           {
             "complexity_score": 229,
+            "score_improvement": 23.3,
+            "time_reduction": 67.2
+          },
+          {
+            "complexity_score": 120,
+            "score_improvement": 16.7,
+            "time_reduction": 60.4
+          },
+          {
+            "complexity_score": 100,
+            "score_improvement": 3.3,
+            "time_reduction": 26.0
+          },
+          {
+            "complexity_score": 81,
+            "score_improvement": 20.0,
+            "time_reduction": 70.7
+          },
+          {
+            "complexity_score": 257,
+            "score_improvement": 36.7,
+            "time_reduction": 54.9
+          },
+          {
+            "complexity_score": 221,
             "score_improvement": 10.0,
-            "time_reduction": 67.8
+            "time_reduction": 47.6
+          }
+        ]
+      },
+      "codex": {
+        "avg_score_with_rig": 92.5,
+        "avg_score_without_rig": 84.2,
+        "avg_score_improvement": 8.3,
+        "avg_time_with_rig": 120.75,
+        "avg_time_without_rig": 357.75,
+        "avg_time_reduction_percentage": 66.2,
+        "performance_by_complexity": [
+          {
+            "complexity_score": 22,
+            "score_improvement": 0.0,
+            "time_reduction": 32.9
+          },
+          {
+            "complexity_score": 74,
+            "score_improvement": 10.0,
+            "time_reduction": 71.8
+          },
+          {
+            "complexity_score": 229,
+            "score_improvement": 13.3,
+            "time_reduction": 51.2
+          },
+          {
+            "complexity_score": 120,
+            "score_improvement": 20.0,
+            "time_reduction": 71.3
+          },
+          {
+            "complexity_score": 100,
+            "score_improvement": 0.0,
+            "time_reduction": 40.1
+          },
+          {
+            "complexity_score": 81,
+            "score_improvement": 3.3,
+            "time_reduction": 43.1
+          },
+          {
+            "complexity_score": 257,
+            "score_improvement": 16.7,
+            "time_reduction": 81.5
+          },
+          {
+            "complexity_score": 221,
+            "score_improvement": 3.3,
+            "time_reduction": 62.6
           }
         ]
       },
       "cursor": {
-        "avg_score_with_rig": 87.8,
-        "avg_score_without_rig": 80.0,
-        "avg_score_improvement": 7.8,
-        "avg_time_with_rig": 27.24,
-        "avg_time_without_rig": 47.63,
-        "avg_time_reduction_percentage": 42.8,
+        "avg_score_with_rig": 91.7,
+        "avg_score_without_rig": 76.7,
+        "avg_score_improvement": 15.0,
+        "avg_time_with_rig": 28.5,
+        "avg_time_without_rig": 55.12,
+        "avg_time_reduction_percentage": 48.3,
         "performance_by_complexity": [
           {
             "complexity_score": 22,
             "score_improvement": 3.3,
-            "time_reduction": 8.2
+            "time_reduction": 33.3
           },
           {
             "complexity_score": 74,
-            "score_improvement": 10.0,
-            "time_reduction": 37.6
+            "score_improvement": 13.3,
+            "time_reduction": 25.0
           },
           {
             "complexity_score": 229,
-            "score_improvement": 10.0,
-            "time_reduction": 56.5
+            "score_improvement": 20.0,
+            "time_reduction": 55.1
+          },
+          {
+            "complexity_score": 120,
+            "score_improvement": 20.0,
+            "time_reduction": 18.9
+          },
+          {
+            "complexity_score": 100,
+            "score_improvement": 13.3,
+            "time_reduction": 48.6
+          },
+          {
+            "complexity_score": 81,
+            "score_improvement": 3.3,
+            "time_reduction": 26.1
+          },
+          {
+            "complexity_score": 257,
+            "score_improvement": 30.0,
+            "time_reduction": 12.8
+          },
+          {
+            "complexity_score": 221,
+            "score_improvement": 16.7,
+            "time_reduction": 71.0
           }
         ]
       }
     },
     "by_difficulty": {
       "easy": {
-        "avg_improvement": 4.4,
-        "question_count": 30
+        "avg_improvement": 1.7,
+        "question_count": 80
       },
       "medium": {
-        "avg_improvement": 12.2,
-        "question_count": 30
+        "avg_improvement": 20.0,
+        "question_count": 80
       },
       "hard": {
-        "avg_improvement": 8.9,
-        "question_count": 30
+        "avg_improvement": 16.7,
+        "question_count": 80
       }
     },
     "by_category": {
       "build_system": {
-        "avg_improvement": 0.0,
-        "avg_with_rig": 100.0,
-        "avg_without_rig": 100.0,
+        "avg_improvement": -2.8,
+        "avg_with_rig": 94.0,
+        "avg_without_rig": 96.8,
         "per_repo": {
-          "cmake_hello_world": 0.0,
-          "jni_hello_world": 0.0,
-          "metaffi": 0.0
+          "hello_world": 0.0,
+          "jni": 0.0,
+          "metaffi": 0.0,
+          "go": -22.2,
+          "maven": 0.0,
+          "meson": 0.0,
+          "npm": 0.0,
+          "cargo": 0.0
         }
       },
       "source_analysis": {
-        "avg_improvement": 14.6,
-        "avg_with_rig": 84.8,
-        "avg_without_rig": 70.3,
+        "avg_improvement": 18.1,
+        "avg_with_rig": 94.8,
+        "avg_without_rig": 76.7,
         "per_repo": {
-          "cmake_hello_world": 5.6,
-          "jni_hello_world": 4.8,
-          "metaffi": 33.3
+          "hello_world": 0.0,
+          "jni": 0.0,
+          "metaffi": 46.7,
+          "go": 8.3,
+          "maven": 33.3,
+          "meson": 25.0,
+          "npm": 20.0,
+          "cargo": 11.1
         }
       },
       "testing": {
-        "avg_improvement": 20.0,
+        "avg_improvement": 22.3,
         "avg_with_rig": 100.0,
-        "avg_without_rig": 80.0,
+        "avg_without_rig": 77.7,
         "per_repo": {
-          "cmake_hello_world": 6.7,
-          "jni_hello_world": 20.0,
-          "metaffi": 33.3
+          "hello_world": 0.0,
+          "jni": 20.0,
+          "metaffi": 16.7,
+          "go": 0.0,
+          "maven": 0.0,
+          "meson": 8.3,
+          "npm": 33.3,
+          "cargo": 100.0
         }
       },
       "dependency_analysis": {
-        "avg_improvement": 10.2,
-        "avg_with_rig": 83.1,
-        "avg_without_rig": 72.8,
+        "avg_improvement": 15.2,
+        "avg_with_rig": 88.1,
+        "avg_without_rig": 73.0,
         "per_repo": {
-          "cmake_hello_world": 0.0,
-          "jni_hello_world": 7.4,
-          "metaffi": 23.3
+          "hello_world": 3.7,
+          "jni": 14.8,
+          "metaffi": 30.0,
+          "go": 17.8,
+          "maven": 0.0,
+          "meson": 12.5,
+          "npm": 27.5,
+          "cargo": 15.2
         }
       },
       "component_identification": {
-        "avg_improvement": 0.0,
-        "avg_with_rig": 81.1,
-        "avg_without_rig": 81.1,
+        "avg_improvement": 18.2,
+        "avg_with_rig": 93.8,
+        "avg_without_rig": 75.5,
         "per_repo": {
-          "cmake_hello_world": 0.0,
-          "jni_hello_world": 0.0,
-          "metaffi": 0.0
+          "hello_world": 0.0,
+          "jni": 20.0,
+          "metaffi": 0.0,
+          "go": 47.6,
+          "maven": 6.7,
+          "meson": 4.8,
+          "npm": 66.7,
+          "cargo": 0.0
         }
       }
     },
@@ -515,46 +1162,96 @@
       "complexity_vs_rig_benefit": {
         "description": "How repository complexity correlates with RIG improvement",
         "score_correlation": {
-          "r_squared": 0.996,
-          "interpretation": "Strong positive correlation",
-          "conclusion": "Higher complexity leads to greater score improvement",
+          "r_squared": 0.587,
+          "interpretation": "Moderate positive correlation",
+          "conclusion": "Some correlation between complexity and improvement",
           "data_points": [
             {
-              "repo": "cmake_hello_world",
-              "complexity": 9.6,
-              "score_improvement": 2.2
+              "repo": "hello_world",
+              "complexity": 8.6,
+              "score_improvement": 1.1
             },
             {
-              "repo": "jni_hello_world",
-              "complexity": 32.3,
-              "score_improvement": 6.7
+              "repo": "jni",
+              "complexity": 28.8,
+              "score_improvement": 11.1
             },
             {
               "repo": "metaffi",
+              "complexity": 89.1,
+              "score_improvement": 18.9
+            },
+            {
+              "repo": "go",
+              "complexity": 46.7,
+              "score_improvement": 18.9
+            },
+            {
+              "repo": "maven",
+              "complexity": 38.9,
+              "score_improvement": 5.5
+            },
+            {
+              "repo": "meson",
+              "complexity": 31.5,
+              "score_improvement": 8.9
+            },
+            {
+              "repo": "npm",
               "complexity": 100.0,
-              "score_improvement": 16.7
+              "score_improvement": 27.8
+            },
+            {
+              "repo": "cargo",
+              "complexity": 86.0,
+              "score_improvement": 10.0
             }
           ]
         },
         "time_correlation": {
-          "r_squared": 0.364,
-          "interpretation": "Weak correlation",
+          "r_squared": 0.573,
+          "interpretation": "Moderate positive correlation",
           "conclusion": "Some correlation between complexity and time savings",
           "data_points": [
             {
-              "repo": "cmake_hello_world",
-              "complexity": 9.6,
-              "time_reduction": 4.7
+              "repo": "hello_world",
+              "complexity": 8.6,
+              "time_reduction": 23.5
             },
             {
-              "repo": "jni_hello_world",
-              "complexity": 32.3,
-              "time_reduction": 55.5
+              "repo": "jni",
+              "complexity": 28.8,
+              "time_reduction": 49.1
             },
             {
               "repo": "metaffi",
+              "complexity": 89.1,
+              "time_reduction": 57.8
+            },
+            {
+              "repo": "go",
+              "complexity": 46.7,
+              "time_reduction": 50.2
+            },
+            {
+              "repo": "maven",
+              "complexity": 38.9,
+              "time_reduction": 38.2
+            },
+            {
+              "repo": "meson",
+              "complexity": 31.5,
+              "time_reduction": 46.6
+            },
+            {
+              "repo": "npm",
               "complexity": 100.0,
-              "time_reduction": 48.9
+              "time_reduction": 49.7
+            },
+            {
+              "repo": "cargo",
+              "complexity": 86.0,
+              "time_reduction": 60.4
             }
           ]
         }
@@ -562,12 +1259,12 @@
     },
     "insights": {
       "key_findings": [
-        "RIG provides 8.5% average score improvement across all repositories",
-        "RIG saves 49.0% time on average (88.2 seconds per repository)",
-        "RIG benefit scales with repository complexity (r²=1.00)",
-        "Complex projects (metaffi) see 16.7% improvement vs 2.2% for simple projects (cmake_hello_world)",
-        "Medium questions benefit most from RIG (12.2% improvement)",
-        "Claude shows highest improvement (13.3%) but started from lowest baseline (77.8%)",
+        "RIG provides 12.8% average score improvement across all repositories",
+        "RIG saves 61.0% time on average (124.4 seconds per repository)",
+        "RIG benefit scales with repository complexity (r²=0.59)",
+        "Complex projects (npm) see 27.8% improvement vs 1.1% for simple projects (hello_world)",
+        "Medium questions benefit most from RIG (20.0% improvement)",
+        "Claude shows highest improvement (15.0%) but started from lowest baseline (79.2%)",
         "Time savings alone justify RIG usage, even with minimal score gains"
       ],
       "recommendations": [
@@ -577,5 +1274,132 @@
         "Significant time savings make RIG essential for developer productivity"
       ]
     }
+  },
+  "time_accuracy_analysis": {
+    "efficiency_table": [
+      {
+        "agent": "cursor",
+        "time_norig_seconds": 55.12,
+        "time_rig_seconds": 28.5,
+        "score_norig": 76.7,
+        "score_rig": 91.7,
+        "efficiency_norig": 1.3915,
+        "efficiency_rig": 3.2175,
+        "efficiency_improvement_pct": 131.2
+      },
+      {
+        "agent": "claude",
+        "time_norig_seconds": 199.5,
+        "time_rig_seconds": 89.88,
+        "score_norig": 79.2,
+        "score_rig": 94.2,
+        "efficiency_norig": 0.397,
+        "efficiency_rig": 1.0481,
+        "efficiency_improvement_pct": 164.0
+      },
+      {
+        "agent": "codex",
+        "time_norig_seconds": 357.75,
+        "time_rig_seconds": 120.75,
+        "score_norig": 84.2,
+        "score_rig": 92.5,
+        "efficiency_norig": 0.2354,
+        "efficiency_rig": 0.766,
+        "efficiency_improvement_pct": 225.5
+      }
+    ],
+    "time_score_correlation": {
+      "per_repository": {
+        "hello_world": {
+          "pearson_r": 0.551,
+          "p_value": 0.2567,
+          "interpretation": "moderate_positive"
+        },
+        "jni": {
+          "pearson_r": -0.212,
+          "p_value": 0.6873,
+          "interpretation": "weak_negative"
+        },
+        "metaffi": {
+          "pearson_r": -0.587,
+          "p_value": 0.2206,
+          "interpretation": "moderate_negative"
+        },
+        "go": {
+          "pearson_r": -0.389,
+          "p_value": 0.4459,
+          "interpretation": "moderate_negative"
+        },
+        "maven": {
+          "pearson_r": 0.394,
+          "p_value": 0.4393,
+          "interpretation": "moderate_positive"
+        },
+        "meson": {
+          "pearson_r": -0.717,
+          "p_value": 0.1086,
+          "interpretation": "strong_negative"
+        },
+        "npm": {
+          "pearson_r": -0.043,
+          "p_value": 0.9362,
+          "interpretation": "weak_negative"
+        },
+        "cargo": {
+          "pearson_r": -0.31,
+          "p_value": 0.5502,
+          "interpretation": "moderate_negative"
+        }
+      },
+      "aggregate": {
+        "pearson_r": -0.408,
+        "p_value": 0.004,
+        "interpretation": "moderate_negative"
+      }
+    },
+    "scatter_plot_data": [
+      {
+        "agent": "claude",
+        "mode": "NORIG",
+        "time_seconds": 199.5,
+        "score": 79.2,
+        "efficiency": 0.397
+      },
+      {
+        "agent": "claude",
+        "mode": "RIG",
+        "time_seconds": 89.88,
+        "score": 94.2,
+        "efficiency": 1.0481
+      },
+      {
+        "agent": "codex",
+        "mode": "NORIG",
+        "time_seconds": 357.75,
+        "score": 84.2,
+        "efficiency": 0.2354
+      },
+      {
+        "agent": "codex",
+        "mode": "RIG",
+        "time_seconds": 120.75,
+        "score": 92.5,
+        "efficiency": 0.766
+      },
+      {
+        "agent": "cursor",
+        "mode": "NORIG",
+        "time_seconds": 55.12,
+        "score": 76.7,
+        "efficiency": 1.3915
+      },
+      {
+        "agent": "cursor",
+        "mode": "RIG",
+        "time_seconds": 28.5,
+        "score": 91.7,
+        "efficiency": 3.2175
+      }
+    ]
   }
 }

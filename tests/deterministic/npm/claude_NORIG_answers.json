@@ -1,0 +1,261 @@
+{
+  "agent_completion_time_seconds": 246.0,
+  "answers": [
+    {
+      "id": 1,
+      "answer": "npm-complex-monorepo"
+    },
+    {
+      "id": 2,
+      "answer": 7
+    },
+    {
+      "id": 3,
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "answer": 4
+    },
+    {
+      "id": 6,
+      "answer": "modules/wasm-module/src/lib.rs"
+    },
+    {
+      "id": 7,
+      "answer": "modules/native-addon/main.go"
+    },
+    {
+      "id": 8,
+      "answer": "modules/python-bridge/bridge.py"
+    },
+    {
+      "id": 9,
+      "answer": 3
+    },
+    {
+      "id": 10,
+      "answer": 22
+    },
+    {
+      "id": 11,
+      "answer": 22
+    },
+    {
+      "id": 12,
+      "answer": [
+        "@monorepo/admin-portal",
+        "@monorepo/analytics",
+        "@monorepo/api-client",
+        "@monorepo/api-server",
+        "@monorepo/auth-lib",
+        "@monorepo/auth-service",
+        "@monorepo/build-aggregator",
+        "@monorepo/config",
+        "@monorepo/data-access",
+        "@monorepo/data-models",
+        "@monorepo/data-processor",
+        "@monorepo/logging-lib",
+        "@monorepo/metrics-lib",
+        "@monorepo/notification",
+        "@monorepo/shared-ui",
+        "@monorepo/utils",
+        "@monorepo/web-app"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": [
+        "@monorepo/api-server",
+        "@monorepo/data-processor",
+        "@monorepo/web-app"
+      ]
+    },
+    {
+      "id": 14,
+      "answer": [
+        "@monorepo/admin-portal",
+        "@monorepo/analytics",
+        "@monorepo/api-server"
+      ]
+    },
+    {
+      "id": 15,
+      "answer": []
+    },
+    {
+      "id": 16,
+      "answer": 4
+    },
+    {
+      "id": 17,
+      "answer": "yes"
+    },
+    {
+      "id": 18,
+      "answer": [
+        "@monorepo/api-client",
+        "@monorepo/auth-lib",
+        "@monorepo/auth-service",
+        "@monorepo/core",
+        "@monorepo/data-models",
+        "@monorepo/data-processor",
+        "@monorepo/shared-ui",
+        "@monorepo/utils",
+        "@monorepo/wasm-module"
+      ]
+    },
+    {
+      "id": 19,
+      "answer": [
+        "@monorepo/analytics",
+        "@monorepo/auth-lib",
+        "@monorepo/auth-service",
+        "@monorepo/core",
+        "@monorepo/data-access",
+        "@monorepo/data-models",
+        "@monorepo/data-processor",
+        "@monorepo/metrics-lib",
+        "@monorepo/native-addon",
+        "@monorepo/notification",
+        "@monorepo/utils",
+        "@monorepo/wasm-module"
+      ]
+    },
+    {
+      "id": 20,
+      "answer": [
+        "@monorepo/admin-portal",
+        "@monorepo/shared-ui",
+        "@monorepo/web-app"
+      ]
+    },
+    {
+      "id": 21,
+      "answer": [
+        "@monorepo/codegen",
+        "@monorepo/core",
+        "@monorepo/native-addon",
+        "@monorepo/python-bridge",
+        "@monorepo/wasm-module",
+        "@monorepo/build-aggregator",
+        "@monorepo/data-models",
+        "@monorepo/logging-lib",
+        "@monorepo/shared-ui",
+        "@monorepo/utils",
+        "@monorepo/api-client",
+        "@monorepo/auth-lib",
+        "@monorepo/config",
+        "@monorepo/data-access",
+        "@monorepo/data-processor",
+        "@monorepo/metrics-lib",
+        "@monorepo/notification",
+        "@monorepo/analytics",
+        "@monorepo/auth-service",
+        "@monorepo/admin-portal",
+        "@monorepo/api-server",
+        "@monorepo/web-app"
+      ]
+    },
+    {
+      "id": 22,
+      "answer": [
+        "@monorepo/admin-portal",
+        "@monorepo/analytics",
+        "@monorepo/api-client",
+        "@monorepo/api-server",
+        "@monorepo/auth-lib",
+        "@monorepo/auth-service",
+        "@monorepo/build-aggregator",
+        "@monorepo/config",
+        "@monorepo/data-access",
+        "@monorepo/data-models",
+        "@monorepo/data-processor",
+        "@monorepo/logging-lib",
+        "@monorepo/metrics-lib",
+        "@monorepo/notification",
+        "@monorepo/shared-ui",
+        "@monorepo/utils",
+        "@monorepo/web-app"
+      ]
+    },
+    {
+      "id": 23,
+      "answer": [
+        "@monorepo/api-server",
+        "@monorepo/data-processor",
+        "@monorepo/web-app"
+      ]
+    },
+    {
+      "id": 24,
+      "answer": "yes"
+    },
+    {
+      "id": 25,
+      "answer": "yes"
+    },
+    {
+      "id": 26,
+      "answer": [
+        "@monorepo/core",
+        "@monorepo/utils",
+        "@monorepo/metrics-lib",
+        "@monorepo/analytics",
+        "@monorepo/admin-portal"
+      ]
+    },
+    {
+      "id": 27,
+      "answer": [
+        "typescript-rust",
+        "typescript-go"
+      ]
+    },
+    {
+      "id": 28,
+      "answer": [
+        "jest",
+        "pytest"
+      ]
+    },
+    {
+      "id": 29,
+      "answer": [
+        "@monorepo/admin-portal",
+        "@monorepo/analytics",
+        "@monorepo/api-client",
+        "@monorepo/api-server",
+        "@monorepo/auth-lib",
+        "@monorepo/auth-service",
+        "@monorepo/build-aggregator",
+        "@monorepo/config",
+        "@monorepo/core",
+        "@monorepo/data-access",
+        "@monorepo/data-models",
+        "@monorepo/data-processor",
+        "@monorepo/logging-lib",
+        "@monorepo/metrics-lib",
+        "@monorepo/notification",
+        "@monorepo/shared-ui",
+        "@monorepo/utils",
+        "@monorepo/web-app"
+      ]
+    },
+    {
+      "id": 30,
+      "answer": [
+        "library",
+        "service",
+        "application",
+        "native-module",
+        "tool",
+        "aggregator"
+      ]
+    }
+  ]
+}

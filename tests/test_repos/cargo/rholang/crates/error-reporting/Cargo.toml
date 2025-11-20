@@ -1,0 +1,9 @@
+[package]
+name = "error-reporting"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+codespan-reporting.workspace = true
+ariadne.workspace = true
+thiserror.workspace = true

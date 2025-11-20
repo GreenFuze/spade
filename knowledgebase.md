@@ -216,7 +216,6 @@ print(f"Improvement: {results.improvement_percentage}%")
 - **`Test`** - Test definitions and relationships
 - **`Aggregator`** - Meta targets that group other targets
 - **`Runner`** - Custom targets that execute commands
-- **`Utility`** - Helper targets with no outputs
 - **`Evidence`** - Source location and context information
 
 ### Supporting Data

@@ -1,0 +1,156 @@
+{
+  "agent_completion_time_seconds": 155.0,
+  "answers": [
+    {
+      "id": 1,
+      "answer": 21
+    },
+    {
+      "id": 2,
+      "answer": "0.1.0"
+    },
+    {
+      "id": 3,
+      "answer": "2021"
+    },
+    {
+      "id": 4,
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "answer": 5
+    },
+    {
+      "id": 6,
+      "answer": "rholang-macros"
+    },
+    {
+      "id": 7,
+      "answer": "ffi-bridge"
+    },
+    {
+      "id": 8,
+      "answer": 1
+    },
+    {
+      "id": 9,
+      "answer": "rholang-cli"
+    },
+    {
+      "id": 10,
+      "answer": "ffi-bridge"
+    },
+    {
+      "id": 11,
+      "answer": [
+        "serde",
+        "serde_json"
+      ]
+    },
+    {
+      "id": 12,
+      "answer": [
+        "lexer",
+        "common-types",
+        "error-reporting"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": "both"
+    },
+    {
+      "id": 14,
+      "answer": 2
+    },
+    {
+      "id": 15,
+      "answer": [
+        "codegen-c",
+        "codegen-bytecode"
+      ]
+    },
+    {
+      "id": 16,
+      "answer": [
+        "codegen-bytecode",
+        "common-types"
+      ]
+    },
+    {
+      "id": 17,
+      "answer": [
+        "test",
+        "criterion"
+      ]
+    },
+    {
+      "id": 18,
+      "answer": "benchmark-suite"
+    },
+    {
+      "id": 19,
+      "answer": 0
+    },
+    {
+      "id": 20,
+      "answer": 27
+    },
+    {
+      "id": 21,
+      "answer": 10
+    },
+    {
+      "id": 22,
+      "answer": [
+        "common-types",
+        "error-reporting",
+        "rholang-macros"
+      ]
+    },
+    {
+      "id": 23,
+      "answer": 18
+    },
+    {
+      "id": 24,
+      "answer": "yes"
+    },
+    {
+      "id": 25,
+      "answer": [
+        "rholang-cli",
+        "repl",
+        "ffi-bridge",
+        "common-types"
+      ]
+    },
+    {
+      "id": 26,
+      "answer": "rholang.h"
+    },
+    {
+      "id": 27,
+      "answer": "yes"
+    },
+    {
+      "id": 28,
+      "answer": [
+        "ir-gen"
+      ]
+    },
+    {
+      "id": 29,
+      "answer": [
+        "syn",
+        "quote",
+        "proc-macro2"
+      ]
+    },
+    {
+      "id": 30,
+      "answer": 3
+    }
+  ]
+}

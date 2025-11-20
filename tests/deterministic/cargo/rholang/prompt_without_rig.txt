@@ -1,0 +1,65 @@
+You are an expert at analyzing code repositories and build systems.
+
+Please answer the following questions about this repository. Analyze the repository structure, build files, and source code to provide accurate answers.
+
+When answering questions, you should understand these common build system terms:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component generates an artifact from source files, or is the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps (e.g., "build-all" targets).
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Tests**: Test suites that use a component for testing or a runner that executes the test.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. How many crates are in the Cargo workspace? (Provide the count)
+2. What is the workspace version defined in the root Cargo.toml? (Provide the version string)
+3. What Rust edition is used in this workspace? (Provide the edition year)
+4. How many Tier 0 (foundation) crates are there? (Provide the count)
+5. How many executable (bin) crates are in this workspace? (Provide the count)
+6. What is the name of the procedural macro crate? (Provide the crate name)
+7. What is the name of the FFI bridge crate? (Provide the crate name)
+8. How many .c (C source) files are in the repository? (Provide the count)
+9. What is the name of the main compiler CLI executable crate? (Provide the crate name)
+10. Which crate has a build.rs build script? (Provide the crate name)
+11. What external crates does common-types depend on? (Provide a list)
+12. What workspace crates does parser directly depend on? (Provide a list of crate names)
+13. What type of library is ffi-bridge? (Answer 'static', 'shared', or 'both')
+14. How many code generation backend crates are there? (Provide the count)
+15. What are the names of the code generation backend crates? (Provide a list)
+16. What workspace crates does vm-runtime directly depend on? (Provide a list)
+17. What test frameworks are used in this repository? (Provide a list)
+18. What is the name of the benchmark suite crate? (Provide the crate name)
+19. How many aggregators are defined in this workspace? (Provide the count)
+20. How many unique external crates (from crates.io) are used across the workspace? (Provide the count)
+21. What is the maximum dependency depth in this repository? (Provide a number)
+22. Which crates must be built first (Tier 0, no workspace dependencies)? (Provide a list)
+23. If common-types fails to build, how many other crates would also fail? (Provide the count)
+24. Can codegen-c and codegen-bytecode be built in parallel? (Answer yes or no)
+25. What are the direct workspace dependencies of integration-tests? (Provide a list)
+26. What is the name of the C header file in the ffi-bridge crate? (Provide the filename)
+27. Does this repository have cross-language dependencies? (Answer yes or no)
+28. Which components are at dependency depth 5? (Provide a list)
+29. What external crates does rholang-macros depend on? (Provide a list)
+30. How many different programming languages are used in this repository? (Provide the count)
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

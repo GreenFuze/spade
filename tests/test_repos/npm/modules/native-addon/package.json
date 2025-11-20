@@ -1,0 +1,11 @@
+{
+  "name": "@monorepo/native-addon",
+  "version": "1.0.0",
+  "main": "build/Release/native_addon.node",
+  "scripts": {
+    "build": "node-gyp rebuild"
+  },
+  "dependencies": {
+    "node-gyp": "^10.0.0"
+  }
+}

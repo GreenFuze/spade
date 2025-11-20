@@ -1,0 +1,391 @@
+{
+  "repository_name": "go_microservices",
+  "build_system": "go",
+  "description": "Evaluation questions for go_microservices - Go microservices architecture with multiple services and shared libraries",
+  "questions": [
+    {
+      "id": 1,
+      "name": "module_name",
+      "category": "build_system",
+      "question": "What is the Go module name in go.mod? (Provide the module name)",
+      "expected_answer": "github.com/greenfuze/go-microservices",
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "name": "go_version",
+      "category": "build_system",
+      "question": "What Go version is specified in go.mod? (Provide the version number)",
+      "expected_answer": "1.21",
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "name": "service_count",
+      "category": "source_analysis",
+      "question": "How many executable services are in the cmd/ directory? (Provide the count)",
+      "expected_answer": 6,
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "name": "common_packages_count",
+      "category": "source_analysis",
+      "question": "How many packages with actual code used by the services are in the internal/common/ directory? (Provide the count)",
+      "expected_answer": 10,
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "name": "external_packages_count",
+      "category": "dependency_analysis",
+      "question": "How many external package dependencies are listed in go.mod? (Provide the count)",
+      "expected_answer": 12,
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "name": "test_files_count",
+      "category": "testing",
+      "question": "How many *_test.go files are in the repository? (Provide the count)",
+      "expected_answer": 10,
+      "difficulty": "easy"
+    },
+    {
+      "id": 7,
+      "name": "aggregator_count",
+      "category": "build_system",
+      "question": "How many aggregators are defined in the build system? (Provide the count)",
+      "expected_answer": 0,
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "name": "api_gateway_port",
+      "category": "source_analysis",
+      "question": "What is the default port for the API Gateway service? (Provide the port number)",
+      "expected_answer": "8080",
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "name": "auth_service_port",
+      "category": "source_analysis",
+      "question": "What is the default port for the Auth Service? (Provide the port number)",
+      "expected_answer": "8081",
+      "difficulty": "easy"
+    },
+    {
+      "id": 10,
+      "name": "web_framework",
+      "category": "dependency_analysis",
+      "question": "What web framework package is used for HTTP routing? (Provide the full package name as it appears in go.mod)",
+      "expected_answer": "github.com/gin-gonic/gin",
+      "difficulty": "easy"
+    },
+    {
+      "id": 11,
+      "name": "components_count",
+      "category": "component_identification",
+      "question": "How many components are built in this repository? (Provide the count)",
+      "expected_answer": 8,
+      "difficulty": "medium"
+    },
+    {
+      "id": 12,
+      "name": "api_gateway_source_files",
+      "category": "component_identification",
+      "question": "What source files does the api-gateway component use? (Provide a list)",
+      "expected_answer": [
+        [
+          "cmd/api-gateway/main.go",
+          "internal/common/config/config.go",
+          "internal/common/http/http.go",
+          "internal/common/logger/logger.go",
+          "internal/common/validation/validation.go"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 13,
+      "name": "user_service_source_files",
+      "category": "component_identification",
+      "question": "What source files does the user-service component use? (Provide a list)",
+      "expected_answer": [
+        [
+          "cmd/user-service/main.go",
+          "pkg/models/models.go",
+          "internal/common/config/config.go",
+          "internal/common/http/http.go",
+          "internal/common/logger/logger.go",
+          "internal/common/validation/validation.go",
+          "internal/common/database/database.go",
+          "internal/common/utils/java_wrapper.go",
+          "internal/common/utils/jni_wrapper.c"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 14,
+      "name": "api_gateway_external_packages",
+      "category": "dependency_analysis",
+      "question": "What external packages does the api-gateway component use? (Provide a list of full package names as they appear in go.mod)",
+      "expected_answer": [
+        [
+          "github.com/gin-gonic/gin",
+          "go.uber.org/zap",
+          "github.com/spf13/viper",
+          "github.com/go-playground/validator/v10"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 15,
+      "name": "user_service_external_packages",
+      "category": "dependency_analysis",
+      "question": "What external packages does the user-service component use? (Provide a list of full package names as they appear in go.mod or their source)",
+      "expected_answer": [
+        [
+          "github.com/gin-gonic/gin",
+          "github.com/google/uuid",
+          "github.com/lib/pq",
+          "go.uber.org/zap",
+          "github.com/spf13/viper",
+          "github.com/go-playground/validator/v10",
+          "JNI"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 16,
+      "name": "auth_service_languages",
+      "category": "component_identification",
+      "question": "What programming language does the auth-service component use? (Provide the language name)",
+      "expected_answer": [
+        "go",
+        "Go",
+        "golang",
+        "Golang",
+        "GO"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 17,
+      "name": "user_service_languages",
+      "category": "component_identification",
+      "question": "What programming languages does the user-service component use? (Provide a comma-separated list or space-separated list)",
+      "expected_answer": [
+        "go,c",
+        "go, c",
+        "Go and C",
+        "golang,c",
+        "Go,C",
+        "golang, c",
+        "go and c",
+        "C and Go",
+        "c and go",
+        "C,go",
+        "c,Go"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 18,
+      "name": "scala_utils_component",
+      "category": "component_identification",
+      "question": "What is the name of the Scala library component? (Provide the component name)",
+      "expected_answer": [
+        "scala-utils"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 19,
+      "name": "java_utils_dependency",
+      "category": "dependency_analysis",
+      "question": "What component does java-utils depend on? (Provide the component name)",
+      "expected_answer": [
+        "scala-utils"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 20,
+      "name": "user_service_dependency",
+      "category": "dependency_analysis",
+      "question": "What component does user-service depend on? (Provide the component name)",
+      "expected_answer": [
+        "java-utils"
+      ],
+      "difficulty": "medium"
+    },
+{
+      "id": 21,
+      "name": "dependency_depth",
+      "category": "dependency_analysis",
+      "question": "What is the maximum dependency depth in this repository? (i.e., the longest chain from any component to its deepest dependency)",
+      "expected_answer": 2,
+      "difficulty": "hard"
+    },
+    {
+      "id": 22,
+      "name": "user_service_transitive_dependencies",
+      "category": "dependency_analysis",
+      "question": "List all components (including transitive dependencies) that user-service depends on. (Provide a list)",
+      "expected_answer": [
+        [
+          "java-utils",
+          "scala-utils"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 23,
+      "name": "scala_utils_failure_impact",
+      "category": "dependency_analysis",
+      "question": "If the scala-utils library fails to build, which components would also fail? (Provide a list)",
+      "expected_answer": [
+        [
+          "java-utils",
+          "user-service"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 24,
+      "name": "java_utils_failure_impact",
+      "category": "dependency_analysis",
+      "question": "If the java-utils library fails to build, which components would be affected? (Provide a list)",
+      "expected_answer": [
+        [
+          "user-service"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 25,
+      "name": "build_order_leaf_components",
+      "category": "dependency_analysis",
+      "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list)",
+      "expected_answer": [
+        [
+          "scala-utils",
+          "api-gateway",
+          "auth-service",
+          "order-service",
+          "payment-service",
+          "notification-service"
+        ],
+        [
+          "api-gateway",
+          "scala-utils",
+          "auth-service",
+          "order-service",
+          "payment-service",
+          "notification-service"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 26,
+      "name": "parallel_build_analysis",
+      "category": "dependency_analysis",
+      "question": "Can api-gateway and auth-service be built in parallel? (Answer yes or no)",
+      "expected_answer": [
+        "yes",
+        "Yes",
+        "y",
+        "true",
+        "TRUE"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 27,
+      "name": "deploy_aggregator_dependencies",
+      "category": "dependency_analysis",
+      "question": "What does the deploy aggregator depend on? (Provide a list)",
+      "expected_answer": [
+        [
+          "build-all",
+          "docker-build"
+        ],
+        [
+          "docker-build",
+          "build-all"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 28,
+      "name": "most_used_external_package",
+      "category": "dependency_analysis",
+      "question": "Which external package is used by the most components? (Provide the full package name as it appears in go.mod. If multiple packages are tied, provide any one of them)",
+      "expected_answer": [
+        [
+          "github.com/gin-gonic/gin"
+        ],
+        [
+          "go.uber.org/zap"
+        ],
+        [
+          "github.com/spf13/viper"
+        ],
+        [
+          "github.com/go-playground/validator/v10"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 29,
+      "name": "build_all_components",
+      "category": "component_identification",
+      "question": "What components does the build-all aggregator build? (Provide a list of service names)",
+      "expected_answer": [
+        [
+          "api-gateway",
+          "auth-service",
+          "user-service",
+          "order-service",
+          "payment-service",
+          "notification-service"
+        ],
+        [
+          "auth-service",
+          "api-gateway",
+          "user-service",
+          "order-service",
+          "payment-service",
+          "notification-service"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 30,
+      "name": "build_order_sequence",
+      "category": "dependency_analysis",
+      "question": "In what order must scala-utils, java-utils, and user-service be built? (Provide the build order as a list starting with the component that has no dependencies)",
+      "expected_answer": [
+        [
+          "scala-utils",
+          "java-utils",
+          "user-service"
+        ]
+      ],
+      "difficulty": "hard"
+    }
+  ],
+  "ground_truth_file": "tests/deterministic/go/microservices/go_microservices_ground_truth.json"
+}

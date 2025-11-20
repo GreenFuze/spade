@@ -1,0 +1,3100 @@
+{
+  "results": {
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the name of this npm repository? (Provide the name as a string)",
+        "expected": "npm-complex-monorepo",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 2,
+        "question": "How many workspace patterns are defined in the root package.json?",
+        "expected": 7,
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 3,
+        "question": "How many .ts files are in the packages/core/src/ directory?",
+        "expected": 1,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": 2
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": 2
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 2
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": 2
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 2
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 4,
+        "question": "How many .test.ts files are in the packages/core/src/ directory?",
+        "expected": 1,
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 5,
+        "question": "How many different programming languages are used in this repository? (Provide a number)",
+        "expected": 4,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 5
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 5
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 6,
+        "question": "What is the path to the Rust source file? (Provide the relative path)",
+        "expected": "modules/wasm-module/src/lib.rs",
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 7,
+        "question": "What is the path to the Go source file? (Provide the relative path)",
+        "expected": "modules/native-addon/main.go",
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 8,
+        "question": "What is the path to the Python bridge file? (Provide the relative path)",
+        "expected": "modules/python-bridge/bridge.py",
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 9,
+        "question": "How many aggregator packages are in the aggregators/ directory?",
+        "expected": 3,
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 10,
+        "question": "How many external npm packages are used across all dependencies? (Provide an approximate number)",
+        "expected": [
+          20,
+          25
+        ],
+        "difficulty": "easy",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": 22
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": 22
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 22
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": 22
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": 24
+        }
+      },
+      {
+        "id": 11,
+        "question": "How many buildable components are in this repository? (Provide the count)",
+        "expected": 22,
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 20
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 12,
+        "question": "What components depend on the core library (directly or transitively)? (Provide a list of component names)",
+        "expected": [
+          [
+            "admin-portal.bundle.js",
+            "analytics.dist.js",
+            "api-client.dist.js",
+            "api-server.dist.js",
+            "auth-lib.dist.js",
+            "auth-service.dist.js",
+            "build-aggregator.dist.js",
+            "config.dist.js",
+            "data-access.dist.js",
+            "data-models.dist.js",
+            "data-processor.dist.js",
+            "logging-lib.dist.js",
+            "metrics-lib.dist.js",
+            "notification.dist.js",
+            "shared-ui.dist.js",
+            "utils.dist.js",
+            "web-app.bundle.js"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/admin-portal",
+            "@monorepo/analytics",
+            "@monorepo/api-client",
+            "@monorepo/api-server",
+            "@monorepo/auth-lib",
+            "@monorepo/auth-service",
+            "@monorepo/build-aggregator",
+            "@monorepo/config",
+            "@monorepo/data-access",
+            "@monorepo/data-models",
+            "@monorepo/data-processor",
+            "@monorepo/logging-lib",
+            "@monorepo/metrics-lib",
+            "@monorepo/notification",
+            "@monorepo/shared-ui",
+            "@monorepo/utils",
+            "@monorepo/web-app"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "utils",
+            "data-models",
+            "config",
+            "api-client",
+            "shared-ui",
+            "auth-lib",
+            "logging-lib",
+            "metrics-lib",
+            "data-access",
+            "auth-service",
+            "data-processor",
+            "analytics",
+            "notification",
+            "web-app",
+            "admin-portal",
+            "api-server",
+            "build-aggregator"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 13,
+        "question": "What components depend on the WASM module (directly or transitively)? (Provide a list)",
+        "expected": [
+          [
+            "api-server.dist.js",
+            "data-processor.dist.js",
+            "web-app.bundle.js"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/api-server",
+            "@monorepo/data-processor",
+            "@monorepo/web-app"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "data-processor",
+            "web-app",
+            "api-server"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "data-processor.dist.js"
+          ]
+        }
+      },
+      {
+        "id": 14,
+        "question": "What components depend on the native Go addon (directly or transitively)? (Provide a list)",
+        "expected": [
+          [
+            "admin-portal.bundle.js",
+            "analytics.dist.js",
+            "api-server.dist.js"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/admin-portal",
+            "@monorepo/analytics",
+            "@monorepo/api-server"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "analytics",
+            "api-server"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "analytics.dist.js"
+          ]
+        }
+      },
+      {
+        "id": 15,
+        "question": "What components depend on the Python bridge (directly or transitively)? (Provide a list)",
+        "expected": [
+          [
+            "api-server.dist.js",
+            "auth-service.dist.js",
+            "web-app.bundle.js"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": []
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "api-server.dist.js"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "api-server"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "auth-service.dist.js"
+          ]
+        }
+      },
+      {
+        "id": 16,
+        "question": "What is the maximum dependency depth in this repository? (Provide a number)",
+        "expected": 4,
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 5
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": 5
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 5
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 17,
+        "question": "Does this repository have cross-language dependencies? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 18,
+        "question": "What are all the components that web-app.bundle.js depends on? (Provide a list)",
+        "expected": [
+          [
+            "shared-ui.dist.js",
+            "auth-lib.dist.js",
+            "api-client.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/api-client",
+            "@monorepo/auth-lib",
+            "@monorepo/auth-service",
+            "@monorepo/core",
+            "@monorepo/data-models",
+            "@monorepo/data-processor",
+            "@monorepo/shared-ui",
+            "@monorepo/utils",
+            "@monorepo/wasm-module"
+          ]
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": [
+            "core.dist.js",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "shared-ui.dist.js",
+            "api-client.dist.js",
+            "auth-lib.dist.js",
+            "wasm_module.wasm",
+            "python-bridge",
+            "auth-service.dist.js",
+            "data-processor.dist.js"
+          ]
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "api-client.dist.js",
+            "auth-lib.dist.js",
+            "auth-service.dist.js",
+            "core.dist.js",
+            "data-models.dist.js",
+            "data-processor.dist.js",
+            "shared-ui.dist.js",
+            "utils.dist.js",
+            "wasm_module.wasm"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "shared-ui",
+            "auth-lib",
+            "api-client",
+            "auth-service",
+            "data-processor",
+            "core",
+            "utils",
+            "data-models",
+            "wasm-module"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "auth-lib.dist.js",
+            "shared-ui.dist.js",
+            "api-client.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "core.dist.js",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "python-bridge",
+            "wasm_module.wasm"
+          ]
+        }
+      },
+      {
+        "id": 19,
+        "question": "What are all the components that api-server.dist.js depends on? (Provide a list)",
+        "expected": [
+          [
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "analytics.dist.js",
+            "notification.dist.js",
+            "data-access.dist.js"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/analytics",
+            "@monorepo/auth-lib",
+            "@monorepo/auth-service",
+            "@monorepo/core",
+            "@monorepo/data-access",
+            "@monorepo/data-models",
+            "@monorepo/data-processor",
+            "@monorepo/metrics-lib",
+            "@monorepo/native-addon",
+            "@monorepo/notification",
+            "@monorepo/utils",
+            "@monorepo/wasm-module"
+          ]
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": [
+            "core.dist.js",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "auth-lib.dist.js",
+            "metrics-lib.dist.js",
+            "data-access.dist.js",
+            "wasm_module.wasm",
+            "native_addon.node",
+            "python-bridge",
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "analytics.dist.js",
+            "notification.dist.js"
+          ]
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "analytics.dist.js",
+            "auth-lib.dist.js",
+            "auth-service.dist.js",
+            "core.dist.js",
+            "data-access.dist.js",
+            "data-models.dist.js",
+            "data-processor.dist.js",
+            "metrics-lib.dist.js",
+            "native_addon.node",
+            "notification.dist.js",
+            "python_bridge.py",
+            "utils.dist.js",
+            "wasm_module.wasm"
+          ]
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": [
+            "notification.dist.js",
+            "python-bridge",
+            "data-access.dist.js",
+            "analytics.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js"
+          ]
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "auth-service",
+            "data-processor",
+            "analytics",
+            "notification",
+            "data-access",
+            "python-bridge",
+            "core",
+            "utils",
+            "auth-lib",
+            "data-models",
+            "metrics-lib",
+            "native-addon",
+            "wasm-module"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "notification.dist.js",
+            "python-bridge",
+            "data-access.dist.js",
+            "analytics.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "core.dist.js",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "auth-lib.dist.js",
+            "metrics-lib.dist.js",
+            "wasm_module.wasm",
+            "native_addon.node"
+          ]
+        }
+      },
+      {
+        "id": 20,
+        "question": "Which components use the 'react' external package? (Provide a list)",
+        "expected": [
+          [
+            "shared-ui.dist.js",
+            "web-app.bundle.js",
+            "admin-portal.bundle.js"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/admin-portal",
+            "@monorepo/shared-ui",
+            "@monorepo/web-app"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "shared-ui",
+            "web-app",
+            "admin-portal"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 21,
+        "question": "In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with components that have no dependencies)",
+        "expected": [
+          [
+            "core.dist.js",
+            "wasm_module.wasm",
+            "native_addon.node",
+            "python-bridge",
+            "codegen",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "shared-ui.dist.js",
+            "logging-lib.dist.js",
+            "build-aggregator.dist.js",
+            "config.dist.js",
+            "api-client.dist.js",
+            "auth-lib.dist.js",
+            "metrics-lib.dist.js",
+            "data-access.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "analytics.dist.js",
+            "notification.dist.js",
+            "web-app.bundle.js",
+            "admin-portal.bundle.js",
+            "api-server.dist.js"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/codegen",
+            "@monorepo/core",
+            "@monorepo/native-addon",
+            "@monorepo/python-bridge",
+            "@monorepo/wasm-module",
+            "@monorepo/build-aggregator",
+            "@monorepo/data-models",
+            "@monorepo/logging-lib",
+            "@monorepo/shared-ui",
+            "@monorepo/utils",
+            "@monorepo/api-client",
+            "@monorepo/auth-lib",
+            "@monorepo/config",
+            "@monorepo/data-access",
+            "@monorepo/data-processor",
+            "@monorepo/metrics-lib",
+            "@monorepo/notification",
+            "@monorepo/analytics",
+            "@monorepo/auth-service",
+            "@monorepo/admin-portal",
+            "@monorepo/api-server",
+            "@monorepo/web-app"
+          ]
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": [
+            "core.dist.js",
+            "wasm_module.wasm",
+            "native_addon.node",
+            "python-bridge",
+            "codegen",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "shared-ui.dist.js",
+            "logging-lib.dist.js",
+            "build-aggregator.dist.js",
+            "config.dist.js",
+            "api-client.dist.js",
+            "auth-lib.dist.js",
+            "metrics-lib.dist.js",
+            "data-access.dist.js",
+            "data-processor.dist.js",
+            "notification.dist.js",
+            "auth-service.dist.js",
+            "analytics.dist.js",
+            "web-app.bundle.js",
+            "admin-portal.bundle.js",
+            "api-server.dist.js"
+          ]
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "codegen.py",
+            "core.dist.js",
+            "native_addon.node",
+            "python_bridge.py",
+            "wasm_module.wasm",
+            "build-aggregator.dist.js",
+            "data-models.dist.js",
+            "logging-lib.dist.js",
+            "shared-ui.dist.js",
+            "utils.dist.js",
+            "api-client.dist.js",
+            "auth-lib.dist.js",
+            "config.dist.js",
+            "data-access.dist.js",
+            "data-processor.dist.js",
+            "metrics-lib.dist.js",
+            "notification.dist.js",
+            "auth-service.dist.js",
+            "analytics.dist.js",
+            "web-app.bundle.js",
+            "admin-portal.bundle.js",
+            "api-server.dist.js"
+          ]
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": [
+            "core.dist.js",
+            "wasm_module.wasm",
+            "native_addon.node",
+            "python-bridge",
+            "codegen",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "shared-ui.dist.js",
+            "logging-lib.dist.js",
+            "config.dist.js",
+            "api-client.dist.js",
+            "auth-lib.dist.js",
+            "metrics-lib.dist.js",
+            "data-access.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "analytics.dist.js",
+            "notification.dist.js",
+            "web-app.bundle.js",
+            "admin-portal.bundle.js",
+            "api-server.dist.js",
+            "build-aggregator.dist.js"
+          ]
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "core",
+            "wasm-module",
+            "native-addon",
+            "python-bridge",
+            "utils",
+            "data-models",
+            "shared-ui",
+            "auth-lib",
+            "logging-lib",
+            "api-client",
+            "config",
+            "metrics-lib",
+            "data-access",
+            "auth-service",
+            "data-processor",
+            "analytics",
+            "notification",
+            "web-app",
+            "admin-portal",
+            "api-server"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "core.dist.js",
+            "wasm_module.wasm",
+            "native_addon.node",
+            "python-bridge",
+            "codegen",
+            "utils.dist.js",
+            "data-models.dist.js",
+            "shared-ui.dist.js",
+            "logging-lib.dist.js",
+            "config.dist.js",
+            "api-client.dist.js",
+            "auth-lib.dist.js",
+            "metrics-lib.dist.js",
+            "data-access.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "analytics.dist.js",
+            "notification.dist.js",
+            "web-app.bundle.js",
+            "admin-portal.bundle.js",
+            "api-server.dist.js",
+            "build-aggregator.dist.js"
+          ]
+        }
+      },
+      {
+        "id": 22,
+        "question": "If the core.dist.js component fails to build, which other components would also fail? (Provide a list)",
+        "expected": [
+          [
+            "admin-portal.bundle.js",
+            "analytics.dist.js",
+            "api-client.dist.js",
+            "api-server.dist.js",
+            "auth-lib.dist.js",
+            "auth-service.dist.js",
+            "build-aggregator.dist.js",
+            "config.dist.js",
+            "data-access.dist.js",
+            "data-models.dist.js",
+            "data-processor.dist.js",
+            "logging-lib.dist.js",
+            "metrics-lib.dist.js",
+            "notification.dist.js",
+            "shared-ui.dist.js",
+            "utils.dist.js",
+            "web-app.bundle.js"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/admin-portal",
+            "@monorepo/analytics",
+            "@monorepo/api-client",
+            "@monorepo/api-server",
+            "@monorepo/auth-lib",
+            "@monorepo/auth-service",
+            "@monorepo/build-aggregator",
+            "@monorepo/config",
+            "@monorepo/data-access",
+            "@monorepo/data-models",
+            "@monorepo/data-processor",
+            "@monorepo/logging-lib",
+            "@monorepo/metrics-lib",
+            "@monorepo/notification",
+            "@monorepo/shared-ui",
+            "@monorepo/utils",
+            "@monorepo/web-app"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "utils",
+            "data-models",
+            "config",
+            "api-client",
+            "shared-ui",
+            "auth-lib",
+            "logging-lib",
+            "metrics-lib",
+            "data-access",
+            "auth-service",
+            "data-processor",
+            "analytics",
+            "notification",
+            "web-app",
+            "admin-portal",
+            "api-server",
+            "build-aggregator"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 23,
+        "question": "If the wasm_module.wasm component fails to build, which other components would also fail? (Provide a list)",
+        "expected": [
+          [
+            "data-processor.dist.js",
+            "web-app.bundle.js",
+            "api-server.dist.js"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/api-server",
+            "@monorepo/data-processor",
+            "@monorepo/web-app"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "data-processor",
+            "web-app",
+            "api-server"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "data-processor.dist.js"
+          ]
+        }
+      },
+      {
+        "id": 24,
+        "question": "Can core.dist.js and wasm_module.wasm be built in parallel? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 25,
+        "question": "Can web-app.bundle.js and admin-portal.bundle.js be built in parallel? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 26,
+        "question": "What is the longest dependency chain from a leaf component to a root component? (Provide the chain as a list)",
+        "expected": [
+          [
+            "api-server.dist.js",
+            "auth-service.dist.js",
+            "auth-lib.dist.js",
+            "utils.dist.js",
+            "core.dist.js"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/core",
+            "@monorepo/utils",
+            "@monorepo/metrics-lib",
+            "@monorepo/analytics",
+            "@monorepo/admin-portal"
+          ]
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": [
+            "core.dist.js",
+            "utils.dist.js",
+            "auth-lib.dist.js",
+            "auth-service.dist.js",
+            "web-app.bundle.js"
+          ]
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "admin-portal.bundle.js",
+            "analytics.dist.js",
+            "metrics-lib.dist.js",
+            "utils.dist.js",
+            "core.dist.js"
+          ]
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": [
+            "web-app.bundle.js",
+            "auth-service.dist.js",
+            "auth-lib.dist.js",
+            "utils.dist.js",
+            "core.dist.js"
+          ]
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "core",
+            "utils",
+            "auth-lib",
+            "auth-service",
+            "api-server"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 27,
+        "question": "What types of cross-language dependencies exist in this repository? (Provide a list of language pairs, e.g., 'typescript-rust')",
+        "expected": [
+          [
+            "typescript-rust",
+            "typescript-go",
+            "typescript-python"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "typescript-rust",
+            "typescript-go"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 28,
+        "question": "What test frameworks are used in this repository? (Provide a list)",
+        "expected": [
+          [
+            "jest"
+          ],
+          [
+            "Jest"
+          ],
+          [
+            "JEST"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "jest",
+            "pytest"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "jest",
+            "pytest"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 29,
+        "question": "Which components use TypeScript as their programming language? (Provide a list)",
+        "expected": [
+          [
+            "core.dist.js",
+            "utils.dist.js",
+            "api-client.dist.js",
+            "data-models.dist.js",
+            "config.dist.js",
+            "shared-ui.dist.js",
+            "auth-lib.dist.js",
+            "logging-lib.dist.js",
+            "metrics-lib.dist.js",
+            "data-access.dist.js",
+            "auth-service.dist.js",
+            "data-processor.dist.js",
+            "analytics.dist.js",
+            "notification.dist.js",
+            "web-app.bundle.js",
+            "admin-portal.bundle.js",
+            "api-server.dist.js",
+            "build-aggregator.dist.js"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "@monorepo/admin-portal",
+            "@monorepo/analytics",
+            "@monorepo/api-client",
+            "@monorepo/api-server",
+            "@monorepo/auth-lib",
+            "@monorepo/auth-service",
+            "@monorepo/build-aggregator",
+            "@monorepo/config",
+            "@monorepo/core",
+            "@monorepo/data-access",
+            "@monorepo/data-models",
+            "@monorepo/data-processor",
+            "@monorepo/logging-lib",
+            "@monorepo/metrics-lib",
+            "@monorepo/notification",
+            "@monorepo/shared-ui",
+            "@monorepo/utils",
+            "@monorepo/web-app"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "core",
+            "utils",
+            "data-models",
+            "config",
+            "api-client",
+            "shared-ui",
+            "auth-lib",
+            "logging-lib",
+            "metrics-lib",
+            "data-access",
+            "auth-service",
+            "data-processor",
+            "analytics",
+            "notification",
+            "web-app",
+            "admin-portal",
+            "api-server",
+            "build-aggregator"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 30,
+        "question": "What are the different component types in this repository? (Provide a list)",
+        "expected": [
+          [
+            "static_library",
+            "shared_library",
+            "interpreted"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "library",
+            "service",
+            "application",
+            "native-module",
+            "tool",
+            "aggregator"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "library",
+            "service",
+            "application",
+            "module",
+            "tool",
+            "aggregator"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "library",
+            "application",
+            "service",
+            "module",
+            "aggregator",
+            "tool"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      }
+    ],
+    "claude_NORIG": {
+      "total_score": 13,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 3,
+          "max": 10
+        },
+        "hard": {
+          "score": 2,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 246.0
+    },
+    "claude_RIG": {
+      "total_score": 24,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 8,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 111.0
+    },
+    "codex_NORIG": {
+      "total_score": 19,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 7,
+          "max": 10
+        },
+        "medium": {
+          "score": 6,
+          "max": 10
+        },
+        "hard": {
+          "score": 6,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 1027.0
+    },
+    "codex_RIG": {
+      "total_score": 24,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 8,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 190.0
+    },
+    "cursor_NORIG": {
+      "total_score": 13,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 1,
+          "max": 10
+        },
+        "hard": {
+          "score": 4,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 47.0
+    },
+    "cursor_RIG": {
+      "total_score": 22,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 5,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 41.0
+    }
+  },
+  "analysis": {
+    "by_agent": {
+      "claude": {
+        "with_rig": {
+          "score": 24,
+          "max_score": 30,
+          "percentage": 80.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "medium": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 13,
+          "max_score": 30,
+          "percentage": 43.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "medium": {
+              "score": 3,
+              "max": 10,
+              "percentage": 30.0
+            },
+            "hard": {
+              "score": 2,
+              "max": 10,
+              "percentage": 20.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 11,
+          "percentage": 36.7,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 5,
+              "percentage": 50.0
+            },
+            "hard": {
+              "absolute": 6,
+              "percentage": 60.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 17,
+          "by_difficulty": {
+            "easy": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                3,
+                10
+              ]
+            },
+            "medium": {
+              "count": 7,
+              "percentage": 70.0,
+              "question_ids": [
+                12,
+                13,
+                14,
+                15,
+                18,
+                19,
+                20
+              ]
+            },
+            "hard": {
+              "count": 8,
+              "percentage": 80.0,
+              "question_ids": [
+                21,
+                22,
+                23,
+                26,
+                27,
+                28,
+                29,
+                30
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 6,
+          "by_difficulty": {
+            "easy": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                3,
+                10
+              ]
+            },
+            "medium": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                18,
+                19
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                21,
+                26
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          12,
+          13,
+          14,
+          15,
+          20,
+          22,
+          23,
+          27,
+          28,
+          29,
+          30
+        ],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 111.0,
+          "time_without_rig_seconds": 246.0,
+          "time_saved_seconds": 135.0,
+          "time_reduction_percentage": 54.9,
+          "efficiency_with_rig_score_per_second": 0.2162,
+          "efficiency_without_rig_score_per_second": 0.0528
+        }
+      },
+      "codex": {
+        "with_rig": {
+          "score": 24,
+          "max_score": 30,
+          "percentage": 80.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "medium": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 19,
+          "max_score": 30,
+          "percentage": 63.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 7,
+              "max": 10,
+              "percentage": 70.0
+            },
+            "medium": {
+              "score": 6,
+              "max": 10,
+              "percentage": 60.0
+            },
+            "hard": {
+              "score": 6,
+              "max": 10,
+              "percentage": 60.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 5,
+          "percentage": 16.7,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 1,
+              "percentage": 10.0
+            },
+            "medium": {
+              "absolute": 2,
+              "percentage": 20.0
+            },
+            "hard": {
+              "absolute": 2,
+              "percentage": 20.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 11,
+          "by_difficulty": {
+            "easy": {
+              "count": 3,
+              "percentage": 30.0,
+              "question_ids": [
+                3,
+                5,
+                10
+              ]
+            },
+            "medium": {
+              "count": 4,
+              "percentage": 40.0,
+              "question_ids": [
+                15,
+                16,
+                18,
+                19
+              ]
+            },
+            "hard": {
+              "count": 4,
+              "percentage": 40.0,
+              "question_ids": [
+                21,
+                26,
+                28,
+                30
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 6,
+          "by_difficulty": {
+            "easy": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                3,
+                10
+              ]
+            },
+            "medium": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                16,
+                19
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                21,
+                26
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          5,
+          15,
+          18,
+          28,
+          30
+        ],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 190.0,
+          "time_without_rig_seconds": 1027.0,
+          "time_saved_seconds": 837.0,
+          "time_reduction_percentage": 81.5,
+          "efficiency_with_rig_score_per_second": 0.1263,
+          "efficiency_without_rig_score_per_second": 0.0185
+        }
+      },
+      "cursor": {
+        "with_rig": {
+          "score": 22,
+          "max_score": 30,
+          "percentage": 73.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "medium": {
+              "score": 5,
+              "max": 10,
+              "percentage": 50.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 13,
+          "max_score": 30,
+          "percentage": 43.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "medium": {
+              "score": 1,
+              "max": 10,
+              "percentage": 10.0
+            },
+            "hard": {
+              "score": 4,
+              "max": 10,
+              "percentage": 40.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 9,
+          "percentage": 30.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 1,
+              "percentage": 10.0
+            },
+            "medium": {
+              "absolute": 4,
+              "percentage": 40.0
+            },
+            "hard": {
+              "absolute": 4,
+              "percentage": 40.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 17,
+          "by_difficulty": {
+            "easy": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                3,
+                5
+              ]
+            },
+            "medium": {
+              "count": 9,
+              "percentage": 90.0,
+              "question_ids": [
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                18,
+                19,
+                20
+              ]
+            },
+            "hard": {
+              "count": 6,
+              "percentage": 60.0,
+              "question_ids": [
+                21,
+                22,
+                23,
+                26,
+                29,
+                30
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 8,
+          "by_difficulty": {
+            "easy": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                10
+              ]
+            },
+            "medium": {
+              "count": 5,
+              "percentage": 50.0,
+              "question_ids": [
+                13,
+                14,
+                15,
+                18,
+                19
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                21,
+                23
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          3,
+          5,
+          11,
+          12,
+          16,
+          20,
+          22,
+          26,
+          29,
+          30
+        ],
+        "questions_broken_by_rig": [
+          10
+        ],
+        "timing": {
+          "time_with_rig_seconds": 41.0,
+          "time_without_rig_seconds": 47.0,
+          "time_saved_seconds": 6.0,
+          "time_reduction_percentage": 12.8,
+          "efficiency_with_rig_score_per_second": 0.5366,
+          "efficiency_without_rig_score_per_second": 0.2766
+        }
+      }
+    },
+    "by_category": {
+      "build_system": {
+        "total_questions": 3,
+        "with_rig": {
+          "score": 9,
+          "max": 9,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 9,
+          "max": 9,
+          "percentage": 100.0
+        },
+        "improvement": {
+          "absolute": 0,
+          "percentage": 0.0
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      },
+      "source_analysis": {
+        "total_questions": 5,
+        "with_rig": {
+          "score": 13,
+          "max": 15,
+          "percentage": 86.7
+        },
+        "without_rig": {
+          "score": 10,
+          "max": 15,
+          "percentage": 66.7
+        },
+        "improvement": {
+          "absolute": 3,
+          "percentage": 20.0
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 80.0,
+            "without_rig": 80.0,
+            "improvement": 0.0
+          },
+          "codex": {
+            "with_rig": 80.0,
+            "without_rig": 60.0,
+            "improvement": 20.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 60.0,
+            "improvement": 40.0
+          }
+        }
+      },
+      "testing": {
+        "total_questions": 2,
+        "with_rig": {
+          "score": 6,
+          "max": 6,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 4,
+          "max": 6,
+          "percentage": 66.7
+        },
+        "improvement": {
+          "absolute": 2,
+          "percentage": 33.3
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 50.0,
+            "improvement": 50.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 50.0,
+            "improvement": 50.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      },
+      "dependency_analysis": {
+        "total_questions": 17,
+        "with_rig": {
+          "score": 33,
+          "max": 51,
+          "percentage": 64.7
+        },
+        "without_rig": {
+          "score": 19,
+          "max": 51,
+          "percentage": 37.3
+        },
+        "improvement": {
+          "absolute": 14,
+          "percentage": 27.5
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 70.6,
+            "without_rig": 23.5,
+            "improvement": 47.1
+          },
+          "codex": {
+            "with_rig": 70.6,
+            "without_rig": 58.8,
+            "improvement": 11.8
+          },
+          "cursor": {
+            "with_rig": 52.9,
+            "without_rig": 29.4,
+            "improvement": 23.5
+          }
+        }
+      },
+      "component_identification": {
+        "total_questions": 3,
+        "with_rig": {
+          "score": 9,
+          "max": 9,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 3,
+          "max": 9,
+          "percentage": 33.3
+        },
+        "improvement": {
+          "absolute": 6,
+          "percentage": 66.7
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 33.3,
+            "improvement": 66.7
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 66.7,
+            "improvement": 33.3
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 0.0,
+            "improvement": 100.0
+          }
+        }
+      }
+    },
+    "question_insights": {
+      "hardest_questions": [
+        {
+          "id": 10,
+          "question": "How many external npm packages are used across all dependencies? (Provide an approximate number)",
+          "difficulty": "easy",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 0.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [],
+          "agents_correct_without_rig": [
+            "cursor"
+          ],
+          "avg_improvement": -33.3
+        },
+        {
+          "id": 19,
+          "question": "What are all the components that api-server.dist.js depends on? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 0.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 21,
+          "question": "In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with components that have no dependencies)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 0.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 3,
+          "question": "How many .ts files are in the packages/core/src/ directory?",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 33.3,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 18,
+          "question": "What are all the components that web-app.bundle.js depends on? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 33.3,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "codex"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 33.3
+        }
+      ],
+      "easiest_questions": [
+        {
+          "id": 1,
+          "question": "What is the name of this npm repository? (Provide the name as a string)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 2,
+          "question": "How many workspace patterns are defined in the root package.json?",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 4,
+          "question": "How many .test.ts files are in the packages/core/src/ directory?",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 5,
+          "question": "How many different programming languages are used in this repository? (Provide a number)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 6,
+          "question": "What is the path to the Rust source file? (Provide the relative path)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 7,
+          "question": "What is the path to the Go source file? (Provide the relative path)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 8,
+          "question": "What is the path to the Python bridge file? (Provide the relative path)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 9,
+          "question": "How many aggregator packages are in the aggregators/ directory?",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 11,
+          "question": "How many buildable components are in this repository? (Provide the count)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 12,
+          "question": "What components depend on the core library (directly or transitively)? (Provide a list of component names)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 17,
+          "question": "Does this repository have cross-language dependencies? (Answer yes or no)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 20,
+          "question": "Which components use the 'react' external package? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 22,
+          "question": "If the core.dist.js component fails to build, which other components would also fail? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 24,
+          "question": "Can core.dist.js and wasm_module.wasm be built in parallel? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 25,
+          "question": "Can web-app.bundle.js and admin-portal.bundle.js be built in parallel? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 27,
+          "question": "What types of cross-language dependencies exist in this repository? (Provide a list of language pairs, e.g., 'typescript-rust')",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 28,
+          "question": "What test frameworks are used in this repository? (Provide a list)",
+          "difficulty": "hard",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "cursor"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 29,
+          "question": "Which components use TypeScript as their programming language? (Provide a list)",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 30,
+          "question": "What are the different component types in this repository? (Provide a list)",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        }
+      ],
+      "most_rig_sensitive": [
+        {
+          "id": 30,
+          "question": "What are the different component types in this repository? (Provide a list)",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 15,
+          "question": "What components depend on the Python bridge (directly or transitively)? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 5,
+          "question": "How many different programming languages are used in this repository? (Provide a number)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 12,
+          "question": "What components depend on the core library (directly or transitively)? (Provide a list of component names)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 20,
+          "question": "Which components use the 'react' external package? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        }
+      ],
+      "rig_insensitive": [
+        {
+          "id": 19,
+          "question": "What are all the components that api-server.dist.js depends on? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 0.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 21,
+          "question": "In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with components that have no dependencies)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 0.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 1,
+          "question": "What is the name of this npm repository? (Provide the name as a string)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 2,
+          "question": "How many workspace patterns are defined in the root package.json?",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 4,
+          "question": "How many .test.ts files are in the packages/core/src/ directory?",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 6,
+          "question": "What is the path to the Rust source file? (Provide the relative path)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 7,
+          "question": "What is the path to the Go source file? (Provide the relative path)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 8,
+          "question": "What is the path to the Python bridge file? (Provide the relative path)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 9,
+          "question": "How many aggregator packages are in the aggregators/ directory?",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 17,
+          "question": "Does this repository have cross-language dependencies? (Answer yes or no)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 24,
+          "question": "Can core.dist.js and wasm_module.wasm be built in parallel? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 25,
+          "question": "Can web-app.bundle.js and admin-portal.bundle.js be built in parallel? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        }
+      ],
+      "unanimous_failures_with_rig": [
+        19,
+        21,
+        10
+      ],
+      "unanimous_failures_without_rig": [
+        30,
+        15,
+        3,
+        18,
+        26,
+        19,
+        21
+      ]
+    },
+    "rig_effectiveness": {
+      "by_difficulty": {
+        "easy": {
+          "avg_improvement": 6.7,
+          "agents_benefited": 2
+        },
+        "medium": {
+          "avg_improvement": 36.7,
+          "agents_benefited": 3
+        },
+        "hard": {
+          "avg_improvement": 40.0,
+          "agents_benefited": 3
+        }
+      },
+      "correlation": {
+        "pattern": "Agents with higher baseline show less improvement from RIG",
+        "data": [
+          {
+            "agent": "codex",
+            "baseline_pct": 63.3,
+            "improvement_pct": 16.7
+          },
+          {
+            "agent": "claude",
+            "baseline_pct": 43.3,
+            "improvement_pct": 36.7
+          },
+          {
+            "agent": "cursor",
+            "baseline_pct": 43.3,
+            "improvement_pct": 30.0
+          }
+        ]
+      }
+    },
+    "timing_insights": {
+      "speed_vs_accuracy_with_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 41.0,
+          "score_percentage": 73.3,
+          "efficiency_score_per_second": 0.5366
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 111.0,
+          "score_percentage": 80.0,
+          "efficiency_score_per_second": 0.2162
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 190.0,
+          "score_percentage": 80.0,
+          "efficiency_score_per_second": 0.1263
+        }
+      ],
+      "speed_vs_accuracy_without_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 47.0,
+          "score_percentage": 43.3,
+          "efficiency_score_per_second": 0.2766
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 246.0,
+          "score_percentage": 43.3,
+          "efficiency_score_per_second": 0.0528
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 1027.0,
+          "score_percentage": 63.3,
+          "efficiency_score_per_second": 0.0185
+        }
+      ],
+      "time_reduction_vs_score_improvement": {
+        "correlation_note": "Greater time reduction correlates with less score improvement",
+        "data": [
+          {
+            "agent": "codex",
+            "time_reduction_percentage": 81.5,
+            "score_improvement_percentage": 16.7,
+            "time_saved_seconds": 837.0,
+            "score_points_gained": 5
+          },
+          {
+            "agent": "claude",
+            "time_reduction_percentage": 54.9,
+            "score_improvement_percentage": 36.7,
+            "time_saved_seconds": 135.0,
+            "score_points_gained": 11
+          },
+          {
+            "agent": "cursor",
+            "time_reduction_percentage": 12.8,
+            "score_improvement_percentage": 30.0,
+            "time_saved_seconds": 6.0,
+            "score_points_gained": 9
+          }
+        ]
+      },
+      "efficiency_analysis": {
+        "avg_efficiency_with_rig_score_per_second": 0.293,
+        "avg_efficiency_without_rig_score_per_second": 0.116,
+        "efficiency_improvement_percentage": 152.7
+      }
+    },
+    "summary": {
+      "best_overall_with_rig": {
+        "agent": "claude",
+        "percentage": 80.0
+      },
+      "best_overall_without_rig": {
+        "agent": "codex",
+        "percentage": 63.3
+      },
+      "most_rig_improvement": {
+        "agent": "claude",
+        "improvement_percentage": 36.7
+      },
+      "least_rig_improvement": {
+        "agent": "codex",
+        "improvement_percentage": 16.7
+      },
+      "average_with_rig": 77.8,
+      "average_without_rig": 50.0,
+      "average_rig_improvement": 27.8,
+      "timing": {
+        "average_time_with_rig_seconds": 114.0,
+        "average_time_without_rig_seconds": 440.0,
+        "average_time_saved_seconds": 326.0,
+        "average_time_reduction_percentage": 49.7,
+        "fastest_with_rig": {
+          "agent": "cursor",
+          "time_seconds": 41.0
+        },
+        "fastest_without_rig": {
+          "agent": "cursor",
+          "time_seconds": 47.0
+        },
+        "most_time_saved": {
+          "agent": "codex",
+          "time_saved_seconds": 837.0,
+          "time_reduction_percentage": 81.5
+        },
+        "highest_time_reduction_percentage": {
+          "agent": "codex",
+          "time_reduction_percentage": 81.5
+        }
+      }
+    }
+  }
+}

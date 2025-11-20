@@ -1,1078 +1,287 @@
 {
   "results": {
-    "claude_NORIG": {
-      "total_score": 14,
-      "max_score": 30,
-      "by_difficulty": {
-        "easy": {
-          "score": 6,
-          "max": 10
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the CMake project name?",
+        "expected": "MetaFFI",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
         },
-        "medium": {
-          "score": 3,
-          "max": 10
+        "claude_RIG": {
+          "score": 1
         },
-        "hard": {
-          "score": 5,
-          "max": 10
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "MetaFFI",
-          "actual": "MetaFFI"
+      {
+        "id": 2,
+        "question": "What is the project version?",
+        "expected": "0.3.1",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "0.3.1",
-          "actual": "0.3.1"
+        "claude_RIG": {
+          "score": 1
         },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
+        "codex_NORIG": {
+          "score": 1
         },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
+        "codex_RIG": {
+          "score": 1
         },
-        {
-          "id": 5,
-          "score": 0,
-          "expected": 4,
-          "actual": "3",
-          "question": "How many .jar files are built by this project?"
+        "cursor_NORIG": {
+          "score": 1
         },
-        {
-          "id": 6,
-          "score": 0,
-          "expected": 9,
-          "actual": "6",
-          "question": "How many .exe files are built?"
-        },
-        {
-          "id": 7,
-          "score": 0,
-          "expected": 11,
-          "actual": "7",
-          "question": "How many .dll files are built?"
-        },
-        {
-          "id": 8,
-          "score": 0,
-          "expected": 16,
-          "actual": "26",
-          "question": "How many tests are defined in total?"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-c",
-              "metaffi-installer"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-c",
-            "metaffi-installer"
-          ],
-          "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)"
-        },
-        {
-          "id": 11,
-          "score": 0,
-          "expected": [
-            [
-              "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdt.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
-              "metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
-              "metaffi-core/plugin-sdk/utils/expand_env.cpp",
-              "metaffi-core/plugin-sdk/utils/library_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "cdts_test.cpp",
-            "cdt.cpp",
-            "cdts_traverse_construct.cpp",
-            "cdts_wrapper.cpp",
-            "metaffi_primitives.cpp"
-          ],
-          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 12,
-          "score": 0,
-          "expected": [
-            [
-              "lang-plugin-python311/runtime/python_runtime_test.cpp",
-              "lang-plugin-python311/runtime/call_xcall.cpp",
-              "lang-plugin-python311/runtime/cdts_python3.cpp",
-              "lang-plugin-python311/runtime/host_cdts_converter.cpp",
-              "lang-plugin-python311/runtime/metaffi_package_importer.cpp",
-              "lang-plugin-python311/runtime/py_bool.cpp",
-              "lang-plugin-python311/runtime/py_bytes.cpp",
-              "lang-plugin-python311/runtime/py_float.cpp",
-              "lang-plugin-python311/runtime/py_int.cpp",
-              "lang-plugin-python311/runtime/py_list.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_callable.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_handle.cpp",
-              "lang-plugin-python311/runtime/py_object.cpp",
-              "lang-plugin-python311/runtime/py_str.cpp",
-              "lang-plugin-python311/runtime/py_tuple.cpp",
-              "lang-plugin-python311/runtime/python3_api_wrapper.cpp",
-              "lang-plugin-python311/runtime/python_api.cpp",
-              "lang-plugin-python311/runtime/utils.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "python_runtime_test.cpp",
-            "call_xcall.cpp",
-            "cdts_python3.cpp",
-            "host_cdts_converter.cpp",
-            "metaffi_package_importer.cpp",
-            "py_bool.cpp",
-            "py_bytes.cpp",
-            "py_float.cpp",
-            "py_int.cpp",
-            "py_list.cpp",
-            "py_metaffi_callable.cpp",
-            "py_metaffi_handle.cpp",
-            "py_object.cpp",
-            "py_str.cpp",
-            "py_tuple.cpp",
-            "python3_api_wrapper.cpp",
-            "python_api.cpp",
-            "utils.cpp",
-            "cdt.cpp",
-            "cdts_traverse_construct.cpp",
-            "cdts_wrapper.cpp",
-            "metaffi_primitives.cpp"
-          ],
-          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 13,
-          "score": 0,
-          "expected": [
-            [
-              "Boost.filesystem",
-              "Boost.thread"
-            ]
-          ],
-          "actual": [
-            "Boost::filesystem",
-            "Boost::thread"
-          ],
-          "question": "What external packages does xllr.dll depend on? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 0,
-          "expected": [
-            [
-              "Boost.program_options",
-              "Boost.filesystem"
-            ],
-            [
-              "Boost.filesystem",
-              "Boost.program_options"
-            ]
-          ],
-          "actual": [
-            "Boost::filesystem",
-            "Boost::program_options"
-          ],
-          "question": "What external packages does metaffi.exe depend on? (Provide a list)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "gson-2.10.1.jar",
-              "asm-9.6.jar",
-              "asm-tree-9.6.jar",
-              "javaparser-core-3.24.4.jar"
-            ]
-          ],
-          "actual": [
-            "gson-2.10.1.jar",
-            "asm-9.6.jar",
-            "asm-tree-9.6.jar",
-            "javaparser-core-3.24.4.jar"
-          ],
-          "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 0,
-          "expected": 5,
-          "actual": "3",
-          "question": "How many components depend on JNI?"
-        },
-        {
-          "id": 17,
-          "score": 0,
-          "expected": 7,
-          "actual": "12",
-          "question": "How many components depend on doctest?"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "Python"
-            ],
-            [
-              "unittest"
-            ],
-            [
-              "python"
-            ]
-          ],
-          "actual": "unittest",
-          "question": "What test framework is used for python3_api_unitest?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "go"
-            ],
-            [
-              "Go"
-            ]
-          ],
-          "actual": "Go",
-          "question": "What programming language is metaffi.compiler.python311.dll written in?"
-        },
-        {
-          "id": 20,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.bridge",
-              "metaffi.api",
-              "openjdk_idl_extractor",
-              "test_data_classes",
-              "java_tests_classes",
-              "java_tests_run",
-              "openjdk_api_cross_pl_tests"
-            ]
-          ],
-          "actual": [
-            "openjdk_idl_extractor",
-            "xllr.openjdk.bridge",
-            "metaffi.api"
-          ],
-          "question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)"
-        },
-        {
-          "id": 21,
-          "score": 0,
-          "expected": [
-            [
-              "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
-            ],
-            [
-              "metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"
-            ]
-          ],
-          "actual": "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll \u2192 xllr.dll",
-          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": 30,
-          "actual": "2",
-          "question": "How many components can be built in parallel because they have zero inter-component dependencies?"
-        },
-        {
-          "id": 23,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "python_runtime_test.exe"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "openjdk_api_test.exe",
-            "cdts_java_test.exe",
-            "metaffi.idl.openjdk.dll"
-          ],
-          "question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "python_runtime_test.exe",
-              "metaffi.idl.python311.dll",
-              "python311_idl_plugin_test.exe",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "python_runtime_test.exe",
-            "metaffi.idl.python311.dll",
-            "python311_idl_plugin_test.exe",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.dll",
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "metaffi.idl.openjdk.dll",
-              "metaffi.compiler.openjdk.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.dll",
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "openjdk_api_test.exe",
-            "cdts_java_test.exe",
-            "metaffi.idl.openjdk.jar",
-            "metaffi.compiler.openjdk.dll"
-          ],
-          "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "metaffi.idl.python311.dll",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "metaffi.idl.python311.dll",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)"
-        },
-        {
-          "id": 30,
-          "score": 0,
-          "expected": 5,
-          "actual": "5",
-          "question": "What is the maximum dependency depth in the project? (i.e., the longest chain from any component to its deepest dependency)"
-        }
-      ],
-      "completion_time_seconds": 356.92
-    },
-    "claude_RIG": {
-      "total_score": 23,
-      "max_score": 30,
-      "by_difficulty": {
-        "easy": {
-          "score": 8,
-          "max": 10
-        },
-        "medium": {
-          "score": 7,
-          "max": 10
-        },
-        "hard": {
-          "score": 8,
-          "max": 10
+        "cursor_RIG": {
+          "score": 1
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "MetaFFI",
-          "actual": "MetaFFI"
+      {
+        "id": 3,
+        "question": "What is the minimum CMake version required?",
+        "expected": "3.10",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "0.3.1",
-          "actual": "0.3.1"
+        "claude_RIG": {
+          "score": 1
         },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
+        "codex_NORIG": {
+          "score": 1
         },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
+        "codex_RIG": {
+          "score": 1
         },
-        {
-          "id": 5,
-          "score": 0,
-          "expected": 4,
-          "actual": 3,
-          "question": "How many .jar files are built by this project?"
+        "cursor_NORIG": {
+          "score": 1
         },
-        {
-          "id": 6,
-          "score": 0,
-          "expected": 9,
-          "actual": 7,
-          "question": "How many .exe files are built?"
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 11,
-          "actual": 11
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": 16,
-          "actual": 16
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-c",
-              "metaffi-installer"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-c",
-            "metaffi-installer"
-          ],
-          "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)"
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdt.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
-              "metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
-              "metaffi-core/plugin-sdk/utils/expand_env.cpp",
-              "metaffi-core/plugin-sdk/utils/library_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_test.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdt.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_wrapper.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\metaffi_primitives.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\xllr_capi_loader.c",
-            "metaffi-core\\plugin-sdk\\runtime\\xllr_static_capi_loader.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\entity_path_parser.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\expand_env.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\library_loader.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-python311/runtime/python_runtime_test.cpp",
-              "lang-plugin-python311/runtime/call_xcall.cpp",
-              "lang-plugin-python311/runtime/cdts_python3.cpp",
-              "lang-plugin-python311/runtime/host_cdts_converter.cpp",
-              "lang-plugin-python311/runtime/metaffi_package_importer.cpp",
-              "lang-plugin-python311/runtime/py_bool.cpp",
-              "lang-plugin-python311/runtime/py_bytes.cpp",
-              "lang-plugin-python311/runtime/py_float.cpp",
-              "lang-plugin-python311/runtime/py_int.cpp",
-              "lang-plugin-python311/runtime/py_list.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_callable.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_handle.cpp",
-              "lang-plugin-python311/runtime/py_object.cpp",
-              "lang-plugin-python311/runtime/py_str.cpp",
-              "lang-plugin-python311/runtime/py_tuple.cpp",
-              "lang-plugin-python311/runtime/python3_api_wrapper.cpp",
-              "lang-plugin-python311/runtime/python_api.cpp",
-              "lang-plugin-python311/runtime/utils.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-python311\\runtime\\python_runtime_test.cpp",
-            "lang-plugin-python311\\runtime\\call_xcall.cpp",
-            "lang-plugin-python311\\runtime\\cdts_python3.cpp",
-            "lang-plugin-python311\\runtime\\host_cdts_converter.cpp",
-            "lang-plugin-python311\\runtime\\metaffi_package_importer.cpp",
-            "lang-plugin-python311\\runtime\\py_bool.cpp",
-            "lang-plugin-python311\\runtime\\py_bytes.cpp",
-            "lang-plugin-python311\\runtime\\py_float.cpp",
-            "lang-plugin-python311\\runtime\\py_int.cpp",
-            "lang-plugin-python311\\runtime\\py_list.cpp",
-            "lang-plugin-python311\\runtime\\py_metaffi_callable.cpp",
-            "lang-plugin-python311\\runtime\\py_metaffi_handle.cpp",
-            "lang-plugin-python311\\runtime\\py_object.cpp",
-            "lang-plugin-python311\\runtime\\py_str.cpp",
-            "lang-plugin-python311\\runtime\\py_tuple.cpp",
-            "lang-plugin-python311\\runtime\\python3_api_wrapper.cpp",
-            "lang-plugin-python311\\runtime\\python_api.cpp",
-            "lang-plugin-python311\\runtime\\utils.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdt.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_wrapper.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\metaffi_primitives.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\xllr_capi_loader.c",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\xllr_static_capi_loader.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\entity_path_parser.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\expand_env.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\library_loader.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "Boost.filesystem",
-              "Boost.thread"
-            ]
-          ],
-          "actual": [
-            "Boost.filesystem",
-            "Boost.thread"
-          ],
-          "question": "What external packages does xllr.dll depend on? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "Boost.program_options",
-              "Boost.filesystem"
-            ],
-            [
-              "Boost.filesystem",
-              "Boost.program_options"
-            ]
-          ],
-          "actual": [
-            "Boost.filesystem",
-            "Boost.program_options"
-          ],
-          "question": "What external packages does metaffi.exe depend on? (Provide a list)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "gson-2.10.1.jar",
-              "asm-9.6.jar",
-              "asm-tree-9.6.jar",
-              "javaparser-core-3.24.4.jar"
-            ]
-          ],
-          "actual": [
-            "asm-9.6.jar",
-            "gson-2.10.1.jar",
-            "javaparser-core-3.24.4.jar",
-            "asm-tree-9.6.jar"
-          ],
-          "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 0,
-          "expected": 5,
-          "actual": 4,
-          "question": "How many components depend on JNI?"
-        },
-        {
-          "id": 17,
-          "score": 0,
-          "expected": 7,
-          "actual": 5,
-          "question": "How many components depend on doctest?"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "Python"
-            ],
-            [
-              "unittest"
-            ],
-            [
-              "python"
-            ]
-          ],
-          "actual": "Python",
-          "question": "What test framework is used for python3_api_unitest?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "go"
-            ],
-            [
-              "Go"
-            ]
-          ],
-          "actual": "go",
-          "question": "What programming language is metaffi.compiler.python311.dll written in?"
-        },
-        {
-          "id": 20,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.bridge",
-              "metaffi.api",
-              "openjdk_idl_extractor",
-              "test_data_classes",
-              "java_tests_classes",
-              "java_tests_run",
-              "openjdk_api_cross_pl_tests"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.bridge",
-            "metaffi.api",
-            "openjdk_idl_extractor"
-          ],
-          "question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
-            ],
-            [
-              "metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"
-            ]
-          ],
-          "actual": "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll",
-          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": 30,
-          "actual": 14,
-          "question": "How many components can be built in parallel because they have zero inter-component dependencies?"
-        },
-        {
-          "id": 23,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "python_runtime_test.exe"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "cdts_java_test.exe",
-            "openjdk_api_test.exe"
-          ],
-          "question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "python_runtime_test.exe",
-              "metaffi.idl.python311.dll",
-              "python311_idl_plugin_test.exe",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "metaffi.compiler.python311.dll",
-            "python311_idl_plugin_test.exe",
-            "python_runtime_test.exe",
-            "metaffi.idl.python311.dll"
-          ],
-          "question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.openjdk.dll",
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "metaffi.idl.openjdk.dll",
-              "metaffi.compiler.openjdk.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.dll",
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "openjdk_api_test.exe",
-            "cdts_java_test.exe",
-            "metaffi.idl.openjdk.dll",
-            "metaffi.compiler.openjdk.dll"
-          ],
-          "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "metaffi.idl.python311.dll",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "metaffi.idl.python311.dll",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 5,
-          "actual": 5
-        }
-      ],
-      "completion_time_seconds": 276.7
-    },
-    "codex_NORIG": {
-      "total_score": 21,
-      "max_score": 30,
-      "by_difficulty": {
-        "easy": {
-          "score": 8,
-          "max": 10
-        },
-        "medium": {
-          "score": 6,
-          "max": 10
-        },
-        "hard": {
-          "score": 7,
-          "max": 10
+        "cursor_RIG": {
+          "score": 1
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "MetaFFI",
-          "actual": "MetaFFI"
+      {
+        "id": 4,
+        "question": "Is enable_testing() called in this project? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "0.3.1",
-          "actual": "0.3.1"
+        "claude_RIG": {
+          "score": 1
         },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
+        "codex_NORIG": {
+          "score": 1
         },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
+        "codex_RIG": {
+          "score": 1
         },
-        {
-          "id": 5,
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 5,
+        "question": "How many .jar files are built by this project?",
+        "expected": 3,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 6,
+        "question": "How many .exe files are built? (assume Windows artifacts)",
+        "expected": 9,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
           "score": 0,
-          "expected": 4,
-          "actual": 3,
-          "question": "How many .jar files are built by this project?"
+          "actual": 8
         },
-        {
-          "id": 6,
+        "claude_RIG": {
           "score": 0,
-          "expected": 9,
-          "actual": 8,
-          "question": "How many .exe files are built?"
+          "actual": "8"
         },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 11,
-          "actual": 11
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 8
         },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": 16,
-          "actual": 16
+        "codex_RIG": {
+          "score": 0,
+          "actual": 8
         },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 8
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": 8
+        }
+      },
+      {
+        "id": 7,
+        "question": "How many .dll files are built? (assume Windows artifacts)",
+        "expected": 11,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 7
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 8,
+        "question": "How many tests are defined in total?",
+        "expected": 16,
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": 17
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 9,
+        "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)",
+        "expected": [
+          [
             "metaffi-core",
             "python311",
             "openjdk",
             "go"
-          ],
-          "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)"
+          ]
+        ],
+        "difficulty": "easy",
+        "category": "aggregator_structure",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-c",
-              "metaffi-installer"
-            ]
-          ],
-          "actual": [
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 10,
+        "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)",
+        "expected": [
+          [
             "lang-plugin-c",
             "metaffi-installer"
-          ],
-          "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)"
+          ]
+        ],
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdt.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
-              "metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
-              "metaffi-core/plugin-sdk/utils/expand_env.cpp",
-              "metaffi-core/plugin-sdk/utils/library_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 11,
+        "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)",
+        "expected": [
+          [
             "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
             "metaffi-core/plugin-sdk/runtime/cdt.cpp",
             "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
@@ -1084,45 +293,62 @@
             "metaffi-core/plugin-sdk/utils/expand_env.cpp",
             "metaffi-core/plugin-sdk/utils/library_loader.cpp",
             "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-python311/runtime/python_runtime_test.cpp",
-              "lang-plugin-python311/runtime/call_xcall.cpp",
-              "lang-plugin-python311/runtime/cdts_python3.cpp",
-              "lang-plugin-python311/runtime/host_cdts_converter.cpp",
-              "lang-plugin-python311/runtime/metaffi_package_importer.cpp",
-              "lang-plugin-python311/runtime/py_bool.cpp",
-              "lang-plugin-python311/runtime/py_bytes.cpp",
-              "lang-plugin-python311/runtime/py_float.cpp",
-              "lang-plugin-python311/runtime/py_int.cpp",
-              "lang-plugin-python311/runtime/py_list.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_callable.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_handle.cpp",
-              "lang-plugin-python311/runtime/py_object.cpp",
-              "lang-plugin-python311/runtime/py_str.cpp",
-              "lang-plugin-python311/runtime/py_tuple.cpp",
-              "lang-plugin-python311/runtime/python3_api_wrapper.cpp",
-              "lang-plugin-python311/runtime/python_api.cpp",
-              "lang-plugin-python311/runtime/utils.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 0,
           "actual": [
+            "cdts_test.cpp",
+            "cdt.cpp",
+            "cdts_traverse_construct.cpp",
+            "cdts_wrapper.cpp",
+            "metaffi_primitives.cpp",
+            "xllr_static_capi_loader.cpp",
+            "entity_path_parser.cpp",
+            "expand_env.cpp",
+            "library_loader.cpp",
+            "xllr_api_wrapper.cpp"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
+            "Shared SDK sources gathered as sdk_src from metaffi-core/plugin-sdk and its compiler/runtime/utils folders"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "cdts_test.cpp",
+            "cdt.cpp",
+            "cdts_traverse_construct.cpp",
+            "cdts_wrapper.cpp",
+            "metaffi_primitives.cpp",
+            "xllr_static_capi_loader.cpp",
+            "entity_path_parser.cpp",
+            "expand_env.cpp",
+            "library_loader.cpp",
+            "xllr_api_wrapper.cpp"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 12,
+        "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)",
+        "expected": [
+          [
             "lang-plugin-python311/runtime/python_runtime_test.cpp",
             "lang-plugin-python311/runtime/call_xcall.cpp",
             "lang-plugin-python311/runtime/cdts_python3.cpp",
@@ -1151,211 +377,618 @@
             "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
             "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
             "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 13,
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
           "score": 0,
-          "expected": [
-            [
-              "Boost.filesystem",
-              "Boost.thread"
-            ]
-          ],
+          "actual": [
+            "python_runtime_test.cpp",
+            "call_xcall.cpp",
+            "cdts_python3.cpp",
+            "host_cdts_converter.cpp",
+            "metaffi_package_importer.cpp",
+            "py_bool.cpp",
+            "py_bytes.cpp",
+            "py_float.cpp",
+            "py_int.cpp",
+            "py_list.cpp",
+            "py_metaffi_callable.cpp",
+            "py_metaffi_handle.cpp",
+            "py_object.cpp",
+            "py_str.cpp",
+            "py_tuple.cpp",
+            "python3_api_wrapper.cpp",
+            "python_api.cpp",
+            "utils.cpp",
+            "cdt.cpp",
+            "cdts_traverse_construct.cpp",
+            "cdts_wrapper.cpp",
+            "metaffi_primitives.cpp",
+            "xllr_static_capi_loader.cpp",
+            "entity_path_parser.cpp",
+            "expand_env.cpp",
+            "library_loader.cpp",
+            "xllr_api_wrapper.cpp"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "lang-plugin-python311/runtime/python_runtime_test.cpp",
+            "xllr.python311_src (all lang-plugin-python311/runtime sources except deps)",
+            "sdk_src from lang-plugin-python311/plugin-sdk (compiler/, runtime/, utils/ support code)"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "python_runtime_test.cpp",
+            "call_xcall.cpp",
+            "cdts_python3.cpp",
+            "host_cdts_converter.cpp",
+            "metaffi_package_importer.cpp",
+            "py_bool.cpp",
+            "py_bytes.cpp",
+            "py_float.cpp",
+            "py_int.cpp",
+            "py_list.cpp",
+            "py_metaffi_callable.cpp",
+            "py_metaffi_handle.cpp",
+            "py_object.cpp",
+            "py_str.cpp",
+            "py_tuple.cpp",
+            "python_api.cpp",
+            "python3_api_wrapper.cpp",
+            "utils.cpp",
+            "cdt.cpp",
+            "cdts_traverse_construct.cpp",
+            "cdts_wrapper.cpp",
+            "metaffi_primitives.cpp",
+            "xllr_static_capi_loader.cpp",
+            "entity_path_parser.cpp",
+            "expand_env.cpp",
+            "library_loader.cpp",
+            "xllr_api_wrapper.cpp"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 13,
+        "question": "What external packages does xllr.dll depend on? (Provide a list)",
+        "expected": [
+          [
+            "Boost.filesystem",
+            "Boost.thread"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
           "actual": [
             "Boost::filesystem",
             "Boost::thread"
-          ],
-          "question": "What external packages does xllr.dll depend on? (Provide a list)"
+          ]
         },
-        {
-          "id": 14,
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
           "score": 0,
-          "expected": [
-            [
-              "Boost.program_options",
-              "Boost.filesystem"
-            ],
-            [
-              "Boost.filesystem",
-              "Boost.program_options"
-            ]
+          "actual": [
+            "Boost::filesystem",
+            "Boost::thread"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "Boost::filesystem",
+            "Boost::thread"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 14,
+        "question": "What external packages does metaffi.exe depend on? (Provide a list)",
+        "expected": [
+          [
+            "Boost.program_options",
+            "Boost.filesystem"
           ],
+          [
+            "Boost.filesystem",
+            "Boost.program_options"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
           "actual": [
             "Boost::filesystem",
             "Boost::program_options"
-          ],
-          "question": "What external packages does metaffi.exe depend on? (Provide a list)"
+          ]
         },
-        {
-          "id": 15,
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
           "score": 0,
-          "expected": [
-            [
-              "gson-2.10.1.jar",
-              "asm-9.6.jar",
-              "asm-tree-9.6.jar",
-              "javaparser-core-3.24.4.jar"
-            ]
-          ],
           "actual": [
-            "libs/gson-2.10.1.jar",
-            "libs/asm-9.6.jar",
-            "libs/asm-tree-9.6.jar",
-            "libs/javaparser-core-3.24.4.jar"
-          ],
-          "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)"
+            "Boost::filesystem",
+            "Boost::program_options"
+          ]
         },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": 5,
-          "actual": 5
+        "codex_RIG": {
+          "score": 1
         },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": 7,
-          "actual": 7
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "Python"
-            ],
-            [
-              "unittest"
-            ],
-            [
-              "python"
-            ]
-          ],
-          "actual": "unittest",
-          "question": "What test framework is used for python3_api_unitest?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "go"
-            ],
-            [
-              "Go"
-            ]
-          ],
-          "actual": "Go",
-          "question": "What programming language is metaffi.compiler.python311.dll written in?"
-        },
-        {
-          "id": 20,
+        "cursor_NORIG": {
           "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.bridge",
-              "metaffi.api",
-              "openjdk_idl_extractor",
-              "test_data_classes",
-              "java_tests_classes",
-              "java_tests_run",
-              "openjdk_api_cross_pl_tests"
-            ]
+          "actual": [
+            "Boost::filesystem",
+            "Boost::program_options"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 15,
+        "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)",
+        "expected": [
+          [
+            "gson-2.10.1.jar",
+            "asm-9.6.jar",
+            "asm-tree-9.6.jar",
+            "javaparser-core-3.24.4.jar"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 16,
+        "question": "How many components depend on JNI?",
+        "expected": 5,
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 17,
+        "question": "How many components depend on doctest?",
+        "expected": 7,
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 18,
+        "question": "What test framework is used for python3_api_unitest?",
+        "expected": [
+          [
+            "Python"
           ],
+          [
+            "unittest"
+          ],
+          [
+            "python"
+          ],
+          [
+            "pytest"
+          ],
+          [
+            "Python unittest"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 19,
+        "question": "What programming language is metaffi.compiler.python311.dll written in?",
+        "expected": [
+          [
+            "go"
+          ],
+          [
+            "Go"
+          ],
+          [
+            "golang"
+          ],
+          [
+            "Golang"
+          ],
+          [
+            "GO"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 20,
+        "question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)",
+        "expected": [
+          [
+            "xllr.openjdk.bridge",
+            "metaffi.api",
+            "openjdk_idl_extractor",
+            "test_data_classes",
+            "java_tests_classes",
+            "java_tests_run",
+            "openjdk_api_cross_pl_tests"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 0,
           "actual": [
             "xllr.openjdk.bridge",
             "metaffi.api"
-          ],
-          "question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)"
+          ]
         },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
-            ],
-            [
-              "metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"
-            ]
-          ],
-          "actual": "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll",
-          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')"
-        },
-        {
-          "id": 22,
+        "claude_RIG": {
           "score": 0,
-          "expected": 30,
-          "actual": 14,
-          "question": "How many components can be built in parallel because they have zero inter-component dependencies?"
+          "actual": [
+            "xllr.openjdk.bridge",
+            "metaffi.api"
+          ]
         },
-        {
-          "id": 23,
+        "codex_NORIG": {
           "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "python_runtime_test.exe"
-            ]
+          "actual": [
+            "xllr.openjdk.bridge",
+            "metaffi.api"
+          ]
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": [
+            "metaffi.api",
+            "xllr.openjdk.bridge"
+          ]
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "openjdk_idl_extractor",
+            "metaffi.api",
+            "xllr.openjdk.bridge"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "xllr.openjdk.bridge",
+            "metaffi.api",
+            "openjdk_idl_extractor",
+            "test_data_classes",
+            "java_tests_classes",
+            "java_tests_run"
+          ]
+        }
+      },
+      {
+        "id": 21,
+        "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')",
+        "expected": [
+          [
+            "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
           ],
+          [
+            "metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": "metaffi.api.jar depends on xllr.openjdk.bridge.jar which depends on xllr.openjdk.jni.bridge.dll which depends on xllr.openjdk.dll"
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": "metaffi.api.jar -> xllr.openjdk.bridge.jar -> xllr.openjdk.jni.bridge.dll -> xllr.openjdk.dll"
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": "metaffi.api.jar -> xllr.openjdk.bridge.jar -> xllr.openjdk.jni.bridge.dll -> xllr.openjdk.dll"
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll \u2192 SDK (sdk_src)"
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 22,
+        "question": "How many components can be built in parallel because they have zero inter-component dependencies?",
+        "expected": 30,
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": 14
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": "24"
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 14
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": 25
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 14
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": 1
+        }
+      },
+      {
+        "id": 23,
+        "question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)",
+        "expected": [
+          [
+            "xllr.openjdk.jni.bridge.dll",
+            "xllr.openjdk.bridge.jar",
+            "metaffi.api.jar",
+            "openjdk_api_test.exe",
+            "cdts_java_test.exe",
+            "python_runtime_test.exe"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
           "actual": [
             "xllr.openjdk.jni.bridge.dll",
             "xllr.openjdk.bridge.jar",
             "metaffi.api.jar",
             "cdts_java_test.exe",
             "openjdk_api_test.exe"
-          ],
-          "question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)"
+          ]
         },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "python_runtime_test.exe",
-              "metaffi.idl.python311.dll",
-              "python311_idl_plugin_test.exe",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
+        "claude_RIG": {
+          "score": 0,
           "actual": [
+            "cdts_java_test.exe",
+            "openjdk_api_test.exe",
+            "xllr.openjdk.jni.bridge.dll",
+            "xllr.openjdk.bridge.jar",
+            "metaffi.api.jar"
+          ]
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "xllr.openjdk.jni.bridge.dll",
+            "xllr.openjdk.bridge.jar",
+            "metaffi.api.jar",
+            "cdts_java_test.exe",
+            "openjdk_api_test.exe"
+          ]
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": [
+            "cdts_java_test.exe",
+            "openjdk_api_test.exe",
+            "xllr.openjdk.jni.bridge.dll",
+            "xllr.openjdk.bridge.jar",
+            "metaffi.api.jar"
+          ]
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "xllr.openjdk.jni.bridge.dll",
+            "xllr.openjdk.bridge.jar",
+            "metaffi.api.jar",
+            "cdts_java_test.exe",
+            "openjdk_api_test.exe"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "cdts_java_test.exe",
+            "openjdk_api_test.exe",
+            "xllr.openjdk.jni.bridge.dll"
+          ]
+        }
+      },
+      {
+        "id": 24,
+        "question": "Can xllr.python311.dll and xllr.openjdk.dll be built in parallel? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 25,
+        "question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)",
+        "expected": [
+          [
             "xllr.python311.dll",
             "python_runtime_test.exe",
             "metaffi.idl.python311.dll",
             "python311_idl_plugin_test.exe",
             "metaffi.compiler.python311.dll"
-          ],
-          "question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "aggregator_structure",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.openjdk.dll",
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "metaffi.idl.openjdk.dll",
-              "metaffi.compiler.openjdk.dll"
-            ]
-          ],
-          "actual": [
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 26,
+        "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)",
+        "expected": [
+          [
             "xllr.openjdk.dll",
             "xllr.openjdk.jni.bridge.dll",
             "xllr.openjdk.bridge.jar",
@@ -1364,78 +997,255 @@
             "cdts_java_test.exe",
             "metaffi.idl.openjdk.dll",
             "metaffi.compiler.openjdk.dll"
-          ],
-          "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "aggregator_structure",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 27,
+        "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)",
+        "expected": [
+          [
             "metaffi-core",
             "python311",
             "openjdk",
             "go"
-          ],
-          "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "aggregator_structure",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "metaffi.idl.python311.dll",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 28,
+        "question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)",
+        "expected": [
+          [
             "xllr.python311.dll",
             "metaffi.idl.python311.dll",
             "metaffi.compiler.python311.dll"
-          ],
-          "question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "plugin_architecture",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 29,
+        "question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)",
+        "expected": [
+          [
             "python311",
             "openjdk",
             "go"
-          ],
-          "question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "plugin_architecture",
+        "claude_NORIG": {
+          "score": 1
         },
-        {
-          "id": 30,
-          "score": 0,
-          "expected": 5,
-          "actual": "5 (MetaFFI \u2192 openjdk \u2192 metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll)",
-          "question": "What is the maximum dependency depth in the project? (i.e., the longest chain from any component to its deepest dependency)"
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
         }
-      ],
-      "completion_time_seconds": 434.58
+      },
+      {
+        "id": 30,
+        "question": "What is the maximum dependency depth in the project? (i.e., the longest chain from any component to its deepest dependency)",
+        "expected": 5,
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": 4
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": "6 (MetaFFI -> openjdk -> metaffi.api.jar -> xllr.openjdk.bridge.jar -> xllr.openjdk.jni.bridge.dll -> xllr.openjdk.dll)"
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": "6 (MetaFFI -> openjdk -> metaffi.api.jar -> xllr.openjdk.bridge.jar -> xllr.openjdk.jni.bridge.dll -> xllr.openjdk.dll)"
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 3
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": 4
+        }
+      }
+    ],
+    "claude_NORIG": {
+      "total_score": 19,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 5,
+          "max": 10
+        },
+        "hard": {
+          "score": 6,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 293.0
+    },
+    "claude_RIG": {
+      "total_score": 26,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 9,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 96.0
+    },
+    "codex_NORIG": {
+      "total_score": 20,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 5,
+          "max": 10
+        },
+        "hard": {
+          "score": 6,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 383.0
     },
     "codex_RIG": {
       "total_score": 24,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 9,
+          "max": 10
+        },
+        "hard": {
+          "score": 6,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 187.0
+    },
+    "cursor_NORIG": {
+      "total_score": 19,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
           "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 5,
+          "max": 10
+        },
+        "hard": {
+          "score": 6,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 98.0
+    },
+    "cursor_RIG": {
+      "total_score": 25,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
           "max": 10
         },
         "medium": {
@@ -1447,1410 +1257,26 @@
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "MetaFFI",
-          "actual": "MetaFFI"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "0.3.1",
-          "actual": "0.3.1"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 5,
-          "score": 0,
-          "expected": 4,
-          "actual": 3,
-          "question": "How many .jar files are built by this project?"
-        },
-        {
-          "id": 6,
-          "score": 0,
-          "expected": 9,
-          "actual": 8,
-          "question": "How many .exe files are built?"
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 11,
-          "actual": 11
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": 16,
-          "actual": 16
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-c",
-              "metaffi-installer"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-c",
-            "metaffi-installer"
-          ],
-          "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)"
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdt.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
-              "metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
-              "metaffi-core/plugin-sdk/utils/expand_env.cpp",
-              "metaffi-core/plugin-sdk/utils/library_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_test.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdt.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_wrapper.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\metaffi_primitives.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\xllr_capi_loader.c",
-            "metaffi-core\\plugin-sdk\\runtime\\xllr_static_capi_loader.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\entity_path_parser.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\expand_env.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\library_loader.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-python311/runtime/python_runtime_test.cpp",
-              "lang-plugin-python311/runtime/call_xcall.cpp",
-              "lang-plugin-python311/runtime/cdts_python3.cpp",
-              "lang-plugin-python311/runtime/host_cdts_converter.cpp",
-              "lang-plugin-python311/runtime/metaffi_package_importer.cpp",
-              "lang-plugin-python311/runtime/py_bool.cpp",
-              "lang-plugin-python311/runtime/py_bytes.cpp",
-              "lang-plugin-python311/runtime/py_float.cpp",
-              "lang-plugin-python311/runtime/py_int.cpp",
-              "lang-plugin-python311/runtime/py_list.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_callable.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_handle.cpp",
-              "lang-plugin-python311/runtime/py_object.cpp",
-              "lang-plugin-python311/runtime/py_str.cpp",
-              "lang-plugin-python311/runtime/py_tuple.cpp",
-              "lang-plugin-python311/runtime/python3_api_wrapper.cpp",
-              "lang-plugin-python311/runtime/python_api.cpp",
-              "lang-plugin-python311/runtime/utils.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-python311\\runtime\\python_runtime_test.cpp",
-            "lang-plugin-python311\\runtime\\call_xcall.cpp",
-            "lang-plugin-python311\\runtime\\cdts_python3.cpp",
-            "lang-plugin-python311\\runtime\\host_cdts_converter.cpp",
-            "lang-plugin-python311\\runtime\\metaffi_package_importer.cpp",
-            "lang-plugin-python311\\runtime\\py_bool.cpp",
-            "lang-plugin-python311\\runtime\\py_bytes.cpp",
-            "lang-plugin-python311\\runtime\\py_float.cpp",
-            "lang-plugin-python311\\runtime\\py_int.cpp",
-            "lang-plugin-python311\\runtime\\py_list.cpp",
-            "lang-plugin-python311\\runtime\\py_metaffi_callable.cpp",
-            "lang-plugin-python311\\runtime\\py_metaffi_handle.cpp",
-            "lang-plugin-python311\\runtime\\py_object.cpp",
-            "lang-plugin-python311\\runtime\\py_str.cpp",
-            "lang-plugin-python311\\runtime\\py_tuple.cpp",
-            "lang-plugin-python311\\runtime\\python3_api_wrapper.cpp",
-            "lang-plugin-python311\\runtime\\python_api.cpp",
-            "lang-plugin-python311\\runtime\\utils.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdt.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_wrapper.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\metaffi_primitives.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\xllr_capi_loader.c",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\xllr_static_capi_loader.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\entity_path_parser.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\expand_env.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\library_loader.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "Boost.filesystem",
-              "Boost.thread"
-            ]
-          ],
-          "actual": [
-            "Boost.thread",
-            "Boost.filesystem"
-          ],
-          "question": "What external packages does xllr.dll depend on? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "Boost.program_options",
-              "Boost.filesystem"
-            ],
-            [
-              "Boost.filesystem",
-              "Boost.program_options"
-            ]
-          ],
-          "actual": [
-            "Boost.filesystem",
-            "Boost.program_options"
-          ],
-          "question": "What external packages does metaffi.exe depend on? (Provide a list)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "gson-2.10.1.jar",
-              "asm-9.6.jar",
-              "asm-tree-9.6.jar",
-              "javaparser-core-3.24.4.jar"
-            ]
-          ],
-          "actual": [
-            "asm-9.6.jar",
-            "gson-2.10.1.jar",
-            "javaparser-core-3.24.4.jar",
-            "asm-tree-9.6.jar"
-          ],
-          "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": 5,
-          "actual": 5
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": 7,
-          "actual": 7
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "Python"
-            ],
-            [
-              "unittest"
-            ],
-            [
-              "python"
-            ]
-          ],
-          "actual": "Python",
-          "question": "What test framework is used for python3_api_unitest?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "go"
-            ],
-            [
-              "Go"
-            ]
-          ],
-          "actual": "go",
-          "question": "What programming language is metaffi.compiler.python311.dll written in?"
-        },
-        {
-          "id": 20,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.bridge",
-              "metaffi.api",
-              "openjdk_idl_extractor",
-              "test_data_classes",
-              "java_tests_classes",
-              "java_tests_run",
-              "openjdk_api_cross_pl_tests"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.bridge",
-            "metaffi.api"
-          ],
-          "question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)"
-        },
-        {
-          "id": 21,
-          "score": 0,
-          "expected": [
-            [
-              "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
-            ],
-            [
-              "metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"
-            ]
-          ],
-          "actual": "metaffi.api.jar -> xllr.openjdk.bridge.jar -> xllr.openjdk.jni.bridge.dll -> xllr.openjdk.dll",
-          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": 30,
-          "actual": 25,
-          "question": "How many components can be built in parallel because they have zero inter-component dependencies?"
-        },
-        {
-          "id": 23,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "python_runtime_test.exe"
-            ]
-          ],
-          "actual": [
-            "cdts_java_test.exe",
-            "openjdk_api_test.exe",
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar"
-          ],
-          "question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "python_runtime_test.exe",
-              "metaffi.idl.python311.dll",
-              "python311_idl_plugin_test.exe",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "metaffi.compiler.python311.dll",
-            "python311_idl_plugin_test.exe",
-            "python_runtime_test.exe",
-            "metaffi.idl.python311.dll"
-          ],
-          "question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.openjdk.dll",
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "metaffi.idl.openjdk.dll",
-              "metaffi.compiler.openjdk.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.dll",
-            "metaffi.idl.openjdk.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "xllr.openjdk.jni.bridge.dll",
-            "openjdk_api_test.exe",
-            "cdts_java_test.exe",
-            "metaffi.compiler.openjdk.dll"
-          ],
-          "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "metaffi.idl.python311.dll",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "metaffi.idl.python311.dll",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 5,
-          "actual": 5
-        }
-      ],
-      "completion_time_seconds": 140.0
-    },
-    "cursor_NORIG": {
-      "total_score": 18,
-      "max_score": 30,
-      "by_difficulty": {
-        "easy": {
-          "score": 7,
-          "max": 10
-        },
-        "medium": {
-          "score": 4,
-          "max": 10
-        },
-        "hard": {
-          "score": 7,
-          "max": 10
-        }
-      },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "MetaFFI",
-          "actual": "MetaFFI"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "0.3.1",
-          "actual": "0.3.1"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 5,
-          "score": 0,
-          "expected": 4,
-          "actual": 3,
-          "question": "How many .jar files are built by this project?"
-        },
-        {
-          "id": 6,
-          "score": 0,
-          "expected": 9,
-          "actual": 8,
-          "question": "How many .exe files are built?"
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 11,
-          "actual": 11
-        },
-        {
-          "id": 8,
-          "score": 0,
-          "expected": 16,
-          "actual": 17,
-          "question": "How many tests are defined in total?"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-c",
-              "metaffi-installer"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-c",
-            "metaffi-installer"
-          ],
-          "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)"
-        },
-        {
-          "id": 11,
-          "score": 0,
-          "expected": [
-            [
-              "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdt.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
-              "metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
-              "metaffi-core/plugin-sdk/utils/expand_env.cpp",
-              "metaffi-core/plugin-sdk/utils/library_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "runtime/cdts_test.cpp",
-            "sdk_src"
-          ],
-          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 12,
-          "score": 0,
-          "expected": [
-            [
-              "lang-plugin-python311/runtime/python_runtime_test.cpp",
-              "lang-plugin-python311/runtime/call_xcall.cpp",
-              "lang-plugin-python311/runtime/cdts_python3.cpp",
-              "lang-plugin-python311/runtime/host_cdts_converter.cpp",
-              "lang-plugin-python311/runtime/metaffi_package_importer.cpp",
-              "lang-plugin-python311/runtime/py_bool.cpp",
-              "lang-plugin-python311/runtime/py_bytes.cpp",
-              "lang-plugin-python311/runtime/py_float.cpp",
-              "lang-plugin-python311/runtime/py_int.cpp",
-              "lang-plugin-python311/runtime/py_list.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_callable.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_handle.cpp",
-              "lang-plugin-python311/runtime/py_object.cpp",
-              "lang-plugin-python311/runtime/py_str.cpp",
-              "lang-plugin-python311/runtime/py_tuple.cpp",
-              "lang-plugin-python311/runtime/python3_api_wrapper.cpp",
-              "lang-plugin-python311/runtime/python_api.cpp",
-              "lang-plugin-python311/runtime/utils.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "python_runtime_test.cpp",
-            "xllr.python311_src",
-            "sdk_src"
-          ],
-          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 13,
-          "score": 0,
-          "expected": [
-            [
-              "Boost.filesystem",
-              "Boost.thread"
-            ]
-          ],
-          "actual": [
-            "Boost::filesystem",
-            "Boost::thread"
-          ],
-          "question": "What external packages does xllr.dll depend on? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 0,
-          "expected": [
-            [
-              "Boost.program_options",
-              "Boost.filesystem"
-            ],
-            [
-              "Boost.filesystem",
-              "Boost.program_options"
-            ]
-          ],
-          "actual": [
-            "Boost::filesystem",
-            "Boost::program_options"
-          ],
-          "question": "What external packages does metaffi.exe depend on? (Provide a list)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "gson-2.10.1.jar",
-              "asm-9.6.jar",
-              "asm-tree-9.6.jar",
-              "javaparser-core-3.24.4.jar"
-            ]
-          ],
-          "actual": [
-            "gson-2.10.1.jar",
-            "asm-9.6.jar",
-            "asm-tree-9.6.jar",
-            "javaparser-core-3.24.4.jar"
-          ],
-          "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": 5,
-          "actual": 5
-        },
-        {
-          "id": 17,
-          "score": 0,
-          "expected": 7,
-          "actual": 16,
-          "question": "How many components depend on doctest?"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "Python"
-            ],
-            [
-              "unittest"
-            ],
-            [
-              "python"
-            ]
-          ],
-          "actual": "unittest",
-          "question": "What test framework is used for python3_api_unitest?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "go"
-            ],
-            [
-              "Go"
-            ]
-          ],
-          "actual": "Go",
-          "question": "What programming language is metaffi.compiler.python311.dll written in?"
-        },
-        {
-          "id": 20,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.bridge",
-              "metaffi.api",
-              "openjdk_idl_extractor",
-              "test_data_classes",
-              "java_tests_classes",
-              "java_tests_run",
-              "openjdk_api_cross_pl_tests"
-            ]
-          ],
-          "actual": [
-            "metaffi.api",
-            "xllr.openjdk.bridge"
-          ],
-          "question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)"
-        },
-        {
-          "id": 21,
-          "score": 0,
-          "expected": [
-            [
-              "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
-            ],
-            [
-              "metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"
-            ]
-          ],
-          "actual": "metaffi.api.jar ? xllr.openjdk.bridge.jar ? xllr.openjdk.jni.bridge.dll ? xllr.openjdk.dll ? xllr.dll",
-          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": 30,
-          "actual": 4,
-          "question": "How many components can be built in parallel because they have zero inter-component dependencies?"
-        },
-        {
-          "id": 23,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "python_runtime_test.exe"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "cdts_java_test.exe",
-            "openjdk_api_test.exe",
-            "openjdk"
-          ],
-          "question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "python_runtime_test.exe",
-              "metaffi.idl.python311.dll",
-              "python311_idl_plugin_test.exe",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "python_runtime_test.exe",
-            "metaffi.idl.python311.dll",
-            "python311_idl_plugin_test.exe",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.openjdk.dll",
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "metaffi.idl.openjdk.dll",
-              "metaffi.compiler.openjdk.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.dll",
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "openjdk_api_test.exe",
-            "cdts_java_test.exe",
-            "metaffi.idl.openjdk.dll",
-            "metaffi.compiler.openjdk.dll"
-          ],
-          "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "metaffi.idl.python311.dll",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "metaffi.idl.python311.dll",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 5,
-          "actual": 5
-        }
-      ],
-      "completion_time_seconds": 78.03
-    },
-    "cursor_RIG": {
-      "total_score": 21,
-      "max_score": 30,
-      "by_difficulty": {
-        "easy": {
-          "score": 8,
-          "max": 10
-        },
-        "medium": {
-          "score": 7,
-          "max": 10
-        },
-        "hard": {
-          "score": 6,
-          "max": 10
-        }
-      },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "MetaFFI",
-          "actual": "MetaFFI"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "0.3.1",
-          "actual": "0.3.1"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": "3.10",
-          "actual": "3.10"
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 5,
-          "score": 0,
-          "expected": 4,
-          "actual": 3,
-          "question": "How many .jar files are built by this project?"
-        },
-        {
-          "id": 6,
-          "score": 0,
-          "expected": 9,
-          "actual": 8,
-          "question": "How many .exe files are built?"
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 11,
-          "actual": 11
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": 16,
-          "actual": 16
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "metaffi-core",
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-c",
-              "metaffi-installer"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-c",
-            "metaffi-installer"
-          ],
-          "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)"
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core/plugin-sdk/runtime/cdts_test.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdt.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "metaffi-core/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "metaffi-core/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "metaffi-core/plugin-sdk/runtime/xllr_capi_loader.c",
-              "metaffi-core/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/entity_path_parser.cpp",
-              "metaffi-core/plugin-sdk/utils/expand_env.cpp",
-              "metaffi-core/plugin-sdk/utils/library_loader.cpp",
-              "metaffi-core/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_test.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdt.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\cdts_wrapper.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\metaffi_primitives.cpp",
-            "metaffi-core\\plugin-sdk\\runtime\\xllr_capi_loader.c",
-            "metaffi-core\\plugin-sdk\\runtime\\xllr_static_capi_loader.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\entity_path_parser.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\expand_env.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\library_loader.cpp",
-            "metaffi-core\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "lang-plugin-python311/runtime/python_runtime_test.cpp",
-              "lang-plugin-python311/runtime/call_xcall.cpp",
-              "lang-plugin-python311/runtime/cdts_python3.cpp",
-              "lang-plugin-python311/runtime/host_cdts_converter.cpp",
-              "lang-plugin-python311/runtime/metaffi_package_importer.cpp",
-              "lang-plugin-python311/runtime/py_bool.cpp",
-              "lang-plugin-python311/runtime/py_bytes.cpp",
-              "lang-plugin-python311/runtime/py_float.cpp",
-              "lang-plugin-python311/runtime/py_int.cpp",
-              "lang-plugin-python311/runtime/py_list.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_callable.cpp",
-              "lang-plugin-python311/runtime/py_metaffi_handle.cpp",
-              "lang-plugin-python311/runtime/py_object.cpp",
-              "lang-plugin-python311/runtime/py_str.cpp",
-              "lang-plugin-python311/runtime/py_tuple.cpp",
-              "lang-plugin-python311/runtime/python3_api_wrapper.cpp",
-              "lang-plugin-python311/runtime/python_api.cpp",
-              "lang-plugin-python311/runtime/utils.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdt.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_traverse_construct.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/cdts_wrapper.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/metaffi_primitives.cpp",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_capi_loader.c",
-              "lang-plugin-python311/plugin-sdk/runtime/xllr_static_capi_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/entity_path_parser.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/expand_env.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/library_loader.cpp",
-              "lang-plugin-python311/plugin-sdk/utils/xllr_api_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "lang-plugin-python311\\runtime\\python_runtime_test.cpp",
-            "lang-plugin-python311\\runtime\\call_xcall.cpp",
-            "lang-plugin-python311\\runtime\\cdts_python3.cpp",
-            "lang-plugin-python311\\runtime\\host_cdts_converter.cpp",
-            "lang-plugin-python311\\runtime\\metaffi_package_importer.cpp",
-            "lang-plugin-python311\\runtime\\py_bool.cpp",
-            "lang-plugin-python311\\runtime\\py_bytes.cpp",
-            "lang-plugin-python311\\runtime\\py_float.cpp",
-            "lang-plugin-python311\\runtime\\py_int.cpp",
-            "lang-plugin-python311\\runtime\\py_list.cpp",
-            "lang-plugin-python311\\runtime\\py_metaffi_callable.cpp",
-            "lang-plugin-python311\\runtime\\py_metaffi_handle.cpp",
-            "lang-plugin-python311\\runtime\\py_object.cpp",
-            "lang-plugin-python311\\runtime\\py_str.cpp",
-            "lang-plugin-python311\\runtime\\py_tuple.cpp",
-            "lang-plugin-python311\\runtime\\python3_api_wrapper.cpp",
-            "lang-plugin-python311\\runtime\\python_api.cpp",
-            "lang-plugin-python311\\runtime\\utils.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdt.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_traverse_construct.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\cdts_wrapper.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\metaffi_primitives.cpp",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\xllr_capi_loader.c",
-            "lang-plugin-python311\\plugin-sdk\\runtime\\xllr_static_capi_loader.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\entity_path_parser.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\expand_env.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\library_loader.cpp",
-            "lang-plugin-python311\\plugin-sdk\\utils\\xllr_api_wrapper.cpp"
-          ],
-          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "Boost.filesystem",
-              "Boost.thread"
-            ]
-          ],
-          "actual": [
-            "Boost.filesystem",
-            "Boost.thread"
-          ],
-          "question": "What external packages does xllr.dll depend on? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 0,
-          "expected": [
-            [
-              "Boost.program_options",
-              "Boost.filesystem"
-            ],
-            [
-              "Boost.filesystem",
-              "Boost.program_options"
-            ]
-          ],
-          "actual": [
-            "Boost.program_options",
-            "doctest"
-          ],
-          "question": "What external packages does metaffi.exe depend on? (Provide a list)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "gson-2.10.1.jar",
-              "asm-9.6.jar",
-              "asm-tree-9.6.jar",
-              "javaparser-core-3.24.4.jar"
-            ]
-          ],
-          "actual": [
-            "gson-2.10.1.jar",
-            "asm-9.6.jar",
-            "asm-tree-9.6.jar",
-            "javaparser-core-3.24.4.jar"
-          ],
-          "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": 5,
-          "actual": 5
-        },
-        {
-          "id": 17,
-          "score": 0,
-          "expected": 7,
-          "actual": 3,
-          "question": "How many components depend on doctest?"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "Python"
-            ],
-            [
-              "unittest"
-            ],
-            [
-              "python"
-            ]
-          ],
-          "actual": "Python",
-          "question": "What test framework is used for python3_api_unitest?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "go"
-            ],
-            [
-              "Go"
-            ]
-          ],
-          "actual": "go",
-          "question": "What programming language is metaffi.compiler.python311.dll written in?"
-        },
-        {
-          "id": 20,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.bridge",
-              "metaffi.api",
-              "openjdk_idl_extractor",
-              "test_data_classes",
-              "java_tests_classes",
-              "java_tests_run",
-              "openjdk_api_cross_pl_tests"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.bridge",
-            "metaffi.api",
-            "openjdk_idl_extractor"
-          ],
-          "question": "Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)"
-        },
-        {
-          "id": 21,
-          "score": 0,
-          "expected": [
-            [
-              "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll"
-            ],
-            [
-              "metaffi.api depends on xllr.openjdk.bridge which depends on xllr.openjdk.jni.bridge which depends on xllr.openjdk"
-            ]
-          ],
-          "actual": "metaffi.api.jar ? xllr.openjdk.bridge.jar ? xllr.openjdk.jni.bridge.dll ? xllr.openjdk.dll",
-          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": 30,
-          "actual": 7,
-          "question": "How many components can be built in parallel because they have zero inter-component dependencies?"
-        },
-        {
-          "id": 23,
-          "score": 0,
-          "expected": [
-            [
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "python_runtime_test.exe"
-            ]
-          ],
-          "actual": [
-            "cdts_java_test.exe",
-            "openjdk_api_test.exe",
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar"
-          ],
-          "question": "If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "python_runtime_test.exe",
-              "metaffi.idl.python311.dll",
-              "python311_idl_plugin_test.exe",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "python_runtime_test.exe",
-            "metaffi.idl.python311.dll",
-            "python311_idl_plugin_test.exe",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.openjdk.dll",
-              "xllr.openjdk.jni.bridge.dll",
-              "xllr.openjdk.bridge.jar",
-              "metaffi.api.jar",
-              "openjdk_api_test.exe",
-              "cdts_java_test.exe",
-              "metaffi.idl.openjdk.dll",
-              "metaffi.compiler.openjdk.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.openjdk.dll",
-            "xllr.openjdk.jni.bridge.dll",
-            "xllr.openjdk.bridge.jar",
-            "metaffi.api.jar",
-            "openjdk_api_test.exe",
-            "cdts_java_test.exe",
-            "metaffi.idl.openjdk.dll",
-            "metaffi.compiler.openjdk.dll"
-          ],
-          "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "metaffi-core",
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "go",
-            "python311",
-            "metaffi-core",
-            "openjdk"
-          ],
-          "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": [
-            [
-              "xllr.python311.dll",
-              "metaffi.idl.python311.dll",
-              "metaffi.compiler.python311.dll"
-            ]
-          ],
-          "actual": [
-            "xllr.python311.dll",
-            "metaffi.idl.python311.dll",
-            "metaffi.compiler.python311.dll"
-          ],
-          "question": "What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "python311",
-              "openjdk",
-              "go"
-            ]
-          ],
-          "actual": [
-            "python311",
-            "openjdk",
-            "go"
-          ],
-          "question": "Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)"
-        },
-        {
-          "id": 30,
-          "score": 0,
-          "expected": 5,
-          "actual": 4,
-          "question": "What is the maximum dependency depth in the project? (i.e., the longest chain from any component to its deepest dependency)"
-        }
-      ],
-      "completion_time_seconds": 33.93
+      "completion_time_seconds": 44.0
     }
   },
   "analysis": {
     "by_agent": {
       "claude": {
         "with_rig": {
-          "score": 23,
+          "score": 26,
           "max_score": 30,
-          "percentage": 76.7,
+          "percentage": 86.7,
           "by_difficulty": {
             "easy": {
-              "score": 8,
+              "score": 9,
               "max": 10,
-              "percentage": 80.0
+              "percentage": 90.0
             },
             "medium": {
-              "score": 7,
+              "score": 9,
               "max": 10,
-              "percentage": 70.0
+              "percentage": 90.0
             },
             "hard": {
               "score": 8,
@@ -2860,101 +1286,93 @@
           }
         },
         "without_rig": {
-          "score": 14,
+          "score": 19,
           "max_score": 30,
-          "percentage": 46.7,
+          "percentage": 63.3,
           "by_difficulty": {
             "easy": {
-              "score": 6,
+              "score": 8,
               "max": 10,
-              "percentage": 60.0
+              "percentage": 80.0
             },
             "medium": {
-              "score": 3,
-              "max": 10,
-              "percentage": 30.0
-            },
-            "hard": {
               "score": 5,
               "max": 10,
               "percentage": 50.0
+            },
+            "hard": {
+              "score": 6,
+              "max": 10,
+              "percentage": 60.0
             }
           }
         },
         "rig_improvement": {
-          "absolute": 9,
-          "percentage": 30.0,
+          "absolute": 7,
+          "percentage": 23.3,
           "by_difficulty": {
             "easy": {
-              "absolute": 2,
-              "percentage": 20.0
+              "absolute": 1,
+              "percentage": 10.0
             },
             "medium": {
               "absolute": 4,
               "percentage": 40.0
             },
             "hard": {
-              "absolute": 3,
-              "percentage": 30.0
+              "absolute": 2,
+              "percentage": 20.0
             }
           }
         },
         "mistakes_without_rig": {
-          "total": 16,
+          "total": 11,
           "by_difficulty": {
             "easy": {
-              "count": 4,
-              "percentage": 40.0,
+              "count": 2,
+              "percentage": 20.0,
               "question_ids": [
-                5,
                 6,
-                7,
                 8
               ]
             },
             "medium": {
-              "count": 7,
-              "percentage": 70.0,
+              "count": 5,
+              "percentage": 50.0,
               "question_ids": [
                 11,
                 12,
                 13,
                 14,
-                16,
-                17,
                 20
               ]
             },
             "hard": {
-              "count": 5,
-              "percentage": 50.0,
+              "count": 4,
+              "percentage": 40.0,
               "question_ids": [
                 21,
                 22,
                 23,
-                26,
                 30
               ]
             }
           }
         },
         "mistakes_with_rig": {
-          "total": 7,
+          "total": 4,
           "by_difficulty": {
             "easy": {
-              "count": 2,
-              "percentage": 20.0,
+              "count": 1,
+              "percentage": 10.0,
               "question_ids": [
-                5,
                 6
               ]
             },
             "medium": {
-              "count": 3,
-              "percentage": 30.0,
+              "count": 1,
+              "percentage": 10.0,
               "question_ids": [
-                16,
-                17,
                 20
               ]
             },
@@ -2969,24 +1387,22 @@
           }
         },
         "questions_fixed_by_rig": [
-          7,
           8,
           11,
           12,
           13,
           14,
           21,
-          26,
           30
         ],
         "questions_broken_by_rig": [],
         "timing": {
-          "time_with_rig_seconds": 276.7,
-          "time_without_rig_seconds": 356.92,
-          "time_saved_seconds": 80.22,
-          "time_reduction_percentage": 22.5,
-          "efficiency_with_rig_score_per_second": 0.0831,
-          "efficiency_without_rig_score_per_second": 0.0392
+          "time_with_rig_seconds": 96.0,
+          "time_without_rig_seconds": 293.0,
+          "time_saved_seconds": 197.0,
+          "time_reduction_percentage": 67.2,
+          "efficiency_with_rig_score_per_second": 0.2708,
+          "efficiency_without_rig_score_per_second": 0.0648
         }
       },
       "codex": {
@@ -2996,9 +1412,150 @@
           "percentage": 80.0,
           "by_difficulty": {
             "easy": {
-              "score": 8,
+              "score": 9,
               "max": 10,
-              "percentage": 80.0
+              "percentage": 90.0
+            },
+            "medium": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "hard": {
+              "score": 6,
+              "max": 10,
+              "percentage": 60.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 20,
+          "max_score": 30,
+          "percentage": 66.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "medium": {
+              "score": 5,
+              "max": 10,
+              "percentage": 50.0
+            },
+            "hard": {
+              "score": 6,
+              "max": 10,
+              "percentage": 60.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 4,
+          "percentage": 13.3,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 4,
+              "percentage": 40.0
+            },
+            "hard": {
+              "absolute": 0,
+              "percentage": 0.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 10,
+          "by_difficulty": {
+            "easy": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                6
+              ]
+            },
+            "medium": {
+              "count": 5,
+              "percentage": 50.0,
+              "question_ids": [
+                11,
+                12,
+                13,
+                14,
+                20
+              ]
+            },
+            "hard": {
+              "count": 4,
+              "percentage": 40.0,
+              "question_ids": [
+                21,
+                22,
+                23,
+                30
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 6,
+          "by_difficulty": {
+            "easy": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                6
+              ]
+            },
+            "medium": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                20
+              ]
+            },
+            "hard": {
+              "count": 4,
+              "percentage": 40.0,
+              "question_ids": [
+                21,
+                22,
+                23,
+                30
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 187.0,
+          "time_without_rig_seconds": 383.0,
+          "time_saved_seconds": 196.0,
+          "time_reduction_percentage": 51.2,
+          "efficiency_with_rig_score_per_second": 0.1283,
+          "efficiency_without_rig_score_per_second": 0.0522
+        }
+      },
+      "cursor": {
+        "with_rig": {
+          "score": 25,
+          "max_score": 30,
+          "percentage": 83.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
             },
             "medium": {
               "score": 9,
@@ -3013,9 +1570,9 @@
           }
         },
         "without_rig": {
-          "score": 21,
+          "score": 19,
           "max_score": 30,
-          "percentage": 70.0,
+          "percentage": 63.3,
           "by_difficulty": {
             "easy": {
               "score": 8,
@@ -3023,60 +1580,62 @@
               "percentage": 80.0
             },
             "medium": {
+              "score": 5,
+              "max": 10,
+              "percentage": 50.0
+            },
+            "hard": {
               "score": 6,
               "max": 10,
               "percentage": 60.0
-            },
-            "hard": {
-              "score": 7,
-              "max": 10,
-              "percentage": 70.0
             }
           }
         },
         "rig_improvement": {
-          "absolute": 3,
-          "percentage": 10.0,
+          "absolute": 6,
+          "percentage": 20.0,
           "by_difficulty": {
             "easy": {
-              "absolute": 0,
-              "percentage": 0.0
+              "absolute": 1,
+              "percentage": 10.0
             },
             "medium": {
-              "absolute": 3,
-              "percentage": 30.0
+              "absolute": 4,
+              "percentage": 40.0
             },
             "hard": {
-              "absolute": 0,
-              "percentage": 0.0
+              "absolute": 1,
+              "percentage": 10.0
             }
           }
         },
         "mistakes_without_rig": {
-          "total": 9,
+          "total": 11,
           "by_difficulty": {
             "easy": {
               "count": 2,
               "percentage": 20.0,
               "question_ids": [
-                5,
-                6
+                6,
+                7
               ]
             },
             "medium": {
-              "count": 4,
-              "percentage": 40.0,
+              "count": 5,
+              "percentage": 50.0,
               "question_ids": [
+                11,
+                12,
                 13,
                 14,
-                15,
                 20
               ]
             },
             "hard": {
-              "count": 3,
-              "percentage": 30.0,
+              "count": 4,
+              "percentage": 40.0,
               "question_ids": [
+                21,
                 22,
                 23,
                 30
@@ -3085,13 +1644,12 @@
           }
         },
         "mistakes_with_rig": {
-          "total": 6,
+          "total": 5,
           "by_difficulty": {
             "easy": {
-              "count": 2,
-              "percentage": 20.0,
+              "count": 1,
+              "percentage": 10.0,
               "question_ids": [
-                5,
                 6
               ]
             },
@@ -3106,154 +1664,6 @@
               "count": 3,
               "percentage": 30.0,
               "question_ids": [
-                21,
-                22,
-                23
-              ]
-            }
-          }
-        },
-        "questions_fixed_by_rig": [
-          13,
-          14,
-          15,
-          30
-        ],
-        "questions_broken_by_rig": [
-          21
-        ],
-        "timing": {
-          "time_with_rig_seconds": 140.0,
-          "time_without_rig_seconds": 434.58,
-          "time_saved_seconds": 294.58,
-          "time_reduction_percentage": 67.8,
-          "efficiency_with_rig_score_per_second": 0.1714,
-          "efficiency_without_rig_score_per_second": 0.0483
-        }
-      },
-      "cursor": {
-        "with_rig": {
-          "score": 21,
-          "max_score": 30,
-          "percentage": 70.0,
-          "by_difficulty": {
-            "easy": {
-              "score": 8,
-              "max": 10,
-              "percentage": 80.0
-            },
-            "medium": {
-              "score": 7,
-              "max": 10,
-              "percentage": 70.0
-            },
-            "hard": {
-              "score": 6,
-              "max": 10,
-              "percentage": 60.0
-            }
-          }
-        },
-        "without_rig": {
-          "score": 18,
-          "max_score": 30,
-          "percentage": 60.0,
-          "by_difficulty": {
-            "easy": {
-              "score": 7,
-              "max": 10,
-              "percentage": 70.0
-            },
-            "medium": {
-              "score": 4,
-              "max": 10,
-              "percentage": 40.0
-            },
-            "hard": {
-              "score": 7,
-              "max": 10,
-              "percentage": 70.0
-            }
-          }
-        },
-        "rig_improvement": {
-          "absolute": 3,
-          "percentage": 10.0,
-          "by_difficulty": {
-            "easy": {
-              "absolute": 1,
-              "percentage": 10.0
-            },
-            "medium": {
-              "absolute": 3,
-              "percentage": 30.0
-            },
-            "hard": {
-              "absolute": -1,
-              "percentage": -10.0
-            }
-          }
-        },
-        "mistakes_without_rig": {
-          "total": 12,
-          "by_difficulty": {
-            "easy": {
-              "count": 3,
-              "percentage": 30.0,
-              "question_ids": [
-                5,
-                6,
-                8
-              ]
-            },
-            "medium": {
-              "count": 6,
-              "percentage": 60.0,
-              "question_ids": [
-                11,
-                12,
-                13,
-                14,
-                17,
-                20
-              ]
-            },
-            "hard": {
-              "count": 3,
-              "percentage": 30.0,
-              "question_ids": [
-                21,
-                22,
-                23
-              ]
-            }
-          }
-        },
-        "mistakes_with_rig": {
-          "total": 9,
-          "by_difficulty": {
-            "easy": {
-              "count": 2,
-              "percentage": 20.0,
-              "question_ids": [
-                5,
-                6
-              ]
-            },
-            "medium": {
-              "count": 3,
-              "percentage": 30.0,
-              "question_ids": [
-                14,
-                17,
-                20
-              ]
-            },
-            "hard": {
-              "count": 4,
-              "percentage": 40.0,
-              "question_ids": [
-                21,
                 22,
                 23,
                 30
@@ -3262,21 +1672,21 @@
           }
         },
         "questions_fixed_by_rig": [
-          8,
+          7,
           11,
           12,
-          13
+          13,
+          14,
+          21
         ],
-        "questions_broken_by_rig": [
-          30
-        ],
+        "questions_broken_by_rig": [],
         "timing": {
-          "time_with_rig_seconds": 33.93,
-          "time_without_rig_seconds": 78.03,
-          "time_saved_seconds": 44.1,
-          "time_reduction_percentage": 56.5,
-          "efficiency_with_rig_score_per_second": 0.6189,
-          "efficiency_without_rig_score_per_second": 0.2307
+          "time_with_rig_seconds": 44.0,
+          "time_without_rig_seconds": 98.0,
+          "time_saved_seconds": 54.0,
+          "time_reduction_percentage": 55.1,
+          "efficiency_with_rig_score_per_second": 0.5682,
+          "efficiency_without_rig_score_per_second": 0.1939
         }
       }
     },
@@ -3318,34 +1728,34 @@
       "source_analysis": {
         "total_questions": 5,
         "with_rig": {
-          "score": 9,
+          "score": 12,
           "max": 15,
-          "percentage": 60.0
+          "percentage": 80.0
         },
         "without_rig": {
-          "score": 4,
+          "score": 5,
           "max": 15,
-          "percentage": 26.7
+          "percentage": 33.3
         },
         "improvement": {
-          "absolute": 5,
-          "percentage": 33.3
+          "absolute": 7,
+          "percentage": 46.7
         },
         "per_agent": {
           "claude": {
-            "with_rig": 60.0,
-            "without_rig": 0.0,
-            "improvement": 60.0
+            "with_rig": 80.0,
+            "without_rig": 40.0,
+            "improvement": 40.0
           },
           "codex": {
-            "with_rig": 60.0,
-            "without_rig": 60.0,
-            "improvement": 0.0
+            "with_rig": 80.0,
+            "without_rig": 40.0,
+            "improvement": 40.0
           },
           "cursor": {
-            "with_rig": 60.0,
+            "with_rig": 80.0,
             "without_rig": 20.0,
-            "improvement": 40.0
+            "improvement": 60.0
           }
         }
       },
@@ -3357,13 +1767,13 @@
           "percentage": 100.0
         },
         "without_rig": {
-          "score": 4,
+          "score": 5,
           "max": 6,
-          "percentage": 66.7
+          "percentage": 83.3
         },
         "improvement": {
-          "absolute": 2,
-          "percentage": 33.3
+          "absolute": 1,
+          "percentage": 16.7
         },
         "per_agent": {
           "claude": {
@@ -3378,8 +1788,8 @@
           },
           "cursor": {
             "with_rig": 100.0,
-            "without_rig": 50.0,
-            "improvement": 50.0
+            "without_rig": 100.0,
+            "improvement": 0.0
           }
         }
       },
@@ -3391,19 +1801,19 @@
           "percentage": 100.0
         },
         "without_rig": {
-          "score": 11,
+          "score": 12,
           "max": 12,
-          "percentage": 91.7
+          "percentage": 100.0
         },
         "improvement": {
-          "absolute": 1,
-          "percentage": 8.3
+          "absolute": 0,
+          "percentage": 0.0
         },
         "per_agent": {
           "claude": {
             "with_rig": 100.0,
-            "without_rig": 75.0,
-            "improvement": 25.0
+            "without_rig": 100.0,
+            "improvement": 0.0
           },
           "codex": {
             "with_rig": 100.0,
@@ -3420,34 +1830,34 @@
       "dependency_analysis": {
         "total_questions": 10,
         "with_rig": {
-          "score": 17,
+          "score": 21,
           "max": 30,
-          "percentage": 56.7
+          "percentage": 70.0
         },
         "without_rig": {
-          "score": 10,
+          "score": 12,
           "max": 30,
-          "percentage": 33.3
+          "percentage": 40.0
         },
         "improvement": {
-          "absolute": 7,
-          "percentage": 23.3
+          "absolute": 9,
+          "percentage": 30.0
         },
         "per_agent": {
           "claude": {
-            "with_rig": 60.0,
-            "without_rig": 20.0,
+            "with_rig": 80.0,
+            "without_rig": 40.0,
             "improvement": 40.0
           },
           "codex": {
+            "with_rig": 60.0,
+            "without_rig": 40.0,
+            "improvement": 20.0
+          },
+          "cursor": {
             "with_rig": 70.0,
             "without_rig": 40.0,
             "improvement": 30.0
-          },
-          "cursor": {
-            "with_rig": 40.0,
-            "without_rig": 40.0,
-            "improvement": 0.0
           }
         }
       },
@@ -3523,19 +1933,8 @@
     "question_insights": {
       "hardest_questions": [
         {
-          "id": 5,
-          "question": "How many .jar files are built by this project?",
-          "difficulty": "easy",
-          "category": "source_analysis",
-          "success_rate_with_rig": 0.0,
-          "success_rate_without_rig": 0.0,
-          "agents_correct_with_rig": [],
-          "agents_correct_without_rig": [],
-          "avg_improvement": 0.0
-        },
-        {
           "id": 6,
-          "question": "How many .exe files are built?",
+          "question": "How many .exe files are built? (assume Windows artifacts)",
           "difficulty": "easy",
           "category": "source_analysis",
           "success_rate_with_rig": 0.0,
@@ -3576,6 +1975,19 @@
           "agents_correct_with_rig": [],
           "agents_correct_without_rig": [],
           "avg_improvement": 0.0
+        },
+        {
+          "id": 30,
+          "question": "What is the maximum dependency depth in the project? (i.e., the longest chain from any component to its deepest dependency)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 33.3,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 33.3
         }
       ],
       "easiest_questions": [
@@ -3656,10 +2068,47 @@
           "avg_improvement": 0.0
         },
         {
-          "id": 7,
-          "question": "How many .dll files are built?",
+          "id": 5,
+          "question": "How many .jar files are built by this project?",
           "difficulty": "easy",
           "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 7,
+          "question": "How many .dll files are built? (assume Windows artifacts)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 8,
+          "question": "How many tests are defined in total?",
+          "difficulty": "easy",
+          "category": "testing",
           "success_rate_with_rig": 100.0,
           "success_rate_without_rig": 66.7,
           "agents_correct_with_rig": [
@@ -3672,23 +2121,6 @@
             "cursor"
           ],
           "avg_improvement": 33.3
-        },
-        {
-          "id": 8,
-          "question": "How many tests are defined in total?",
-          "difficulty": "easy",
-          "category": "testing",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 33.3,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 66.7
         },
         {
           "id": 9,
@@ -3734,16 +2166,14 @@
           "difficulty": "medium",
           "category": "source_analysis",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 33.3,
+          "success_rate_without_rig": 0.0,
           "agents_correct_with_rig": [
             "claude",
             "codex",
             "cursor"
           ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 66.7
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
         },
         {
           "id": 12,
@@ -3751,20 +2181,33 @@
           "difficulty": "medium",
           "category": "source_analysis",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 33.3,
+          "success_rate_without_rig": 0.0,
           "agents_correct_with_rig": [
             "claude",
             "codex",
             "cursor"
           ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 66.7
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
         },
         {
           "id": 13,
           "question": "What external packages does xllr.dll depend on? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 14,
+          "question": "What external packages does metaffi.exe depend on? (Provide a list)",
           "difficulty": "medium",
           "category": "dependency_analysis",
           "success_rate_with_rig": 100.0,
@@ -3783,7 +2226,7 @@
           "difficulty": "medium",
           "category": "dependency_analysis",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 66.7,
+          "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
             "claude",
             "codex",
@@ -3791,9 +2234,48 @@
           ],
           "agents_correct_without_rig": [
             "claude",
+            "codex",
             "cursor"
           ],
-          "avg_improvement": 33.3
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 16,
+          "question": "How many components depend on JNI?",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 17,
+          "question": "How many components depend on doctest?",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
         },
         {
           "id": 18,
@@ -3877,17 +2359,18 @@
           "difficulty": "hard",
           "category": "aggregator_structure",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 66.7,
+          "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
             "claude",
             "codex",
             "cursor"
           ],
           "agents_correct_without_rig": [
+            "claude",
             "codex",
             "cursor"
           ],
-          "avg_improvement": 33.3
+          "avg_improvement": 0.0
         },
         {
           "id": 27,
@@ -3949,6 +2432,36 @@
       ],
       "most_rig_sensitive": [
         {
+          "id": 11,
+          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)",
+          "difficulty": "medium",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 12,
+          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)",
+          "difficulty": "medium",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
           "id": 13,
           "question": "What external packages does xllr.dll depend on? (Provide a list)",
           "difficulty": "medium",
@@ -3968,82 +2481,35 @@
           "question": "What external packages does metaffi.exe depend on? (Provide a list)",
           "difficulty": "medium",
           "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 21,
+          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
           "success_rate_with_rig": 66.7,
           "success_rate_without_rig": 0.0,
           "agents_correct_with_rig": [
             "claude",
-            "codex"
+            "cursor"
           ],
           "agents_correct_without_rig": [],
-          "avg_improvement": 66.7
-        },
-        {
-          "id": 8,
-          "question": "How many tests are defined in total?",
-          "difficulty": "easy",
-          "category": "testing",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 33.3,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 66.7
-        },
-        {
-          "id": 11,
-          "question": "What source files are used to build cdts_test.exe? (Provide a list, include primary test file)",
-          "difficulty": "medium",
-          "category": "source_analysis",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 33.3,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 66.7
-        },
-        {
-          "id": 12,
-          "question": "What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)",
-          "difficulty": "medium",
-          "category": "source_analysis",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 33.3,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
           "avg_improvement": 66.7
         }
       ],
       "rig_insensitive": [
         {
-          "id": 5,
-          "question": "How many .jar files are built by this project?",
-          "difficulty": "easy",
-          "category": "source_analysis",
-          "success_rate_with_rig": 0.0,
-          "success_rate_without_rig": 0.0,
-          "agents_correct_with_rig": [],
-          "agents_correct_without_rig": [],
-          "avg_improvement": 0.0
-        },
-        {
           "id": 6,
-          "question": "How many .exe files are built?",
+          "question": "How many .exe files are built? (assume Windows artifacts)",
           "difficulty": "easy",
           "category": "source_analysis",
           "success_rate_with_rig": 0.0,
@@ -4083,53 +2549,6 @@
           "success_rate_without_rig": 0.0,
           "agents_correct_with_rig": [],
           "agents_correct_without_rig": [],
-          "avg_improvement": 0.0
-        },
-        {
-          "id": 17,
-          "question": "How many components depend on doctest?",
-          "difficulty": "medium",
-          "category": "dependency_analysis",
-          "success_rate_with_rig": 33.3,
-          "success_rate_without_rig": 33.3,
-          "agents_correct_with_rig": [
-            "codex"
-          ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 0.0
-        },
-        {
-          "id": 21,
-          "question": "What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A \u2192 B \u2192 C' with Windows artifact names, or describe it as 'A depends on B which depends on C')",
-          "difficulty": "hard",
-          "category": "dependency_analysis",
-          "success_rate_with_rig": 33.3,
-          "success_rate_without_rig": 33.3,
-          "agents_correct_with_rig": [
-            "claude"
-          ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 0.0
-        },
-        {
-          "id": 16,
-          "question": "How many components depend on JNI?",
-          "difficulty": "medium",
-          "category": "dependency_analysis",
-          "success_rate_with_rig": 66.7,
-          "success_rate_without_rig": 66.7,
-          "agents_correct_with_rig": [
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "codex",
-            "cursor"
-          ],
           "avg_improvement": 0.0
         },
         {
@@ -4209,6 +2628,25 @@
           "avg_improvement": 0.0
         },
         {
+          "id": 5,
+          "question": "How many .jar files are built by this project?",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
           "id": 9,
           "question": "What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)",
           "difficulty": "easy",
@@ -4232,6 +2670,63 @@
           "question": "What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)",
           "difficulty": "easy",
           "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 15,
+          "question": "What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 16,
+          "question": "How many components depend on JNI?",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 17,
+          "question": "How many components depend on doctest?",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
           "success_rate_with_rig": 100.0,
           "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
@@ -4323,6 +2818,25 @@
           "avg_improvement": 0.0
         },
         {
+          "id": 26,
+          "question": "Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)",
+          "difficulty": "hard",
+          "category": "aggregator_structure",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
           "id": 27,
           "question": "What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)",
           "difficulty": "hard",
@@ -4381,16 +2895,18 @@
         }
       ],
       "unanimous_failures_with_rig": [
-        5,
         6,
         20,
         22,
         23
       ],
       "unanimous_failures_without_rig": [
+        11,
+        12,
         13,
         14,
-        5,
+        21,
+        30,
         6,
         20,
         22,
@@ -4400,16 +2916,16 @@
     "rig_effectiveness": {
       "by_difficulty": {
         "easy": {
-          "avg_improvement": 10.0,
+          "avg_improvement": 6.7,
           "agents_benefited": 2
         },
         "medium": {
-          "avg_improvement": 33.3,
+          "avg_improvement": 40.0,
           "agents_benefited": 3
         },
         "hard": {
-          "avg_improvement": 6.7,
-          "agents_benefited": 1
+          "avg_improvement": 10.0,
+          "agents_benefited": 2
         }
       },
       "correlation": {
@@ -4417,18 +2933,18 @@
         "data": [
           {
             "agent": "codex",
-            "baseline_pct": 70.0,
-            "improvement_pct": 10.0
-          },
-          {
-            "agent": "cursor",
-            "baseline_pct": 60.0,
-            "improvement_pct": 10.0
+            "baseline_pct": 66.7,
+            "improvement_pct": 13.3
           },
           {
             "agent": "claude",
-            "baseline_pct": 46.7,
-            "improvement_pct": 30.0
+            "baseline_pct": 63.3,
+            "improvement_pct": 23.3
+          },
+          {
+            "agent": "cursor",
+            "baseline_pct": 63.3,
+            "improvement_pct": 20.0
           }
         ]
       }
@@ -4437,116 +2953,116 @@
       "speed_vs_accuracy_with_rig": [
         {
           "agent": "cursor",
-          "time_seconds": 33.93,
-          "score_percentage": 70.0,
-          "efficiency_score_per_second": 0.6189
-        },
-        {
-          "agent": "codex",
-          "time_seconds": 140.0,
-          "score_percentage": 80.0,
-          "efficiency_score_per_second": 0.1714
+          "time_seconds": 44.0,
+          "score_percentage": 83.3,
+          "efficiency_score_per_second": 0.5682
         },
         {
           "agent": "claude",
-          "time_seconds": 276.7,
-          "score_percentage": 76.7,
-          "efficiency_score_per_second": 0.0831
+          "time_seconds": 96.0,
+          "score_percentage": 86.7,
+          "efficiency_score_per_second": 0.2708
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 187.0,
+          "score_percentage": 80.0,
+          "efficiency_score_per_second": 0.1283
         }
       ],
       "speed_vs_accuracy_without_rig": [
         {
           "agent": "cursor",
-          "time_seconds": 78.03,
-          "score_percentage": 60.0,
-          "efficiency_score_per_second": 0.2307
+          "time_seconds": 98.0,
+          "score_percentage": 63.3,
+          "efficiency_score_per_second": 0.1939
         },
         {
           "agent": "claude",
-          "time_seconds": 356.92,
-          "score_percentage": 46.7,
-          "efficiency_score_per_second": 0.0392
+          "time_seconds": 293.0,
+          "score_percentage": 63.3,
+          "efficiency_score_per_second": 0.0648
         },
         {
           "agent": "codex",
-          "time_seconds": 434.58,
-          "score_percentage": 70.0,
-          "efficiency_score_per_second": 0.0483
+          "time_seconds": 383.0,
+          "score_percentage": 66.7,
+          "efficiency_score_per_second": 0.0522
         }
       ],
       "time_reduction_vs_score_improvement": {
-        "correlation_note": "Greater time reduction correlates with less score improvement",
+        "correlation_note": "Greater time reduction correlates with better score improvement",
         "data": [
           {
-            "agent": "codex",
-            "time_reduction_percentage": 67.8,
-            "score_improvement_percentage": 10.0,
-            "time_saved_seconds": 294.58,
-            "score_points_gained": 3
+            "agent": "claude",
+            "time_reduction_percentage": 67.2,
+            "score_improvement_percentage": 23.3,
+            "time_saved_seconds": 197.0,
+            "score_points_gained": 7
           },
           {
             "agent": "cursor",
-            "time_reduction_percentage": 56.5,
-            "score_improvement_percentage": 10.0,
-            "time_saved_seconds": 44.1,
-            "score_points_gained": 3
+            "time_reduction_percentage": 55.1,
+            "score_improvement_percentage": 20.0,
+            "time_saved_seconds": 54.0,
+            "score_points_gained": 6
           },
           {
-            "agent": "claude",
-            "time_reduction_percentage": 22.5,
-            "score_improvement_percentage": 30.0,
-            "time_saved_seconds": 80.22,
-            "score_points_gained": 9
+            "agent": "codex",
+            "time_reduction_percentage": 51.2,
+            "score_improvement_percentage": 13.3,
+            "time_saved_seconds": 196.0,
+            "score_points_gained": 4
           }
         ]
       },
       "efficiency_analysis": {
-        "avg_efficiency_with_rig_score_per_second": 0.2911,
-        "avg_efficiency_without_rig_score_per_second": 0.1061,
-        "efficiency_improvement_percentage": 174.5
+        "avg_efficiency_with_rig_score_per_second": 0.3224,
+        "avg_efficiency_without_rig_score_per_second": 0.1036,
+        "efficiency_improvement_percentage": 211.1
       }
     },
     "summary": {
       "best_overall_with_rig": {
-        "agent": "codex",
-        "percentage": 80.0
+        "agent": "claude",
+        "percentage": 86.7
       },
       "best_overall_without_rig": {
         "agent": "codex",
-        "percentage": 70.0
+        "percentage": 66.7
       },
       "most_rig_improvement": {
         "agent": "claude",
-        "improvement_percentage": 30.0
+        "improvement_percentage": 23.3
       },
       "least_rig_improvement": {
         "agent": "codex",
-        "improvement_percentage": 10.0
+        "improvement_percentage": 13.3
       },
-      "average_with_rig": 75.6,
-      "average_without_rig": 58.9,
-      "average_rig_improvement": 16.7,
+      "average_with_rig": 83.3,
+      "average_without_rig": 64.4,
+      "average_rig_improvement": 18.9,
       "timing": {
-        "average_time_with_rig_seconds": 150.21,
-        "average_time_without_rig_seconds": 289.84,
-        "average_time_saved_seconds": 139.63,
-        "average_time_reduction_percentage": 48.9,
+        "average_time_with_rig_seconds": 109.0,
+        "average_time_without_rig_seconds": 258.0,
+        "average_time_saved_seconds": 149.0,
+        "average_time_reduction_percentage": 57.8,
         "fastest_with_rig": {
           "agent": "cursor",
-          "time_seconds": 33.93
+          "time_seconds": 44.0
         },
         "fastest_without_rig": {
           "agent": "cursor",
-          "time_seconds": 78.03
+          "time_seconds": 98.0
         },
         "most_time_saved": {
-          "agent": "codex",
-          "time_saved_seconds": 294.58,
-          "time_reduction_percentage": 67.8
+          "agent": "claude",
+          "time_saved_seconds": 197.0,
+          "time_reduction_percentage": 67.2
         },
         "highest_time_reduction_percentage": {
-          "agent": "codex",
-          "time_reduction_percentage": 67.8
+          "agent": "claude",
+          "time_reduction_percentage": 67.2
         }
       }
     }

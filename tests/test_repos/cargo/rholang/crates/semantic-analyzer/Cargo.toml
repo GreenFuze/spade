@@ -1,0 +1,12 @@
+[package]
+name = "semantic-analyzer"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ast = { path = "../ast" }
+parser = { path = "../parser" }
+common-types = { path = "../common-types" }
+error-reporting = { path = "../error-reporting" }
+petgraph.workspace = true
+indexmap.workspace = true

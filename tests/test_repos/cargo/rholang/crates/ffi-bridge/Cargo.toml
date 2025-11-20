@@ -1,0 +1,16 @@
+[package]
+name = "ffi-bridge"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+vm-runtime = { path = "../vm-runtime" }
+common-types = { path = "../common-types" }
+libc.workspace = true
+
+[build-dependencies]
+cc.workspace = true
+bindgen.workspace = true

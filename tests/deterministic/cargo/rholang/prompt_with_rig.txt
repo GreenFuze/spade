@@ -1,0 +1,1048 @@
+You are an expert at analyzing code repositories and build systems.
+
+You have been provided with structured metadata about this repository in the following JSON:
+
+In the following JSON, you'll find these entity types:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component must generate an artifact from source files, or be the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps.
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Test Definitions**: Tests that contain a component used for testing or a runner that executes the test.
+
+```json
+{
+  "repo": {
+    "name": "rholang",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\cargo\\rholang"
+  },
+  "build": {
+    "system": "cargo",
+    "generator": null,
+    "type": "Release",
+    "configure_cmd": "cargo build",
+    "test_cmd": "cargo test"
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "common-types",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "target\\release\\libcommon_types.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\common-types\\src\\lib.rs",
+        "crates\\common-types\\src\\span.rs",
+        "crates\\common-types\\src\\symbol.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-40",
+        "pkg-41"
+      ]
+    },
+    {
+      "id": "comp-2",
+      "name": "error-reporting",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "target\\release\\liberror_reporting.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\error-reporting\\src\\lib.rs",
+        "crates\\error-reporting\\src\\diagnostic.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-30",
+        "pkg-31",
+        "pkg-44"
+      ]
+    },
+    {
+      "id": "comp-3",
+      "name": "rholang-macros",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "target\\release\\librholang_macros.so",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\rholang-macros\\src\\lib.rs",
+        "crates\\rholang-macros\\src\\ast_node.rs",
+        "crates\\rholang-macros\\src\\visitor.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-48",
+        "pkg-49",
+        "pkg-50"
+      ]
+    },
+    {
+      "id": "comp-4",
+      "name": "lexer",
+      "depends_on_ids": [
+        "comp-1",
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "target\\release\\liblexer.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\lexer\\src\\lib.rs",
+        "crates\\lexer\\src\\token.rs",
+        "crates\\lexer\\src\\scanner.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-32",
+        "pkg-28"
+      ]
+    },
+    {
+      "id": "comp-5",
+      "name": "parser",
+      "depends_on_ids": [
+        "comp-1",
+        "comp-2",
+        "comp-4"
+      ],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "target\\release\\libparser.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\parser\\src\\lib.rs",
+        "crates\\parser\\src\\expr.rs",
+        "crates\\parser\\src\\stmt.rs",
+        "crates\\parser\\src\\decl.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-35",
+        "pkg-29"
+      ]
+    },
+    {
+      "id": "comp-6",
+      "name": "ast",
+      "depends_on_ids": [
+        "comp-1",
+        "comp-2",
+        "comp-3"
+      ],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "relative_path": "target\\release\\libast.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\ast\\src\\lib.rs",
+        "crates\\ast\\src\\nodes.rs",
+        "crates\\ast\\src\\visitor.rs",
+        "crates\\ast\\src\\pretty_print.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-34",
+        "pkg-40"
+      ]
+    },
+    {
+      "id": "comp-7",
+      "name": "span-interner",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-7"
+      ],
+      "relative_path": "target\\release\\libspan_interner.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\span-interner\\src\\lib.rs",
+        "crates\\span-interner\\src\\interner.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-33",
+        "pkg-34"
+      ]
+    },
+    {
+      "id": "comp-8",
+      "name": "semantic-analyzer",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-5"
+      ],
+      "evidence_ids": [
+        "evidence-8"
+      ],
+      "relative_path": "target\\release\\libsemantic_analyzer.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\semantic-analyzer\\src\\lib.rs",
+        "crates\\semantic-analyzer\\src\\scope.rs",
+        "crates\\semantic-analyzer\\src\\resolver.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-37",
+        "pkg-34"
+      ]
+    },
+    {
+      "id": "comp-9",
+      "name": "type-checker",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-8"
+      ],
+      "evidence_ids": [
+        "evidence-9"
+      ],
+      "relative_path": "target\\release\\libtype_checker.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\type-checker\\src\\lib.rs",
+        "crates\\type-checker\\src\\inference.rs",
+        "crates\\type-checker\\src\\unification.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-37",
+        "pkg-35"
+      ]
+    },
+    {
+      "id": "comp-10",
+      "name": "ir-gen",
+      "depends_on_ids": [
+        "comp-9"
+      ],
+      "evidence_ids": [
+        "evidence-10"
+      ],
+      "relative_path": "target\\release\\libir_gen.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\ir-gen\\src\\lib.rs",
+        "crates\\ir-gen\\src\\lower.rs",
+        "crates\\ir-gen\\src\\ir.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-34",
+        "pkg-35"
+      ]
+    },
+    {
+      "id": "comp-11",
+      "name": "optimizer",
+      "depends_on_ids": [
+        "comp-10"
+      ],
+      "evidence_ids": [
+        "evidence-11"
+      ],
+      "relative_path": "target\\release\\liboptimizer.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\optimizer\\src\\lib.rs",
+        "crates\\optimizer\\src\\passes.rs",
+        "crates\\optimizer\\src\\dead_code.rs",
+        "crates\\optimizer\\src\\constant_folding.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-37",
+        "pkg-35"
+      ]
+    },
+    {
+      "id": "comp-12",
+      "name": "codegen-c",
+      "depends_on_ids": [
+        "comp-11"
+      ],
+      "evidence_ids": [
+        "evidence-12"
+      ],
+      "relative_path": "target\\release\\libcodegen_c.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\codegen-c\\src\\lib.rs",
+        "crates\\codegen-c\\src\\emitter.rs",
+        "crates\\codegen-c\\src\\c_types.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-34"
+      ]
+    },
+    {
+      "id": "comp-13",
+      "name": "codegen-bytecode",
+      "depends_on_ids": [
+        "comp-11"
+      ],
+      "evidence_ids": [
+        "evidence-13"
+      ],
+      "relative_path": "target\\release\\libcodegen_bytecode.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\codegen-bytecode\\src\\lib.rs",
+        "crates\\codegen-bytecode\\src\\instruction.rs",
+        "crates\\codegen-bytecode\\src\\assembler.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-42",
+        "pkg-40"
+      ]
+    },
+    {
+      "id": "comp-14",
+      "name": "vm-runtime",
+      "depends_on_ids": [
+        "comp-1",
+        "comp-13"
+      ],
+      "evidence_ids": [
+        "evidence-14"
+      ],
+      "relative_path": "target\\release\\libvm_runtime.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\vm-runtime\\src\\lib.rs",
+        "crates\\vm-runtime\\src\\vm.rs",
+        "crates\\vm-runtime\\src\\stack.rs",
+        "crates\\vm-runtime\\src\\heap.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-33",
+        "pkg-36"
+      ]
+    },
+    {
+      "id": "comp-15",
+      "name": "ffi-bridge",
+      "depends_on_ids": [
+        "comp-14"
+      ],
+      "evidence_ids": [
+        "evidence-15"
+      ],
+      "relative_path": "target\\release\\libffi_bridge.so",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\ffi-bridge\\src\\lib.rs",
+        "crates\\ffi-bridge\\src\\native.c",
+        "crates\\ffi-bridge\\build.rs",
+        "crates\\ffi-bridge\\include\\rholang.h"
+      ],
+      "external_packages_ids": [
+        "pkg-46",
+        "pkg-45",
+        "pkg-47"
+      ]
+    },
+    {
+      "id": "comp-16",
+      "name": "stdlib",
+      "depends_on_ids": [
+        "comp-14"
+      ],
+      "evidence_ids": [
+        "evidence-16"
+      ],
+      "relative_path": "target\\release\\libstdlib.rlib",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\stdlib\\src\\lib.rs",
+        "crates\\stdlib\\src\\collections.rs",
+        "crates\\stdlib\\src\\io.rs",
+        "crates\\stdlib\\src\\string.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-34",
+        "pkg-35"
+      ]
+    },
+    {
+      "id": "comp-17",
+      "name": "rholang-cli",
+      "depends_on_ids": [
+        "comp-13",
+        "comp-12"
+      ],
+      "evidence_ids": [
+        "evidence-17"
+      ],
+      "relative_path": "target\\release\\rholang-cli.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\rholang-cli\\src\\main.rs",
+        "crates\\rholang-cli\\src\\compile.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-53",
+        "pkg-51",
+        "pkg-52",
+        "pkg-43"
+      ]
+    },
+    {
+      "id": "comp-18",
+      "name": "repl",
+      "depends_on_ids": [
+        "comp-14",
+        "comp-16"
+      ],
+      "evidence_ids": [
+        "evidence-18"
+      ],
+      "relative_path": "target\\release\\repl.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\repl\\src\\main.rs",
+        "crates\\repl\\src\\eval.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-51",
+        "pkg-43"
+      ]
+    },
+    {
+      "id": "comp-19",
+      "name": "lsp-server",
+      "depends_on_ids": [
+        "comp-7",
+        "comp-9"
+      ],
+      "evidence_ids": [
+        "evidence-19"
+      ],
+      "relative_path": "target\\release\\lsp-server.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\lsp-server\\src\\main.rs",
+        "crates\\lsp-server\\src\\protocol.rs",
+        "crates\\lsp-server\\src\\handlers.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-39",
+        "pkg-38",
+        "pkg-41",
+        "pkg-43"
+      ]
+    },
+    {
+      "id": "comp-20",
+      "name": "integration-tests",
+      "depends_on_ids": [
+        "comp-18",
+        "comp-17",
+        "comp-1",
+        "comp-15"
+      ],
+      "evidence_ids": [
+        "evidence-20"
+      ],
+      "relative_path": "target\\release\\integration-tests.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\integration-tests\\src\\main.rs",
+        "crates\\integration-tests\\src\\test_runner.rs",
+        "crates\\integration-tests\\tests\\compile_tests.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-43"
+      ]
+    },
+    {
+      "id": "comp-21",
+      "name": "benchmark-suite",
+      "depends_on_ids": [
+        "comp-14",
+        "comp-8"
+      ],
+      "evidence_ids": [
+        "evidence-21"
+      ],
+      "relative_path": "target\\release\\benchmark-suite.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "rust",
+      "source_files": [
+        "crates\\benchmark-suite\\src\\main.rs",
+        "crates\\benchmark-suite\\benches\\lexer_bench.rs",
+        "crates\\benchmark-suite\\benches\\parser_bench.rs"
+      ],
+      "external_packages_ids": [
+        "pkg-43",
+        "pkg-54"
+      ]
+    }
+  ],
+  "aggregators": [],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "Lexer Unit Tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-22"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "crates\\lexer\\src\\lib.rs"
+      ],
+      "test_framework": "rust"
+    },
+    {
+      "id": "test-2",
+      "name": "Parser Unit Tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-23"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "crates\\parser\\src\\lib.rs"
+      ],
+      "test_framework": "rust"
+    },
+    {
+      "id": "test-3",
+      "name": "Integration Tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-24"
+      ],
+      "test_executable_component_id": "comp-20",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "crates\\integration-tests\\tests\\compile_tests.rs"
+      ],
+      "test_framework": "rust"
+    },
+    {
+      "id": "test-4",
+      "name": "Performance Benchmarks",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-25"
+      ],
+      "test_executable_component_id": "comp-21",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "crates\\benchmark-suite\\benches\\lexer_bench.rs",
+        "crates\\benchmark-suite\\benches\\parser_bench.rs"
+      ],
+      "test_framework": "criterion"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-40",
+      "name": "serde"
+    },
+    {
+      "id": "pkg-41",
+      "name": "serde_json"
+    },
+    {
+      "id": "pkg-30",
+      "name": "codespan-reporting"
+    },
+    {
+      "id": "pkg-31",
+      "name": "ariadne"
+    },
+    {
+      "id": "pkg-44",
+      "name": "thiserror"
+    },
+    {
+      "id": "pkg-48",
+      "name": "syn"
+    },
+    {
+      "id": "pkg-49",
+      "name": "quote"
+    },
+    {
+      "id": "pkg-50",
+      "name": "proc-macro2"
+    },
+    {
+      "id": "pkg-28",
+      "name": "logos"
+    },
+    {
+      "id": "pkg-32",
+      "name": "unicode-xid"
+    },
+    {
+      "id": "pkg-29",
+      "name": "lalrpop-util"
+    },
+    {
+      "id": "pkg-35",
+      "name": "smallvec"
+    },
+    {
+      "id": "pkg-34",
+      "name": "indexmap"
+    },
+    {
+      "id": "pkg-33",
+      "name": "dashmap"
+    },
+    {
+      "id": "pkg-37",
+      "name": "petgraph"
+    },
+    {
+      "id": "pkg-42",
+      "name": "bincode"
+    },
+    {
+      "id": "pkg-36",
+      "name": "bumpalo"
+    },
+    {
+      "id": "pkg-45",
+      "name": "libc"
+    },
+    {
+      "id": "pkg-46",
+      "name": "cc"
+    },
+    {
+      "id": "pkg-47",
+      "name": "bindgen"
+    },
+    {
+      "id": "pkg-51",
+      "name": "clap"
+    },
+    {
+      "id": "pkg-43",
+      "name": "anyhow"
+    },
+    {
+      "id": "pkg-52",
+      "name": "tracing"
+    },
+    {
+      "id": "pkg-53",
+      "name": "tracing-subscriber"
+    },
+    {
+      "id": "pkg-38",
+      "name": "tokio"
+    },
+    {
+      "id": "pkg-39",
+      "name": "async-trait"
+    },
+    {
+      "id": "pkg-54",
+      "name": "criterion"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-13",
+      "name": "cargo",
+      "package_name": "serde"
+    },
+    {
+      "id": "pkg-14",
+      "name": "cargo",
+      "package_name": "serde_json"
+    },
+    {
+      "id": "pkg-3",
+      "name": "cargo",
+      "package_name": "codespan-reporting"
+    },
+    {
+      "id": "pkg-4",
+      "name": "cargo",
+      "package_name": "ariadne"
+    },
+    {
+      "id": "pkg-17",
+      "name": "cargo",
+      "package_name": "thiserror"
+    },
+    {
+      "id": "pkg-21",
+      "name": "cargo",
+      "package_name": "syn"
+    },
+    {
+      "id": "pkg-22",
+      "name": "cargo",
+      "package_name": "quote"
+    },
+    {
+      "id": "pkg-23",
+      "name": "cargo",
+      "package_name": "proc-macro2"
+    },
+    {
+      "id": "pkg-1",
+      "name": "cargo",
+      "package_name": "logos"
+    },
+    {
+      "id": "pkg-5",
+      "name": "cargo",
+      "package_name": "unicode-xid"
+    },
+    {
+      "id": "pkg-2",
+      "name": "cargo",
+      "package_name": "lalrpop-util"
+    },
+    {
+      "id": "pkg-8",
+      "name": "cargo",
+      "package_name": "smallvec"
+    },
+    {
+      "id": "pkg-7",
+      "name": "cargo",
+      "package_name": "indexmap"
+    },
+    {
+      "id": "pkg-6",
+      "name": "cargo",
+      "package_name": "dashmap"
+    },
+    {
+      "id": "pkg-10",
+      "name": "cargo",
+      "package_name": "petgraph"
+    },
+    {
+      "id": "pkg-15",
+      "name": "cargo",
+      "package_name": "bincode"
+    },
+    {
+      "id": "pkg-9",
+      "name": "cargo",
+      "package_name": "bumpalo"
+    },
+    {
+      "id": "pkg-18",
+      "name": "cargo",
+      "package_name": "libc"
+    },
+    {
+      "id": "pkg-19",
+      "name": "cargo",
+      "package_name": "cc"
+    },
+    {
+      "id": "pkg-20",
+      "name": "cargo",
+      "package_name": "bindgen"
+    },
+    {
+      "id": "pkg-24",
+      "name": "cargo",
+      "package_name": "clap"
+    },
+    {
+      "id": "pkg-16",
+      "name": "cargo",
+      "package_name": "anyhow"
+    },
+    {
+      "id": "pkg-25",
+      "name": "cargo",
+      "package_name": "tracing"
+    },
+    {
+      "id": "pkg-26",
+      "name": "cargo",
+      "package_name": "tracing-subscriber"
+    },
+    {
+      "id": "pkg-11",
+      "name": "cargo",
+      "package_name": "tokio"
+    },
+    {
+      "id": "pkg-12",
+      "name": "cargo",
+      "package_name": "async-trait"
+    },
+    {
+      "id": "pkg-27",
+      "name": "cargo",
+      "package_name": "criterion"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "crates/common-types/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "crates/error-reporting/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "crates/rholang-macros/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "crates/lexer/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "crates/parser/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "crates/ast/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-7",
+      "line": [
+        "crates/span-interner/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-8",
+      "line": [
+        "crates/semantic-analyzer/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-9",
+      "line": [
+        "crates/type-checker/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-10",
+      "line": [
+        "crates/ir-gen/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-11",
+      "line": [
+        "crates/optimizer/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-12",
+      "line": [
+        "crates/codegen-c/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-13",
+      "line": [
+        "crates/codegen-bytecode/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-14",
+      "line": [
+        "crates/vm-runtime/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-15",
+      "line": [
+        "crates/ffi-bridge/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-16",
+      "line": [
+        "crates/stdlib/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-17",
+      "line": [
+        "crates/rholang-cli/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-18",
+      "line": [
+        "crates/repl/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-19",
+      "line": [
+        "crates/lsp-server/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-20",
+      "line": [
+        "crates/integration-tests/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-21",
+      "line": [
+        "crates/benchmark-suite/Cargo.toml:2"
+      ]
+    },
+    {
+      "id": "evidence-22",
+      "line": [
+        "crates/lexer/src/lib.rs:28"
+      ]
+    },
+    {
+      "id": "evidence-23",
+      "line": [
+        "crates/parser/src/lib.rs:17"
+      ]
+    },
+    {
+      "id": "evidence-24",
+      "line": [
+        "crates/integration-tests/tests/compile_tests.rs:3"
+      ]
+    },
+    {
+      "id": "evidence-25",
+      "line": [
+        "crates/benchmark-suite/Cargo.toml:16"
+      ]
+    }
+  ]
+}
+```
+
+Please answer the following questions about this repository using the metadata above and by analyzing the repository files.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. How many crates are in the Cargo workspace? (Provide the count)
+2. What is the workspace version defined in the root Cargo.toml? (Provide the version string)
+3. What Rust edition is used in this workspace? (Provide the edition year)
+4. How many Tier 0 (foundation) crates are there? (Provide the count)
+5. How many executable (bin) crates are in this workspace? (Provide the count)
+6. What is the name of the procedural macro crate? (Provide the crate name)
+7. What is the name of the FFI bridge crate? (Provide the crate name)
+8. How many .c (C source) files are in the repository? (Provide the count)
+9. What is the name of the main compiler CLI executable crate? (Provide the crate name)
+10. Which crate has a build.rs build script? (Provide the crate name)
+11. What external crates does common-types depend on? (Provide a list)
+12. What workspace crates does parser directly depend on? (Provide a list of crate names)
+13. What type of library is ffi-bridge? (Answer 'static', 'shared', or 'both')
+14. How many code generation backend crates are there? (Provide the count)
+15. What are the names of the code generation backend crates? (Provide a list)
+16. What workspace crates does vm-runtime directly depend on? (Provide a list)
+17. What test frameworks are used in this repository? (Provide a list)
+18. What is the name of the benchmark suite crate? (Provide the crate name)
+19. How many aggregators are defined in this workspace? (Provide the count)
+20. How many unique external crates (from crates.io) are used across the workspace? (Provide the count)
+21. What is the maximum dependency depth in this repository? (Provide a number)
+22. Which crates must be built first (Tier 0, no workspace dependencies)? (Provide a list)
+23. If common-types fails to build, how many other crates would also fail? (Provide the count)
+24. Can codegen-c and codegen-bytecode be built in parallel? (Answer yes or no)
+25. What are the direct workspace dependencies of integration-tests? (Provide a list)
+26. What is the name of the C header file in the ffi-bridge crate? (Provide the filename)
+27. Does this repository have cross-language dependencies? (Answer yes or no)
+28. Which components are at dependency depth 5? (Provide a list)
+29. What external crates does rholang-macros depend on? (Provide a list)
+30. How many different programming languages are used in this repository? (Provide the count)
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

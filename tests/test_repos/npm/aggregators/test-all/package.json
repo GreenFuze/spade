@@ -1,0 +1,7 @@
+{
+  "name": "@monorepo/test-all",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "npm run test --workspace=@monorepo/core && npm run test --workspace=@monorepo/utils && npm run test --workspace=@monorepo/api-client && npm run test --workspace=@monorepo/data-models && npm run test --workspace=@monorepo/config && npm run test --workspace=@monorepo/shared-ui && npm run test --workspace=@monorepo/auth-lib && npm run test --workspace=@monorepo/logging-lib && npm run test --workspace=@monorepo/metrics-lib && npm run test --workspace=@monorepo/data-access && npm run test --workspace=@monorepo/auth-service && npm run test --workspace=@monorepo/data-processor && npm run test --workspace=@monorepo/analytics && npm run test --workspace=@monorepo/notification && npm run test --workspace=@monorepo/web-app && npm run test --workspace=@monorepo/admin-portal && npm run test --workspace=@monorepo/api-server"
+  }
+}

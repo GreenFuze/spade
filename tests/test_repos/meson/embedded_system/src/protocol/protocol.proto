@@ -1,0 +1,46 @@
+// Protocol definition for code generation
+// This file is parsed by tools/generate_protocol.py
+
+syntax = "proto3";
+
+package embedded_protocol;
+
+// Message types
+enum MessageType {
+    UNKNOWN = 0;
+    REQUEST = 1;
+    RESPONSE = 2;
+    EVENT = 3;
+}
+
+// Request message
+message Request {
+    uint32 request_id = 1;
+    string command = 2;
+    bytes payload = 3;
+}
+
+// Response message
+message Response {
+    uint32 request_id = 1;
+    int32 status_code = 2;
+    bytes data = 3;
+}
+
+// Event message
+message Event {
+    uint32 event_id = 1;
+    string event_type = 2;
+    int64 timestamp = 3;
+    bytes data = 4;
+}
+
+// Main protocol message wrapper
+message ProtocolMessage {
+    MessageType type = 1;
+    oneof payload {
+        Request request = 2;
+        Response response = 3;
+        Event event = 4;
+    }
+}

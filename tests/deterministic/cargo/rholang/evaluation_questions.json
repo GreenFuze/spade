@@ -1,0 +1,248 @@
+{
+  "repository_name": "rholang",
+  "build_system": "cargo",
+  "description": "Evaluation questions for rholang - Cargo workspace with compiler/interpreter, proc-macros, and C FFI",
+  "questions": [
+    {
+      "id": 1,
+      "name": "workspace_crate_count",
+      "category": "build_system",
+      "question": "How many crates are in the Cargo workspace? (Provide the count)",
+      "expected_answer": 21,
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "name": "project_version",
+      "category": "build_system",
+      "question": "What is the workspace version defined in the root Cargo.toml? (Provide the version string)",
+      "expected_answer": "0.1.0",
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "name": "rust_edition",
+      "category": "build_system",
+      "question": "What Rust edition is used in this workspace? (Provide the edition year)",
+      "expected_answer": ["2021", "rust 2021", "edition 2021"],
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "name": "tier0_count",
+      "category": "component_identification",
+      "question": "How many Tier 0 (foundation) crates are there? (Provide the count)",
+      "expected_answer": 3,
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "name": "executable_count",
+      "category": "component_identification",
+      "question": "How many executable (bin) crates are in this workspace? (Provide the count)",
+      "expected_answer": 5,
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "name": "proc_macro_crate",
+      "category": "component_identification",
+      "question": "What is the name of the procedural macro crate? (Provide the crate name)",
+      "expected_answer": "rholang-macros",
+      "difficulty": "easy"
+    },
+    {
+      "id": 7,
+      "name": "ffi_crate",
+      "category": "component_identification",
+      "question": "What is the name of the FFI bridge crate? (Provide the crate name)",
+      "expected_answer": "ffi-bridge",
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "name": "c_source_files",
+      "category": "source_analysis",
+      "question": "How many .c (C source) files are in the repository? (Provide the count)",
+      "expected_answer": 1,
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "name": "main_cli_crate",
+      "category": "component_identification",
+      "question": "What is the name of the main compiler CLI executable crate? (Provide the crate name)",
+      "expected_answer": "rholang-cli",
+      "difficulty": "easy"
+    },
+    {
+      "id": 10,
+      "name": "build_script_crate",
+      "category": "build_system",
+      "question": "Which crate has a build.rs build script? (Provide the crate name)",
+      "expected_answer": "ffi-bridge",
+      "difficulty": "easy"
+    },
+    {
+      "id": 11,
+      "name": "common_types_dependencies",
+      "category": "dependency_analysis",
+      "question": "What external crates does common-types depend on? (Provide a list)",
+      "expected_answer": [["serde", "serde_json"], ["serde_json", "serde"]],
+      "difficulty": "medium"
+    },
+    {
+      "id": 12,
+      "name": "parser_dependencies",
+      "category": "dependency_analysis",
+      "question": "What workspace crates does parser directly depend on? (Provide a list of crate names)",
+      "expected_answer": [["lexer", "common-types", "error-reporting"]],
+      "difficulty": "medium"
+    },
+    {
+      "id": 13,
+      "name": "ffi_bridge_type",
+      "category": "component_identification",
+      "question": "What type of library is ffi-bridge? (Answer 'static', 'shared', or 'both')",
+      "expected_answer": ["shared", "both", "cdylib", "dynamic", "shared library", "dynamic library"],
+      "difficulty": "medium"
+    },
+    {
+      "id": 14,
+      "name": "codegen_count",
+      "category": "component_identification",
+      "question": "How many code generation backend crates are there? (Provide the count)",
+      "expected_answer": 2,
+      "difficulty": "medium"
+    },
+    {
+      "id": 15,
+      "name": "codegen_backends",
+      "category": "component_identification",
+      "question": "What are the names of the code generation backend crates? (Provide a list)",
+      "expected_answer": [["codegen-c", "codegen-bytecode"], ["codegen-bytecode", "codegen-c"]],
+      "difficulty": "medium"
+    },
+    {
+      "id": 16,
+      "name": "vm_runtime_dependencies",
+      "category": "dependency_analysis",
+      "question": "What workspace crates does vm-runtime directly depend on? (Provide a list)",
+      "expected_answer": [["codegen-bytecode", "common-types"], ["common-types", "codegen-bytecode"]],
+      "difficulty": "medium"
+    },
+    {
+      "id": 17,
+      "name": "test_frameworks",
+      "category": "testing",
+      "question": "What test frameworks are used in this repository? (Provide a list)",
+      "expected_answer": [["rust", "criterion"], ["criterion", "rust"], ["cargo test", "criterion"], ["criterion", "cargo test"], ["libtest", "criterion"], ["criterion", "libtest"], ["rust", "Criterion"], ["Criterion", "rust"], ["cargo test", "Criterion"], ["Criterion", "cargo test"], ["libtest", "Criterion"], ["Criterion", "libtest"], ["Rust built-in #[test] harness", "Criterion"], ["Criterion", "Rust built-in #[test] harness"]],
+      "difficulty": "medium"
+    },
+    {
+      "id": 18,
+      "name": "benchmark_crate",
+      "category": "component_identification",
+      "question": "What is the name of the benchmark suite crate? (Provide the crate name)",
+      "expected_answer": "benchmark-suite",
+      "difficulty": "medium"
+    },
+    {
+      "id": 19,
+      "name": "aggregator_count",
+      "category": "build_system",
+      "question": "How many aggregators are defined in this workspace? (Provide the count)",
+      "expected_answer": 0,
+      "difficulty": "medium"
+    },
+    {
+      "id": 20,
+      "name": "total_external_packages",
+      "category": "dependency_analysis",
+      "question": "How many unique external crates (from crates.io) are used across the workspace? (Provide the count)",
+      "expected_answer": 27,
+      "difficulty": "medium"
+    },
+    {
+      "id": 21,
+      "name": "max_dependency_depth",
+      "category": "dependency_analysis",
+      "question": "What is the maximum dependency depth in this repository? (Provide a number)",
+      "expected_answer": 11,
+      "difficulty": "hard"
+    },
+    {
+      "id": 22,
+      "name": "build_order_tier0",
+      "category": "dependency_analysis",
+      "question": "Which crates must be built first (Tier 0, no workspace dependencies)? (Provide a list)",
+      "expected_answer": [["common-types", "error-reporting", "rholang-macros"]],
+      "difficulty": "hard"
+    },
+    {
+      "id": 23,
+      "name": "cascade_failure_common_types",
+      "category": "dependency_analysis",
+      "question": "If common-types fails to build, how many other crates would also fail? (Provide the count)",
+      "expected_answer": 20,
+      "difficulty": "hard"
+    },
+    {
+      "id": 24,
+      "name": "parallel_build_codegen",
+      "category": "dependency_analysis",
+      "question": "Can codegen-c and codegen-bytecode be built in parallel? (Answer yes or no)",
+      "expected_answer": ["yes", "Yes", "y", "true", "TRUE"],
+      "difficulty": "hard"
+    },
+    {
+      "id": 25,
+      "name": "integration_tests_dependencies",
+      "category": "dependency_analysis",
+      "question": "What are the direct workspace dependencies of integration-tests? (Provide a list)",
+      "expected_answer": [["rholang-cli", "repl", "ffi-bridge", "common-types"]],
+      "difficulty": "hard"
+    },
+    {
+      "id": 26,
+      "name": "ffi_c_header",
+      "category": "source_analysis",
+      "question": "What is the name of the C header file in the ffi-bridge crate? (Provide the filename)",
+      "expected_answer": "rholang.h",
+      "difficulty": "hard"
+    },
+    {
+      "id": 27,
+      "name": "cross_language_dependencies",
+      "category": "component_identification",
+      "question": "Does this repository have cross-language dependencies? (Answer yes or no)",
+      "expected_answer": ["yes", "Yes", "y", "true", "TRUE"],
+      "difficulty": "hard"
+    },
+    {
+      "id": 28,
+      "name": "depth_5_components",
+      "category": "dependency_analysis",
+      "question": "Which components are at dependency depth 5? (Provide a list)",
+      "expected_answer": [["ir-gen", "lsp-server"], ["lsp-server", "ir-gen"]],
+      "difficulty": "hard"
+    },
+    {
+      "id": 29,
+      "name": "proc_macro_dependencies",
+      "category": "dependency_analysis",
+      "question": "What external crates does rholang-macros depend on? (Provide a list)",
+      "expected_answer": [["syn", "quote", "proc-macro2"]],
+      "difficulty": "hard"
+    },
+    {
+      "id": 30,
+      "name": "language_count",
+      "category": "source_analysis",
+      "question": "How many different programming languages are used in this repository? (Provide the count)",
+      "expected_answer": 2,
+      "difficulty": "hard"
+    }
+  ],
+  "ground_truth_file": "tests/deterministic/cargo/rholang/rholang_ground_truth.json"
+}

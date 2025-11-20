@@ -407,8 +407,8 @@ class VisualizationGenerator:
 
         # Extract question IDs and scores
         # Get question count from first agent
-        first_agent_key = f"{AGENTS[0]}_RIG"
-        questions = results[first_agent_key]['questions']
+        # Get questions from question-centric structure
+        questions = results['questions']
         question_ids = [q['id'] for q in questions]
 
         # Build matrix: rows = agent_condition, cols = questions
@@ -418,8 +418,8 @@ class VisualizationGenerator:
         for agent in AGENTS:
             for condition in ['RIG', 'NORIG']:
                 key = f"{agent}_{condition}"
-                agent_questions = results[key]['questions']
-                scores = [q['score'] for q in agent_questions]
+                # Extract scores from question-centric data
+                scores = [q.get(key, {}).get('score', 0) for q in questions]
                 matrix_data.append(scores)
 
                 condition_label = 'RIG' if condition == 'RIG' else 'No RIG'
@@ -466,11 +466,14 @@ class VisualizationGenerator:
         agent_improvements = {agent: [] for agent in AGENTS}
 
         for agent in AGENTS:
-            with_rig_questions = results[f"{agent}_RIG"]['questions']
-            without_rig_questions = results[f"{agent}_NORIG"]['questions']
+            with_rig_key = f"{agent}_RIG"
+            without_rig_key = f"{agent}_NORIG"
 
-            for i in range(len(with_rig_questions)):
-                improvement = with_rig_questions[i]['score'] - without_rig_questions[i]['score']
+            # Extract improvements from question-centric data
+            for q in results['questions']:
+                with_rig_score = q.get(with_rig_key, {}).get('score', 0)
+                without_rig_score = q.get(without_rig_key, {}).get('score', 0)
+                improvement = with_rig_score - without_rig_score
                 agent_improvements[agent].append(improvement)
 
         # Prepare data for box plot
@@ -514,8 +517,10 @@ class VisualizationGenerator:
 
         # Check if category data exists
         if 'by_category' not in analysis or not analysis['by_category']:
-            print("  [SKIP] No category data available")
-            return
+            raise ValueError(
+                f"No category data available for repository {self.repo_name}. "
+                f"answers_analysis.json may be corrupted or incomplete."
+            )
 
         by_category = analysis['by_category']
         categories = list(by_category.keys())
@@ -660,13 +665,12 @@ class VisualizationGenerator:
         total_time_saved = total_time_without - total_time_with
         time_reduction_pct = (total_time_saved / total_time_without * 100) if total_time_without > 0 else 0
 
-        # Get question counts from results
-        total_questions = len(self.analysis_data['results'][f"{AGENTS[0]}_RIG"]['questions'])
+        # Get question counts from results (question-centric structure)
+        total_questions = len(self.analysis_data['results']['questions'])
 
         # Count questions by difficulty
         difficulty_counts = {d: 0 for d in DIFFICULTIES}
-        first_agent_key = f"{AGENTS[0]}_RIG"
-        for q in self.analysis_data['results'][first_agent_key]['questions']:
+        for q in self.analysis_data['results']['questions']:
             if 'difficulty' in q:
                 difficulty_counts[q['difficulty']] = difficulty_counts.get(q['difficulty'], 0) + 1
 

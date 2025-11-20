@@ -15,6 +15,7 @@ import statistics
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, List, Any
+from scipy import stats as scipy_stats
 
 from .config import REPOS, SCRIPT_DIR
 from .complexity import calculate_complexity_score, calculate_pearson_correlation, get_complexity_level
@@ -157,24 +158,27 @@ def process_repository(repo: Dict[str, Any]) -> Dict[str, Any]:
     category_scores = {}
     results_data = answers_analysis.get("results", {})
 
-    # Collect scores by category for all agents
-    for agent_condition_key, condition_data in results_data.items():
-        # Determine if this is RIG or NORIG condition
-        is_rig = "_RIG" in agent_condition_key
+    # Get all agent keys (exclude "questions" key)
+    agent_keys = [k for k in results_data.keys() if k != "questions"]
 
-        # Process each question
-        for question_result in condition_data.get("questions", []):
-            q_id = question_result.get("id")
-            score = question_result.get("score", 0)
+    # Process question-centric data
+    for question in results_data.get("questions", []):
+        q_id = question.get("id")
+        category = question_categories.get(q_id)
+        if not category:
+            continue
 
-            # Map question to category
-            category = question_categories.get(q_id)
-            if not category:
-                continue
+        # Initialize category if needed
+        if category not in category_scores:
+            category_scores[category] = {"with_rig": [], "without_rig": []}
 
-            # Initialize category if needed
-            if category not in category_scores:
-                category_scores[category] = {"with_rig": [], "without_rig": []}
+        # Collect scores from all agents for this question
+        for agent_key in agent_keys:
+            agent_result = question.get(agent_key, {})
+            score = agent_result.get("score", 0)
+
+            # Determine if this is RIG or NORIG condition
+            is_rig = "_RIG" in agent_key
 
             # Add score to appropriate list
             if is_rig:
@@ -466,6 +470,161 @@ def calculate_aggregate_analysis(repo_data_list: List[Dict[str, Any]]) -> Dict[s
     }
 
 
+def calculate_time_accuracy_analysis(repo_data_list: List[Dict[str, Any]], aggregate_analysis: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Calculate time vs accuracy analysis metrics.
+
+    Produces:
+    1. Efficiency table (score per second for each agent)
+    2. Time-score correlation (Pearson correlation coefficient)
+    3. Scatter plot data (all agent+mode combinations)
+
+    Args:
+        repo_data_list: List of repository data dictionaries
+        aggregate_analysis: Aggregate analysis results
+
+    Returns:
+        Dictionary with time-accuracy analysis metrics
+    """
+    print("\nCalculating time vs accuracy analysis...")
+
+    # 1. Build efficiency table
+    efficiency_table = []
+    by_agent = aggregate_analysis["by_agent"]
+
+    for agent_name, agent_data in sorted(by_agent.items()):
+        time_norig = agent_data["avg_time_without_rig"]
+        time_rig = agent_data["avg_time_with_rig"]
+        score_norig = agent_data["avg_score_without_rig"]
+        score_rig = agent_data["avg_score_with_rig"]
+
+        # Calculate efficiency (score per second)
+        eff_norig = score_norig / time_norig if time_norig > 0 else 0
+        eff_rig = score_rig / time_rig if time_rig > 0 else 0
+        eff_improvement_pct = ((eff_rig - eff_norig) / eff_norig * 100) if eff_norig > 0 else 0
+
+        efficiency_table.append({
+            "agent": agent_name,
+            "time_norig_seconds": round(time_norig, 2),
+            "time_rig_seconds": round(time_rig, 2),
+            "score_norig": round(score_norig, 1),
+            "score_rig": round(score_rig, 1),
+            "efficiency_norig": round(eff_norig, 4),
+            "efficiency_rig": round(eff_rig, 4),
+            "efficiency_improvement_pct": round(eff_improvement_pct, 1),
+        })
+
+    # Sort by efficiency_rig descending
+    efficiency_table.sort(key=lambda x: x["efficiency_rig"], reverse=True)
+
+    # 2. Calculate time-score correlation
+    # Per repository correlation
+    per_repo_correlation = {}
+
+    for repo in repo_data_list:
+        repo_name = repo["name"]
+
+        # Collect all agent time-score pairs for this repo
+        times = []
+        scores = []
+
+        for agent_name, agent_result in repo["results"]["by_agent"].items():
+            # NORIG point
+            times.append(agent_result["time_without_rig"])
+            scores.append(agent_result["score_without_rig"])
+
+            # RIG point
+            times.append(agent_result["time_with_rig"])
+            scores.append(agent_result["score_with_rig"])
+
+        # Calculate Pearson correlation
+        if len(times) >= 2:
+            r_value, p_value = scipy_stats.pearsonr(times, scores)
+
+            # Interpret correlation strength
+            if abs(r_value) < 0.3:
+                interpretation = "weak"
+            elif abs(r_value) < 0.7:
+                interpretation = "moderate"
+            else:
+                interpretation = "strong"
+
+            if r_value >= 0:
+                interpretation += "_positive"
+            else:
+                interpretation += "_negative"
+
+            per_repo_correlation[repo_name] = {
+                "pearson_r": round(r_value, 3),
+                "p_value": round(p_value, 4),
+                "interpretation": interpretation,
+            }
+
+    # Aggregate correlation across all repos
+    all_times = []
+    all_scores = []
+
+    for repo in repo_data_list:
+        for agent_name, agent_result in repo["results"]["by_agent"].items():
+            # NORIG point
+            all_times.append(agent_result["time_without_rig"])
+            all_scores.append(agent_result["score_without_rig"])
+
+            # RIG point
+            all_times.append(agent_result["time_with_rig"])
+            all_scores.append(agent_result["score_with_rig"])
+
+    aggregate_r, aggregate_p = scipy_stats.pearsonr(all_times, all_scores)
+
+    # Interpret aggregate correlation
+    if abs(aggregate_r) < 0.3:
+        agg_interpretation = "weak"
+    elif abs(aggregate_r) < 0.7:
+        agg_interpretation = "moderate"
+    else:
+        agg_interpretation = "strong"
+
+    if aggregate_r >= 0:
+        agg_interpretation += "_positive"
+    else:
+        agg_interpretation += "_negative"
+
+    # 3. Build scatter plot data
+    scatter_plot_data = []
+
+    for agent_name, agent_data in by_agent.items():
+        # NORIG point
+        scatter_plot_data.append({
+            "agent": agent_name,
+            "mode": "NORIG",
+            "time_seconds": round(agent_data["avg_time_without_rig"], 2),
+            "score": round(agent_data["avg_score_without_rig"], 1),
+            "efficiency": round(agent_data["avg_score_without_rig"] / agent_data["avg_time_without_rig"] if agent_data["avg_time_without_rig"] > 0 else 0, 4),
+        })
+
+        # RIG point
+        scatter_plot_data.append({
+            "agent": agent_name,
+            "mode": "RIG",
+            "time_seconds": round(agent_data["avg_time_with_rig"], 2),
+            "score": round(agent_data["avg_score_with_rig"], 1),
+            "efficiency": round(agent_data["avg_score_with_rig"] / agent_data["avg_time_with_rig"] if agent_data["avg_time_with_rig"] > 0 else 0, 4),
+        })
+
+    return {
+        "efficiency_table": efficiency_table,
+        "time_score_correlation": {
+            "per_repository": per_repo_correlation,
+            "aggregate": {
+                "pearson_r": round(aggregate_r, 3),
+                "p_value": round(aggregate_p, 4),
+                "interpretation": agg_interpretation,
+            },
+        },
+        "scatter_plot_data": scatter_plot_data,
+    }
+
+
 def main():
     """Main execution function."""
     print("=" * 80)
@@ -487,6 +646,9 @@ def main():
     # Calculate aggregate analysis
     aggregate_analysis = calculate_aggregate_analysis(repo_data_list)
 
+    # Calculate time vs accuracy analysis
+    time_accuracy_analysis = calculate_time_accuracy_analysis(repo_data_list, aggregate_analysis)
+
     # Build final output
     output = {
         "meta": {
@@ -498,6 +660,7 @@ def main():
         },
         "repositories": repo_data_list,
         "aggregate_analysis": aggregate_analysis,
+        "time_accuracy_analysis": time_accuracy_analysis,
     }
 
     # Write JSON output
@@ -513,10 +676,32 @@ def main():
     print(f"Average time reduction: {aggregate_analysis['overall']['avg_time_reduction_percentage']:.1f}%")
     print(f"\nJSON output written to: {output_path}")
 
+    # Display time vs accuracy metrics
+    print("\n" + "=" * 80)
+    print("TIME VS ACCURACY ANALYSIS")
+    print("=" * 80)
+
+    # Efficiency table
+    print("\nEfficiency Table (Score per Second):")
+    print(f"{'Agent':<15} {'Time NORIG':>12} {'Time RIG':>12} {'Score NORIG':>12} {'Score RIG':>12} {'Eff NORIG':>12} {'Eff RIG':>12} {'Improvement':>12}")
+    print("-" * 110)
+    for row in time_accuracy_analysis["efficiency_table"]:
+        print(f"{row['agent']:<15} {row['time_norig_seconds']:>12.2f}s {row['time_rig_seconds']:>12.2f}s {row['score_norig']:>12.1f} {row['score_rig']:>12.1f} {row['efficiency_norig']:>12.4f} {row['efficiency_rig']:>12.4f} {row['efficiency_improvement_pct']:>11.1f}%")
+
+    # Correlation summary
+    print("\nTime-Score Correlation (Aggregate):")
+    corr = time_accuracy_analysis["time_score_correlation"]["aggregate"]
+    print(f"  Pearson r = {corr['pearson_r']:.3f}  (p = {corr['p_value']:.4f})  [{corr['interpretation'].replace('_', ' ').title()}]")
+
+    # Per-repository correlations
+    print("\nPer-Repository Correlations:")
+    for repo_name, repo_corr in time_accuracy_analysis["time_score_correlation"]["per_repository"].items():
+        print(f"  {repo_name:<25} r = {repo_corr['pearson_r']:>6.3f}  (p = {repo_corr['p_value']:.4f})  [{repo_corr['interpretation'].replace('_', ' ').title()}]")
+
     # Generate visualizations
     viz_output_dir = SCRIPT_DIR / "analysis_images"
     try:
-        generate_all_visualizations(repo_data_list, aggregate_analysis, viz_output_dir)
+        generate_all_visualizations(repo_data_list, aggregate_analysis, viz_output_dir, time_accuracy_analysis)
     except Exception as e:
         print(f"\n[ERROR] Failed to generate visualizations: {e}")
         import traceback

@@ -1,0 +1,1252 @@
+You are an expert at analyzing code repositories and build systems.
+
+You have been provided with structured metadata about this repository in the following JSON:
+
+In the following JSON, you'll find these entity types:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component must generate an artifact from source files, or be the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps.
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Test Definitions**: Tests that contain a component used for testing or a runner that executes the test.
+
+```json
+{
+  "repo": {
+    "name": "GoMicroservices",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\go\\microservices"
+  },
+  "build": {
+    "system": "go",
+    "generator": null,
+    "type": "Release",
+    "configure_cmd": null,
+    "test_cmd": "go test"
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "scala-utils",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "internal\\common\\utils\\scalautils.jar",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "scala",
+      "source_files": [
+        "internal\\common\\utils\\ScalaUtils.scala"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-2",
+      "name": "java-utils",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "internal\\common\\utils\\textutils.jar",
+      "locations": [],
+      "type": "package_library",
+      "programming_language": "java",
+      "source_files": [
+        "internal\\common\\utils\\TextUtils.java"
+      ],
+      "external_packages_ids": []
+    },
+    {
+      "id": "comp-3",
+      "name": "api-gateway",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "bin\\api-gateway.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "go",
+      "source_files": [
+        "cmd\\api-gateway\\main.go",
+        "internal\\common\\config\\config.go",
+        "internal\\common\\http\\http.go",
+        "internal\\common\\logger\\logger.go",
+        "internal\\common\\validation\\validation.go"
+      ],
+      "external_packages_ids": [
+        "pkg-14",
+        "pkg-20",
+        "pkg-24",
+        "pkg-23"
+      ]
+    },
+    {
+      "id": "comp-4",
+      "name": "auth-service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "bin\\auth-service.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "go",
+      "source_files": [
+        "cmd\\auth-service\\main.go",
+        "pkg\\auth\\auth.go",
+        "internal\\common\\config\\config.go",
+        "internal\\common\\http\\http.go",
+        "internal\\common\\logger\\logger.go",
+        "internal\\common\\validation\\validation.go"
+      ],
+      "external_packages_ids": [
+        "pkg-14",
+        "pkg-18",
+        "pkg-20",
+        "pkg-24",
+        "pkg-17",
+        "pkg-23"
+      ]
+    },
+    {
+      "id": "comp-5",
+      "name": "user-service",
+      "depends_on_ids": [
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "bin\\user-service.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "go,c",
+      "source_files": [
+        "cmd\\user-service\\main.go",
+        "pkg\\models\\models.go",
+        "internal\\common\\config\\config.go",
+        "internal\\common\\http\\http.go",
+        "internal\\common\\logger\\logger.go",
+        "internal\\common\\validation\\validation.go",
+        "internal\\common\\database\\database.go",
+        "internal\\common\\utils\\java_wrapper.go",
+        "internal\\common\\utils\\jni_wrapper.c"
+      ],
+      "external_packages_ids": [
+        "pkg-14",
+        "pkg-18",
+        "pkg-20",
+        "pkg-26",
+        "pkg-24",
+        "pkg-23",
+        "pkg-15"
+      ]
+    },
+    {
+      "id": "comp-6",
+      "name": "order-service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "relative_path": "bin\\order-service.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "go",
+      "source_files": [
+        "cmd\\order-service\\main.go",
+        "pkg\\models\\models.go",
+        "internal\\common\\config\\config.go",
+        "internal\\common\\http\\http.go",
+        "internal\\common\\logger\\logger.go",
+        "internal\\common\\validation\\validation.go",
+        "internal\\common\\database\\database.go",
+        "internal\\common\\messaging\\messaging.go",
+        "internal\\common\\cache\\cache.go",
+        "internal\\common\\errors\\errors.go"
+      ],
+      "external_packages_ids": [
+        "pkg-14",
+        "pkg-18",
+        "pkg-25",
+        "pkg-20",
+        "pkg-24",
+        "pkg-23",
+        "pkg-15",
+        "pkg-16"
+      ]
+    },
+    {
+      "id": "comp-7",
+      "name": "payment-service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-7"
+      ],
+      "relative_path": "bin\\payment-service.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "go",
+      "source_files": [
+        "cmd\\payment-service\\main.go",
+        "pkg\\models\\models.go",
+        "internal\\common\\config\\config.go",
+        "internal\\common\\http\\http.go",
+        "internal\\common\\logger\\logger.go",
+        "internal\\common\\validation\\validation.go",
+        "internal\\common\\database\\database.go",
+        "internal\\common\\messaging\\messaging.go",
+        "internal\\common\\metrics\\metrics.go"
+      ],
+      "external_packages_ids": [
+        "pkg-14",
+        "pkg-18",
+        "pkg-25",
+        "pkg-20",
+        "pkg-21",
+        "pkg-24",
+        "pkg-23",
+        "pkg-15"
+      ]
+    },
+    {
+      "id": "comp-8",
+      "name": "notification-service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-8"
+      ],
+      "relative_path": "bin\\notification-service.exe",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "go",
+      "source_files": [
+        "cmd\\notification-service\\main.go",
+        "internal\\common\\config\\config.go",
+        "internal\\common\\http\\http.go",
+        "internal\\common\\logger\\logger.go",
+        "internal\\common\\validation\\validation.go",
+        "internal\\common\\messaging\\messaging.go"
+      ],
+      "external_packages_ids": [
+        "pkg-14",
+        "pkg-25",
+        "pkg-20",
+        "pkg-24",
+        "pkg-23"
+      ]
+    }
+  ],
+  "aggregators": [
+    {
+      "id": "agg-1",
+      "name": "build-all",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-8",
+        "comp-7",
+        "comp-3",
+        "comp-4",
+        "comp-5"
+      ],
+      "evidence_ids": [
+        "evidence-9"
+      ]
+    },
+    {
+      "id": "agg-2",
+      "name": "test-all",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-8",
+        "comp-7",
+        "comp-3",
+        "comp-4",
+        "comp-5"
+      ],
+      "evidence_ids": [
+        "evidence-10"
+      ]
+    },
+    {
+      "id": "agg-3",
+      "name": "docker-build",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-8",
+        "comp-7",
+        "comp-3",
+        "comp-4",
+        "comp-5"
+      ],
+      "evidence_ids": [
+        "evidence-11"
+      ]
+    },
+    {
+      "id": "agg-4",
+      "name": "deploy",
+      "depends_on_ids": [
+        "agg-3",
+        "agg-1"
+      ],
+      "evidence_ids": [
+        "evidence-12"
+      ]
+    }
+  ],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "test_crypto",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-13"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\crypto\\crypto_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-2",
+      "name": "test_validation_api_gateway",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-14"
+      ],
+      "test_executable_component_id": "comp-3",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\validation\\validation_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-3",
+      "name": "test_validation_auth_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-15"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\validation\\validation_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-4",
+      "name": "test_validation_user_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-16"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\validation\\validation_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-5",
+      "name": "test_validation_order_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-17"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\validation\\validation_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-6",
+      "name": "test_validation_payment_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-18"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\validation\\validation_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-7",
+      "name": "test_validation_notification_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-19"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\validation\\validation_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-8",
+      "name": "test_logger_api_gateway",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-20"
+      ],
+      "test_executable_component_id": "comp-3",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\logger\\logger_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-9",
+      "name": "test_logger_auth_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-21"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\logger\\logger_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-10",
+      "name": "test_logger_user_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-22"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\logger\\logger_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-11",
+      "name": "test_logger_order_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-23"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\logger\\logger_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-12",
+      "name": "test_logger_payment_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-24"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\logger\\logger_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-13",
+      "name": "test_logger_notification_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-25"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\logger\\logger_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-14",
+      "name": "test_config_api_gateway",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-26"
+      ],
+      "test_executable_component_id": "comp-3",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\config\\config_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-15",
+      "name": "test_config_auth_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-27"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\config\\config_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-16",
+      "name": "test_config_user_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-28"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\config\\config_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-17",
+      "name": "test_config_order_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-29"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\config\\config_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-18",
+      "name": "test_config_payment_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-30"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\config\\config_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-19",
+      "name": "test_config_notification_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-31"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\config\\config_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-20",
+      "name": "test_database_user_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-32"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\database\\database_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-21",
+      "name": "test_database_order_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-33"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\database\\database_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-22",
+      "name": "test_database_payment_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-34"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\database\\database_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-23",
+      "name": "test_messaging_order_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-35"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\messaging\\messaging_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-24",
+      "name": "test_messaging_payment_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-36"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\messaging\\messaging_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-25",
+      "name": "test_messaging_notification_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-37"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\messaging\\messaging_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-26",
+      "name": "test_http_api_gateway",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-38"
+      ],
+      "test_executable_component_id": "comp-3",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\http\\http_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-27",
+      "name": "test_http_auth_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-39"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\http\\http_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-28",
+      "name": "test_http_user_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-40"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\http\\http_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-29",
+      "name": "test_http_order_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-41"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\http\\http_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-30",
+      "name": "test_http_payment_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-42"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\http\\http_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-31",
+      "name": "test_http_notification_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-43"
+      ],
+      "test_executable_component_id": "comp-8",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\http\\http_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-32",
+      "name": "test_cache_order_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-44"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\cache\\cache_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-33",
+      "name": "test_metrics_payment_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-45"
+      ],
+      "test_executable_component_id": "comp-7",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "internal\\common\\metrics\\metrics_test.go"
+      ],
+      "test_framework": "Go"
+    },
+    {
+      "id": "test-34",
+      "name": "test_auth_auth_service",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-46"
+      ],
+      "test_executable_component_id": "comp-4",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "pkg\\auth\\auth_test.go"
+      ],
+      "test_framework": "Go"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-14",
+      "name": "gin"
+    },
+    {
+      "id": "pkg-20",
+      "name": "zap"
+    },
+    {
+      "id": "pkg-24",
+      "name": "viper"
+    },
+    {
+      "id": "pkg-23",
+      "name": "validator"
+    },
+    {
+      "id": "pkg-18",
+      "name": "uuid"
+    },
+    {
+      "id": "pkg-17",
+      "name": "jwt"
+    },
+    {
+      "id": "pkg-15",
+      "name": "pq"
+    },
+    {
+      "id": "pkg-26",
+      "name": "jni"
+    },
+    {
+      "id": "pkg-16",
+      "name": "redis"
+    },
+    {
+      "id": "pkg-25",
+      "name": "nats"
+    },
+    {
+      "id": "pkg-21",
+      "name": "prometheus"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-1",
+      "name": "go",
+      "package_name": "github.com/gin-gonic/gin"
+    },
+    {
+      "id": "pkg-7",
+      "name": "go",
+      "package_name": "go.uber.org/zap"
+    },
+    {
+      "id": "pkg-11",
+      "name": "go",
+      "package_name": "github.com/spf13/viper"
+    },
+    {
+      "id": "pkg-10",
+      "name": "go",
+      "package_name": "github.com/go-playground/validator/v10"
+    },
+    {
+      "id": "pkg-5",
+      "name": "go",
+      "package_name": "github.com/google/uuid"
+    },
+    {
+      "id": "pkg-4",
+      "name": "go",
+      "package_name": "github.com/golang-jwt/jwt/v5"
+    },
+    {
+      "id": "pkg-2",
+      "name": "go",
+      "package_name": "github.com/lib/pq"
+    },
+    {
+      "id": "pkg-13",
+      "name": "system",
+      "package_name": "JNI"
+    },
+    {
+      "id": "pkg-3",
+      "name": "go",
+      "package_name": "github.com/redis/go-redis/v9"
+    },
+    {
+      "id": "pkg-12",
+      "name": "go",
+      "package_name": "github.com/nats-io/nats.go"
+    },
+    {
+      "id": "pkg-8",
+      "name": "go",
+      "package_name": "github.com/prometheus/client_golang"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "internal/common/utils/ScalaUtils.scala:3"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "internal/common/utils/TextUtils.java:3"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "cmd/api-gateway/main.go:10"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "cmd/auth-service/main.go:12"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "cmd/user-service/main.go:14"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "cmd/order-service/main.go:16"
+      ]
+    },
+    {
+      "id": "evidence-7",
+      "line": [
+        "cmd/payment-service/main.go:14"
+      ]
+    },
+    {
+      "id": "evidence-8",
+      "line": [
+        "cmd/notification-service/main.go:11"
+      ]
+    },
+    {
+      "id": "evidence-9",
+      "line": [
+        "go.mod:1"
+      ]
+    },
+    {
+      "id": "evidence-10",
+      "line": [
+        "go.mod:1"
+      ]
+    },
+    {
+      "id": "evidence-11",
+      "line": [
+        "go.mod:1"
+      ]
+    },
+    {
+      "id": "evidence-12",
+      "line": [
+        "go.mod:1"
+      ]
+    },
+    {
+      "id": "evidence-13",
+      "line": [
+        "internal\\common\\crypto\\crypto_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-14",
+      "line": [
+        "internal\\common\\validation\\validation_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-15",
+      "line": [
+        "internal\\common\\validation\\validation_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-16",
+      "line": [
+        "internal\\common\\validation\\validation_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-17",
+      "line": [
+        "internal\\common\\validation\\validation_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-18",
+      "line": [
+        "internal\\common\\validation\\validation_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-19",
+      "line": [
+        "internal\\common\\validation\\validation_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-20",
+      "line": [
+        "internal\\common\\logger\\logger_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-21",
+      "line": [
+        "internal\\common\\logger\\logger_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-22",
+      "line": [
+        "internal\\common\\logger\\logger_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-23",
+      "line": [
+        "internal\\common\\logger\\logger_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-24",
+      "line": [
+        "internal\\common\\logger\\logger_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-25",
+      "line": [
+        "internal\\common\\logger\\logger_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-26",
+      "line": [
+        "internal\\common\\config\\config_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-27",
+      "line": [
+        "internal\\common\\config\\config_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-28",
+      "line": [
+        "internal\\common\\config\\config_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-29",
+      "line": [
+        "internal\\common\\config\\config_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-30",
+      "line": [
+        "internal\\common\\config\\config_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-31",
+      "line": [
+        "internal\\common\\config\\config_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-32",
+      "line": [
+        "internal\\common\\database\\database_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-33",
+      "line": [
+        "internal\\common\\database\\database_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-34",
+      "line": [
+        "internal\\common\\database\\database_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-35",
+      "line": [
+        "internal\\common\\messaging\\messaging_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-36",
+      "line": [
+        "internal\\common\\messaging\\messaging_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-37",
+      "line": [
+        "internal\\common\\messaging\\messaging_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-38",
+      "line": [
+        "internal\\common\\http\\http_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-39",
+      "line": [
+        "internal\\common\\http\\http_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-40",
+      "line": [
+        "internal\\common\\http\\http_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-41",
+      "line": [
+        "internal\\common\\http\\http_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-42",
+      "line": [
+        "internal\\common\\http\\http_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-43",
+      "line": [
+        "internal\\common\\http\\http_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-44",
+      "line": [
+        "internal\\common\\cache\\cache_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-45",
+      "line": [
+        "internal\\common\\metrics\\metrics_test.go:5"
+      ]
+    },
+    {
+      "id": "evidence-46",
+      "line": [
+        "pkg\\auth\\auth_test.go:8"
+      ]
+    }
+  ]
+}
+```
+
+Please answer the following questions about this repository using the metadata above and by analyzing the repository files.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. What is the Go module name in go.mod? (Provide the module name)
+2. What Go version is specified in go.mod? (Provide the version number)
+3. How many executable services are in the cmd/ directory? (Provide the count)
+4. How many packages with actual code used by the services are in the internal/common/ directory? (Provide the count)
+5. How many external package dependencies are listed in go.mod? (Provide the count)
+6. How many *_test.go files are in the repository? (Provide the count)
+7. How many aggregators are defined in the build system? (Provide the count)
+8. What is the default port for the API Gateway service? (Provide the port number)
+9. What is the default port for the Auth Service? (Provide the port number)
+10. What web framework package is used for HTTP routing? (Provide the full package name as it appears in go.mod)
+11. How many components are built in this repository? (Provide the count)
+12. What source files does the api-gateway component use? (Provide a list)
+13. What source files does the user-service component use? (Provide a list)
+14. What external packages does the api-gateway component use? (Provide a list of full package names as they appear in go.mod)
+15. What external packages does the user-service component use? (Provide a list of full package names as they appear in go.mod or their source)
+16. What programming language does the auth-service component use? (Provide the language name)
+17. What programming languages does the user-service component use? (Provide a comma-separated list or space-separated list)
+18. What is the name of the Scala library component? (Provide the component name)
+19. What component does java-utils depend on? (Provide the component name)
+20. What component does user-service depend on? (Provide the component name)
+21. What is the maximum dependency depth in this repository? (i.e., the longest chain from any component to its deepest dependency)
+22. List all components (including transitive dependencies) that user-service depends on. (Provide a list)
+23. If the scala-utils library fails to build, which components would also fail? (Provide a list)
+24. If the java-utils library fails to build, which components would be affected? (Provide a list)
+25. Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list)
+26. Can api-gateway and auth-service be built in parallel? (Answer yes or no)
+27. What does the deploy aggregator depend on? (Provide a list)
+28. Which external package is used by the most components? (Provide the full package name as it appears in go.mod. If multiple packages are tied, provide any one of them)
+29. What components does the build-all aggregator build? (Provide a list of service names)
+30. In what order must scala-utils, java-utils, and user-service be built? (Provide the build order as a list starting with the component that has no dependencies)
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

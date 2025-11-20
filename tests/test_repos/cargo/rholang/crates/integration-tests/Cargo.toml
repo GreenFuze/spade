@@ -1,0 +1,15 @@
+[package]
+name = "integration-tests"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "integration-tests"
+path = "src/main.rs"
+
+[dependencies]
+rholang-cli = { path = "../rholang-cli" }
+repl = { path = "../repl" }
+ffi-bridge = { path = "../ffi-bridge" }
+common-types = { path = "../common-types" }
+anyhow.workspace = true

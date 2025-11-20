@@ -1,0 +1,355 @@
+{
+  "repo": {
+    "name": "embedded_system",
+    "root": "C:\\src\\github.com\\GreenFuze\\spade\\tests\\test_repos\\meson\\embedded_system"
+  },
+  "build": {
+    "system": "meson",
+    "generator": null,
+    "type": "Release",
+    "configure_cmd": "meson setup build",
+    "test_cmd": "meson test -C build"
+  },
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "libcore.a",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-1"
+      ],
+      "relative_path": "build\\src\\core\\libcore.a",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "c",
+      "source_files": [
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-7",
+        "pkg-11"
+      ]
+    },
+    {
+      "id": "comp-2",
+      "name": "libdrivers.so",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-2"
+      ],
+      "relative_path": "build\\src\\drivers\\libdrivers.so",
+      "locations": [],
+      "type": "shared_library",
+      "programming_language": "cpp",
+      "source_files": [
+        "src\\drivers\\uart.cpp",
+        "src\\drivers\\uart.hpp",
+        "src\\drivers\\spi.cpp",
+        "src\\drivers\\spi.hpp",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-7",
+        "pkg-11",
+        "pkg-12"
+      ]
+    },
+    {
+      "id": "comp-3",
+      "name": "libprotocol.a",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-3"
+      ],
+      "relative_path": "build\\src\\protocol\\libprotocol.a",
+      "locations": [],
+      "type": "static_library",
+      "programming_language": "c",
+      "source_files": [
+        "src\\protocol\\handler.c",
+        "src\\protocol\\handler.h",
+        "src\\protocol\\protocol.proto",
+        "tools\\generate_protocol.py",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-7",
+        "pkg-11"
+      ]
+    },
+    {
+      "id": "comp-4",
+      "name": "firmware.elf",
+      "depends_on_ids": [
+        "comp-3",
+        "comp-1",
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-4"
+      ],
+      "relative_path": "build\\src\\app\\firmware.elf",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "c",
+      "source_files": [
+        "src\\app\\main.c",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in",
+        "src\\drivers\\uart.cpp",
+        "src\\drivers\\uart.hpp",
+        "src\\drivers\\spi.cpp",
+        "src\\drivers\\spi.hpp",
+        "src\\protocol\\handler.c",
+        "src\\protocol\\handler.h",
+        "src\\protocol\\protocol.proto",
+        "tools\\generate_protocol.py"
+      ],
+      "external_packages_ids": [
+        "pkg-10",
+        "pkg-7",
+        "pkg-11",
+        "pkg-12"
+      ]
+    },
+    {
+      "id": "comp-5",
+      "name": "test_system",
+      "depends_on_ids": [
+        "comp-1"
+      ],
+      "evidence_ids": [
+        "evidence-5"
+      ],
+      "relative_path": "build\\tests\\test_system",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "c",
+      "source_files": [
+        "tests\\test_system.c",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-8",
+        "pkg-7",
+        "pkg-11"
+      ]
+    },
+    {
+      "id": "comp-6",
+      "name": "test_drivers",
+      "depends_on_ids": [
+        "comp-2"
+      ],
+      "evidence_ids": [
+        "evidence-6"
+      ],
+      "relative_path": "build\\tests\\test_drivers",
+      "locations": [],
+      "type": "executable",
+      "programming_language": "cpp",
+      "source_files": [
+        "tests\\test_drivers.cpp",
+        "src\\drivers\\uart.cpp",
+        "src\\drivers\\uart.hpp",
+        "src\\drivers\\spi.cpp",
+        "src\\drivers\\spi.hpp",
+        "src\\core\\system.c",
+        "src\\core\\system.h",
+        "src\\core\\memory.c",
+        "src\\core\\memory.h",
+        "config.h.in"
+      ],
+      "external_packages_ids": [
+        "pkg-9",
+        "pkg-7",
+        "pkg-11",
+        "pkg-12"
+      ]
+    }
+  ],
+  "aggregators": [
+    {
+      "id": "agg-1",
+      "name": "build-all",
+      "depends_on_ids": [
+        "comp-6",
+        "comp-5",
+        "comp-4"
+      ],
+      "evidence_ids": [
+        "evidence-7"
+      ]
+    }
+  ],
+  "runners": [],
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "Core System Tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-8"
+      ],
+      "test_executable_component_id": "comp-5",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "tests\\test_system.c"
+      ],
+      "test_framework": "cmocka"
+    },
+    {
+      "id": "test-2",
+      "name": "Driver Tests",
+      "depends_on_ids": [],
+      "evidence_ids": [
+        "evidence-9"
+      ],
+      "test_executable_component_id": "comp-6",
+      "test_components_ids": [],
+      "components_being_tested_ids": [],
+      "source_files": [
+        "tests\\test_drivers.cpp"
+      ],
+      "test_framework": "gtest"
+    }
+  ],
+  "external_packages": [
+    {
+      "id": "pkg-7",
+      "name": "json-c"
+    },
+    {
+      "id": "pkg-11",
+      "name": "m"
+    },
+    {
+      "id": "pkg-12",
+      "name": "dl"
+    },
+    {
+      "id": "pkg-10",
+      "name": "threads"
+    },
+    {
+      "id": "pkg-8",
+      "name": "cmocka"
+    },
+    {
+      "id": "pkg-9",
+      "name": "gtest"
+    }
+  ],
+  "package_managers": [
+    {
+      "id": "pkg-1",
+      "name": "meson",
+      "package_name": "json-c"
+    },
+    {
+      "id": "pkg-5",
+      "name": "system",
+      "package_name": "m"
+    },
+    {
+      "id": "pkg-6",
+      "name": "system",
+      "package_name": "dl"
+    },
+    {
+      "id": "pkg-4",
+      "name": "system",
+      "package_name": "threads"
+    },
+    {
+      "id": "pkg-2",
+      "name": "system",
+      "package_name": "cmocka"
+    },
+    {
+      "id": "pkg-3",
+      "name": "system",
+      "package_name": "gtest"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "line": [
+        "src/core/meson.build:10"
+      ]
+    },
+    {
+      "id": "evidence-2",
+      "line": [
+        "src/drivers/meson.build:10"
+      ]
+    },
+    {
+      "id": "evidence-3",
+      "line": [
+        "src/protocol/meson.build:18"
+      ]
+    },
+    {
+      "id": "evidence-4",
+      "line": [
+        "src/app/meson.build:7"
+      ]
+    },
+    {
+      "id": "evidence-5",
+      "line": [
+        "tests/meson.build:6"
+      ]
+    },
+    {
+      "id": "evidence-6",
+      "line": [
+        "tests/meson.build:16"
+      ]
+    },
+    {
+      "id": "evidence-7",
+      "line": [
+        "meson.build:43"
+      ]
+    },
+    {
+      "id": "evidence-8",
+      "line": [
+        "tests/meson.build:11"
+      ]
+    },
+    {
+      "id": "evidence-9",
+      "line": [
+        "tests/meson.build:21"
+      ]
+    }
+  ]
+}

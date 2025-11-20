@@ -64,7 +64,7 @@
 			"name": "testing_enabled",
 			"category": "testing",
 			"question": "Is enable_testing() called in this project? (Answer yes or no)",
-			"expected_answer": "yes",
+			"expected_answer": ["yes", "Yes", "y", "true", "TRUE"],
 			"difficulty": "easy"
 		},
 		{
@@ -176,7 +176,7 @@
 			"name": "parallel_build",
 			"category": "dependency_analysis",
 			"question": "Can both components be built in parallel? (Answer yes or no)",
-			"expected_answer": "no",
+			"expected_answer": ["no", "No", "n", "false", "FALSE"],
 			"difficulty": "hard"
 		},
 		{
@@ -208,7 +208,7 @@
 			"name": "programming_language",
 			"category": "component_identification",
 			"question": "What programming language is used for the components?",
-			"expected_answer": "cxx",
+			"expected_answer": ["cxx", "c++", "cpp", "C++", "CPP"],
 			"difficulty": "hard"
 		},
 		{
@@ -224,7 +224,7 @@
 			"name": "test_framework",
 			"category": "testing",
 			"question": "What test framework is used?",
-			"expected_answer": "CTest",
+			"expected_answer": ["CTest", "ctest", "cmake test", "CMake Test"],
 			"difficulty": "hard"
 		},
 		{

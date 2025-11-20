@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 18.0,
   "answers": [
     {
       "id": 1,
@@ -129,7 +130,7 @@
     },
     {
       "id": 28,
-      "answer": "none"
+      "answer": "CTest"
     },
     {
       "id": 29,
@@ -141,6 +142,5 @@
         "src/main.h"
       ]
     }
-  ],
-  "agent_completion_time_seconds": 24.97
+  ]
 }

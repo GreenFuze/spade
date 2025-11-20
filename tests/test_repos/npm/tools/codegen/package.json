@@ -1,11 +1,8 @@
 {
-  "name": "codegen",
+  "name": "@monorepo/codegen",
   "version": "1.0.0",
-  "private": true,
-  "main": "main.py",
-  "type": "module",
   "scripts": {
-    "build": "echo codegen noop"
+    "build": "python3 main.py",
+    "test": "python3 -m pytest"
   }
 }
-

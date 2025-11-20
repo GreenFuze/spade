@@ -1,0 +1,256 @@
+{
+  "agent_completion_time_seconds": 41.0,
+  "answers": [
+    {
+      "id": 1,
+      "answer": "npm-complex-monorepo"
+    },
+    {
+      "id": 2,
+      "answer": 7
+    },
+    {
+      "id": 3,
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "answer": 4
+    },
+    {
+      "id": 6,
+      "answer": "modules/wasm-module/src/lib.rs"
+    },
+    {
+      "id": 7,
+      "answer": "modules/native-addon/main.go"
+    },
+    {
+      "id": 8,
+      "answer": "modules/python-bridge/bridge.py"
+    },
+    {
+      "id": 9,
+      "answer": 3
+    },
+    {
+      "id": 10,
+      "answer": 24
+    },
+    {
+      "id": 11,
+      "answer": 22
+    },
+    {
+      "id": 12,
+      "answer": [
+        "utils.dist.js",
+        "data-models.dist.js",
+        "shared-ui.dist.js",
+        "logging-lib.dist.js",
+        "config.dist.js",
+        "api-client.dist.js",
+        "auth-lib.dist.js",
+        "metrics-lib.dist.js",
+        "data-access.dist.js",
+        "auth-service.dist.js",
+        "data-processor.dist.js",
+        "analytics.dist.js",
+        "notification.dist.js",
+        "web-app.bundle.js",
+        "admin-portal.bundle.js",
+        "api-server.dist.js",
+        "build-aggregator.dist.js"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": [
+        "data-processor.dist.js"
+      ]
+    },
+    {
+      "id": 14,
+      "answer": [
+        "analytics.dist.js"
+      ]
+    },
+    {
+      "id": 15,
+      "answer": [
+        "auth-service.dist.js"
+      ]
+    },
+    {
+      "id": 16,
+      "answer": 4
+    },
+    {
+      "id": 17,
+      "answer": "yes"
+    },
+    {
+      "id": 18,
+      "answer": [
+        "auth-lib.dist.js",
+        "shared-ui.dist.js",
+        "api-client.dist.js",
+        "auth-service.dist.js",
+        "data-processor.dist.js",
+        "core.dist.js",
+        "utils.dist.js",
+        "data-models.dist.js",
+        "python-bridge",
+        "wasm_module.wasm"
+      ]
+    },
+    {
+      "id": 19,
+      "answer": [
+        "notification.dist.js",
+        "python-bridge",
+        "data-access.dist.js",
+        "analytics.dist.js",
+        "auth-service.dist.js",
+        "data-processor.dist.js",
+        "core.dist.js",
+        "utils.dist.js",
+        "data-models.dist.js",
+        "auth-lib.dist.js",
+        "metrics-lib.dist.js",
+        "wasm_module.wasm",
+        "native_addon.node"
+      ]
+    },
+    {
+      "id": 20,
+      "answer": [
+        "shared-ui.dist.js",
+        "web-app.bundle.js",
+        "admin-portal.bundle.js"
+      ]
+    },
+    {
+      "id": 21,
+      "answer": [
+        "core.dist.js",
+        "wasm_module.wasm",
+        "native_addon.node",
+        "python-bridge",
+        "codegen",
+        "utils.dist.js",
+        "data-models.dist.js",
+        "shared-ui.dist.js",
+        "logging-lib.dist.js",
+        "config.dist.js",
+        "api-client.dist.js",
+        "auth-lib.dist.js",
+        "metrics-lib.dist.js",
+        "data-access.dist.js",
+        "auth-service.dist.js",
+        "data-processor.dist.js",
+        "analytics.dist.js",
+        "notification.dist.js",
+        "web-app.bundle.js",
+        "admin-portal.bundle.js",
+        "api-server.dist.js",
+        "build-aggregator.dist.js"
+      ]
+    },
+    {
+      "id": 22,
+      "answer": [
+        "utils.dist.js",
+        "data-models.dist.js",
+        "shared-ui.dist.js",
+        "logging-lib.dist.js",
+        "config.dist.js",
+        "api-client.dist.js",
+        "auth-lib.dist.js",
+        "metrics-lib.dist.js",
+        "data-access.dist.js",
+        "auth-service.dist.js",
+        "data-processor.dist.js",
+        "analytics.dist.js",
+        "notification.dist.js",
+        "web-app.bundle.js",
+        "admin-portal.bundle.js",
+        "api-server.dist.js",
+        "build-aggregator.dist.js"
+      ]
+    },
+    {
+      "id": 23,
+      "answer": [
+        "data-processor.dist.js"
+      ]
+    },
+    {
+      "id": 24,
+      "answer": "yes"
+    },
+    {
+      "id": 25,
+      "answer": "yes"
+    },
+    {
+      "id": 26,
+      "answer": [
+        "core.dist.js",
+        "utils.dist.js",
+        "auth-lib.dist.js",
+        "auth-service.dist.js",
+        "api-server.dist.js"
+      ]
+    },
+    {
+      "id": 27,
+      "answer": [
+        "typescript-rust",
+        "typescript-go",
+        "typescript-python"
+      ]
+    },
+    {
+      "id": 28,
+      "answer": [
+        "jest"
+      ]
+    },
+    {
+      "id": 29,
+      "answer": [
+        "core.dist.js",
+        "utils.dist.js",
+        "data-models.dist.js",
+        "shared-ui.dist.js",
+        "logging-lib.dist.js",
+        "config.dist.js",
+        "api-client.dist.js",
+        "auth-lib.dist.js",
+        "metrics-lib.dist.js",
+        "data-access.dist.js",
+        "auth-service.dist.js",
+        "data-processor.dist.js",
+        "analytics.dist.js",
+        "notification.dist.js",
+        "web-app.bundle.js",
+        "admin-portal.bundle.js",
+        "api-server.dist.js",
+        "build-aggregator.dist.js"
+      ]
+    },
+    {
+      "id": 30,
+      "answer": [
+        "interpreted",
+        "static_library",
+        "shared_library"
+      ]
+    }
+  ]
+}

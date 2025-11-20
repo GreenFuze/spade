@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 293.0,
   "answers": [
     {
       "id": 1,
@@ -18,19 +19,19 @@
     },
     {
       "id": 5,
-      "answer": "3"
+      "answer": 3
     },
     {
       "id": 6,
-      "answer": "6"
+      "answer": 8
     },
     {
       "id": 7,
-      "answer": "7"
+      "answer": 11
     },
     {
       "id": 8,
-      "answer": "26"
+      "answer": 17
     },
     {
       "id": 9,
@@ -55,7 +56,12 @@
         "cdt.cpp",
         "cdts_traverse_construct.cpp",
         "cdts_wrapper.cpp",
-        "metaffi_primitives.cpp"
+        "metaffi_primitives.cpp",
+        "xllr_static_capi_loader.cpp",
+        "entity_path_parser.cpp",
+        "expand_env.cpp",
+        "library_loader.cpp",
+        "xllr_api_wrapper.cpp"
       ]
     },
     {
@@ -82,7 +88,12 @@
         "cdt.cpp",
         "cdts_traverse_construct.cpp",
         "cdts_wrapper.cpp",
-        "metaffi_primitives.cpp"
+        "metaffi_primitives.cpp",
+        "xllr_static_capi_loader.cpp",
+        "entity_path_parser.cpp",
+        "expand_env.cpp",
+        "library_loader.cpp",
+        "xllr_api_wrapper.cpp"
       ]
     },
     {
@@ -110,15 +121,15 @@
     },
     {
       "id": 16,
-      "answer": "3"
+      "answer": 5
     },
     {
       "id": 17,
-      "answer": "12"
+      "answer": 7
     },
     {
       "id": 18,
-      "answer": "unittest"
+      "answer": "Python unittest"
     },
     {
       "id": 19,
@@ -127,18 +138,17 @@
     {
       "id": 20,
       "answer": [
-        "openjdk_idl_extractor",
         "xllr.openjdk.bridge",
         "metaffi.api"
       ]
     },
     {
       "id": 21,
-      "answer": "metaffi.api.jar \u2192 xllr.openjdk.bridge.jar \u2192 xllr.openjdk.jni.bridge.dll \u2192 xllr.openjdk.dll \u2192 xllr.dll"
+      "answer": "metaffi.api.jar depends on xllr.openjdk.bridge.jar which depends on xllr.openjdk.jni.bridge.dll which depends on xllr.openjdk.dll"
     },
     {
       "id": 22,
-      "answer": "2"
+      "answer": 14
     },
     {
       "id": 23,
@@ -146,9 +156,8 @@
         "xllr.openjdk.jni.bridge.dll",
         "xllr.openjdk.bridge.jar",
         "metaffi.api.jar",
-        "openjdk_api_test.exe",
         "cdts_java_test.exe",
-        "metaffi.idl.openjdk.dll"
+        "openjdk_api_test.exe"
       ]
     },
     {
@@ -174,7 +183,7 @@
         "metaffi.api.jar",
         "openjdk_api_test.exe",
         "cdts_java_test.exe",
-        "metaffi.idl.openjdk.jar",
+        "metaffi.idl.openjdk.dll",
         "metaffi.compiler.openjdk.dll"
       ]
     },
@@ -205,8 +214,7 @@
     },
     {
       "id": 30,
-      "answer": "5"
+      "answer": 4
     }
-  ],
-  "agent_completion_time_seconds": 356.92
+  ]
 }

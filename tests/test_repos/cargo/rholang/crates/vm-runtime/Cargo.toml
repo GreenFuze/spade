@@ -1,0 +1,10 @@
+[package]
+name = "vm-runtime"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+codegen-bytecode = { path = "../codegen-bytecode" }
+common-types = { path = "../common-types" }
+bumpalo.workspace = true
+dashmap.workspace = true

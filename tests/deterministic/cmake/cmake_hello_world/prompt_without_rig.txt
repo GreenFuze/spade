@@ -1,0 +1,65 @@
+You are an expert at analyzing code repositories and build systems.
+
+Please answer the following questions about this repository. Analyze the repository structure, build files, and source code to provide accurate answers.
+
+When answering questions, you should understand these common build system terms:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component generates an artifact from source files, or is the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps (e.g., "build-all" targets).
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Tests**: Test suites that use a component for testing or a runner that executes the test.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. What is the CMake project name?
+2. What is the minimum CMake version required?
+3. How many .cpp files are in the src/ directory?
+4. How many .h files are in the src/ directory?
+5. What directory contains the source files?
+6. How many add_test commands are in the CMakeLists.txt?
+7. How many target_link_libraries commands are in the CMakeLists.txt?
+8. Is enable_testing() called in this project? (Answer yes or no)
+9. How many lines are in the CMakeLists.txt file?
+10. How many find_package commands are in the CMakeLists.txt?
+11. How many buildable components are in this repository?
+12. What are the names of all output artifacts produced by this build on Windows? (Provide a list)
+13. What types of components are built in this repository? (Provide a list)
+14. Which component is the executable on Windows? (state executable name with extension)
+15. Which component is the library on Windows? (state library name with extension)
+16. What source files are used to build the hello_world component? (Provide a list)
+17. What source files are used to build the utils component? (Provide a list)
+18. List all components that hello_world depends on (use Windows artifact names).
+19. How many components does hello_world directly depend on?
+20. What is the name of the test in this repository?
+21. In what order must the components be built to satisfy all dependencies on Windows? (Provide the build order as a list starting with no external dependencies, use Windows artifact names)
+22. Can both components be built in parallel? (Answer yes or no)
+23. If the utils component fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)
+24. How many components have zero dependencies?
+25. Which component(s) have no other components depending on them on Windows? (Provide a list, use Windows artifact names)
+26. What programming language is used for the components?
+27. Which component does the test execute on Windows? (use Windows artifact name)
+28. What test framework is used?
+29. How many external packages does this repository depend on?
+30. What source files (if any) in src/ are not used by any component? (List the files, or answer 'none' if all are used)
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

@@ -1,0 +1,163 @@
+{
+  "agent_completion_time_seconds": 37.0,
+  "answers": [
+    {
+      "id": 1,
+      "answer": "github.com/greenfuze/go-microservices"
+    },
+    {
+      "id": 2,
+      "answer": "1.21"
+    },
+    {
+      "id": 3,
+      "answer": 6
+    },
+    {
+      "id": 4,
+      "answer": 11
+    },
+    {
+      "id": 5,
+      "answer": 13
+    },
+    {
+      "id": 6,
+      "answer": 10
+    },
+    {
+      "id": 7,
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "answer": "8080"
+    },
+    {
+      "id": 9,
+      "answer": "8081"
+    },
+    {
+      "id": 10,
+      "answer": "github.com/gin-gonic/gin"
+    },
+    {
+      "id": 11,
+      "answer": 8
+    },
+    {
+      "id": 12,
+      "answer": [
+        "cmd/api-gateway/main.go"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": [
+        "cmd/user-service/main.go",
+        "internal/common/utils/java_wrapper.go",
+        "internal/common/utils/jni_wrapper.c",
+        "internal/common/utils/jni_wrapper.h",
+        "internal/common/utils/TextUtils.java",
+        "internal/common/utils/ScalaUtils.scala"
+      ]
+    },
+    {
+      "id": 14,
+      "answer": [
+        "github.com/gin-gonic/gin",
+        "github.com/spf13/viper",
+        "go.uber.org/zap"
+      ]
+    },
+    {
+      "id": 15,
+      "answer": [
+        "github.com/gin-gonic/gin",
+        "github.com/google/uuid",
+        "github.com/lib/pq",
+        "github.com/spf13/viper",
+        "go.uber.org/zap"
+      ]
+    },
+    {
+      "id": 16,
+      "answer": "Go"
+    },
+    {
+      "id": 17,
+      "answer": "Go, Java, Scala, C"
+    },
+    {
+      "id": 18,
+      "answer": "scala-utils"
+    },
+    {
+      "id": 19,
+      "answer": "scala-utils"
+    },
+    {
+      "id": 20,
+      "answer": "java-utils"
+    },
+    {
+      "id": 21,
+      "answer": 2
+    },
+    {
+      "id": 22,
+      "answer": [
+        "scala-utils",
+        "java-utils"
+      ]
+    },
+    {
+      "id": 23,
+      "answer": [
+        "java-utils",
+        "user-service"
+      ]
+    },
+    {
+      "id": 24,
+      "answer": [
+        "user-service"
+      ]
+    },
+    {
+      "id": 25,
+      "answer": [
+        "api-gateway",
+        "auth-service",
+        "notification-service",
+        "order-service",
+        "payment-service",
+        "scala-utils"
+      ]
+    },
+    {
+      "id": 26,
+      "answer": "yes"
+    },
+    {
+      "id": 27,
+      "answer": []
+    },
+    {
+      "id": 28,
+      "answer": "github.com/gin-gonic/gin"
+    },
+    {
+      "id": 29,
+      "answer": []
+    },
+    {
+      "id": 30,
+      "answer": [
+        "scala-utils",
+        "java-utils",
+        "user-service"
+      ]
+    }
+  ]
+}

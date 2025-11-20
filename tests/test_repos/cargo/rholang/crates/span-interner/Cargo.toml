@@ -1,0 +1,9 @@
+[package]
+name = "span-interner"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+common-types = { path = "../common-types" }
+dashmap.workspace = true
+indexmap.workspace = true

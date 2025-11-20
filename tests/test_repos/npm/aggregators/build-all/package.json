@@ -1,0 +1,7 @@
+{
+  "name": "@monorepo/build-all",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run build --workspace=@monorepo/core && npm run build --workspace=@monorepo/utils && npm run build --workspace=@monorepo/api-client && npm run build --workspace=@monorepo/data-models && npm run build --workspace=@monorepo/config && npm run build --workspace=@monorepo/shared-ui && npm run build --workspace=@monorepo/auth-lib && npm run build --workspace=@monorepo/logging-lib && npm run build --workspace=@monorepo/metrics-lib && npm run build --workspace=@monorepo/data-access && npm run build --workspace=@monorepo/auth-service && npm run build --workspace=@monorepo/data-processor && npm run build --workspace=@monorepo/analytics && npm run build --workspace=@monorepo/notification && npm run build --workspace=@monorepo/web-app && npm run build --workspace=@monorepo/admin-portal && npm run build --workspace=@monorepo/api-server"
+  }
+}

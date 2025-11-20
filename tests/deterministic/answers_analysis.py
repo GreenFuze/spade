@@ -119,6 +119,19 @@ class AnswerNormalizer:
         norm1 = cls.normalize_value(val1)
         norm2 = cls.normalize_value(val2)
 
+        # Try numeric comparison if one is numeric and one is string
+        if (isinstance(norm1, (int, float)) and isinstance(norm2, str)) or \
+           (isinstance(norm1, str) and isinstance(norm2, (int, float))):
+            try:
+                # Convert both to numbers for comparison
+                num1 = float(norm1) if isinstance(norm1, str) else norm1
+                num2 = float(norm2) if isinstance(norm2, str) else norm2
+                if num1 == num2:
+                    return True
+            except (ValueError, TypeError):
+                # Not a valid numeric string, continue with other checks
+                pass
+
         # Direct comparison
         if norm1 == norm2:
             return True
@@ -432,12 +445,105 @@ class AnalysisRunner:
 
         return result
 
+    def restructure_results_to_question_centric(
+        self, agent_results: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
+        """
+        Transform agent-centric results to question-centric format.
+
+        Args:
+            agent_results: Dictionary mapping agent names to their results
+                          (e.g., {"claude_NORIG": {"questions": [...], ...}, ...})
+
+        Returns:
+            List of question objects where each question has agent-specific results
+            [
+                {
+                    "id": 1,
+                    "question": "...",
+                    "expected": "...",
+                    "claude_NORIG": {"score": 1, "actual": "..." (if score=0)},
+                    "claude_RIG": {"score": 0, "actual": "..."},
+                    ...
+                },
+                ...
+            ]
+        """
+        # Build a map of all questions from evaluation_questions.json
+        questions_by_id = {q["id"]: q for q in self.questions}
+
+        # Get all unique question IDs across all agents
+        all_question_ids = set()
+        for agent_data in agent_results.values():
+            for q in agent_data["questions"]:
+                all_question_ids.add(q["id"])
+
+        # Build question-centric structure
+        questions = []
+        for q_id in sorted(all_question_ids):
+            # Get question metadata from evaluation_questions.json
+            if q_id not in questions_by_id:
+                raise ValueError(
+                    f"Question ID {q_id} appears in agent results but not in evaluation_questions.json. "
+                    f"All question IDs must be defined in evaluation_questions.json."
+                )
+            q_metadata = questions_by_id[q_id]
+
+            question_obj = {
+                "id": q_id,
+                "question": q_metadata["question"],
+                "expected": q_metadata["expected_answer"],
+                "difficulty": q_metadata["difficulty"],
+                "category": q_metadata["category"],
+            }
+
+            # Add agent-specific results
+            for agent_name, agent_data in agent_results.items():
+                # Find this question in the agent's results
+                agent_q = next(
+                    (q for q in agent_data["questions"] if q["id"] == q_id),
+                    None
+                )
+
+                if agent_q:
+                    agent_result = {"score": agent_q["score"]}
+
+                    # Only include 'actual' if score is 0 (incorrect answer)
+                    if agent_q["score"] == 0:
+                        agent_result["actual"] = agent_q.get("actual")
+
+                    question_obj[agent_name] = agent_result
+
+            questions.append(question_obj)
+
+        return questions
+
     def run_analysis(self) -> Dict[str, Any]:
         """
         Run complete analysis on all answer files.
 
         Returns:
-            Dictionary with analysis results for all agents
+            Dictionary with analysis results in question-centric format:
+            {
+                "questions": [  # question-centric data
+                    {
+                        "id": 1,
+                        "question": "...",
+                        "expected": "...",
+                        "claude_NORIG": {"score": 1, "actual": "..." (if score=0)},
+                        ...
+                    },
+                    ...
+                ],
+                "claude_NORIG": {  # agent-level summary (without 'questions' array)
+                    "total_score": ...,
+                    "max_score": ...,
+                    "by_difficulty": {...},
+                    "completion_time_seconds": ...
+                },
+                "claude_RIG": {...},
+                ...
+            }
         """
         # Load questions
         self.load_evaluation_questions()
@@ -445,11 +551,28 @@ class AnalysisRunner:
         # Find all answer files
         answer_files = self.find_answer_files()
 
-        # Score each answer file
-        results = {}
+        # Score each answer file (agent-centric results)
+        agent_results = {}
         for answer_file in answer_files:
             agent_name = self.extract_agent_name(answer_file)
-            results[agent_name] = self.score_answer_file(answer_file)
+            agent_results[agent_name] = self.score_answer_file(answer_file)
+
+        # Transform to question-centric format
+        question_centric_results = self.restructure_results_to_question_centric(agent_results)
+
+        # Build final results structure
+        results = {"questions": question_centric_results}
+
+        # Add agent-level summaries (without 'questions' array)
+        for agent_name, agent_data in agent_results.items():
+            results[agent_name] = {
+                "total_score": agent_data["total_score"],
+                "max_score": agent_data["max_score"],
+                "by_difficulty": agent_data["by_difficulty"],
+            }
+            # Include completion_time_seconds if available
+            if "completion_time_seconds" in agent_data:
+                results[agent_name]["completion_time_seconds"] = agent_data["completion_time_seconds"]
 
         return results
 
@@ -483,16 +606,22 @@ class AnalysisRunner:
         # Group agents by base name (claude, cursor, codex)
         agents_grouped = {}
         for agent_name in results.keys():
+            # Skip the "questions" key (question-centric data)
+            if agent_name == "questions":
+                continue
+
             if "_RIG" in agent_name:
                 base_name = agent_name.replace("_RIG", "")
                 if base_name not in agents_grouped:
                     agents_grouped[base_name] = {}
                 agents_grouped[base_name]["with_rig"] = results[agent_name]
+                agents_grouped[base_name]["with_rig_name"] = agent_name
             elif "_NORIG" in agent_name:
                 base_name = agent_name.replace("_NORIG", "")
                 if base_name not in agents_grouped:
                     agents_grouped[base_name] = {}
                 agents_grouped[base_name]["without_rig"] = results[agent_name]
+                agents_grouped[base_name]["without_rig_name"] = agent_name
 
         # Build analysis for each agent
         for base_name, agent_data in agents_grouped.items():
@@ -501,6 +630,8 @@ class AnalysisRunner:
 
             with_rig = agent_data["with_rig"]
             without_rig = agent_data["without_rig"]
+            with_rig_name = agent_data["with_rig_name"]
+            without_rig_name = agent_data["without_rig_name"]
 
             # Calculate overall percentages
             with_rig_percentage = self.calculate_percentage(with_rig["total_score"], with_rig["max_score"])
@@ -525,21 +656,25 @@ class AnalysisRunner:
                 }
 
             # Find mistakes by difficulty
-            mistakes_without_rig = self.analyze_mistakes(without_rig)
-            mistakes_with_rig = self.analyze_mistakes(with_rig)
+            mistakes_without_rig = self.analyze_mistakes(results, without_rig_name)
+            mistakes_with_rig = self.analyze_mistakes(results, with_rig_name)
 
             # Find questions fixed/broken by RIG
             questions_fixed = []
             questions_broken = []
 
-            for q_with_rig in with_rig["questions"]:
-                q_id = q_with_rig["id"]
-                q_without_rig = next((q for q in without_rig["questions"] if q["id"] == q_id), None)
+            # Use question-centric data from results["questions"]
+            for question in results["questions"]:
+                q_id = question["id"]
 
-                if q_without_rig:
-                    if q_without_rig["score"] == 0 and q_with_rig["score"] == 1:
+                # Check if both agents answered this question
+                if with_rig_name in question and without_rig_name in question:
+                    score_with_rig = question[with_rig_name]["score"]
+                    score_without_rig = question[without_rig_name]["score"]
+
+                    if score_without_rig == 0 and score_with_rig == 1:
                         questions_fixed.append(q_id)
-                    elif q_without_rig["score"] == 1 and q_with_rig["score"] == 0:
+                    elif score_without_rig == 1 and score_with_rig == 0:
                         questions_broken.append(q_id)
 
             # Build timing analysis
@@ -615,12 +750,13 @@ class AnalysisRunner:
 
         return analysis
 
-    def analyze_mistakes(self, agent_result: Dict[str, Any]) -> Dict[str, Any]:
+    def analyze_mistakes(self, results: Dict[str, Any], agent_name: str) -> Dict[str, Any]:
         """
         Analyze mistakes for an agent by difficulty level.
 
         Args:
-            agent_result: Result dictionary for one agent
+            results: Full results dictionary with question-centric data
+            agent_name: Name of the agent to analyze (e.g., "claude_RIG", "cursor_NORIG")
 
         Returns:
             Mistakes analysis dictionary
@@ -633,18 +769,26 @@ class AnalysisRunner:
 
         total_mistakes = 0
 
-        for question in agent_result["questions"]:
-            if question["score"] == 0:
-                q_id = question["id"]
+        # Get agent's question scores from question-centric data
+        for question in results["questions"]:
+            q_id = question["id"]
+
+            # Check if this agent answered this question
+            if agent_name not in question:
+                continue
+
+            # Check if the answer was incorrect
+            if question[agent_name]["score"] == 0:
                 total_mistakes += 1
 
-                # Find difficulty level
+                # Find difficulty level from questions_by_id
                 if q_id in self.questions_by_id:
                     difficulty = self.questions_by_id[q_id]["difficulty"]
                     mistakes_by_difficulty[difficulty]["count"] += 1
                     mistakes_by_difficulty[difficulty]["question_ids"].append(q_id)
 
-        # Calculate percentages
+        # Calculate percentages using agent's by_difficulty data
+        agent_result = results[agent_name]
         for difficulty in ["easy", "medium", "hard"]:
             max_in_difficulty = agent_result["by_difficulty"][difficulty]["max"]
             count = mistakes_by_difficulty[difficulty]["count"]
@@ -702,18 +846,18 @@ class AnalysisRunner:
         }
 
         # Calculate timing statistics if available
-        agents_with_timing = [a for a in analysis.values() if "timing" in a]
+        agents_with_timing = {name: data for name, data in analysis.items() if "timing" in data}
         if agents_with_timing:
-            avg_time_with_rig = sum(a["timing"]["time_with_rig_seconds"] for a in agents_with_timing) / len(agents_with_timing)
-            avg_time_without_rig = sum(a["timing"]["time_without_rig_seconds"] for a in agents_with_timing) / len(agents_with_timing)
-            avg_time_saved = sum(a["timing"]["time_saved_seconds"] for a in agents_with_timing) / len(agents_with_timing)
-            avg_time_reduction = sum(a["timing"]["time_reduction_percentage"] for a in agents_with_timing) / len(agents_with_timing)
+            avg_time_with_rig = sum(a["timing"]["time_with_rig_seconds"] for a in agents_with_timing.values()) / len(agents_with_timing)
+            avg_time_without_rig = sum(a["timing"]["time_without_rig_seconds"] for a in agents_with_timing.values()) / len(agents_with_timing)
+            avg_time_saved = sum(a["timing"]["time_saved_seconds"] for a in agents_with_timing.values()) / len(agents_with_timing)
+            avg_time_reduction = sum(a["timing"]["time_reduction_percentage"] for a in agents_with_timing.values()) / len(agents_with_timing)
 
-            # Find fastest and most time saved
-            fastest_with_rig = min(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_with_rig_seconds", float('inf')))
-            fastest_without_rig = min(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_without_rig_seconds", float('inf')))
-            most_time_saved = max(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_saved_seconds", 0))
-            highest_time_reduction = max(analysis.items(), key=lambda x: x[1].get("timing", {}).get("time_reduction_percentage", 0))
+            # Find fastest and most time saved (only among agents with timing data)
+            fastest_with_rig = min(agents_with_timing.items(), key=lambda x: x[1]["timing"]["time_with_rig_seconds"])
+            fastest_without_rig = min(agents_with_timing.items(), key=lambda x: x[1]["timing"]["time_without_rig_seconds"])
+            most_time_saved = max(agents_with_timing.items(), key=lambda x: x[1]["timing"]["time_saved_seconds"])
+            highest_time_reduction = max(agents_with_timing.items(), key=lambda x: x[1]["timing"]["time_reduction_percentage"])
 
             summary["timing"] = {
                 "average_time_with_rig_seconds": round(avg_time_with_rig, 2),
@@ -722,20 +866,20 @@ class AnalysisRunner:
                 "average_time_reduction_percentage": round(avg_time_reduction, 1),
                 "fastest_with_rig": {
                     "agent": fastest_with_rig[0],
-                    "time_seconds": fastest_with_rig[1].get("timing", {}).get("time_with_rig_seconds", 0)
+                    "time_seconds": fastest_with_rig[1]["timing"]["time_with_rig_seconds"]
                 },
                 "fastest_without_rig": {
                     "agent": fastest_without_rig[0],
-                    "time_seconds": fastest_without_rig[1].get("timing", {}).get("time_without_rig_seconds", 0)
+                    "time_seconds": fastest_without_rig[1]["timing"]["time_without_rig_seconds"]
                 },
                 "most_time_saved": {
                     "agent": most_time_saved[0],
-                    "time_saved_seconds": most_time_saved[1].get("timing", {}).get("time_saved_seconds", 0),
-                    "time_reduction_percentage": most_time_saved[1].get("timing", {}).get("time_reduction_percentage", 0)
+                    "time_saved_seconds": most_time_saved[1]["timing"]["time_saved_seconds"],
+                    "time_reduction_percentage": most_time_saved[1]["timing"]["time_reduction_percentage"]
                 },
                 "highest_time_reduction_percentage": {
                     "agent": highest_time_reduction[0],
-                    "time_reduction_percentage": highest_time_reduction[1].get("timing", {}).get("time_reduction_percentage", 0)
+                    "time_reduction_percentage": highest_time_reduction[1]["timing"]["time_reduction_percentage"]
                 }
             }
 
@@ -762,16 +906,20 @@ class AnalysisRunner:
         # Group agents by RIG/NORIG
         agents_grouped = {}
         for agent_name in results.keys():
+            # Skip the "questions" key (question-centric data)
+            if agent_name == "questions":
+                continue
+
             if "_RIG" in agent_name:
                 base_name = agent_name.replace("_RIG", "")
                 if base_name not in agents_grouped:
                     agents_grouped[base_name] = {}
-                agents_grouped[base_name]["with_rig"] = results[agent_name]
+                agents_grouped[base_name]["with_rig"] = agent_name
             elif "_NORIG" in agent_name:
                 base_name = agent_name.replace("_NORIG", "")
                 if base_name not in agents_grouped:
                     agents_grouped[base_name] = {}
-                agents_grouped[base_name]["without_rig"] = results[agent_name]
+                agents_grouped[base_name]["without_rig"] = agent_name
 
         category_analysis = {}
 
@@ -791,12 +939,22 @@ class AnalysisRunner:
                 if "with_rig" not in agent_data or "without_rig" not in agent_data:
                     continue
 
-                with_rig = agent_data["with_rig"]
-                without_rig = agent_data["without_rig"]
+                with_rig_name = agent_data["with_rig"]
+                without_rig_name = agent_data["without_rig"]
 
-                # Count correct answers in this category
-                with_rig_score = sum(1 for q in with_rig["questions"] if q["id"] in question_ids_in_category and q["score"] == 1)
-                without_rig_score = sum(1 for q in without_rig["questions"] if q["id"] in question_ids_in_category and q["score"] == 1)
+                # Count correct answers in this category from question-centric data
+                with_rig_score = sum(
+                    1 for q in results["questions"]
+                    if q["id"] in question_ids_in_category
+                    and with_rig_name in q
+                    and q[with_rig_name]["score"] == 1
+                )
+                without_rig_score = sum(
+                    1 for q in results["questions"]
+                    if q["id"] in question_ids_in_category
+                    and without_rig_name in q
+                    and q[without_rig_name]["score"] == 1
+                )
 
                 total_with_rig_score += with_rig_score
                 total_without_rig_score += without_rig_score
@@ -851,16 +1009,20 @@ class AnalysisRunner:
         # Group agents by RIG/NORIG
         agents_grouped = {}
         for agent_name in results.keys():
+            # Skip the "questions" key (question-centric data)
+            if agent_name == "questions":
+                continue
+
             if "_RIG" in agent_name:
                 base_name = agent_name.replace("_RIG", "")
                 if base_name not in agents_grouped:
                     agents_grouped[base_name] = {}
-                agents_grouped[base_name]["with_rig"] = results[agent_name]
+                agents_grouped[base_name]["with_rig"] = agent_name
             elif "_NORIG" in agent_name:
                 base_name = agent_name.replace("_NORIG", "")
                 if base_name not in agents_grouped:
                     agents_grouped[base_name] = {}
-                agents_grouped[base_name]["without_rig"] = results[agent_name]
+                agents_grouped[base_name]["without_rig"] = agent_name
 
         total_agents = len(agents_grouped)
 
@@ -869,6 +1031,11 @@ class AnalysisRunner:
 
         for q in self.questions:
             q_id = q["id"]
+
+            # Find the question in the question-centric data
+            question_data = next((qd for qd in results["questions"] if qd["id"] == q_id), None)
+            if not question_data:
+                continue
 
             # Count how many agents got it right
             correct_with_rig = []
@@ -879,18 +1046,24 @@ class AnalysisRunner:
                 if "with_rig" not in agent_data or "without_rig" not in agent_data:
                     continue
 
-                with_rig_q = next((qa for qa in agent_data["with_rig"]["questions"] if qa["id"] == q_id), None)
-                without_rig_q = next((qa for qa in agent_data["without_rig"]["questions"] if qa["id"] == q_id), None)
+                with_rig_name = agent_data["with_rig"]
+                without_rig_name = agent_data["without_rig"]
 
-                if with_rig_q and with_rig_q["score"] == 1:
+                # Skip if agent doesn't have data for this question
+                if with_rig_name not in question_data or without_rig_name not in question_data:
+                    continue
+
+                # Get scores from question-centric data
+                with_rig_score = question_data[with_rig_name]["score"]
+                without_rig_score = question_data[without_rig_name]["score"]
+
+                if with_rig_score == 1:
                     correct_with_rig.append(base_name)
 
-                if without_rig_q and without_rig_q["score"] == 1:
+                if without_rig_score == 1:
                     correct_without_rig.append(base_name)
 
                 # Calculate improvement for this agent on this question
-                with_rig_score = with_rig_q["score"] if with_rig_q else 0
-                without_rig_score = without_rig_q["score"] if without_rig_q else 0
                 improvements.append(with_rig_score - without_rig_score)
 
             success_rate_with_rig = self.calculate_percentage(len(correct_with_rig), total_agents)
@@ -901,7 +1074,7 @@ class AnalysisRunner:
                 "id": q_id,
                 "question": q["question"],
                 "difficulty": q["difficulty"],
-                "category": q.get("category", "unknown"),
+                "category": q["category"],
                 "success_rate_with_rig": success_rate_with_rig,
                 "success_rate_without_rig": success_rate_without_rig,
                 "agents_correct_with_rig": correct_with_rig,
@@ -1015,7 +1188,10 @@ class AnalysisRunner:
         agents_with_timing = {name: data for name, data in comparative_analysis.items() if "timing" in data}
 
         if not agents_with_timing:
-            return {"note": "No timing data available"}
+            raise ValueError(
+                f"No timing data available for agents. "
+                f"Answer files must include 'completion_time_seconds' field."
+            )
 
         # Speed vs Accuracy correlation (with RIG)
         speed_accuracy_with_rig = []
@@ -1184,43 +1360,43 @@ def main() -> int:
         print()
         print("=" * 60)
         print("Summary:")
-        print(f"  Best with RIG: {summary.get('best_overall_with_rig', {}).get('agent', 'N/A')} ({summary.get('best_overall_with_rig', {}).get('percentage', 0)}%)")
-        print(f"  Best without RIG: {summary.get('best_overall_without_rig', {}).get('agent', 'N/A')} ({summary.get('best_overall_without_rig', {}).get('percentage', 0)}%)")
-        print(f"  Most RIG improvement: {summary.get('most_rig_improvement', {}).get('agent', 'N/A')} (+{summary.get('most_rig_improvement', {}).get('improvement_percentage', 0)}%)")
-        print(f"  Average with RIG: {summary.get('average_with_rig', 0)}%")
-        print(f"  Average without RIG: {summary.get('average_without_rig', 0)}%")
+        print(f"  Best with RIG: {summary['best_overall_with_rig']['agent']} ({summary['best_overall_with_rig']['percentage']}%)")
+        print(f"  Best without RIG: {summary['best_overall_without_rig']['agent']} ({summary['best_overall_without_rig']['percentage']}%)")
+        print(f"  Most RIG improvement: {summary['most_rig_improvement']['agent']} (+{summary['most_rig_improvement']['improvement_percentage']}%)")
+        print(f"  Average with RIG: {summary['average_with_rig']}%")
+        print(f"  Average without RIG: {summary['average_without_rig']}%")
         print()
         print("RIG Effectiveness by Difficulty:")
         for difficulty in ["easy", "medium", "hard"]:
-            stats = rig_effectiveness.get("by_difficulty", {}).get(difficulty, {})
-            print(f"  {difficulty.capitalize()}: avg improvement = {stats.get('avg_improvement', 0)}%")
+            stats = rig_effectiveness["by_difficulty"][difficulty]
+            print(f"  {difficulty.capitalize()}: avg improvement = {stats['avg_improvement']}%")
         print()
 
         # Print timing summary if available
         if "timing" in summary:
             print("Timing Summary:")
             timing = summary["timing"]
-            print(f"  Average time with RIG: {timing.get('average_time_with_rig_seconds', 0)}s")
-            print(f"  Average time without RIG: {timing.get('average_time_without_rig_seconds', 0)}s")
-            print(f"  Average time saved: {timing.get('average_time_saved_seconds', 0)}s ({timing.get('average_time_reduction_percentage', 0)}% faster)")
-            print(f"  Fastest with RIG: {timing.get('fastest_with_rig', {}).get('agent', 'N/A')} ({timing.get('fastest_with_rig', {}).get('time_seconds', 0)}s)")
-            print(f"  Most time saved: {timing.get('most_time_saved', {}).get('agent', 'N/A')} ({timing.get('most_time_saved', {}).get('time_saved_seconds', 0)}s / {timing.get('most_time_saved', {}).get('time_reduction_percentage', 0)}%)")
+            print(f"  Average time with RIG: {timing['average_time_with_rig_seconds']}s")
+            print(f"  Average time without RIG: {timing['average_time_without_rig_seconds']}s")
+            print(f"  Average time saved: {timing['average_time_saved_seconds']}s ({timing['average_time_reduction_percentage']}% faster)")
+            print(f"  Fastest with RIG: {timing['fastest_with_rig']['agent']} ({timing['fastest_with_rig']['time_seconds']}s)")
+            print(f"  Most time saved: {timing['most_time_saved']['agent']} ({timing['most_time_saved']['time_saved_seconds']}s / {timing['most_time_saved']['time_reduction_percentage']}%)")
 
             # Print timing insights if available
             if "note" not in timing_insights:
                 print()
                 print("Timing Insights:")
-                efficiency = timing_insights.get("efficiency_analysis", {})
-                print(f"  Efficiency with RIG: {efficiency.get('avg_efficiency_with_rig_score_per_second', 0)} score/second")
-                print(f"  Efficiency without RIG: {efficiency.get('avg_efficiency_without_rig_score_per_second', 0)} score/second")
-                print(f"  Efficiency improvement: {efficiency.get('efficiency_improvement_percentage', 0)}%")
+                efficiency = timing_insights["efficiency_analysis"]
+                print(f"  Efficiency with RIG: {efficiency['avg_efficiency_with_rig_score_per_second']} score/second")
+                print(f"  Efficiency without RIG: {efficiency['avg_efficiency_without_rig_score_per_second']} score/second")
+                print(f"  Efficiency improvement: {efficiency['efficiency_improvement_percentage']}%")
 
-                correlation = timing_insights.get("time_reduction_vs_score_improvement", {})
-                print(f"  Time vs Score correlation: {correlation.get('correlation_note', 'N/A')}")
+                correlation = timing_insights["time_reduction_vs_score_improvement"]
+                print(f"  Time vs Score correlation: {correlation['correlation_note']}")
             print()
 
-        print(f"Hardest questions: {len(question_insights.get('hardest_questions', []))} questions")
-        print(f"Most RIG-sensitive: {len(question_insights.get('most_rig_sensitive', []))} questions")
+        print(f"Hardest questions: {len(question_insights['hardest_questions'])} questions")
+        print(f"Most RIG-sensitive: {len(question_insights['most_rig_sensitive'])} questions")
         print("=" * 60)
         print("Analysis complete!")
         print("=" * 60)

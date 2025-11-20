@@ -1,0 +1,2801 @@
+{
+  "results": {
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the Maven groupId of the task-manager project? (Provide the groupId)",
+        "expected": "com.example",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 2,
+        "question": "What is the Maven artifactId of the parent project? (Provide the artifactId)",
+        "expected": "task-manager",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 3,
+        "question": "What Java version is used for compilation? (Provide the version number)",
+        "expected": "17",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 4,
+        "question": "How many modules are defined in the parent POM?",
+        "expected": 10,
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 5,
+        "question": "How many test files (*Test.java) are in the repository?",
+        "expected": 10,
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 6,
+        "question": "Which module uses WAR packaging? (Provide the module artifactId)",
+        "expected": "app-web",
+        "difficulty": "easy",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 7,
+        "question": "How many external packages (excluding test dependencies) are declared in dependencyManagement?",
+        "expected": 8,
+        "difficulty": "easy",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 8,
+        "question": "What test framework is used for all tests? (Provide the framework name)",
+        "expected": [
+          "JUnit5",
+          "junit5",
+          "JUnit 5",
+          "junit 5",
+          "JUnit Jupiter"
+        ],
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 9,
+        "question": "How many Java source files are in the common module?",
+        "expected": 1,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 10,
+        "question": "How many Java source files are in the domain module?",
+        "expected": 2,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 11,
+        "question": "How many buildable components (JARs/WARs) are produced by this repository?",
+        "expected": 10,
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 12,
+        "question": "What source files are used to build the common component? (Provide a list)",
+        "expected": [
+          [
+            "common/src/main/java/com/example/common/CommonUtils.java"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "com/example/common/CommonUtils.java"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "CommonUtils.java"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 13,
+        "question": "What source files are used to build the domain component? (Provide a list)",
+        "expected": [
+          [
+            "domain/src/main/java/com/example/domain/Task.java",
+            "domain/src/main/java/com/example/domain/User.java"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "com/example/domain/Task.java",
+            "com/example/domain/User.java"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "User.java",
+            "Task.java"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 14,
+        "question": "List all components that domain depends on (use component names).",
+        "expected": [
+          "common"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 15,
+        "question": "List all components that persistence depends on (use component names).",
+        "expected": [
+          "domain",
+          "common"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 16,
+        "question": "List all components that service-task depends on (use component names).",
+        "expected": [
+          "persistence",
+          "domain",
+          "common"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 17,
+        "question": "List all components that api-gateway depends on (use component names).",
+        "expected": [
+          "service-task",
+          "service-auth",
+          "service-notification",
+          "domain",
+          "common"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 18,
+        "question": "List all components that app-web depends on (use component names).",
+        "expected": [
+          "api-gateway",
+          "integration-email",
+          "integration-storage",
+          "service-task",
+          "service-auth",
+          "service-notification",
+          "persistence",
+          "domain",
+          "common"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 19,
+        "question": "Which modules have zero inter-module dependencies? (Provide a list of artifactIds)",
+        "expected": [
+          "common"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "common",
+            "integration-email",
+            "integration-storage"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 20,
+        "question": "What types of components are built in this repository? (Provide a list)",
+        "expected": [
+          [
+            "static_library",
+            "shared_library"
+          ],
+          [
+            "jar",
+            "war"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 21,
+        "question": "In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with no dependencies, use component names)",
+        "expected": [
+          "common",
+          "domain",
+          "integration-email",
+          "integration-storage",
+          "persistence",
+          "service-auth",
+          "service-notification",
+          "service-task",
+          "api-gateway",
+          "app-web"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": [
+            "common",
+            "domain",
+            "integration-email",
+            "integration-storage",
+            "service-auth",
+            "service-notification",
+            "persistence",
+            "service-task",
+            "api-gateway",
+            "app-web"
+          ]
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 22,
+        "question": "What is the maximum dependency depth in this repository? (Provide the depth number)",
+        "expected": 5,
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 6
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": 6
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": 3
+        }
+      },
+      {
+        "id": 23,
+        "question": "If the common component fails to build, which other components would also fail? (Provide a list, use component names)",
+        "expected": [
+          "domain",
+          "integration-email",
+          "integration-storage",
+          "persistence",
+          "service-auth",
+          "service-notification",
+          "service-task",
+          "api-gateway",
+          "app-web"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 24,
+        "question": "How many components can be built in parallel at the start (have zero dependencies)?",
+        "expected": 1,
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 3
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 25,
+        "question": "Which component(s) have no other components depending on them? (Provide a list, use component names)",
+        "expected": [
+          "app-web"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 26,
+        "question": "What programming language is used for all components?",
+        "expected": [
+          "java",
+          "Java",
+          "JAVA"
+        ],
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 27,
+        "question": "List all external package names (group:artifact:version format). (Provide a list)",
+        "expected": [
+          [
+            "com.google.guava:guava:32.1.2-jre",
+            "org.slf4j:slf4j-api:2.0.9",
+            "ch.qos.logback:logback-classic:1.4.11",
+            "com.fasterxml.jackson.core:jackson-databind:2.15.2",
+            "org.springframework:spring-web:6.0.11",
+            "org.hibernate.orm:hibernate-core:6.2.7.Final",
+            "com.h2database:h2:2.2.224",
+            "org.junit.jupiter:junit-jupiter:5.10.0",
+            "org.mockito:mockito-core:5.5.0",
+            "jakarta.servlet:jakarta.servlet-api:6.0.0"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 28,
+        "question": "How many test definitions are in this repository?",
+        "expected": 10,
+        "difficulty": "hard",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 29,
+        "question": "Does this repository have any cross-language dependencies? (Answer yes or no)",
+        "expected": [
+          "no",
+          "No",
+          "n",
+          "false",
+          "FALSE"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 30,
+        "question": "How many aggregator components are in this repository?",
+        "expected": 1,
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 0
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      }
+    ],
+    "claude_NORIG": {
+      "total_score": 28,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 10,
+          "max": 10
+        },
+        "medium": {
+          "score": 8,
+          "max": 10
+        },
+        "hard": {
+          "score": 10,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 127.0
+    },
+    "claude_RIG": {
+      "total_score": 29,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 10,
+          "max": 10
+        },
+        "medium": {
+          "score": 10,
+          "max": 10
+        },
+        "hard": {
+          "score": 9,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 94.0
+    },
+    "codex_NORIG": {
+      "total_score": 29,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 10,
+          "max": 10
+        },
+        "medium": {
+          "score": 10,
+          "max": 10
+        },
+        "hard": {
+          "score": 9,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 152.0
+    },
+    "codex_RIG": {
+      "total_score": 29,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 10,
+          "max": 10
+        },
+        "medium": {
+          "score": 10,
+          "max": 10
+        },
+        "hard": {
+          "score": 9,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 91.0
+    },
+    "cursor_NORIG": {
+      "total_score": 25,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 10,
+          "max": 10
+        },
+        "medium": {
+          "score": 7,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 35.0
+    },
+    "cursor_RIG": {
+      "total_score": 29,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 10,
+          "max": 10
+        },
+        "medium": {
+          "score": 10,
+          "max": 10
+        },
+        "hard": {
+          "score": 9,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 18.0
+    }
+  },
+  "analysis": {
+    "by_agent": {
+      "claude": {
+        "with_rig": {
+          "score": 29,
+          "max_score": 30,
+          "percentage": 96.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 28,
+          "max_score": 30,
+          "percentage": 93.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 1,
+          "percentage": 3.3,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 2,
+              "percentage": 20.0
+            },
+            "hard": {
+              "absolute": -1,
+              "percentage": -10.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 2,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                12,
+                13
+              ]
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 1,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                21
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          12,
+          13
+        ],
+        "questions_broken_by_rig": [
+          21
+        ],
+        "timing": {
+          "time_with_rig_seconds": 94.0,
+          "time_without_rig_seconds": 127.0,
+          "time_saved_seconds": 33.0,
+          "time_reduction_percentage": 26.0,
+          "efficiency_with_rig_score_per_second": 0.3085,
+          "efficiency_without_rig_score_per_second": 0.2205
+        }
+      },
+      "codex": {
+        "with_rig": {
+          "score": 29,
+          "max_score": 30,
+          "percentage": 96.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 29,
+          "max_score": 30,
+          "percentage": 96.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 0,
+          "percentage": 0.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "hard": {
+              "absolute": 0,
+              "percentage": 0.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 1,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                22
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 1,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                22
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 91.0,
+          "time_without_rig_seconds": 152.0,
+          "time_saved_seconds": 61.0,
+          "time_reduction_percentage": 40.1,
+          "efficiency_with_rig_score_per_second": 0.3187,
+          "efficiency_without_rig_score_per_second": 0.1908
+        }
+      },
+      "cursor": {
+        "with_rig": {
+          "score": 29,
+          "max_score": 30,
+          "percentage": 96.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 25,
+          "max_score": 30,
+          "percentage": 83.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 7,
+              "max": 10,
+              "percentage": 70.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 4,
+          "percentage": 13.3,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 3,
+              "percentage": 30.0
+            },
+            "hard": {
+              "absolute": 1,
+              "percentage": 10.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 5,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 3,
+              "percentage": 30.0,
+              "question_ids": [
+                12,
+                13,
+                19
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                24,
+                30
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 1,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                22
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          12,
+          13,
+          19,
+          24,
+          30
+        ],
+        "questions_broken_by_rig": [
+          22
+        ],
+        "timing": {
+          "time_with_rig_seconds": 18.0,
+          "time_without_rig_seconds": 35.0,
+          "time_saved_seconds": 17.0,
+          "time_reduction_percentage": 48.6,
+          "efficiency_with_rig_score_per_second": 1.6111,
+          "efficiency_without_rig_score_per_second": 0.7143
+        }
+      }
+    },
+    "by_category": {
+      "build_system": {
+        "total_questions": 4,
+        "with_rig": {
+          "score": 12,
+          "max": 12,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 12,
+          "max": 12,
+          "percentage": 100.0
+        },
+        "improvement": {
+          "absolute": 0,
+          "percentage": 0.0
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      },
+      "testing": {
+        "total_questions": 3,
+        "with_rig": {
+          "score": 9,
+          "max": 9,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 9,
+          "max": 9,
+          "percentage": 100.0
+        },
+        "improvement": {
+          "absolute": 0,
+          "percentage": 0.0
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      },
+      "component_identification": {
+        "total_questions": 5,
+        "with_rig": {
+          "score": 15,
+          "max": 15,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 14,
+          "max": 15,
+          "percentage": 93.3
+        },
+        "improvement": {
+          "absolute": 1,
+          "percentage": 6.7
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 80.0,
+            "improvement": 20.0
+          }
+        }
+      },
+      "dependency_analysis": {
+        "total_questions": 14,
+        "with_rig": {
+          "score": 39,
+          "max": 42,
+          "percentage": 92.9
+        },
+        "without_rig": {
+          "score": 39,
+          "max": 42,
+          "percentage": 92.9
+        },
+        "improvement": {
+          "absolute": 0,
+          "percentage": 0.0
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 92.9,
+            "without_rig": 100.0,
+            "improvement": -7.1
+          },
+          "codex": {
+            "with_rig": 92.9,
+            "without_rig": 92.9,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 92.9,
+            "without_rig": 85.7,
+            "improvement": 7.2
+          }
+        }
+      },
+      "source_analysis": {
+        "total_questions": 4,
+        "with_rig": {
+          "score": 12,
+          "max": 12,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 8,
+          "max": 12,
+          "percentage": 66.7
+        },
+        "improvement": {
+          "absolute": 4,
+          "percentage": 33.3
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 50.0,
+            "improvement": 50.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 50.0,
+            "improvement": 50.0
+          }
+        }
+      }
+    },
+    "question_insights": {
+      "hardest_questions": [
+        {
+          "id": 22,
+          "question": "What is the maximum dependency depth in this repository? (Provide the depth number)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 33.3,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "cursor"
+          ],
+          "avg_improvement": -33.3
+        },
+        {
+          "id": 21,
+          "question": "In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with no dependencies, use component names)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": -33.3
+        }
+      ],
+      "easiest_questions": [
+        {
+          "id": 1,
+          "question": "What is the Maven groupId of the task-manager project? (Provide the groupId)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 2,
+          "question": "What is the Maven artifactId of the parent project? (Provide the artifactId)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 3,
+          "question": "What Java version is used for compilation? (Provide the version number)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 4,
+          "question": "How many modules are defined in the parent POM?",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 5,
+          "question": "How many test files (*Test.java) are in the repository?",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 6,
+          "question": "Which module uses WAR packaging? (Provide the module artifactId)",
+          "difficulty": "easy",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 7,
+          "question": "How many external packages (excluding test dependencies) are declared in dependencyManagement?",
+          "difficulty": "easy",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 8,
+          "question": "What test framework is used for all tests? (Provide the framework name)",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 9,
+          "question": "How many Java source files are in the common module?",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 10,
+          "question": "How many Java source files are in the domain module?",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 11,
+          "question": "How many buildable components (JARs/WARs) are produced by this repository?",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 12,
+          "question": "What source files are used to build the common component? (Provide a list)",
+          "difficulty": "medium",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 13,
+          "question": "What source files are used to build the domain component? (Provide a list)",
+          "difficulty": "medium",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 14,
+          "question": "List all components that domain depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 15,
+          "question": "List all components that persistence depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 16,
+          "question": "List all components that service-task depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 17,
+          "question": "List all components that api-gateway depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 18,
+          "question": "List all components that app-web depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 19,
+          "question": "Which modules have zero inter-module dependencies? (Provide a list of artifactIds)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 20,
+          "question": "What types of components are built in this repository? (Provide a list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 23,
+          "question": "If the common component fails to build, which other components would also fail? (Provide a list, use component names)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 24,
+          "question": "How many components can be built in parallel at the start (have zero dependencies)?",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 25,
+          "question": "Which component(s) have no other components depending on them? (Provide a list, use component names)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 26,
+          "question": "What programming language is used for all components?",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 27,
+          "question": "List all external package names (group:artifact:version format). (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 28,
+          "question": "How many test definitions are in this repository?",
+          "difficulty": "hard",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 29,
+          "question": "Does this repository have any cross-language dependencies? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 30,
+          "question": "How many aggregator components are in this repository?",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        }
+      ],
+      "most_rig_sensitive": [
+        {
+          "id": 12,
+          "question": "What source files are used to build the common component? (Provide a list)",
+          "difficulty": "medium",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 13,
+          "question": "What source files are used to build the domain component? (Provide a list)",
+          "difficulty": "medium",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 19,
+          "question": "Which modules have zero inter-module dependencies? (Provide a list of artifactIds)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 24,
+          "question": "How many components can be built in parallel at the start (have zero dependencies)?",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 30,
+          "question": "How many aggregator components are in this repository?",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        }
+      ],
+      "rig_insensitive": [
+        {
+          "id": 1,
+          "question": "What is the Maven groupId of the task-manager project? (Provide the groupId)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 2,
+          "question": "What is the Maven artifactId of the parent project? (Provide the artifactId)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 3,
+          "question": "What Java version is used for compilation? (Provide the version number)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 4,
+          "question": "How many modules are defined in the parent POM?",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 5,
+          "question": "How many test files (*Test.java) are in the repository?",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 6,
+          "question": "Which module uses WAR packaging? (Provide the module artifactId)",
+          "difficulty": "easy",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 7,
+          "question": "How many external packages (excluding test dependencies) are declared in dependencyManagement?",
+          "difficulty": "easy",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 8,
+          "question": "What test framework is used for all tests? (Provide the framework name)",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 9,
+          "question": "How many Java source files are in the common module?",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 10,
+          "question": "How many Java source files are in the domain module?",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 11,
+          "question": "How many buildable components (JARs/WARs) are produced by this repository?",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 14,
+          "question": "List all components that domain depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 15,
+          "question": "List all components that persistence depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 16,
+          "question": "List all components that service-task depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 17,
+          "question": "List all components that api-gateway depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 18,
+          "question": "List all components that app-web depends on (use component names).",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 20,
+          "question": "What types of components are built in this repository? (Provide a list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 23,
+          "question": "If the common component fails to build, which other components would also fail? (Provide a list, use component names)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 25,
+          "question": "Which component(s) have no other components depending on them? (Provide a list, use component names)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 26,
+          "question": "What programming language is used for all components?",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 27,
+          "question": "List all external package names (group:artifact:version format). (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 28,
+          "question": "How many test definitions are in this repository?",
+          "difficulty": "hard",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 29,
+          "question": "Does this repository have any cross-language dependencies? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        }
+      ],
+      "unanimous_failures_with_rig": [],
+      "unanimous_failures_without_rig": []
+    },
+    "rig_effectiveness": {
+      "by_difficulty": {
+        "easy": {
+          "avg_improvement": 0.0,
+          "agents_benefited": 0
+        },
+        "medium": {
+          "avg_improvement": 16.7,
+          "agents_benefited": 2
+        },
+        "hard": {
+          "avg_improvement": 0.0,
+          "agents_benefited": 1
+        }
+      },
+      "correlation": {
+        "pattern": "Agents with higher baseline show less improvement from RIG",
+        "data": [
+          {
+            "agent": "codex",
+            "baseline_pct": 96.7,
+            "improvement_pct": 0.0
+          },
+          {
+            "agent": "claude",
+            "baseline_pct": 93.3,
+            "improvement_pct": 3.3
+          },
+          {
+            "agent": "cursor",
+            "baseline_pct": 83.3,
+            "improvement_pct": 13.3
+          }
+        ]
+      }
+    },
+    "timing_insights": {
+      "speed_vs_accuracy_with_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 18.0,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 1.6111
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 91.0,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 0.3187
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 94.0,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 0.3085
+        }
+      ],
+      "speed_vs_accuracy_without_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 35.0,
+          "score_percentage": 83.3,
+          "efficiency_score_per_second": 0.7143
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 127.0,
+          "score_percentage": 93.3,
+          "efficiency_score_per_second": 0.2205
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 152.0,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 0.1908
+        }
+      ],
+      "time_reduction_vs_score_improvement": {
+        "correlation_note": "Greater time reduction correlates with better score improvement",
+        "data": [
+          {
+            "agent": "cursor",
+            "time_reduction_percentage": 48.6,
+            "score_improvement_percentage": 13.3,
+            "time_saved_seconds": 17.0,
+            "score_points_gained": 4
+          },
+          {
+            "agent": "codex",
+            "time_reduction_percentage": 40.1,
+            "score_improvement_percentage": 0.0,
+            "time_saved_seconds": 61.0,
+            "score_points_gained": 0
+          },
+          {
+            "agent": "claude",
+            "time_reduction_percentage": 26.0,
+            "score_improvement_percentage": 3.3,
+            "time_saved_seconds": 33.0,
+            "score_points_gained": 1
+          }
+        ]
+      },
+      "efficiency_analysis": {
+        "avg_efficiency_with_rig_score_per_second": 0.7461,
+        "avg_efficiency_without_rig_score_per_second": 0.3752,
+        "efficiency_improvement_percentage": 98.9
+      }
+    },
+    "summary": {
+      "best_overall_with_rig": {
+        "agent": "claude",
+        "percentage": 96.7
+      },
+      "best_overall_without_rig": {
+        "agent": "codex",
+        "percentage": 96.7
+      },
+      "most_rig_improvement": {
+        "agent": "cursor",
+        "improvement_percentage": 13.3
+      },
+      "least_rig_improvement": {
+        "agent": "codex",
+        "improvement_percentage": 0.0
+      },
+      "average_with_rig": 96.7,
+      "average_without_rig": 91.1,
+      "average_rig_improvement": 5.5,
+      "timing": {
+        "average_time_with_rig_seconds": 67.67,
+        "average_time_without_rig_seconds": 104.67,
+        "average_time_saved_seconds": 37.0,
+        "average_time_reduction_percentage": 38.2,
+        "fastest_with_rig": {
+          "agent": "cursor",
+          "time_seconds": 18.0
+        },
+        "fastest_without_rig": {
+          "agent": "cursor",
+          "time_seconds": 35.0
+        },
+        "most_time_saved": {
+          "agent": "codex",
+          "time_saved_seconds": 61.0,
+          "time_reduction_percentage": 40.1
+        },
+        "highest_time_reduction_percentage": {
+          "agent": "cursor",
+          "time_reduction_percentage": 48.6
+        }
+      }
+    }
+  }
+}

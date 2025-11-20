@@ -1,0 +1,194 @@
+{
+  "agent_completion_time_seconds": 18.0,
+  "answers": [
+    {
+      "id": 1,
+      "answer": "com.example"
+    },
+    {
+      "id": 2,
+      "answer": "task-manager"
+    },
+    {
+      "id": 3,
+      "answer": "17"
+    },
+    {
+      "id": 4,
+      "answer": 10
+    },
+    {
+      "id": 5,
+      "answer": 10
+    },
+    {
+      "id": 6,
+      "answer": "app-web"
+    },
+    {
+      "id": 7,
+      "answer": 8
+    },
+    {
+      "id": 8,
+      "answer": "JUnit5"
+    },
+    {
+      "id": 9,
+      "answer": 1
+    },
+    {
+      "id": 10,
+      "answer": 2
+    },
+    {
+      "id": 11,
+      "answer": 10
+    },
+    {
+      "id": 12,
+      "answer": [
+        "common\\src\\main\\java\\com\\example\\common\\CommonUtils.java"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": [
+        "domain\\src\\main\\java\\com\\example\\domain\\Task.java",
+        "domain\\src\\main\\java\\com\\example\\domain\\User.java"
+      ]
+    },
+    {
+      "id": 14,
+      "answer": [
+        "common"
+      ]
+    },
+    {
+      "id": 15,
+      "answer": [
+        "domain",
+        "common"
+      ]
+    },
+    {
+      "id": 16,
+      "answer": [
+        "persistence",
+        "domain",
+        "common"
+      ]
+    },
+    {
+      "id": 17,
+      "answer": [
+        "service-notification",
+        "domain",
+        "service-task",
+        "common",
+        "service-auth"
+      ]
+    },
+    {
+      "id": 18,
+      "answer": [
+        "service-notification",
+        "domain",
+        "integration-email",
+        "integration-storage",
+        "service-task",
+        "common",
+        "persistence",
+        "api-gateway",
+        "service-auth"
+      ]
+    },
+    {
+      "id": 19,
+      "answer": [
+        "common"
+      ]
+    },
+    {
+      "id": 20,
+      "answer": [
+        "static_library",
+        "shared_library"
+      ]
+    },
+    {
+      "id": 21,
+      "answer": [
+        "common",
+        "domain",
+        "integration-email",
+        "integration-storage",
+        "persistence",
+        "service-auth",
+        "service-notification",
+        "service-task",
+        "api-gateway",
+        "app-web"
+      ]
+    },
+    {
+      "id": 22,
+      "answer": 3
+    },
+    {
+      "id": 23,
+      "answer": [
+        "domain",
+        "integration-email",
+        "integration-storage",
+        "persistence",
+        "service-auth",
+        "service-notification",
+        "service-task",
+        "api-gateway",
+        "app-web"
+      ]
+    },
+    {
+      "id": 24,
+      "answer": 1
+    },
+    {
+      "id": 25,
+      "answer": [
+        "app-web"
+      ]
+    },
+    {
+      "id": 26,
+      "answer": "java"
+    },
+    {
+      "id": 27,
+      "answer": [
+        "com.google.guava:guava:32.1.2-jre",
+        "org.slf4j:slf4j-api:2.0.9",
+        "org.junit.jupiter:junit-jupiter:5.10.0",
+        "org.mockito:mockito-core:5.5.0",
+        "com.fasterxml.jackson.core:jackson-databind:2.15.2",
+        "org.hibernate.orm:hibernate-core:6.2.7.Final",
+        "com.h2database:h2:2.2.224",
+        "org.springframework:spring-web:6.0.11",
+        "ch.qos.logback:logback-classic:1.4.11",
+        "jakarta.servlet:jakarta.servlet-api:6.0.0"
+      ]
+    },
+    {
+      "id": 28,
+      "answer": 10
+    },
+    {
+      "id": 29,
+      "answer": "no"
+    },
+    {
+      "id": 30,
+      "answer": 1
+    }
+  ]
+}

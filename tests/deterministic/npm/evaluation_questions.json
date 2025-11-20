@@ -1,388 +1,431 @@
 {
-	"repository_name": "npm_monorepo_sample",
-	"build_system": "npm",
-	"description": "Evaluation questions for a multi-package npm monorepo with frontend, backend, libraries, a Rust wasm module, and a Python tool. Includes aggregators and cross-language edges.",
-	"questions": [
-		{
-			"id": 1,
-			"name": "root_project_name",
-			"category": "build_system",
-			"question": "What is the root npm project name (from package.json)?",
-			"expected_answer": "npm_monorepo_sample",
-			"difficulty": "easy"
-		},
-		{
-			"id": 2,
-			"name": "workspace_globs_count",
-			"category": "build_system",
-			"question": "How many workspaces patterns are defined in the root package.json?",
-			"expected_answer": 5,
-			"difficulty": "easy"
-		},
-		{
-			"id": 3,
-			"name": "workspace_globs_list",
-			"category": "build_system",
-			"question": "List the workspaces patterns defined in the root package.json.",
-			"expected_answer": [
-				[
-					"backend/*",
-					"frontend/*",
-					"libs/*",
-					"modules/*",
-					"tools/*"
-				]
-			],
-			"difficulty": "easy"
-		},
-		{
-			"id": 4,
-			"name": "backend_packages",
-			"category": "source_analysis",
-			"question": "What are the backend workspace package names? (Provide a list)",
-			"expected_answer": [
-				[
-					"api-server",
-					"worker",
-					"proxy-server"
-				],
-				[
-					"worker",
-					"api-server",
-					"proxy-server"
-				],
-				[
-					"proxy-server",
-					"api-server",
-					"worker"
-				]
-			],
-			"difficulty": "easy"
-		},
-		{
-			"id": 5,
-			"name": "frontend_packages",
-			"category": "source_analysis",
-			"question": "What are the frontend workspace package names? (Provide a list)",
-			"expected_answer": [
-				[
-					"web-app",
-					"admin-portal"
-				],
-				[
-					"admin-portal",
-					"web-app"
-				]
-			],
-			"difficulty": "easy"
-		},
-		{
-			"id": 6,
-			"name": "libs_packages",
-			"category": "source_analysis",
-			"question": "List the library package names under libs/. (Provide a list)",
-			"expected_answer": [
-				[
-					"shared-ui",
-					"i18n-lib",
-					"shared-lib",
-					"auth-lib",
-					"data-access",
-					"logging-lib",
-					"metrics-lib"
-				]
-			],
-			"difficulty": "easy"
-		},
-		{
-			"id": 7,
-			"name": "wasm_module_name",
-			"category": "source_analysis",
-			"question": "What is the name of the Rust-based wasm module under modules/?",
-			"expected_answer": "wasm-module",
-			"difficulty": "easy"
-		},
-		{
-			"id": 8,
-			"name": "python_tool_name",
-			"category": "source_analysis",
-			"question": "What is the name of the Python tool under tools/?",
-			"expected_answer": "codegen",
-			"difficulty": "easy"
-		},
-		{
-			"id": 9,
-			"name": "test_files_count",
-			"category": "testing",
-			"question": "How many test files are present across the repo?",
-			"expected_answer": 5,
-			"difficulty": "easy"
-		},
-		{
-			"id": 10,
-			"name": "proxy_server_main_entry",
-			"category": "artifact",
-			"question": "What is the main entry file for proxy-server (from its package.json)?",
-			"expected_answer": "index.js",
-			"difficulty": "easy"
-		},
-		{
-			"id": 11,
-			"name": "api_server_sources",
-			"category": "source_analysis",
-			"question": "What source files are used to build api-server? (Exclude test files; provide a list)",
-			"expected_answer": [
-				[
-					"backend/api-server/src/index.ts"
-				]
-			],
-			"difficulty": "medium"
-		},
-		{
-			"id": 12,
-			"name": "web_app_dependencies",
-			"category": "dependency_analysis",
-			"question": "Which components does web-app depend on? (Provide a list)",
-			"expected_answer": [
-				[
-					"shared-ui",
-					"i18n-lib",
-					"wasm-module",
-					"shared-lib"
-				],
-				[
-					"shared-ui",
-					"shared-lib",
-					"i18n-lib",
-					"wasm-module"
-				]
-			],
-			"difficulty": "medium"
-		},
-		{
-			"id": 13,
-			"name": "api_server_external_packages",
-			"category": "dependency_analysis",
-			"question": "What external packages (npm/dev) does api-server use? (Provide a list)",
-			"expected_answer": [
-				[
-					"express",
-					"axios",
-					"typescript",
-					"jest"
-				]
-			],
-			"difficulty": "medium"
-		},
-		{
-			"id": 14,
-			"name": "web_app_artifact_path",
-			"category": "artifact",
-			"question": "What is the artifact path (relative_path) produced by web-app?",
-			"expected_answer": "frontend/web-app/dist/main.js",
-			"difficulty": "medium"
-		},
-		{
-			"id": 15,
-			"name": "logging_lib_dependents_count",
-			"category": "dependency_analysis",
-			"question": "How many non-aggregator components directly depend on logging-lib?",
-			"expected_answer": 4,
-			"difficulty": "medium"
-		},
-		{
-			"id": 16,
-			"name": "executables_count",
-			"category": "component_identification",
-			"question": "How many executable components are defined (type=executable)?",
-			"expected_answer": 6,
-			"difficulty": "medium"
-		},
-		{
-			"id": 17,
-			"name": "aggregators_count",
-			"category": "component_identification",
-			"question": "How many aggregator components are defined (interpreted with multiple dependencies)?",
-			"expected_answer": 2,
-			"difficulty": "medium"
-		},
-		{
-			"id": 18,
-			"name": "max_dependency_depth",
-			"category": "graph_reasoning",
-			"question": "What is the maximum dependency depth across components?",
-			"expected_answer": 4,
-			"difficulty": "medium"
-		},
-		{
-			"id": 19,
-			"name": "programming_languages",
-			"category": "component_identification",
-			"question": "List the programming languages used across components. (Provide a list)",
-			"expected_answer": [
-				[
-					"js",
-					"python",
-					"rust",
-					"ts"
-				],
-				[
-					"ts",
-					"js",
-					"rust",
-					"python"
-				]
-			],
-			"difficulty": "medium"
-		},
-		{
-			"id": 20,
-			"name": "no_build_same_src_artifact",
-			"category": "artifact",
-			"question": "Which component has the same path for source and artifact (no build step)?",
-			"expected_answer": "proxy-server",
-			"difficulty": "medium"
-		},
-		{
-			"id": 21,
-			"name": "affected_by_shared_lib_failure",
-			"category": "graph_reasoning",
-			"question": "If shared-lib fails to build, which executable components would be unable to build? (Provide a list)",
-			"expected_answer": [
-				[
-					"api-server",
-					"worker",
-					"proxy-server",
-					"web-app",
-					"admin-portal"
-				]
-			],
-			"difficulty": "hard"
-		},
-		{
-			"id": 22,
-			"name": "affected_by_logging_lib_failure",
-			"category": "graph_reasoning",
-			"question": "If logging-lib fails, which non-aggregator components are affected (cannot build)? (Provide a list)",
-			"expected_answer": [
-				[
-					"shared-lib",
-					"shared-ui",
-					"i18n-lib",
-					"data-access",
-					"api-server",
-					"worker",
-					"proxy-server",
-					"web-app",
-					"admin-portal"
-				]
-			],
-			"difficulty": "hard"
-		},
-		{
-			"id": 23,
-			"name": "longest_chain_from_api_server",
-			"category": "graph_reasoning",
-			"question": "Provide a longest dependency chain starting from api-server. (Provide a list of component names in order)",
-			"expected_answer": [
-				[
-					"api-server",
-					"data-access",
-					"shared-lib",
-					"logging-lib"
-				]
-			],
-			"difficulty": "hard"
-		},
-		{
-			"id": 24,
-			"name": "cross_language_components_count",
-			"category": "dependency_analysis",
-			"question": "How many non-aggregator components have at least one cross-language dependency?",
-			"expected_answer": 3,
-			"difficulty": "hard"
-		},
-		{
-			"id": 25,
-			"name": "reachable_from_build_all",
-			"category": "graph_reasoning",
-			"question": "How many components are directly depended on by build-all (excluding itself)?",
-			"expected_answer": 14,
-			"difficulty": "hard"
-		},
-		{
-			"id": 26,
-			"name": "leaf_components",
-			"category": "dependency_analysis",
-			"question": "Which components have no dependencies? (Provide a list)",
-			"expected_answer": [
-				[
-					"logging-lib",
-					"metrics-lib",
-					"auth-lib",
-					"codegen",
-					"wasm-module"
-				],
-				[
-					"auth-lib",
-					"logging-lib",
-					"metrics-lib",
-					"codegen",
-					"wasm-module"
-				]
-			],
-			"difficulty": "hard"
-		},
-		{
-			"id": 27,
-			"name": "exactly_two_dependents",
-			"category": "dependency_analysis",
-			"question": "Which non-aggregator components are depended on by exactly two other components? (Provide a list)",
-			"expected_answer": [
-				[
-					"data-access",
-					"shared-ui"
-				],
-				[
-					"shared-ui",
-					"data-access"
-				]
-			],
-			"difficulty": "hard"
-		},
-		{
-			"id": 28,
-			"name": "ts_dist_artifacts_count",
-			"category": "artifact",
-			"question": "How many TypeScript components produce artifacts under a dist/ directory?",
-			"expected_answer": 11,
-			"difficulty": "hard"
-		},
-		{
-			"id": 29,
-			"name": "executables_artifact_paths",
-			"category": "artifact",
-			"question": "List the artifact paths for all executable components. (Provide a list)",
-			"expected_answer": [
-				[
-					"backend/api-server/dist/index.js",
-					"backend/worker/dist/index.js",
-					"backend/proxy-server/index.js",
-					"frontend/web-app/dist/main.js",
-					"frontend/admin-portal/dist/main.js",
-					"tools/codegen/main.py"
-				]
-			],
-			"difficulty": "hard"
-		},
-		{
-			"id": 30,
-			"name": "shortest_path_api_to_logging",
-			"category": "graph_reasoning",
-			"question": "What is the length (in edges) of the shortest dependency path from api-server to logging-lib?",
-			"expected_answer": 1,
-			"difficulty": "hard"
-		}
-	]
+  "repository_name": "npm-complex-monorepo",
+  "build_system": "npm",
+  "description": "Evaluation questions for high-complexity npm monorepo repository",
+  "questions": [
+    {
+      "id": 1,
+      "name": "repository_name",
+      "category": "build_system",
+      "question": "What is the name of this npm repository? (Provide the name as a string)",
+      "expected_answer": "npm-complex-monorepo",
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "name": "workspace_count",
+      "category": "build_system",
+      "question": "How many workspace patterns are defined in the root package.json?",
+      "expected_answer": 7,
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "name": "typescript_files_count",
+      "category": "source_analysis",
+      "question": "How many .ts files are in the packages/core/src/ directory?",
+      "expected_answer": 1,
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "name": "test_files_count",
+      "category": "testing",
+      "question": "How many .test.ts files are in the packages/core/src/ directory?",
+      "expected_answer": 1,
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "name": "languages_count",
+      "category": "source_analysis",
+      "question": "How many different programming languages are used in this repository? (Provide a number)",
+      "expected_answer": 4,
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "name": "rust_files",
+      "category": "source_analysis",
+      "question": "What is the path to the Rust source file? (Provide the relative path)",
+      "expected_answer": "modules/wasm-module/src/lib.rs",
+      "difficulty": "easy"
+    },
+    {
+      "id": 7,
+      "name": "go_files",
+      "category": "source_analysis",
+      "question": "What is the path to the Go source file? (Provide the relative path)",
+      "expected_answer": "modules/native-addon/main.go",
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "name": "python_files",
+      "category": "source_analysis",
+      "question": "What is the path to the Python bridge file? (Provide the relative path)",
+      "expected_answer": "modules/python-bridge/bridge.py",
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "name": "aggregator_count",
+      "category": "build_system",
+      "question": "How many aggregator packages are in the aggregators/ directory?",
+      "expected_answer": 3,
+      "difficulty": "easy"
+    },
+    {
+      "id": 10,
+      "name": "external_packages_count",
+      "category": "dependency_analysis",
+      "question": "How many external npm packages are used across all dependencies? (Provide an approximate number)",
+      "expected_answer": [
+        20,
+        25
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": 11,
+      "name": "components_count",
+      "category": "component_identification",
+      "question": "How many buildable components are in this repository? (Provide the count)",
+      "expected_answer": 22,
+      "difficulty": "medium"
+    },
+    {
+      "id": 12,
+      "name": "core_dependencies",
+      "category": "dependency_analysis",
+      "question": "What components depend on the core library (directly or transitively)? (Provide a list of component names)",
+      "expected_answer": [
+        [
+          "admin-portal.bundle.js",
+          "analytics.dist.js",
+          "api-client.dist.js",
+          "api-server.dist.js",
+          "auth-lib.dist.js",
+          "auth-service.dist.js",
+          "build-aggregator.dist.js",
+          "config.dist.js",
+          "data-access.dist.js",
+          "data-models.dist.js",
+          "data-processor.dist.js",
+          "logging-lib.dist.js",
+          "metrics-lib.dist.js",
+          "notification.dist.js",
+          "shared-ui.dist.js",
+          "utils.dist.js",
+          "web-app.bundle.js"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 13,
+      "name": "wasm_dependencies",
+      "category": "dependency_analysis",
+      "question": "What components depend on the WASM module (directly or transitively)? (Provide a list)",
+      "expected_answer": [
+        [
+          "api-server.dist.js",
+          "data-processor.dist.js",
+          "web-app.bundle.js"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 14,
+      "name": "native_addon_dependencies",
+      "category": "dependency_analysis",
+      "question": "What components depend on the native Go addon (directly or transitively)? (Provide a list)",
+      "expected_answer": [
+        [
+          "admin-portal.bundle.js",
+          "analytics.dist.js",
+          "api-server.dist.js"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 15,
+      "name": "python_bridge_dependencies",
+      "category": "dependency_analysis",
+      "question": "What components depend on the Python bridge (directly or transitively)? (Provide a list)",
+      "expected_answer": [
+        [
+          "api-server.dist.js",
+          "auth-service.dist.js",
+          "web-app.bundle.js"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 16,
+      "name": "max_dependency_depth",
+      "category": "dependency_analysis",
+      "question": "What is the maximum dependency depth in this repository? (Provide a number)",
+      "expected_answer": 4,
+      "difficulty": "medium"
+    },
+    {
+      "id": 17,
+      "name": "cross_language_dependencies",
+      "category": "dependency_analysis",
+      "question": "Does this repository have cross-language dependencies? (Answer yes or no)",
+      "expected_answer": [
+        "yes",
+        "Yes",
+        "y",
+        "true",
+        "TRUE"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 18,
+      "name": "web_app_dependencies",
+      "category": "dependency_analysis",
+      "question": "What are all the components that web-app.bundle.js depends on? (Provide a list)",
+      "expected_answer": [
+        [
+          "shared-ui.dist.js",
+          "auth-lib.dist.js",
+          "api-client.dist.js",
+          "auth-service.dist.js",
+          "data-processor.dist.js"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 19,
+      "name": "api_server_dependencies",
+      "category": "dependency_analysis",
+      "question": "What are all the components that api-server.dist.js depends on? (Provide a list)",
+      "expected_answer": [
+        [
+          "auth-service.dist.js",
+          "data-processor.dist.js",
+          "analytics.dist.js",
+          "notification.dist.js",
+          "data-access.dist.js"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 20,
+      "name": "external_packages_react",
+      "category": "dependency_analysis",
+      "question": "Which components use the 'react' external package? (Provide a list)",
+      "expected_answer": [
+        [
+          "shared-ui.dist.js",
+          "web-app.bundle.js",
+          "admin-portal.bundle.js"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 21,
+      "name": "build_order",
+      "category": "dependency_analysis",
+      "question": "In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with components that have no dependencies)",
+      "expected_answer": [
+        [
+          "core.dist.js",
+          "wasm_module.wasm",
+          "native_addon.node",
+          "python-bridge",
+          "codegen",
+          "utils.dist.js",
+          "data-models.dist.js",
+          "shared-ui.dist.js",
+          "logging-lib.dist.js",
+          "build-aggregator.dist.js",
+          "config.dist.js",
+          "api-client.dist.js",
+          "auth-lib.dist.js",
+          "metrics-lib.dist.js",
+          "data-access.dist.js",
+          "auth-service.dist.js",
+          "data-processor.dist.js",
+          "analytics.dist.js",
+          "notification.dist.js",
+          "web-app.bundle.js",
+          "admin-portal.bundle.js",
+          "api-server.dist.js"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 22,
+      "name": "cascade_failure_core",
+      "category": "dependency_analysis",
+      "question": "If the core.dist.js component fails to build, which other components would also fail? (Provide a list)",
+      "expected_answer": [
+        [
+          "admin-portal.bundle.js",
+          "analytics.dist.js",
+          "api-client.dist.js",
+          "api-server.dist.js",
+          "auth-lib.dist.js",
+          "auth-service.dist.js",
+          "build-aggregator.dist.js",
+          "config.dist.js",
+          "data-access.dist.js",
+          "data-models.dist.js",
+          "data-processor.dist.js",
+          "logging-lib.dist.js",
+          "metrics-lib.dist.js",
+          "notification.dist.js",
+          "shared-ui.dist.js",
+          "utils.dist.js",
+          "web-app.bundle.js"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 23,
+      "name": "cascade_failure_wasm",
+      "category": "dependency_analysis",
+      "question": "If the wasm_module.wasm component fails to build, which other components would also fail? (Provide a list)",
+      "expected_answer": [
+        [
+          "data-processor.dist.js",
+          "web-app.bundle.js",
+          "api-server.dist.js"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 24,
+      "name": "parallel_build",
+      "category": "dependency_analysis",
+      "question": "Can core.dist.js and wasm_module.wasm be built in parallel? (Answer yes or no)",
+      "expected_answer": [
+        "yes",
+        "Yes",
+        "y",
+        "true",
+        "TRUE"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 25,
+      "name": "parallel_build_dependent",
+      "category": "dependency_analysis",
+      "question": "Can web-app.bundle.js and admin-portal.bundle.js be built in parallel? (Answer yes or no)",
+      "expected_answer": [
+        "yes",
+        "Yes",
+        "y",
+        "true",
+        "TRUE"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 26,
+      "name": "critical_path",
+      "category": "dependency_analysis",
+      "question": "What is the longest dependency chain from a leaf component to a root component? (Provide the chain as a list)",
+      "expected_answer": [
+        [
+          "api-server.dist.js",
+          "auth-service.dist.js",
+          "auth-lib.dist.js",
+          "utils.dist.js",
+          "core.dist.js"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 27,
+      "name": "cross_language_types",
+      "category": "dependency_analysis",
+      "question": "What types of cross-language dependencies exist in this repository? (Provide a list of language pairs, e.g., 'typescript-rust')",
+      "expected_answer": [
+        [
+          "typescript-rust",
+          "typescript-go",
+          "typescript-python"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 28,
+      "name": "test_frameworks",
+      "category": "testing",
+      "question": "What test frameworks are used in this repository? (Provide a list)",
+      "expected_answer": [
+        [
+          "jest"
+        ],
+        [
+          "Jest"
+        ],
+        [
+          "JEST"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 29,
+      "name": "typescript_components",
+      "category": "component_identification",
+      "question": "Which components use TypeScript as their programming language? (Provide a list)",
+      "expected_answer": [
+        [
+          "core.dist.js",
+          "utils.dist.js",
+          "api-client.dist.js",
+          "data-models.dist.js",
+          "config.dist.js",
+          "shared-ui.dist.js",
+          "auth-lib.dist.js",
+          "logging-lib.dist.js",
+          "metrics-lib.dist.js",
+          "data-access.dist.js",
+          "auth-service.dist.js",
+          "data-processor.dist.js",
+          "analytics.dist.js",
+          "notification.dist.js",
+          "web-app.bundle.js",
+          "admin-portal.bundle.js",
+          "api-server.dist.js",
+          "build-aggregator.dist.js"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 30,
+      "name": "component_types",
+      "category": "component_identification",
+      "question": "What are the different component types in this repository? (Provide a list)",
+      "expected_answer": [
+        [
+          "static_library",
+          "shared_library",
+          "interpreted"
+        ]
+      ],
+      "difficulty": "hard"
+    }
+  ],
+  "ground_truth_file": "tests/deterministic/npm/npm_ground_truth.json"
 }
-

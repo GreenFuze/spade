@@ -1,0 +1,11 @@
+[package]
+name = "ast"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+common-types = { path = "../common-types" }
+error-reporting = { path = "../error-reporting" }
+rholang-macros = { path = "../rholang-macros" }
+serde.workspace = true
+indexmap.workspace = true

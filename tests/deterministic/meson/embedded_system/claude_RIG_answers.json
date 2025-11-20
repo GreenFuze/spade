@@ -1,0 +1,144 @@
+{
+  "agent_completion_time_seconds": 79.0,
+  "answers": [
+    {
+      "id": 1,
+      "answer": "embedded_system"
+    },
+    {
+      "id": 2,
+      "answer": "1.0.0"
+    },
+    {
+      "id": 3,
+      "answer": 4
+    },
+    {
+      "id": 4,
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "answer": "json-c"
+    },
+    {
+      "id": 8,
+      "answer": "cmocka"
+    },
+    {
+      "id": 9,
+      "answer": "gtest"
+    },
+    {
+      "id": 10,
+      "answer": "protocol.proto"
+    },
+    {
+      "id": 11,
+      "answer": 6
+    },
+    {
+      "id": 12,
+      "answer": 3
+    },
+    {
+      "id": 13,
+      "answer": "static"
+    },
+    {
+      "id": 14,
+      "answer": "shared"
+    },
+    {
+      "id": 15,
+      "answer": "c"
+    },
+    {
+      "id": 16,
+      "answer": "cpp"
+    },
+    {
+      "id": 17,
+      "answer": [
+        "protocol_generated.c"
+      ]
+    },
+    {
+      "id": 18,
+      "answer": "config.h.in"
+    },
+    {
+      "id": 19,
+      "answer": [
+        "json-c",
+        "m"
+      ]
+    },
+    {
+      "id": 20,
+      "answer": [
+        "libprotocol.a",
+        "libcore.a",
+        "libdrivers.so"
+      ]
+    },
+    {
+      "id": 21,
+      "answer": 2
+    },
+    {
+      "id": 22,
+      "answer": [
+        "libcore.a",
+        "libdrivers.so",
+        "libprotocol.a"
+      ]
+    },
+    {
+      "id": 23,
+      "answer": "yes"
+    },
+    {
+      "id": 24,
+      "answer": [
+        "libdrivers.so",
+        "libprotocol.a",
+        "firmware.elf",
+        "test_system",
+        "test_drivers"
+      ]
+    },
+    {
+      "id": 25,
+      "answer": "libdrivers.so"
+    },
+    {
+      "id": 26,
+      "answer": "tools/generate_protocol.py"
+    },
+    {
+      "id": 27,
+      "answer": 1
+    },
+    {
+      "id": 28,
+      "answer": "yes"
+    },
+    {
+      "id": 29,
+      "answer": 6
+    },
+    {
+      "id": 30,
+      "answer": 2
+    }
+  ]
+}

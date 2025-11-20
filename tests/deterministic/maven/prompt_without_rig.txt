@@ -1,0 +1,65 @@
+You are an expert at analyzing code repositories and build systems.
+
+Please answer the following questions about this repository. Analyze the repository structure, build files, and source code to provide accurate answers.
+
+When answering questions, you should understand these common build system terms:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component generates an artifact from source files, or is the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps (e.g., "build-all" targets).
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Tests**: Test suites that use a component for testing or a runner that executes the test.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. What is the Maven groupId of the task-manager project? (Provide the groupId)
+2. What is the Maven artifactId of the parent project? (Provide the artifactId)
+3. What Java version is used for compilation? (Provide the version number)
+4. How many modules are defined in the parent POM?
+5. How many test files (*Test.java) are in the repository?
+6. Which module uses WAR packaging? (Provide the module artifactId)
+7. How many external packages (excluding test dependencies) are declared in dependencyManagement?
+8. What test framework is used for all tests? (Provide the framework name)
+9. How many Java source files are in the common module?
+10. How many Java source files are in the domain module?
+11. How many buildable components (JARs/WARs) are produced by this repository?
+12. What source files are used to build the common component? (Provide a list)
+13. What source files are used to build the domain component? (Provide a list)
+14. List all components that domain depends on (use component names).
+15. List all components that persistence depends on (use component names).
+16. List all components that service-task depends on (use component names).
+17. List all components that api-gateway depends on (use component names).
+18. List all components that app-web depends on (use component names).
+19. Which modules have zero inter-module dependencies? (Provide a list of artifactIds)
+20. What types of components are built in this repository? (Provide a list)
+21. In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with no dependencies, use component names)
+22. What is the maximum dependency depth in this repository? (Provide the depth number)
+23. If the common component fails to build, which other components would also fail? (Provide a list, use component names)
+24. How many components can be built in parallel at the start (have zero dependencies)?
+25. Which component(s) have no other components depending on them? (Provide a list, use component names)
+26. What programming language is used for all components?
+27. List all external package names (group:artifact:version format). (Provide a list)
+28. How many test definitions are in this repository?
+29. Does this repository have any cross-language dependencies? (Answer yes or no)
+30. How many aggregator components are in this repository?
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

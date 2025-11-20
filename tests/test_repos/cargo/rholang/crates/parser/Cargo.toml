@@ -1,0 +1,11 @@
+[package]
+name = "parser"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+lexer = { path = "../lexer" }
+common-types = { path = "../common-types" }
+error-reporting = { path = "../error-reporting" }
+lalrpop-util.workspace = true
+smallvec.workspace = true

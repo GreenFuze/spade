@@ -1,0 +1,261 @@
+{
+  "agent_completion_time_seconds": 47.0,
+  "answers": [
+    {
+      "id": 1,
+      "answer": "npm-complex-monorepo"
+    },
+    {
+      "id": 2,
+      "answer": 7
+    },
+    {
+      "id": 3,
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "answer": 5
+    },
+    {
+      "id": 6,
+      "answer": "modules/wasm-module/src/lib.rs"
+    },
+    {
+      "id": 7,
+      "answer": "modules/native-addon/main.go"
+    },
+    {
+      "id": 8,
+      "answer": "modules/python-bridge/bridge.py"
+    },
+    {
+      "id": 9,
+      "answer": 3
+    },
+    {
+      "id": 10,
+      "answer": 25
+    },
+    {
+      "id": 11,
+      "answer": 20
+    },
+    {
+      "id": 12,
+      "answer": [
+        "utils",
+        "data-models",
+        "config",
+        "api-client",
+        "shared-ui",
+        "auth-lib",
+        "logging-lib",
+        "metrics-lib",
+        "data-access",
+        "auth-service",
+        "data-processor",
+        "analytics",
+        "notification",
+        "web-app",
+        "admin-portal",
+        "api-server",
+        "build-aggregator"
+      ]
+    },
+    {
+      "id": 13,
+      "answer": [
+        "data-processor",
+        "web-app",
+        "api-server"
+      ]
+    },
+    {
+      "id": 14,
+      "answer": [
+        "analytics",
+        "api-server"
+      ]
+    },
+    {
+      "id": 15,
+      "answer": [
+        "api-server"
+      ]
+    },
+    {
+      "id": 16,
+      "answer": 5
+    },
+    {
+      "id": 17,
+      "answer": "yes"
+    },
+    {
+      "id": 18,
+      "answer": [
+        "shared-ui",
+        "auth-lib",
+        "api-client",
+        "auth-service",
+        "data-processor",
+        "core",
+        "utils",
+        "data-models",
+        "wasm-module"
+      ]
+    },
+    {
+      "id": 19,
+      "answer": [
+        "auth-service",
+        "data-processor",
+        "analytics",
+        "notification",
+        "data-access",
+        "python-bridge",
+        "core",
+        "utils",
+        "auth-lib",
+        "data-models",
+        "metrics-lib",
+        "native-addon",
+        "wasm-module"
+      ]
+    },
+    {
+      "id": 20,
+      "answer": [
+        "shared-ui",
+        "web-app",
+        "admin-portal"
+      ]
+    },
+    {
+      "id": 21,
+      "answer": [
+        "core",
+        "wasm-module",
+        "native-addon",
+        "python-bridge",
+        "utils",
+        "data-models",
+        "shared-ui",
+        "auth-lib",
+        "logging-lib",
+        "api-client",
+        "config",
+        "metrics-lib",
+        "data-access",
+        "auth-service",
+        "data-processor",
+        "analytics",
+        "notification",
+        "web-app",
+        "admin-portal",
+        "api-server"
+      ]
+    },
+    {
+      "id": 22,
+      "answer": [
+        "utils",
+        "data-models",
+        "config",
+        "api-client",
+        "shared-ui",
+        "auth-lib",
+        "logging-lib",
+        "metrics-lib",
+        "data-access",
+        "auth-service",
+        "data-processor",
+        "analytics",
+        "notification",
+        "web-app",
+        "admin-portal",
+        "api-server",
+        "build-aggregator"
+      ]
+    },
+    {
+      "id": 23,
+      "answer": [
+        "data-processor",
+        "web-app",
+        "api-server"
+      ]
+    },
+    {
+      "id": 24,
+      "answer": "yes"
+    },
+    {
+      "id": 25,
+      "answer": "yes"
+    },
+    {
+      "id": 26,
+      "answer": [
+        "core",
+        "utils",
+        "auth-lib",
+        "auth-service",
+        "api-server"
+      ]
+    },
+    {
+      "id": 27,
+      "answer": [
+        "typescript-rust",
+        "typescript-go",
+        "typescript-python"
+      ]
+    },
+    {
+      "id": 28,
+      "answer": [
+        "jest"
+      ]
+    },
+    {
+      "id": 29,
+      "answer": [
+        "core",
+        "utils",
+        "data-models",
+        "config",
+        "api-client",
+        "shared-ui",
+        "auth-lib",
+        "logging-lib",
+        "metrics-lib",
+        "data-access",
+        "auth-service",
+        "data-processor",
+        "analytics",
+        "notification",
+        "web-app",
+        "admin-portal",
+        "api-server",
+        "build-aggregator"
+      ]
+    },
+    {
+      "id": 30,
+      "answer": [
+        "library",
+        "application",
+        "service",
+        "module",
+        "aggregator",
+        "tool"
+      ]
+    }
+  ]
+}

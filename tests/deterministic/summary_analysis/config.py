@@ -20,18 +20,47 @@ SCRIPT_DIR = Path(__file__).parent.parent
 # To add a new repository, simply add it to this list with name and path
 REPOS = [
     {
-        "name": "cmake_hello_world",
+        "name": "hello_world",
         "path": SCRIPT_DIR / "cmake" / "cmake_hello_world",
     },
     {
-        "name": "jni_hello_world",
+        "name": "jni",
         "path": SCRIPT_DIR / "cmake" / "jni_hello_world",
     },
     {
         "name": "metaffi",
         "path": SCRIPT_DIR / "cmake" / "metaffi",
     },
+    {
+        "name": "go",
+        "path": SCRIPT_DIR / "go" / "microservices",
+    },
+    {
+        "name": "maven",
+        "path": SCRIPT_DIR / "maven",
+    },
+    {
+        "name": "meson",
+        "path": SCRIPT_DIR / "meson" / "embedded_system",
+    },
+    {
+        "name": "npm",
+        "path": SCRIPT_DIR / "npm",
+    },
+    {
+        "name": "cargo",
+        "path": SCRIPT_DIR / "cargo" / "rholang",
+    },
 ]
+
+# Multi-lingual repository classification
+# Repositories with 3+ distinct programming languages (C/C++ count as 1)
+MULTI_LINGUAL_REPOS = ['npm', 'go', 'metaffi', 'jni']
+SINGLE_LANGUAGE_REPOS = ['hello_world', 'maven', 'cargo', 'meson']
+
+def is_multi_lingual(repo_name: str) -> bool:
+    """Determine if repository is multi-lingual (3+ languages)."""
+    return repo_name in MULTI_LINGUAL_REPOS
 
 # Visualization color scheme (colorblind-friendly)
 COLORS = {

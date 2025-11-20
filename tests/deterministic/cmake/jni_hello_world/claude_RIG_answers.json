@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 56.0,
   "answers": [
     {
       "id": 1,
@@ -10,23 +11,23 @@
     },
     {
       "id": 3,
-      "answer": 2
+      "answer": "2"
     },
     {
       "id": 4,
-      "answer": 4
+      "answer": "4"
     },
     {
       "id": 5,
-      "answer": 2
+      "answer": "2"
     },
     {
       "id": 6,
-      "answer": 3
+      "answer": "3"
     },
     {
       "id": 7,
-      "answer": 2
+      "answer": "2"
     },
     {
       "id": 8,
@@ -34,15 +35,15 @@
     },
     {
       "id": 9,
-      "answer": 197
+      "answer": "198"
     },
     {
       "id": 10,
-      "answer": 2
+      "answer": "2"
     },
     {
       "id": 11,
-      "answer": 6
+      "answer": "6"
     },
     {
       "id": 12,
@@ -117,8 +118,8 @@
       "id": 22,
       "answer": [
         "java_hello_lib-1.0.0.jar",
-        "math_lib-1.0.0.jar",
-        "libhello.dll"
+        "libhello.dll",
+        "math_lib-1.0.0.jar"
       ]
     },
     {
@@ -149,7 +150,7 @@
     },
     {
       "id": 28,
-      "answer": 4
+      "answer": "3"
     },
     {
       "id": 29,
@@ -157,8 +158,7 @@
     },
     {
       "id": 30,
-      "answer": 2
+      "answer": "2"
     }
-  ],
-  "agent_completion_time_seconds": 83.85
+  ]
 }

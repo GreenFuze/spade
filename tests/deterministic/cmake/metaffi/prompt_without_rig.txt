@@ -1,0 +1,65 @@
+You are an expert at analyzing code repositories and build systems.
+
+Please answer the following questions about this repository. Analyze the repository structure, build files, and source code to provide accurate answers.
+
+When answering questions, you should understand these common build system terms:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component generates an artifact from source files, or is the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps (e.g., "build-all" targets).
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Tests**: Test suites that use a component for testing or a runner that executes the test.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. What is the CMake project name?
+2. What is the project version?
+3. What is the minimum CMake version required?
+4. Is enable_testing() called in this project? (Answer yes or no)
+5. How many .jar files are built by this project?
+6. How many .exe files are built?
+7. How many .dll files are built?
+8. How many tests are defined in total?
+9. What are the names of the 4 main sub-aggregator targets (defined with add_custom_target and depend on multiple components)? (Provide a list)
+10. What subdirectories are commented out in the root CMakeLists.txt? (Provide a list)
+11. What source files are used to build cdts_test.exe? (Provide a list, include primary test file)
+12. What source files are used to build python_runtime_test.exe? (Provide a list, include primary test file)
+13. What external packages does xllr.dll depend on? (Provide a list)
+14. What external packages does metaffi.exe depend on? (Provide a list)
+15. What external JAR packages does openjdk_idl_extractor.jar depend on? (Provide a list)
+16. How many components depend on JNI?
+17. How many components depend on doctest?
+18. What test framework is used for python3_api_unitest?
+19. What programming language is metaffi.compiler.python311.dll written in?
+20. Which components in the openjdk aggregator are written in Java? (Provide a list, use component names without extensions)
+21. What is the complete dependency chain from metaffi.api.jar to its deepest runtime dependency? (Provide the chain using arrow notation like 'A → B → C' with Windows artifact names, or describe it as 'A depends on B which depends on C')
+22. How many components can be built in parallel because they have zero inter-component dependencies?
+23. If xllr.openjdk.dll fails to build, which other components would also fail? (Provide a list, use Windows artifact names)
+24. Can xllr.python311.dll and xllr.openjdk.dll be built in parallel? (Answer yes or no)
+25. Which components does the python311 aggregator directly depend on? (Provide a list, use Windows artifact names)
+26. Which components does the openjdk aggregator directly depend on? (Provide a list, use Windows artifact names)
+27. What components does the MetaFFI top-level aggregator directly depend on? (Provide a list - note that aggregators are also components)
+28. What are the three main plugin components for the python311 plugin? (Provide a list with Windows artifact names for runtime, IDL, and compiler)
+29. Which language plugins have all three plugin types (runtime, idl, compiler)? (Provide a list)
+30. What is the maximum dependency depth in the project? (i.e., the longest chain from any component to its deepest dependency)
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

@@ -3,7 +3,7 @@
 **Repository**: `cmake_hello_world`
 **Agents Tested**: Claude, Codex, Cursor
 **Total Questions**: 30
-**Generated**: 2025-11-06 09:19 UTC
+**Generated**: 2025-11-20 13:34 UTC
 
 ---
 
@@ -12,9 +12,9 @@
 This analysis evaluates the effectiveness of RIG (Repository Information Generation) on agent performance for the **cmake_hello_world** repository. 
 Three agents (Claude, Codex, Cursor) answered 30 questions both with and without access to RIG metadata.
 
-**Key Finding**: RIG improved average agent performance by **2.2 percentage points** 
-(95.6% → 97.8%) while reducing average completion time by **1.2%** 
-(51.3s → 50.7s).
+**Key Finding**: RIG improved average agent performance by **1.1 percentage points** 
+(98.9% → 100.0%) while reducing average completion time by **20.8%** 
+(56.0s → 44.3s).
 
 ---
 
@@ -23,17 +23,17 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 ![Agent Performance Comparison](cmake_hello_world_agent_performance_comparison.png)
 
 **Key Findings**:
-- Average score with RIG: **97.8%**
-- Average score without RIG: **95.6%**
-- **Improvement: +2.2 percentage points**
+- Average score with RIG: **100.0%**
+- Average score without RIG: **98.9%**
+- **Improvement: +1.1 percentage points**
 
 ### Per-Agent Performance
 
 | Agent | Without RIG | With RIG | Improvement |
 |-------|-------------|----------|-------------|
-| Claude | 96.7% | 100.0% | +3.3% |
-| Codex | 96.7% | 96.7% | +0.0% |
-| Cursor | 93.3% | 96.7% | +3.3% |
+| Claude | 100.0% | 100.0% | +0.0% |
+| Codex | 100.0% | 100.0% | +0.0% |
+| Cursor | 96.7% | 100.0% | +3.3% |
 
 ---
 
@@ -42,17 +42,17 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 ![Time Performance by Agent](cmake_hello_world_time_performance_by_agent.png)
 
 **Key Findings**:
-- Average time with RIG: **50.7 seconds**
-- Average time without RIG: **51.3 seconds**
-- **Time saved: 1.9 seconds (1.2% reduction)**
+- Average time with RIG: **44.3 seconds**
+- Average time without RIG: **56.0 seconds**
+- **Time saved: 35.0 seconds (20.8% reduction)**
 
 ### Per-Agent Time Performance
 
 | Agent | Without RIG | With RIG | Time Saved | Reduction |
 |-------|-------------|----------|------------|-----------|
-| Claude | 54.1s | 42.0s | 12.0s | 22.2% |
-| Codex | 75.0s | 87.1s | -12.2s | +-16.2% |
-| Cursor | 25.0s | 22.9s | 2.1s | 8.2% |
+| Claude | 71.0s | 68.0s | 3.0s | 4.2% |
+| Codex | 79.0s | 53.0s | 26.0s | 32.9% |
+| Cursor | 18.0s | 12.0s | 6.0s | 33.3% |
 
 ---
 
@@ -64,7 +64,7 @@ RIG effectiveness varies by question difficulty level:
 
 - **Easy questions**: +0.0% average improvement
 - **Medium questions**: +0.0% average improvement
-- **Hard questions**: +6.7% average improvement
+- **Hard questions**: +3.3% average improvement
 
 ---
 
@@ -77,7 +77,7 @@ Arrows indicate the direction of change when RIG is introduced.
 The ideal trajectory is toward the upper-left (higher score, less time).
 
 **Interpretation**:
-- **Claude**: improved both speed and accuracy
+- **Claude**: became both slower and less accurate
 - **Codex**: became both slower and less accurate
 - **Cursor**: improved both speed and accuracy
 
@@ -105,10 +105,10 @@ Positive values indicate questions where RIG helped, negative values indicate re
 Performance breakdown by question category shows where RIG provides the most benefit:
 
 - **build_system**: 100.0% → 100.0% (+0.0%)
-- **source_analysis**: 88.9% → 94.4% (+5.5%)
-- **testing**: 93.3% → 100.0% (+6.7%)
+- **source_analysis**: 100.0% → 100.0% (+0.0%)
+- **testing**: 100.0% → 100.0% (+0.0%)
 - **cmake_specific**: 100.0% → 100.0% (+0.0%)
-- **dependency_analysis**: 96.3% → 96.3% (+0.0%)
+- **dependency_analysis**: 96.3% → 100.0% (+3.7%)
 - **component_identification**: 100.0% → 100.0% (+0.0%)
 
 ---
@@ -121,9 +121,9 @@ An honest assessment of RIG's impact, showing both improvements and regressions:
 
 ### Questions Fixed by RIG
 
-- **Claude**: 1 questions (30)
+- **Claude**: None
 - **Codex**: None
-- **Cursor**: 1 questions (28)
+- **Cursor**: 1 questions (22)
 
 ### Questions Broken by RIG
 
@@ -133,7 +133,7 @@ An honest assessment of RIG's impact, showing both improvements and regressions:
 
 ### Net Impact
 
-- **Claude**: +1 questions (net improvement)
+- **Claude**: 0 questions (net improvement)
 - **Codex**: 0 questions (net improvement)
 - **Cursor**: +1 questions (net improvement)
 
@@ -143,9 +143,9 @@ An honest assessment of RIG's impact, showing both improvements and regressions:
 
 RIG demonstrates measurable value for the **cmake_hello_world** repository:
 
-1. **Moderate accuracy improvement**: +2.2 percentage points average
-2. **Moderate time savings**: 1.2% average reduction
-3. **Most benefit**: Claude saw 3.3% improvement
+1. **Moderate accuracy improvement**: +1.1 percentage points average
+2. **Moderate time savings**: 20.8% average reduction
+3. **Most benefit**: Cursor saw 3.3% improvement
 
 **Recommendation**: RIG provides measurable value for cmake_hello_world and should be adopted.
 

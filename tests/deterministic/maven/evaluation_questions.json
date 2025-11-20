@@ -1,0 +1,345 @@
+{
+  "repository_name": "task_manager",
+  "build_system": "maven",
+  "description": "Evaluation questions for task-manager Maven multi-module repository",
+  "questions": [
+    {
+      "id": 1,
+      "name": "project_groupId",
+      "category": "build_system",
+      "question": "What is the Maven groupId of the task-manager project? (Provide the groupId)",
+      "expected_answer": "com.example",
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "name": "project_artifactId",
+      "category": "build_system",
+      "question": "What is the Maven artifactId of the parent project? (Provide the artifactId)",
+      "expected_answer": "task-manager",
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "name": "java_version",
+      "category": "build_system",
+      "question": "What Java version is used for compilation? (Provide the version number)",
+      "expected_answer": "17",
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "name": "modules_count",
+      "category": "build_system",
+      "question": "How many modules are defined in the parent POM?",
+      "expected_answer": 10,
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "name": "test_files_count",
+      "category": "testing",
+      "question": "How many test files (*Test.java) are in the repository?",
+      "expected_answer": 10,
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "name": "war_packaging",
+      "category": "component_identification",
+      "question": "Which module uses WAR packaging? (Provide the module artifactId)",
+      "expected_answer": "app-web",
+      "difficulty": "easy"
+    },
+    {
+      "id": 7,
+      "name": "external_packages_count",
+      "category": "dependency_analysis",
+      "question": "How many external packages (excluding test dependencies) are declared in dependencyManagement?",
+      "expected_answer": 8,
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "name": "test_framework",
+      "category": "testing",
+      "question": "What test framework is used for all tests? (Provide the framework name)",
+      "expected_answer": [
+        "JUnit5",
+        "junit5",
+        "JUnit 5",
+        "junit 5",
+        "JUnit Jupiter"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "name": "common_module_sources",
+      "category": "source_analysis",
+      "question": "How many Java source files are in the common module?",
+      "expected_answer": 1,
+      "difficulty": "easy"
+    },
+    {
+      "id": 10,
+      "name": "domain_module_sources",
+      "category": "source_analysis",
+      "question": "How many Java source files are in the domain module?",
+      "expected_answer": 2,
+      "difficulty": "easy"
+    },
+    {
+      "id": 11,
+      "name": "components_count",
+      "category": "component_identification",
+      "question": "How many buildable components (JARs/WARs) are produced by this repository?",
+      "expected_answer": 10,
+      "difficulty": "medium"
+    },
+    {
+      "id": 12,
+      "name": "common_sources",
+      "category": "source_analysis",
+      "question": "What source files are used to build the common component? (Provide a list)",
+      "expected_answer": [
+        [
+          "common/src/main/java/com/example/common/CommonUtils.java"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 13,
+      "name": "domain_sources",
+      "category": "source_analysis",
+      "question": "What source files are used to build the domain component? (Provide a list)",
+      "expected_answer": [
+        [
+          "domain/src/main/java/com/example/domain/Task.java",
+          "domain/src/main/java/com/example/domain/User.java"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 14,
+      "name": "domain_dependencies",
+      "category": "dependency_analysis",
+      "question": "List all components that domain depends on (use component names).",
+      "expected_answer": [
+        "common"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 15,
+      "name": "persistence_dependencies",
+      "category": "dependency_analysis",
+      "question": "List all components that persistence depends on (use component names).",
+      "expected_answer": [
+        "domain",
+        "common"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 16,
+      "name": "service_task_dependencies",
+      "category": "dependency_analysis",
+      "question": "List all components that service-task depends on (use component names).",
+      "expected_answer": [
+        "persistence",
+        "domain",
+        "common"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 17,
+      "name": "api_gateway_dependencies",
+      "category": "dependency_analysis",
+      "question": "List all components that api-gateway depends on (use component names).",
+      "expected_answer": [
+        "service-task",
+        "service-auth",
+        "service-notification",
+        "domain",
+        "common"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 18,
+      "name": "app_web_dependencies",
+      "category": "dependency_analysis",
+      "question": "List all components that app-web depends on (use component names).",
+      "expected_answer": [
+        "api-gateway",
+        "integration-email",
+        "integration-storage",
+        "service-task",
+        "service-auth",
+        "service-notification",
+        "persistence",
+        "domain",
+        "common"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 19,
+      "name": "zero_dependency_modules",
+      "category": "dependency_analysis",
+      "question": "Which modules have zero inter-module dependencies? (Provide a list of artifactIds)",
+      "expected_answer": [
+        "common"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 20,
+      "name": "component_types",
+      "category": "component_identification",
+      "question": "What types of components are built in this repository? (Provide a list)",
+      "expected_answer": [
+        [
+          "static_library",
+          "shared_library"
+        ],
+        [
+          "jar",
+          "war"
+        ]
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": 21,
+      "name": "build_order",
+      "category": "dependency_analysis",
+      "question": "In what order must the components be built to satisfy all dependencies? (Provide the build order as a list starting with no dependencies, use component names)",
+      "expected_answer": [
+        "common",
+        "domain",
+        "integration-email",
+        "integration-storage",
+        "persistence",
+        "service-auth",
+        "service-notification",
+        "service-task",
+        "api-gateway",
+        "app-web"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 22,
+      "name": "max_dependency_depth",
+      "category": "dependency_analysis",
+      "question": "What is the maximum dependency depth in this repository? (Provide the depth number)",
+      "expected_answer": 5,
+      "difficulty": "hard"
+    },
+    {
+      "id": 23,
+      "name": "common_failure_impact",
+      "category": "dependency_analysis",
+      "question": "If the common component fails to build, which other components would also fail? (Provide a list, use component names)",
+      "expected_answer": [
+        "domain",
+        "integration-email",
+        "integration-storage",
+        "persistence",
+        "service-auth",
+        "service-notification",
+        "service-task",
+        "api-gateway",
+        "app-web"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 24,
+      "name": "parallel_buildable",
+      "category": "dependency_analysis",
+      "question": "How many components can be built in parallel at the start (have zero dependencies)?",
+      "expected_answer": 1,
+      "difficulty": "hard"
+    },
+    {
+      "id": 25,
+      "name": "leaf_components",
+      "category": "dependency_analysis",
+      "question": "Which component(s) have no other components depending on them? (Provide a list, use component names)",
+      "expected_answer": [
+        "app-web"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 26,
+      "name": "programming_language",
+      "category": "component_identification",
+      "question": "What programming language is used for all components?",
+      "expected_answer": [
+        "java",
+        "Java",
+        "JAVA"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 27,
+      "name": "external_package_names",
+      "category": "dependency_analysis",
+      "question": "List all external package names (group:artifact:version format). (Provide a list)",
+      "expected_answer": [
+        [
+          "com.google.guava:guava:32.1.2-jre",
+          "org.slf4j:slf4j-api:2.0.9",
+          "ch.qos.logback:logback-classic:1.4.11",
+          "com.fasterxml.jackson.core:jackson-databind:2.15.2",
+          "org.springframework:spring-web:6.0.11",
+          "org.hibernate.orm:hibernate-core:6.2.7.Final",
+          "com.h2database:h2:2.2.224",
+          "org.junit.jupiter:junit-jupiter:5.10.0",
+          "org.mockito:mockito-core:5.5.0",
+          "jakarta.servlet:jakarta.servlet-api:6.0.0"
+        ]
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 28,
+      "name": "test_count",
+      "category": "testing",
+      "question": "How many test definitions are in this repository?",
+      "expected_answer": 10,
+      "difficulty": "hard"
+    },
+    {
+      "id": 29,
+      "name": "cross_language_dependencies",
+      "category": "dependency_analysis",
+      "question": "Does this repository have any cross-language dependencies? (Answer yes or no)",
+      "expected_answer": [
+        "no",
+        "No",
+        "n",
+        "false",
+        "FALSE"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": 30,
+      "name": "aggregator_count",
+      "category": "component_identification",
+      "question": "How many aggregator components are in this repository?",
+      "expected_answer": 1,
+      "difficulty": "hard"
+    }
+  ],
+  "ground_truth_file": "tests/deterministic/maven/task_manager/task_manager_ground_truth.json"
+}

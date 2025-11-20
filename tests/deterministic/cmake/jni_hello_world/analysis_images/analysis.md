@@ -3,7 +3,7 @@
 **Repository**: `jni_hello_world`
 **Agents Tested**: Claude, Codex, Cursor
 **Total Questions**: 30
-**Generated**: 2025-11-06 09:19 UTC
+**Generated**: 2025-11-20 13:34 UTC
 
 ---
 
@@ -12,9 +12,9 @@
 This analysis evaluates the effectiveness of RIG (Repository Information Generation) on agent performance for the **jni_hello_world** repository. 
 Three agents (Claude, Codex, Cursor) answered 30 questions both with and without access to RIG metadata.
 
-**Key Finding**: RIG improved average agent performance by **6.7 percentage points** 
-(91.1% → 97.8%) while reducing average completion time by **62.5%** 
-(199.0s → 74.7s).
+**Key Finding**: RIG improved average agent performance by **11.1 percentage points** 
+(87.8% → 98.9%) while reducing average completion time by **61.7%** 
+(122.7s → 47.0s).
 
 ---
 
@@ -23,17 +23,17 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 ![Agent Performance Comparison](jni_hello_world_agent_performance_comparison.png)
 
 **Key Findings**:
-- Average score with RIG: **97.8%**
-- Average score without RIG: **91.1%**
-- **Improvement: +6.7 percentage points**
+- Average score with RIG: **98.9%**
+- Average score without RIG: **87.8%**
+- **Improvement: +11.1 percentage points**
 
 ### Per-Agent Performance
 
 | Agent | Without RIG | With RIG | Improvement |
 |-------|-------------|----------|-------------|
-| Claude | 90.0% | 96.7% | +6.7% |
-| Codex | 96.7% | 100.0% | +3.3% |
-| Cursor | 86.7% | 96.7% | +10.0% |
+| Claude | 90.0% | 100.0% | +10.0% |
+| Codex | 90.0% | 100.0% | +10.0% |
+| Cursor | 83.3% | 96.7% | +13.3% |
 
 ---
 
@@ -42,17 +42,17 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 ![Time Performance by Agent](jni_hello_world_time_performance_by_agent.png)
 
 **Key Findings**:
-- Average time with RIG: **74.7 seconds**
-- Average time without RIG: **199.0 seconds**
-- **Time saved: 372.9 seconds (62.5% reduction)**
+- Average time with RIG: **47.0 seconds**
+- Average time without RIG: **122.7 seconds**
+- **Time saved: 227.0 seconds (61.7% reduction)**
 
 ### Per-Agent Time Performance
 
 | Agent | Without RIG | With RIG | Time Saved | Reduction |
 |-------|-------------|----------|------------|-----------|
-| Claude | 266.8s | 83.8s | 182.9s | 68.6% |
-| Codex | 290.2s | 115.3s | 175.0s | 60.3% |
-| Cursor | 39.9s | 24.9s | 15.0s | 37.6% |
+| Claude | 113.0s | 56.0s | 57.0s | 50.4% |
+| Codex | 227.0s | 64.0s | 163.0s | 71.8% |
+| Cursor | 28.0s | 21.0s | 7.0s | 25.0% |
 
 ---
 
@@ -62,9 +62,9 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 
 RIG effectiveness varies by question difficulty level:
 
-- **Easy questions**: +3.3% average improvement
-- **Medium questions**: +3.3% average improvement
-- **Hard questions**: +13.3% average improvement
+- **Easy questions**: +0.0% average improvement
+- **Medium questions**: +10.0% average improvement
+- **Hard questions**: +23.3% average improvement
 
 ---
 
@@ -105,10 +105,10 @@ Positive values indicate questions where RIG helped, negative values indicate re
 Performance breakdown by question category shows where RIG provides the most benefit:
 
 - **build_system**: 100.0% → 100.0% (+0.0%)
-- **source_analysis**: 95.2% → 100.0% (+4.8%)
+- **source_analysis**: 100.0% → 100.0% (+0.0%)
 - **testing**: 80.0% → 100.0% (+20.0%)
-- **dependency_analysis**: 88.9% → 96.3% (+7.4%)
-- **component_identification**: 93.3% → 93.3% (+0.0%)
+- **dependency_analysis**: 81.5% → 96.3% (+14.8%)
+- **component_identification**: 80.0% → 100.0% (+20.0%)
 - **cmake_specific**: 100.0% → 100.0% (+0.0%)
 
 ---
@@ -121,21 +121,21 @@ An honest assessment of RIG's impact, showing both improvements and regressions:
 
 ### Questions Fixed by RIG
 
-- **Claude**: 3 questions (5, 22, 27)
-- **Codex**: 1 questions (27)
-- **Cursor**: 3 questions (20, 22, 27)
+- **Claude**: 3 questions (14, 22, 27)
+- **Codex**: 3 questions (21, 22, 27)
+- **Cursor**: 4 questions (11, 20, 22, 27)
 
 ### Questions Broken by RIG
 
-- **Claude**: 1 questions (28)
+- **Claude**: None
 - **Codex**: None
 - **Cursor**: None
 
 ### Net Impact
 
-- **Claude**: +2 questions (net improvement)
-- **Codex**: +1 questions (net improvement)
-- **Cursor**: +3 questions (net improvement)
+- **Claude**: +3 questions (net improvement)
+- **Codex**: +3 questions (net improvement)
+- **Cursor**: +4 questions (net improvement)
 
 ---
 
@@ -143,9 +143,9 @@ An honest assessment of RIG's impact, showing both improvements and regressions:
 
 RIG demonstrates measurable value for the **jni_hello_world** repository:
 
-1. **Significant accuracy improvement**: +6.7 percentage points average
-2. **Substantial time savings**: 62.5% average reduction
-3. **Most benefit**: Cursor saw 10.0% improvement
+1. **Significant accuracy improvement**: +11.1 percentage points average
+2. **Substantial time savings**: 61.7% average reduction
+3. **Most benefit**: Cursor saw 13.3% improvement
 
 **Recommendation**: RIG provides measurable value for jni_hello_world and should be adopted.
 

@@ -64,7 +64,7 @@
 			"name": "testing_enabled",
 			"category": "testing",
 			"question": "Is enable_testing() called in this project? (Answer yes or no)",
-			"expected_answer": "yes",
+			"expected_answer": ["yes", "Yes", "y", "true", "TRUE"],
 			"difficulty": "easy"
 		},
 		{
@@ -144,7 +144,7 @@
 			"name": "junit_test_framework",
 			"category": "testing",
 			"question": "What test framework is used for test_hello_world_java?",
-			"expected_answer": [["JUnit"], ["junit"], ["JUnit 4"]],
+			"expected_answer": [["JUnit"], ["junit"], ["JUnit 4"], ["JUnit4"], ["junit4"], ["junit 4"]],
 			"difficulty": "medium"
 		},
 		{
@@ -184,7 +184,7 @@
 			"name": "parallel_build_analysis",
 			"category": "dependency_analysis",
 			"question": "Can java_hello_lib and libhello.dll be built in parallel? (Answer yes or no)",
-			"expected_answer": "yes",
+			"expected_answer": ["yes", "Yes", "y", "true", "TRUE"],
 			"difficulty": "hard"
 		},
 		{
@@ -200,7 +200,7 @@
 			"name": "language_main_entry_point",
 			"category": "component_identification",
 			"question": "In which programming language is the main() entry point of the application implemented?",
-			"expected_answer": [["cxx"], ["c++"], ["cpp"]],
+			"expected_answer": [["cxx"], ["c++"], ["cpp"], ["C++"], ["CPP"]],
 			"difficulty": "hard"
 		},
 		{
@@ -208,7 +208,7 @@
 			"name": "language_caller_pattern",
 			"category": "dependency_analysis",
 			"question": "Which programming language calls Java code in this project?",
-			"expected_answer": [["cxx"], ["c++"], ["cpp"]],
+			"expected_answer": [["cxx"], ["c++"], ["cpp"], ["C++"], ["CPP"]],
 			"difficulty": "hard"
 		},
 		{
@@ -216,7 +216,7 @@
 			"name": "test_frameworks_used",
 			"category": "testing",
 			"question": "What test frameworks are used in this repository? (Provide a list)",
-			"expected_answer": [["CTest", "JUnit", "Go"], ["CTest", "JUnit", "go test"]],
+			"expected_answer": [["CTest", "JUnit", "Go"], ["CTest", "JUnit", "go test"], ["ctest", "junit", "go test"], ["CTest", "junit", "Go"], ["cmake test", "JUnit", "go test"], ["CTest", "JUnit 4", "Go"], ["CTest", "junit", "go test"], ["ctest", "JUnit", "Go"]],
 			"difficulty": "hard"
 		},
 		{

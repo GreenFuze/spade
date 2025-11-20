@@ -3,7 +3,7 @@
 **Repository**: `metaffi`
 **Agents Tested**: Claude, Codex, Cursor
 **Total Questions**: 30
-**Generated**: 2025-11-06 09:20 UTC
+**Generated**: 2025-11-20 13:34 UTC
 
 ---
 
@@ -12,9 +12,9 @@
 This analysis evaluates the effectiveness of RIG (Repository Information Generation) on agent performance for the **metaffi** repository. 
 Three agents (Claude, Codex, Cursor) answered 30 questions both with and without access to RIG metadata.
 
-**Key Finding**: RIG improved average agent performance by **16.7 percentage points** 
-(58.9% → 75.6%) while reducing average completion time by **48.2%** 
-(289.8s → 150.2s).
+**Key Finding**: RIG improved average agent performance by **18.9 percentage points** 
+(64.4% → 83.3%) while reducing average completion time by **57.8%** 
+(258.0s → 109.0s).
 
 ---
 
@@ -23,17 +23,17 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 ![Agent Performance Comparison](metaffi_agent_performance_comparison.png)
 
 **Key Findings**:
-- Average score with RIG: **75.6%**
-- Average score without RIG: **58.9%**
-- **Improvement: +16.7 percentage points**
+- Average score with RIG: **83.3%**
+- Average score without RIG: **64.4%**
+- **Improvement: +18.9 percentage points**
 
 ### Per-Agent Performance
 
 | Agent | Without RIG | With RIG | Improvement |
 |-------|-------------|----------|-------------|
-| Claude | 46.7% | 76.7% | +30.0% |
-| Codex | 70.0% | 80.0% | +10.0% |
-| Cursor | 60.0% | 70.0% | +10.0% |
+| Claude | 63.3% | 86.7% | +23.3% |
+| Codex | 66.7% | 80.0% | +13.3% |
+| Cursor | 63.3% | 83.3% | +20.0% |
 
 ---
 
@@ -42,17 +42,17 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 ![Time Performance by Agent](metaffi_time_performance_by_agent.png)
 
 **Key Findings**:
-- Average time with RIG: **150.2 seconds**
-- Average time without RIG: **289.8 seconds**
-- **Time saved: 418.9 seconds (48.2% reduction)**
+- Average time with RIG: **109.0 seconds**
+- Average time without RIG: **258.0 seconds**
+- **Time saved: 447.0 seconds (57.8% reduction)**
 
 ### Per-Agent Time Performance
 
 | Agent | Without RIG | With RIG | Time Saved | Reduction |
 |-------|-------------|----------|------------|-----------|
-| Claude | 356.9s | 276.7s | 80.2s | 22.5% |
-| Codex | 434.6s | 140.0s | 294.6s | 67.8% |
-| Cursor | 78.0s | 33.9s | 44.1s | 56.5% |
+| Claude | 293.0s | 96.0s | 197.0s | 67.2% |
+| Codex | 383.0s | 187.0s | 196.0s | 51.2% |
+| Cursor | 98.0s | 44.0s | 54.0s | 55.1% |
 
 ---
 
@@ -62,9 +62,9 @@ Three agents (Claude, Codex, Cursor) answered 30 questions both with and without
 
 RIG effectiveness varies by question difficulty level:
 
-- **Easy questions**: +10.0% average improvement
-- **Medium questions**: +33.3% average improvement
-- **Hard questions**: +6.7% average improvement
+- **Easy questions**: +6.7% average improvement
+- **Medium questions**: +40.0% average improvement
+- **Hard questions**: +10.0% average improvement
 
 ---
 
@@ -105,10 +105,10 @@ Positive values indicate questions where RIG helped, negative values indicate re
 Performance breakdown by question category shows where RIG provides the most benefit:
 
 - **build_system**: 100.0% → 100.0% (+0.0%)
-- **source_analysis**: 26.7% → 60.0% (+33.3%)
-- **testing**: 66.7% → 100.0% (+33.3%)
-- **aggregator_structure**: 91.7% → 100.0% (+8.3%)
-- **dependency_analysis**: 33.3% → 56.7% (+23.4%)
+- **source_analysis**: 33.3% → 80.0% (+46.7%)
+- **testing**: 83.3% → 100.0% (+16.7%)
+- **aggregator_structure**: 100.0% → 100.0% (+0.0%)
+- **dependency_analysis**: 40.0% → 70.0% (+30.0%)
 - **component_identification**: 50.0% → 50.0% (+0.0%)
 - **plugin_architecture**: 100.0% → 100.0% (+0.0%)
 
@@ -122,21 +122,21 @@ An honest assessment of RIG's impact, showing both improvements and regressions:
 
 ### Questions Fixed by RIG
 
-- **Claude**: 9 questions (7, 8, 11, 12, 13, 14, 21, 26, 30)
-- **Codex**: 4 questions (13, 14, 15, 30)
-- **Cursor**: 4 questions (8, 11, 12, 13)
+- **Claude**: 7 questions (8, 11, 12, 13, 14, 21, 30)
+- **Codex**: 4 questions (11, 12, 13, 14)
+- **Cursor**: 6 questions (7, 11, 12, 13, 14, 21)
 
 ### Questions Broken by RIG
 
 - **Claude**: None
-- **Codex**: 1 questions (21)
-- **Cursor**: 1 questions (30)
+- **Codex**: None
+- **Cursor**: None
 
 ### Net Impact
 
-- **Claude**: +9 questions (net improvement)
-- **Codex**: +3 questions (net improvement)
-- **Cursor**: +3 questions (net improvement)
+- **Claude**: +7 questions (net improvement)
+- **Codex**: +4 questions (net improvement)
+- **Cursor**: +6 questions (net improvement)
 
 ---
 
@@ -144,9 +144,9 @@ An honest assessment of RIG's impact, showing both improvements and regressions:
 
 RIG demonstrates measurable value for the **metaffi** repository:
 
-1. **Significant accuracy improvement**: +16.7 percentage points average
-2. **Substantial time savings**: 48.2% average reduction
-3. **Most benefit**: Claude saw 30.0% improvement
+1. **Significant accuracy improvement**: +18.9 percentage points average
+2. **Substantial time savings**: 57.8% average reduction
+3. **Most benefit**: Claude saw 23.3% improvement
 
 **Recommendation**: RIG provides measurable value for metaffi and should be adopted.
 

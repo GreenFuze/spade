@@ -100,10 +100,38 @@ Aggregators:      {agg_count:2d} × 5  = {agg_score:3d}
 Cross-language:   {cross_lang_yes_no:3s}      = {cross_score:3d}
 ---------------------------------------
 Raw score:                     {raw_score:3d}
-Normalized: ({raw_score}/{max_score}×100)    = {norm_score:5.1f}
+Normalized: ({raw_score}/{max_score})×100    = {norm_score:5.1f}
 ```
 
 **Languages**: {languages}"""
+
+# ==============================================================================
+# TERMINOLOGY SECTION
+# ==============================================================================
+
+TERMINOLOGY_HEADER = "### Terminology"
+
+TERMINOLOGY_CONTENT = """Before diving into the visualizations, here are the key terms used throughout this analysis:
+
+**Performance Metrics:**
+- **Score Improvement**: The percentage point increase in agent accuracy when using RIG vs. without RIG. For example, if an agent scores 70% without RIG and 85% with RIG, the improvement is +15 percentage points.
+- **Time Reduction**: The percentage decrease in completion time when using RIG. Calculated as: ((time_without - time_with) / time_without) × 100.
+- **Efficiency Improvement**: The percentage increase in score-per-second metric (higher score in less time = better efficiency).
+
+**Statistical Terms:**
+- **R² (R-squared)**: A statistical measure (0-1 scale) indicating how well the trendline fits the data. Higher values mean stronger correlation:
+  - R² > 0.7: Strong correlation
+  - R² 0.4-0.7: Moderate correlation
+  - R² < 0.4: Weak correlation
+- **Trendline**: A linear regression line showing the general relationship between two variables (calculated using ordinary least squares method).
+
+**Complexity Metrics:**
+- **Normalized Complexity**: Repository complexity on a 0-100 scale, where 100 represents the most complex repository in the analysis.
+- **Raw Complexity Score**: The unscaled complexity value before normalization, based on weighted metrics (components, languages, dependencies, etc.).
+
+**Other Terms:**
+- **RIG (Repository Information Generation)**: Structured metadata about repository build systems, components, and dependencies.
+- **Agent**: AI coding assistant (Claude, Codex, or Cursor) being tested."""
 
 # ==============================================================================
 # CORRELATION SECTION
@@ -117,6 +145,8 @@ SCORE_CORRELATION_IMAGE = "![Complexity vs Score](complexity_vs_score_improvemen
 
 SCORE_CORRELATION_FINDING = """**Finding**: Repository complexity strongly correlates with RIG benefit (R²={r_squared})
 
+**About the trendline**: The dashed line represents a linear regression calculated using ordinary least squares (OLS) method. This shows the general trend: as complexity increases, RIG benefit increases proportionally.
+
 {conclusion}"""
 
 TIME_CORRELATION_HEADER = "### Time Savings"
@@ -125,7 +155,32 @@ TIME_CORRELATION_IMAGE = "![Complexity vs Time](complexity_vs_time_reduction.png
 
 TIME_CORRELATION_FINDING = """**Finding**: Time savings scale with complexity (R²={r_squared})
 
+**About the trendline**: The dashed line represents a linear regression calculated using ordinary least squares (OLS) method. This shows the general trend: as complexity increases, time savings increase proportionally.
+
 {conclusion}"""
+
+# ==============================================================================
+# LANGUAGE COMPARISON SECTION
+# ==============================================================================
+
+LANGUAGE_COMPARISON_HEADER = "## 1.5. Multi-lingual vs Single-language Repositories"
+
+LANGUAGE_COMPARISON_INTRO = """This analysis compares RIG effectiveness between multi-lingual repositories (3+ programming languages) and single-language repositories to evaluate whether language diversity impacts RIG value.
+
+**Multi-lingual repositories ({multi_count}):** {multi_repos}
+
+**Single-language repositories ({single_count}):** {single_repos}"""
+
+LANGUAGE_COMPARISON_TABLE_HEADER = "### Performance Comparison"
+
+LANGUAGE_COMPARISON_TABLE = """| Metric | Multi-lingual Avg | Single-language Avg | Difference | Statistical Significance |
+|--------|------------------|-------------------|-----------|------------------------|"""
+
+LANGUAGE_COMPARISON_ROW = "| {metric} | {multi_avg} | {single_avg} | {difference} | {significance} |"
+
+LANGUAGE_COMPARISON_FINDING = """**Key Finding**: {conclusion}
+
+{interpretation}"""
 
 # ==============================================================================
 # REPOSITORY COMPARISON SECTION

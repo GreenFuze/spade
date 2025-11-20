@@ -1,15 +1,1011 @@
 {
   "results": {
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the CMake project name?",
+        "expected": "JNIHelloWorld",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 2,
+        "question": "What is the minimum CMake version required?",
+        "expected": "3.16",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 3,
+        "question": "How many .cpp files are in the src/cpp/ directory?",
+        "expected": 2,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 4,
+        "question": "How many .java files are in the entire repository?",
+        "expected": 4,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 5,
+        "question": "How many .go files are in src/go/?",
+        "expected": 2,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 6,
+        "question": "How many add_test commands are in the CMakeLists.txt?",
+        "expected": 3,
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 7,
+        "question": "How many find_package commands are in the CMakeLists.txt?",
+        "expected": 2,
+        "difficulty": "easy",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 8,
+        "question": "Is enable_testing() called in this project? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 9,
+        "question": "How many lines are in the CMakeLists.txt file?",
+        "expected": [
+          196,
+          197,
+          198
+        ],
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 10,
+        "question": "How many .jar files are built by this project?",
+        "expected": 2,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 11,
+        "question": "How many components are built in this repository?",
+        "expected": 6,
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 5
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 12,
+        "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)",
+        "expected": [
+          [
+            "src/cpp/main.cpp",
+            "src/cpp/jni_wrapper.cpp"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 13,
+        "question": "What source files are used to build the java_hello_lib component? (Provide a list)",
+        "expected": [
+          [
+            "src/java/HelloWorld.java",
+            "src/java/HelloWorldJNI.java"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 14,
+        "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)",
+        "expected": [
+          [
+            "libhello.dll",
+            "math_lib-1.0.0.jar"
+          ],
+          [
+            "libhello.dll",
+            "math_lib.jar"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "math_lib-1.0.0.jar",
+            "libhello.dll",
+            "HelloWorldTest.class"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 15,
+        "question": "What external packages does the jni_hello_world component depend on? (Provide a list)",
+        "expected": [
+          [
+            "JNI"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 16,
+        "question": "What source files are used to build the test_jni_wrapper component? (Provide a list)",
+        "expected": [
+          [
+            "tests/cpp/test_jni_wrapper.cpp",
+            "src/cpp/jni_wrapper.cpp"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 17,
+        "question": "Which component does the test_jni_wrapper_cpp test execute? (use Windows artifact name)",
+        "expected": "test_jni_wrapper.exe",
+        "difficulty": "medium",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 18,
+        "question": "What test framework is used for test_hello_world_java?",
+        "expected": [
+          [
+            "JUnit"
+          ],
+          [
+            "junit"
+          ],
+          [
+            "JUnit 4"
+          ],
+          [
+            "JUnit4"
+          ],
+          [
+            "junit4"
+          ],
+          [
+            "junit 4"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 19,
+        "question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)",
+        "expected": [
+          [
+            "jni_hello_world.exe",
+            "test_jni_wrapper.exe"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 20,
+        "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)",
+        "expected": [
+          [
+            "jni_hello_world.exe",
+            "java_hello_lib-1.0.0.jar",
+            "math_lib-1.0.0.jar",
+            "libhello.dll",
+            "test_jni_wrapper.exe",
+            "HelloWorldTest.class"
+          ],
+          [
+            "jni_hello_world.exe",
+            "java_hello_lib.jar",
+            "math_lib.jar",
+            "libhello.dll",
+            "test_jni_wrapper.exe",
+            "HelloWorldTest.class"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "jni_hello_world.exe",
+            "java_hello_lib-1.0.0.jar",
+            "math_lib-1.0.0.jar",
+            "libhello.dll",
+            "test_jni_wrapper.exe"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 21,
+        "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)",
+        "expected": [
+          [
+            "java_hello_lib-1.0.0.jar",
+            "math_lib-1.0.0.jar",
+            "libhello.dll",
+            "test_jni_wrapper.exe"
+          ],
+          [
+            "java_hello_lib.jar",
+            "math_lib.jar",
+            "libhello.dll",
+            "test_jni_wrapper.exe"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "java_hello_lib-1.0.0.jar",
+            "math_lib-1.0.0.jar",
+            "libhello.dll"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "java_hello_lib-1.0.0.jar",
+            "math_lib-1.0.0.jar",
+            "libhello.dll"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "java_hello_lib-1.0.0.jar",
+            "math_lib-1.0.0.jar",
+            "libhello.dll"
+          ]
+        }
+      },
+      {
+        "id": 22,
+        "question": "List all components that jni_hello_world depends on (use Windows artifact names).",
+        "expected": [
+          [
+            "java_hello_lib-1.0.0.jar",
+            "math_lib-1.0.0.jar",
+            "libhello.dll"
+          ],
+          [
+            "java_hello_lib.jar",
+            "math_lib.jar",
+            "libhello.dll"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "libhello.dll"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "java_hello_lib-1.0.0.jar",
+            "libhello.dll"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "libhello.dll"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 23,
+        "question": "Can java_hello_lib and libhello.dll be built in parallel? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 24,
+        "question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)",
+        "expected": [
+          [
+            "jni_hello_world.exe"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 25,
+        "question": "In which programming language is the main() entry point of the application implemented?",
+        "expected": [
+          [
+            "cxx"
+          ],
+          [
+            "c++"
+          ],
+          [
+            "cpp"
+          ],
+          [
+            "C++"
+          ],
+          [
+            "CPP"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 26,
+        "question": "Which programming language calls Java code in this project?",
+        "expected": [
+          [
+            "cxx"
+          ],
+          [
+            "c++"
+          ],
+          [
+            "cpp"
+          ],
+          [
+            "C++"
+          ],
+          [
+            "CPP"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 27,
+        "question": "What test frameworks are used in this repository? (Provide a list)",
+        "expected": [
+          [
+            "CTest",
+            "JUnit",
+            "Go"
+          ],
+          [
+            "CTest",
+            "JUnit",
+            "go test"
+          ],
+          [
+            "ctest",
+            "junit",
+            "go test"
+          ],
+          [
+            "CTest",
+            "junit",
+            "Go"
+          ],
+          [
+            "cmake test",
+            "JUnit",
+            "go test"
+          ],
+          [
+            "CTest",
+            "JUnit 4",
+            "Go"
+          ],
+          [
+            "CTest",
+            "junit",
+            "go test"
+          ],
+          [
+            "ctest",
+            "JUnit",
+            "Go"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "JUnit",
+            "Go testing"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "C++ <cassert>",
+            "JUnit 4",
+            "Go testing"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "JUnit",
+            "Go testing"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 28,
+        "question": "How many different programming languages are used across all buildable components?",
+        "expected": 3,
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 29,
+        "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)",
+        "expected": [
+          [
+            "java_hello_lib-1.0.0.jar"
+          ],
+          [
+            "java_hello_lib.jar"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 30,
+        "question": "How many custom CMake functions are defined in CMakeLists.txt (using function/endfunction keywords)?",
+        "expected": 2,
+        "difficulty": "hard",
+        "category": "cmake_specific",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      }
+    ],
     "claude_NORIG": {
       "total_score": 27,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
-          "score": 9,
+          "score": 10,
           "max": 10
         },
         "medium": {
-          "score": 10,
+          "score": 9,
           "max": 10
         },
         "hard": {
@@ -17,375 +1013,10 @@
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "JNIHelloWorld",
-          "actual": "JNIHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.16",
-          "actual": "3.16"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 4,
-          "actual": 4
-        },
-        {
-          "id": 5,
-          "score": 0,
-          "expected": 2,
-          "actual": 1,
-          "question": "How many .go files are in src/go/?"
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            196,
-            197,
-            198
-          ],
-          "actual": 197,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 6,
-          "actual": 6
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "src/cpp/main.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "src/cpp/main.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "src/java/HelloWorld.java",
-              "src/java/HelloWorldJNI.java"
-            ]
-          ],
-          "actual": [
-            "src/java/HelloWorld.java",
-            "src/java/HelloWorldJNI.java"
-          ],
-          "question": "What source files are used to build the java_hello_lib component? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "libhello.dll",
-              "math_lib-1.0.0.jar"
-            ],
-            [
-              "libhello.dll",
-              "math_lib.jar"
-            ]
-          ],
-          "actual": [
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "JNI"
-            ]
-          ],
-          "actual": [
-            "JNI"
-          ],
-          "question": "What external packages does the jni_hello_world component depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            [
-              "tests/cpp/test_jni_wrapper.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "tests/cpp/test_jni_wrapper.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files are used to build the test_jni_wrapper component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": "test_jni_wrapper.exe",
-          "actual": "test_jni_wrapper.exe"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "JUnit"
-            ],
-            [
-              "junit"
-            ],
-            [
-              "JUnit 4"
-            ]
-          ],
-          "actual": "JUnit",
-          "question": "What test framework is used for test_hello_world_java?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ],
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "test_jni_wrapper.exe",
-            "HelloWorldTest.class"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll"
-            ]
-          ],
-          "actual": [
-            "libhello.dll"
-          ],
-          "question": "List all components that jni_hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe"
-          ],
-          "question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "In which programming language is the main() entry point of the application implemented?"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "Which programming language calls Java code in this project?"
-        },
-        {
-          "id": 27,
-          "score": 0,
-          "expected": [
-            [
-              "CTest",
-              "JUnit",
-              "Go"
-            ],
-            [
-              "CTest",
-              "JUnit",
-              "go test"
-            ]
-          ],
-          "actual": [
-            "JUnit",
-            "Go testing"
-          ],
-          "question": "What test frameworks are used in this repository? (Provide a list)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar"
-            ],
-            [
-              "java_hello_lib.jar"
-            ]
-          ],
-          "actual": "java_hello_lib-1.0.0.jar",
-          "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        }
-      ],
-      "completion_time_seconds": 266.8
+      "completion_time_seconds": 113.0
     },
     "claude_RIG": {
-      "total_score": 29,
+      "total_score": 30,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -397,382 +1028,14 @@
           "max": 10
         },
         "hard": {
-          "score": 9,
+          "score": 10,
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "JNIHelloWorld",
-          "actual": "JNIHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.16",
-          "actual": "3.16"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 4,
-          "actual": 4
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            196,
-            197,
-            198
-          ],
-          "actual": 197,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 6,
-          "actual": 6
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "src/cpp/main.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "src/cpp/main.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "src/java/HelloWorld.java",
-              "src/java/HelloWorldJNI.java"
-            ]
-          ],
-          "actual": [
-            "src/java/HelloWorld.java",
-            "src/java/HelloWorldJNI.java"
-          ],
-          "question": "What source files are used to build the java_hello_lib component? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "libhello.dll",
-              "math_lib-1.0.0.jar"
-            ],
-            [
-              "libhello.dll",
-              "math_lib.jar"
-            ]
-          ],
-          "actual": [
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "JNI"
-            ]
-          ],
-          "actual": [
-            "JNI"
-          ],
-          "question": "What external packages does the jni_hello_world component depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            [
-              "tests/cpp/test_jni_wrapper.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "tests/cpp/test_jni_wrapper.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files are used to build the test_jni_wrapper component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": "test_jni_wrapper.exe",
-          "actual": "test_jni_wrapper.exe"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "JUnit"
-            ],
-            [
-              "junit"
-            ],
-            [
-              "JUnit 4"
-            ]
-          ],
-          "actual": "JUnit",
-          "question": "What test framework is used for test_hello_world_java?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ],
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe",
-            "HelloWorldTest.class"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "List all components that jni_hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe"
-          ],
-          "question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "cxx",
-          "question": "In which programming language is the main() entry point of the application implemented?"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "cxx",
-          "question": "Which programming language calls Java code in this project?"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "CTest",
-              "JUnit",
-              "Go"
-            ],
-            [
-              "CTest",
-              "JUnit",
-              "go test"
-            ]
-          ],
-          "actual": [
-            "CTest",
-            "JUnit",
-            "Go"
-          ],
-          "question": "What test frameworks are used in this repository? (Provide a list)"
-        },
-        {
-          "id": 28,
-          "score": 0,
-          "expected": 3,
-          "actual": 4,
-          "question": "How many different programming languages are used across all buildable components?"
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar"
-            ],
-            [
-              "java_hello_lib.jar"
-            ]
-          ],
-          "actual": "java_hello_lib-1.0.0.jar",
-          "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        }
-      ],
-      "completion_time_seconds": 83.85
+      "completion_time_seconds": 56.0
     },
     "codex_NORIG": {
-      "total_score": 29,
+      "total_score": 27,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -784,377 +1047,11 @@
           "max": 10
         },
         "hard": {
-          "score": 9,
+          "score": 7,
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "JNIHelloWorld",
-          "actual": "JNIHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.16",
-          "actual": "3.16"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 4,
-          "actual": 4
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            196,
-            197,
-            198
-          ],
-          "actual": 197,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 6,
-          "actual": 6
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "src/cpp/main.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "src/cpp/main.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "src/java/HelloWorld.java",
-              "src/java/HelloWorldJNI.java"
-            ]
-          ],
-          "actual": [
-            "src/java/HelloWorld.java",
-            "src/java/HelloWorldJNI.java"
-          ],
-          "question": "What source files are used to build the java_hello_lib component? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "libhello.dll",
-              "math_lib-1.0.0.jar"
-            ],
-            [
-              "libhello.dll",
-              "math_lib.jar"
-            ]
-          ],
-          "actual": [
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "JNI"
-            ]
-          ],
-          "actual": [
-            "JNI"
-          ],
-          "question": "What external packages does the jni_hello_world component depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            [
-              "tests/cpp/test_jni_wrapper.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "tests/cpp/test_jni_wrapper.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files are used to build the test_jni_wrapper component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": "test_jni_wrapper.exe",
-          "actual": "test_jni_wrapper.exe"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "JUnit"
-            ],
-            [
-              "junit"
-            ],
-            [
-              "JUnit 4"
-            ]
-          ],
-          "actual": "JUnit 4",
-          "question": "What test framework is used for test_hello_world_java?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ],
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe",
-            "libhello.dll",
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "HelloWorldTest.class"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll"
-            ]
-          ],
-          "actual": [
-            "libhello.dll",
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar"
-          ],
-          "question": "List all components that jni_hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe"
-          ],
-          "question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "In which programming language is the main() entry point of the application implemented?"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "Which programming language calls Java code in this project?"
-        },
-        {
-          "id": 27,
-          "score": 0,
-          "expected": [
-            [
-              "CTest",
-              "JUnit",
-              "Go"
-            ],
-            [
-              "CTest",
-              "JUnit",
-              "go test"
-            ]
-          ],
-          "actual": [
-            "JUnit 4",
-            "Go testing"
-          ],
-          "question": "What test frameworks are used in this repository? (Provide a list)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar"
-            ],
-            [
-              "java_hello_lib.jar"
-            ]
-          ],
-          "actual": "java_hello_lib-1.0.0.jar",
-          "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        }
-      ],
-      "completion_time_seconds": 290.24
+      "completion_time_seconds": 227.0
     },
     "codex_RIG": {
       "total_score": 30,
@@ -1173,377 +1070,10 @@
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "JNIHelloWorld",
-          "actual": "JNIHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.16",
-          "actual": "3.16"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 4,
-          "actual": 4
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            196,
-            197,
-            198
-          ],
-          "actual": 197,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 6,
-          "actual": 6
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "src/cpp/main.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "src/cpp/main.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "src/java/HelloWorld.java",
-              "src/java/HelloWorldJNI.java"
-            ]
-          ],
-          "actual": [
-            "src/java/HelloWorld.java",
-            "src/java/HelloWorldJNI.java"
-          ],
-          "question": "What source files are used to build the java_hello_lib component? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "libhello.dll",
-              "math_lib-1.0.0.jar"
-            ],
-            [
-              "libhello.dll",
-              "math_lib.jar"
-            ]
-          ],
-          "actual": [
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "JNI"
-            ]
-          ],
-          "actual": [
-            "JNI"
-          ],
-          "question": "What external packages does the jni_hello_world component depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            [
-              "tests/cpp/test_jni_wrapper.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "tests/cpp/test_jni_wrapper.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files are used to build the test_jni_wrapper component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": "test_jni_wrapper.exe",
-          "actual": "test_jni_wrapper.exe"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "JUnit"
-            ],
-            [
-              "junit"
-            ],
-            [
-              "JUnit 4"
-            ]
-          ],
-          "actual": "JUnit",
-          "question": "What test framework is used for test_hello_world_java?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ],
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe",
-            "HelloWorldTest.class"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 21,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "List all components that jni_hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe"
-          ],
-          "question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "In which programming language is the main() entry point of the application implemented?"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "Which programming language calls Java code in this project?"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "CTest",
-              "JUnit",
-              "Go"
-            ],
-            [
-              "CTest",
-              "JUnit",
-              "go test"
-            ]
-          ],
-          "actual": [
-            "CTest",
-            "JUnit",
-            "Go"
-          ],
-          "question": "What test frameworks are used in this repository? (Provide a list)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar"
-            ],
-            [
-              "java_hello_lib.jar"
-            ]
-          ],
-          "actual": "java_hello_lib-1.0.0.jar",
-          "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        }
-      ],
-      "completion_time_seconds": 115.28
+      "completion_time_seconds": 64.0
     },
     "cursor_NORIG": {
-      "total_score": 26,
+      "total_score": 25,
       "max_score": 30,
       "by_difficulty": {
         "easy": {
@@ -1551,7 +1081,7 @@
           "max": 10
         },
         "medium": {
-          "score": 9,
+          "score": 8,
           "max": 10
         },
         "hard": {
@@ -1559,370 +1089,7 @@
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "JNIHelloWorld",
-          "actual": "JNIHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.16",
-          "actual": "3.16"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 4,
-          "actual": 4
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            196,
-            197,
-            198
-          ],
-          "actual": 198,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 6,
-          "actual": 6
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "src/cpp/main.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "src/cpp/main.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "src/java/HelloWorld.java",
-              "src/java/HelloWorldJNI.java"
-            ]
-          ],
-          "actual": [
-            "src/java/HelloWorld.java",
-            "src/java/HelloWorldJNI.java"
-          ],
-          "question": "What source files are used to build the java_hello_lib component? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "libhello.dll",
-              "math_lib-1.0.0.jar"
-            ],
-            [
-              "libhello.dll",
-              "math_lib.jar"
-            ]
-          ],
-          "actual": [
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "JNI"
-            ]
-          ],
-          "actual": [
-            "JNI"
-          ],
-          "question": "What external packages does the jni_hello_world component depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            [
-              "tests/cpp/test_jni_wrapper.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "tests/cpp/test_jni_wrapper.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files are used to build the test_jni_wrapper component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": "test_jni_wrapper.exe",
-          "actual": "test_jni_wrapper.exe"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "JUnit"
-            ],
-            [
-              "junit"
-            ],
-            [
-              "JUnit 4"
-            ]
-          ],
-          "actual": "JUnit",
-          "question": "What test framework is used for test_hello_world_java?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 20,
-          "score": 0,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ],
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "java_hello_lib.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "test_jni_wrapper.exe",
-            "HelloWorldTest.class"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 21,
-          "score": 0,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 0,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll"
-            ]
-          ],
-          "actual": [
-            "libhello.dll"
-          ],
-          "question": "List all components that jni_hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe"
-          ],
-          "question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "In which programming language is the main() entry point of the application implemented?"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "C++",
-          "question": "Which programming language calls Java code in this project?"
-        },
-        {
-          "id": 27,
-          "score": 0,
-          "expected": [
-            [
-              "CTest",
-              "JUnit",
-              "Go"
-            ],
-            [
-              "CTest",
-              "JUnit",
-              "go test"
-            ]
-          ],
-          "actual": [
-            "JUnit",
-            "Go testing"
-          ],
-          "question": "What test frameworks are used in this repository? (Provide a list)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar"
-            ],
-            [
-              "java_hello_lib.jar"
-            ]
-          ],
-          "actual": "java_hello_lib.jar",
-          "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        }
-      ],
-      "completion_time_seconds": 39.88
+      "completion_time_seconds": 28.0
     },
     "cursor_RIG": {
       "total_score": 29,
@@ -1941,505 +1108,12 @@
           "max": 10
         }
       },
-      "questions": [
-        {
-          "id": 1,
-          "score": 1,
-          "expected": "JNIHelloWorld",
-          "actual": "JNIHelloWorld"
-        },
-        {
-          "id": 2,
-          "score": 1,
-          "expected": "3.16",
-          "actual": "3.16"
-        },
-        {
-          "id": 3,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 4,
-          "score": 1,
-          "expected": 4,
-          "actual": 4
-        },
-        {
-          "id": 5,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 6,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 7,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 8,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 9,
-          "score": 1,
-          "expected": [
-            196,
-            197,
-            198
-          ],
-          "actual": 198,
-          "question": "How many lines are in the CMakeLists.txt file?"
-        },
-        {
-          "id": 10,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        },
-        {
-          "id": 11,
-          "score": 1,
-          "expected": 6,
-          "actual": 6
-        },
-        {
-          "id": 12,
-          "score": 1,
-          "expected": [
-            [
-              "src/cpp/main.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "src/cpp/main.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)"
-        },
-        {
-          "id": 13,
-          "score": 1,
-          "expected": [
-            [
-              "src/java/HelloWorld.java",
-              "src/java/HelloWorldJNI.java"
-            ]
-          ],
-          "actual": [
-            "src/java/HelloWorld.java",
-            "src/java/HelloWorldJNI.java"
-          ],
-          "question": "What source files are used to build the java_hello_lib component? (Provide a list)"
-        },
-        {
-          "id": 14,
-          "score": 1,
-          "expected": [
-            [
-              "libhello.dll",
-              "math_lib-1.0.0.jar"
-            ],
-            [
-              "libhello.dll",
-              "math_lib.jar"
-            ]
-          ],
-          "actual": [
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 15,
-          "score": 1,
-          "expected": [
-            [
-              "JNI"
-            ]
-          ],
-          "actual": [
-            "JNI"
-          ],
-          "question": "What external packages does the jni_hello_world component depend on? (Provide a list)"
-        },
-        {
-          "id": 16,
-          "score": 1,
-          "expected": [
-            [
-              "tests/cpp/test_jni_wrapper.cpp",
-              "src/cpp/jni_wrapper.cpp"
-            ]
-          ],
-          "actual": [
-            "tests/cpp/test_jni_wrapper.cpp",
-            "src/cpp/jni_wrapper.cpp"
-          ],
-          "question": "What source files are used to build the test_jni_wrapper component? (Provide a list)"
-        },
-        {
-          "id": 17,
-          "score": 1,
-          "expected": "test_jni_wrapper.exe",
-          "actual": "test_jni_wrapper.exe"
-        },
-        {
-          "id": 18,
-          "score": 1,
-          "expected": [
-            [
-              "JUnit"
-            ],
-            [
-              "junit"
-            ],
-            [
-              "JUnit 4"
-            ]
-          ],
-          "actual": "JUnit",
-          "question": "What test framework is used for test_hello_world_java?"
-        },
-        {
-          "id": 19,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe"
-          ],
-          "question": "Which components depend on the JNI external package? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 20,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ],
-            [
-              "jni_hello_world.exe",
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe",
-              "HelloWorldTest.class"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll",
-            "jni_hello_world.exe",
-            "test_jni_wrapper.exe",
-            "HelloWorldTest.class"
-          ],
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)"
-        },
-        {
-          "id": 21,
-          "score": 0,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll",
-              "test_jni_wrapper.exe"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 22,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar",
-              "math_lib-1.0.0.jar",
-              "libhello.dll"
-            ],
-            [
-              "java_hello_lib.jar",
-              "math_lib.jar",
-              "libhello.dll"
-            ]
-          ],
-          "actual": [
-            "java_hello_lib-1.0.0.jar",
-            "math_lib-1.0.0.jar",
-            "libhello.dll"
-          ],
-          "question": "List all components that jni_hello_world depends on (use Windows artifact names)."
-        },
-        {
-          "id": 23,
-          "score": 1,
-          "expected": "yes",
-          "actual": "yes"
-        },
-        {
-          "id": 24,
-          "score": 1,
-          "expected": [
-            [
-              "jni_hello_world.exe"
-            ]
-          ],
-          "actual": [
-            "jni_hello_world.exe"
-          ],
-          "question": "If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)"
-        },
-        {
-          "id": 25,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "cxx",
-          "question": "In which programming language is the main() entry point of the application implemented?"
-        },
-        {
-          "id": 26,
-          "score": 1,
-          "expected": [
-            [
-              "cxx"
-            ],
-            [
-              "c++"
-            ],
-            [
-              "cpp"
-            ]
-          ],
-          "actual": "cxx",
-          "question": "Which programming language calls Java code in this project?"
-        },
-        {
-          "id": 27,
-          "score": 1,
-          "expected": [
-            [
-              "CTest",
-              "JUnit",
-              "Go"
-            ],
-            [
-              "CTest",
-              "JUnit",
-              "go test"
-            ]
-          ],
-          "actual": [
-            "CTest",
-            "JUnit",
-            "Go"
-          ],
-          "question": "What test frameworks are used in this repository? (Provide a list)"
-        },
-        {
-          "id": 28,
-          "score": 1,
-          "expected": 3,
-          "actual": 3
-        },
-        {
-          "id": 29,
-          "score": 1,
-          "expected": [
-            [
-              "java_hello_lib-1.0.0.jar"
-            ],
-            [
-              "java_hello_lib.jar"
-            ]
-          ],
-          "actual": "java_hello_lib-1.0.0.jar",
-          "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)"
-        },
-        {
-          "id": 30,
-          "score": 1,
-          "expected": 2,
-          "actual": 2
-        }
-      ],
-      "completion_time_seconds": 24.87
+      "completion_time_seconds": 21.0
     }
   },
   "analysis": {
     "by_agent": {
       "claude": {
-        "with_rig": {
-          "score": 29,
-          "max_score": 30,
-          "percentage": 96.7,
-          "by_difficulty": {
-            "easy": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 9,
-              "max": 10,
-              "percentage": 90.0
-            }
-          }
-        },
-        "without_rig": {
-          "score": 27,
-          "max_score": 30,
-          "percentage": 90.0,
-          "by_difficulty": {
-            "easy": {
-              "score": 9,
-              "max": 10,
-              "percentage": 90.0
-            },
-            "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
-              "score": 8,
-              "max": 10,
-              "percentage": 80.0
-            }
-          }
-        },
-        "rig_improvement": {
-          "absolute": 2,
-          "percentage": 6.7,
-          "by_difficulty": {
-            "easy": {
-              "absolute": 1,
-              "percentage": 10.0
-            },
-            "medium": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "hard": {
-              "absolute": 1,
-              "percentage": 10.0
-            }
-          }
-        },
-        "mistakes_without_rig": {
-          "total": 3,
-          "by_difficulty": {
-            "easy": {
-              "count": 1,
-              "percentage": 10.0,
-              "question_ids": [
-                5
-              ]
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 2,
-              "percentage": 20.0,
-              "question_ids": [
-                22,
-                27
-              ]
-            }
-          }
-        },
-        "mistakes_with_rig": {
-          "total": 1,
-          "by_difficulty": {
-            "easy": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
-              "count": 1,
-              "percentage": 10.0,
-              "question_ids": [
-                28
-              ]
-            }
-          }
-        },
-        "questions_fixed_by_rig": [
-          5,
-          22,
-          27
-        ],
-        "questions_broken_by_rig": [
-          28
-        ],
-        "timing": {
-          "time_with_rig_seconds": 83.85,
-          "time_without_rig_seconds": 266.8,
-          "time_saved_seconds": 182.95,
-          "time_reduction_percentage": 68.6,
-          "efficiency_with_rig_score_per_second": 0.3459,
-          "efficiency_without_rig_score_per_second": 0.1012
-        }
-      },
-      "codex": {
         "with_rig": {
           "score": 30,
           "max_score": 30,
@@ -2463,9 +1137,9 @@
           }
         },
         "without_rig": {
-          "score": 29,
+          "score": 27,
           "max_score": 30,
-          "percentage": 96.7,
+          "percentage": 90.0,
           "by_difficulty": {
             "easy": {
               "score": 10,
@@ -2473,37 +1147,37 @@
               "percentage": 100.0
             },
             "medium": {
-              "score": 10,
-              "max": 10,
-              "percentage": 100.0
-            },
-            "hard": {
               "score": 9,
               "max": 10,
               "percentage": 90.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
             }
           }
         },
         "rig_improvement": {
-          "absolute": 1,
-          "percentage": 3.3,
+          "absolute": 3,
+          "percentage": 10.0,
           "by_difficulty": {
             "easy": {
               "absolute": 0,
               "percentage": 0.0
             },
             "medium": {
-              "absolute": 0,
-              "percentage": 0.0
-            },
-            "hard": {
               "absolute": 1,
               "percentage": 10.0
+            },
+            "hard": {
+              "absolute": 2,
+              "percentage": 20.0
             }
           }
         },
         "mistakes_without_rig": {
-          "total": 1,
+          "total": 3,
           "by_difficulty": {
             "easy": {
               "count": 0,
@@ -2511,14 +1185,17 @@
               "question_ids": []
             },
             "medium": {
-              "count": 0,
-              "percentage": 0.0,
-              "question_ids": []
-            },
-            "hard": {
               "count": 1,
               "percentage": 10.0,
               "question_ids": [
+                14
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                22,
                 27
               ]
             }
@@ -2545,16 +1222,140 @@
           }
         },
         "questions_fixed_by_rig": [
+          14,
+          22,
           27
         ],
         "questions_broken_by_rig": [],
         "timing": {
-          "time_with_rig_seconds": 115.28,
-          "time_without_rig_seconds": 290.24,
-          "time_saved_seconds": 174.96,
-          "time_reduction_percentage": 60.3,
-          "efficiency_with_rig_score_per_second": 0.2602,
-          "efficiency_without_rig_score_per_second": 0.0999
+          "time_with_rig_seconds": 56.0,
+          "time_without_rig_seconds": 113.0,
+          "time_saved_seconds": 57.0,
+          "time_reduction_percentage": 50.4,
+          "efficiency_with_rig_score_per_second": 0.5357,
+          "efficiency_without_rig_score_per_second": 0.2389
+        }
+      },
+      "codex": {
+        "with_rig": {
+          "score": 30,
+          "max_score": 30,
+          "percentage": 100.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 27,
+          "max_score": 30,
+          "percentage": 90.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 7,
+              "max": 10,
+              "percentage": 70.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 3,
+          "percentage": 10.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "hard": {
+              "absolute": 3,
+              "percentage": 30.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 3,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 3,
+              "percentage": 30.0,
+              "question_ids": [
+                21,
+                22,
+                27
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 0,
+          "by_difficulty": {
+            "easy": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          21,
+          22,
+          27
+        ],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 64.0,
+          "time_without_rig_seconds": 227.0,
+          "time_saved_seconds": 163.0,
+          "time_reduction_percentage": 71.8,
+          "efficiency_with_rig_score_per_second": 0.4688,
+          "efficiency_without_rig_score_per_second": 0.1189
         }
       },
       "cursor": {
@@ -2581,9 +1382,9 @@
           }
         },
         "without_rig": {
-          "score": 26,
+          "score": 25,
           "max_score": 30,
-          "percentage": 86.7,
+          "percentage": 83.3,
           "by_difficulty": {
             "easy": {
               "score": 10,
@@ -2591,9 +1392,9 @@
               "percentage": 100.0
             },
             "medium": {
-              "score": 9,
+              "score": 8,
               "max": 10,
-              "percentage": 90.0
+              "percentage": 80.0
             },
             "hard": {
               "score": 7,
@@ -2603,16 +1404,16 @@
           }
         },
         "rig_improvement": {
-          "absolute": 3,
-          "percentage": 10.0,
+          "absolute": 4,
+          "percentage": 13.3,
           "by_difficulty": {
             "easy": {
               "absolute": 0,
               "percentage": 0.0
             },
             "medium": {
-              "absolute": 1,
-              "percentage": 10.0
+              "absolute": 2,
+              "percentage": 20.0
             },
             "hard": {
               "absolute": 2,
@@ -2621,7 +1422,7 @@
           }
         },
         "mistakes_without_rig": {
-          "total": 4,
+          "total": 5,
           "by_difficulty": {
             "easy": {
               "count": 0,
@@ -2629,9 +1430,10 @@
               "question_ids": []
             },
             "medium": {
-              "count": 1,
-              "percentage": 10.0,
+              "count": 2,
+              "percentage": 20.0,
               "question_ids": [
+                11,
                 20
               ]
             },
@@ -2669,18 +1471,19 @@
           }
         },
         "questions_fixed_by_rig": [
+          11,
           20,
           22,
           27
         ],
         "questions_broken_by_rig": [],
         "timing": {
-          "time_with_rig_seconds": 24.87,
-          "time_without_rig_seconds": 39.88,
-          "time_saved_seconds": 15.01,
-          "time_reduction_percentage": 37.6,
-          "efficiency_with_rig_score_per_second": 1.1661,
-          "efficiency_without_rig_score_per_second": 0.652
+          "time_with_rig_seconds": 21.0,
+          "time_without_rig_seconds": 28.0,
+          "time_saved_seconds": 7.0,
+          "time_reduction_percentage": 25.0,
+          "efficiency_with_rig_score_per_second": 1.381,
+          "efficiency_without_rig_score_per_second": 0.8929
         }
       }
     },
@@ -2727,19 +1530,19 @@
           "percentage": 100.0
         },
         "without_rig": {
-          "score": 20,
+          "score": 21,
           "max": 21,
-          "percentage": 95.2
+          "percentage": 100.0
         },
         "improvement": {
-          "absolute": 1,
-          "percentage": 4.8
+          "absolute": 0,
+          "percentage": 0.0
         },
         "per_agent": {
           "claude": {
             "with_rig": 100.0,
-            "without_rig": 85.7,
-            "improvement": 14.3
+            "without_rig": 100.0,
+            "improvement": 0.0
           },
           "codex": {
             "with_rig": 100.0,
@@ -2795,13 +1598,13 @@
           "percentage": 96.3
         },
         "without_rig": {
-          "score": 24,
+          "score": 22,
           "max": 27,
-          "percentage": 88.9
+          "percentage": 81.5
         },
         "improvement": {
-          "absolute": 2,
-          "percentage": 7.4
+          "absolute": 4,
+          "percentage": 14.8
         },
         "per_agent": {
           "claude": {
@@ -2811,8 +1614,8 @@
           },
           "codex": {
             "with_rig": 100.0,
-            "without_rig": 100.0,
-            "improvement": 0.0
+            "without_rig": 77.8,
+            "improvement": 22.2
           },
           "cursor": {
             "with_rig": 88.9,
@@ -2824,24 +1627,24 @@
       "component_identification": {
         "total_questions": 5,
         "with_rig": {
-          "score": 14,
+          "score": 15,
           "max": 15,
-          "percentage": 93.3
+          "percentage": 100.0
         },
         "without_rig": {
-          "score": 14,
+          "score": 12,
           "max": 15,
-          "percentage": 93.3
+          "percentage": 80.0
         },
         "improvement": {
-          "absolute": 0,
-          "percentage": 0.0
+          "absolute": 3,
+          "percentage": 20.0
         },
         "per_agent": {
           "claude": {
-            "with_rig": 80.0,
-            "without_rig": 100.0,
-            "improvement": -20.0
+            "with_rig": 100.0,
+            "without_rig": 80.0,
+            "improvement": 20.0
           },
           "codex": {
             "with_rig": 100.0,
@@ -2850,8 +1653,8 @@
           },
           "cursor": {
             "with_rig": 100.0,
-            "without_rig": 80.0,
-            "improvement": 20.0
+            "without_rig": 60.0,
+            "improvement": 40.0
           }
         }
       },
@@ -2898,34 +1701,15 @@
           "difficulty": "hard",
           "category": "dependency_analysis",
           "success_rate_with_rig": 66.7,
-          "success_rate_without_rig": 66.7,
+          "success_rate_without_rig": 33.3,
           "agents_correct_with_rig": [
             "claude",
             "codex"
           ],
           "agents_correct_without_rig": [
-            "claude",
-            "codex"
+            "claude"
           ],
-          "avg_improvement": 0.0
-        },
-        {
-          "id": 28,
-          "question": "How many different programming languages are used across all buildable components?",
-          "difficulty": "hard",
-          "category": "component_identification",
-          "success_rate_with_rig": 66.7,
-          "success_rate_without_rig": 100.0,
-          "agents_correct_with_rig": [
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "avg_improvement": -33.3
+          "avg_improvement": 33.3
         }
       ],
       "easiest_questions": [
@@ -3011,17 +1795,18 @@
           "difficulty": "easy",
           "category": "source_analysis",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 66.7,
+          "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
             "claude",
             "codex",
             "cursor"
           ],
           "agents_correct_without_rig": [
+            "claude",
             "codex",
             "cursor"
           ],
-          "avg_improvement": 33.3
+          "avg_improvement": 0.0
         },
         {
           "id": 6,
@@ -3124,7 +1909,7 @@
           "difficulty": "medium",
           "category": "component_identification",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 100.0,
+          "success_rate_without_rig": 66.7,
           "agents_correct_with_rig": [
             "claude",
             "codex",
@@ -3132,10 +1917,9 @@
           ],
           "agents_correct_without_rig": [
             "claude",
-            "codex",
-            "cursor"
+            "codex"
           ],
-          "avg_improvement": 0.0
+          "avg_improvement": 33.3
         },
         {
           "id": 12,
@@ -3181,18 +1965,17 @@
           "difficulty": "medium",
           "category": "component_identification",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 100.0,
+          "success_rate_without_rig": 66.7,
           "agents_correct_with_rig": [
             "claude",
             "codex",
             "cursor"
           ],
           "agents_correct_without_rig": [
-            "claude",
             "codex",
             "cursor"
           ],
-          "avg_improvement": 0.0
+          "avg_improvement": 33.3
         },
         {
           "id": 15,
@@ -3313,16 +2096,14 @@
           "difficulty": "hard",
           "category": "dependency_analysis",
           "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 33.3,
+          "success_rate_without_rig": 0.0,
           "agents_correct_with_rig": [
             "claude",
             "codex",
             "cursor"
           ],
-          "agents_correct_without_rig": [
-            "codex"
-          ],
-          "avg_improvement": 66.7
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
         },
         {
           "id": 23,
@@ -3416,6 +2197,25 @@
           "avg_improvement": 100.0
         },
         {
+          "id": 28,
+          "question": "How many different programming languages are used across all buildable components?",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
           "id": 29,
           "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)",
           "difficulty": "hard",
@@ -3456,6 +2256,21 @@
       ],
       "most_rig_sensitive": [
         {
+          "id": 22,
+          "question": "List all components that jni_hello_world depends on (use Windows artifact names).",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
           "id": 27,
           "question": "What test frameworks are used in this repository? (Provide a list)",
           "difficulty": "hard",
@@ -3471,43 +2286,24 @@
           "avg_improvement": 100.0
         },
         {
-          "id": 22,
-          "question": "List all components that jni_hello_world depends on (use Windows artifact names).",
+          "id": 21,
+          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)",
           "difficulty": "hard",
           "category": "dependency_analysis",
-          "success_rate_with_rig": 100.0,
+          "success_rate_with_rig": 66.7,
           "success_rate_without_rig": 33.3,
           "agents_correct_with_rig": [
             "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
             "codex"
           ],
-          "avg_improvement": 66.7
-        },
-        {
-          "id": 5,
-          "question": "How many .go files are in src/go/?",
-          "difficulty": "easy",
-          "category": "source_analysis",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 66.7,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
           "agents_correct_without_rig": [
-            "codex",
-            "cursor"
+            "claude"
           ],
           "avg_improvement": 33.3
         },
         {
-          "id": 20,
-          "question": "What are the names of all output artifacts produced by this build on Windows? (Provide a list)",
+          "id": 11,
+          "question": "How many components are built in this repository?",
           "difficulty": "medium",
           "category": "component_identification",
           "success_rate_with_rig": 100.0,
@@ -3522,26 +2318,27 @@
             "codex"
           ],
           "avg_improvement": 33.3
-        }
-      ],
-      "rig_insensitive": [
+        },
         {
-          "id": 21,
-          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)",
-          "difficulty": "hard",
-          "category": "dependency_analysis",
-          "success_rate_with_rig": 66.7,
+          "id": 14,
+          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
           "success_rate_without_rig": 66.7,
           "agents_correct_with_rig": [
             "claude",
-            "codex"
+            "codex",
+            "cursor"
           ],
           "agents_correct_without_rig": [
-            "claude",
-            "codex"
+            "codex",
+            "cursor"
           ],
-          "avg_improvement": 0.0
-        },
+          "avg_improvement": 33.3
+        }
+      ],
+      "rig_insensitive": [
         {
           "id": 1,
           "question": "What is the CMake project name?",
@@ -3619,6 +2416,25 @@
           "avg_improvement": 0.0
         },
         {
+          "id": 5,
+          "question": "How many .go files are in src/go/?",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
           "id": 6,
           "question": "How many add_test commands are in the CMakeLists.txt?",
           "difficulty": "easy",
@@ -3714,25 +2530,6 @@
           "avg_improvement": 0.0
         },
         {
-          "id": 11,
-          "question": "How many components are built in this repository?",
-          "difficulty": "medium",
-          "category": "component_identification",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 100.0,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "avg_improvement": 0.0
-        },
-        {
           "id": 12,
           "question": "What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)",
           "difficulty": "medium",
@@ -3756,25 +2553,6 @@
           "question": "What source files are used to build the java_hello_lib component? (Provide a list)",
           "difficulty": "medium",
           "category": "source_analysis",
-          "success_rate_with_rig": 100.0,
-          "success_rate_without_rig": 100.0,
-          "agents_correct_with_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "agents_correct_without_rig": [
-            "claude",
-            "codex",
-            "cursor"
-          ],
-          "avg_improvement": 0.0
-        },
-        {
-          "id": 14,
-          "question": "Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)",
-          "difficulty": "medium",
-          "category": "component_identification",
           "success_rate_with_rig": 100.0,
           "success_rate_without_rig": 100.0,
           "agents_correct_with_rig": [
@@ -3961,6 +2739,25 @@
           "avg_improvement": 0.0
         },
         {
+          "id": 28,
+          "question": "How many different programming languages are used across all buildable components?",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
           "id": 29,
           "question": "Which component does HelloWorldTest depend on? (use Windows artifact name)",
           "difficulty": "hard",
@@ -4001,21 +2798,22 @@
       ],
       "unanimous_failures_with_rig": [],
       "unanimous_failures_without_rig": [
+        22,
         27
       ]
     },
     "rig_effectiveness": {
       "by_difficulty": {
         "easy": {
-          "avg_improvement": 3.3,
-          "agents_benefited": 1
+          "avg_improvement": 0.0,
+          "agents_benefited": 0
         },
         "medium": {
-          "avg_improvement": 3.3,
-          "agents_benefited": 1
+          "avg_improvement": 10.0,
+          "agents_benefited": 2
         },
         "hard": {
-          "avg_improvement": 13.3,
+          "avg_improvement": 23.3,
           "agents_benefited": 3
         }
       },
@@ -4023,19 +2821,19 @@
         "pattern": "Agents with higher baseline show less improvement from RIG",
         "data": [
           {
-            "agent": "codex",
-            "baseline_pct": 96.7,
-            "improvement_pct": 3.3
-          },
-          {
             "agent": "claude",
             "baseline_pct": 90.0,
-            "improvement_pct": 6.7
+            "improvement_pct": 10.0
+          },
+          {
+            "agent": "codex",
+            "baseline_pct": 90.0,
+            "improvement_pct": 10.0
           },
           {
             "agent": "cursor",
-            "baseline_pct": 86.7,
-            "improvement_pct": 10.0
+            "baseline_pct": 83.3,
+            "improvement_pct": 13.3
           }
         ]
       }
@@ -4044,116 +2842,116 @@
       "speed_vs_accuracy_with_rig": [
         {
           "agent": "cursor",
-          "time_seconds": 24.87,
+          "time_seconds": 21.0,
           "score_percentage": 96.7,
-          "efficiency_score_per_second": 1.1661
+          "efficiency_score_per_second": 1.381
         },
         {
           "agent": "claude",
-          "time_seconds": 83.85,
-          "score_percentage": 96.7,
-          "efficiency_score_per_second": 0.3459
+          "time_seconds": 56.0,
+          "score_percentage": 100.0,
+          "efficiency_score_per_second": 0.5357
         },
         {
           "agent": "codex",
-          "time_seconds": 115.28,
+          "time_seconds": 64.0,
           "score_percentage": 100.0,
-          "efficiency_score_per_second": 0.2602
+          "efficiency_score_per_second": 0.4688
         }
       ],
       "speed_vs_accuracy_without_rig": [
         {
           "agent": "cursor",
-          "time_seconds": 39.88,
-          "score_percentage": 86.7,
-          "efficiency_score_per_second": 0.652
+          "time_seconds": 28.0,
+          "score_percentage": 83.3,
+          "efficiency_score_per_second": 0.8929
         },
         {
           "agent": "claude",
-          "time_seconds": 266.8,
+          "time_seconds": 113.0,
           "score_percentage": 90.0,
-          "efficiency_score_per_second": 0.1012
+          "efficiency_score_per_second": 0.2389
         },
         {
           "agent": "codex",
-          "time_seconds": 290.24,
-          "score_percentage": 96.7,
-          "efficiency_score_per_second": 0.0999
+          "time_seconds": 227.0,
+          "score_percentage": 90.0,
+          "efficiency_score_per_second": 0.1189
         }
       ],
       "time_reduction_vs_score_improvement": {
         "correlation_note": "Greater time reduction correlates with less score improvement",
         "data": [
           {
-            "agent": "claude",
-            "time_reduction_percentage": 68.6,
-            "score_improvement_percentage": 6.7,
-            "time_saved_seconds": 182.95,
-            "score_points_gained": 2
+            "agent": "codex",
+            "time_reduction_percentage": 71.8,
+            "score_improvement_percentage": 10.0,
+            "time_saved_seconds": 163.0,
+            "score_points_gained": 3
           },
           {
-            "agent": "codex",
-            "time_reduction_percentage": 60.3,
-            "score_improvement_percentage": 3.3,
-            "time_saved_seconds": 174.96,
-            "score_points_gained": 1
+            "agent": "claude",
+            "time_reduction_percentage": 50.4,
+            "score_improvement_percentage": 10.0,
+            "time_saved_seconds": 57.0,
+            "score_points_gained": 3
           },
           {
             "agent": "cursor",
-            "time_reduction_percentage": 37.6,
-            "score_improvement_percentage": 10.0,
-            "time_saved_seconds": 15.01,
-            "score_points_gained": 3
+            "time_reduction_percentage": 25.0,
+            "score_improvement_percentage": 13.3,
+            "time_saved_seconds": 7.0,
+            "score_points_gained": 4
           }
         ]
       },
       "efficiency_analysis": {
-        "avg_efficiency_with_rig_score_per_second": 0.5907,
-        "avg_efficiency_without_rig_score_per_second": 0.2844,
-        "efficiency_improvement_percentage": 107.7
+        "avg_efficiency_with_rig_score_per_second": 0.7952,
+        "avg_efficiency_without_rig_score_per_second": 0.4169,
+        "efficiency_improvement_percentage": 90.7
       }
     },
     "summary": {
       "best_overall_with_rig": {
-        "agent": "codex",
+        "agent": "claude",
         "percentage": 100.0
       },
       "best_overall_without_rig": {
-        "agent": "codex",
-        "percentage": 96.7
+        "agent": "claude",
+        "percentage": 90.0
       },
       "most_rig_improvement": {
         "agent": "cursor",
-        "improvement_percentage": 10.0
+        "improvement_percentage": 13.3
       },
       "least_rig_improvement": {
-        "agent": "codex",
-        "improvement_percentage": 3.3
+        "agent": "claude",
+        "improvement_percentage": 10.0
       },
-      "average_with_rig": 97.8,
-      "average_without_rig": 91.1,
-      "average_rig_improvement": 6.7,
+      "average_with_rig": 98.9,
+      "average_without_rig": 87.8,
+      "average_rig_improvement": 11.1,
       "timing": {
-        "average_time_with_rig_seconds": 74.67,
-        "average_time_without_rig_seconds": 198.97,
-        "average_time_saved_seconds": 124.31,
-        "average_time_reduction_percentage": 55.5,
+        "average_time_with_rig_seconds": 47.0,
+        "average_time_without_rig_seconds": 122.67,
+        "average_time_saved_seconds": 75.67,
+        "average_time_reduction_percentage": 49.1,
         "fastest_with_rig": {
           "agent": "cursor",
-          "time_seconds": 24.87
+          "time_seconds": 21.0
         },
         "fastest_without_rig": {
           "agent": "cursor",
-          "time_seconds": 39.88
+          "time_seconds": 28.0
         },
         "most_time_saved": {
-          "agent": "claude",
-          "time_saved_seconds": 182.95,
-          "time_reduction_percentage": 68.6
+          "agent": "codex",
+          "time_saved_seconds": 163.0,
+          "time_reduction_percentage": 71.8
         },
         "highest_time_reduction_percentage": {
-          "agent": "claude",
-          "time_reduction_percentage": 68.6
+          "agent": "codex",
+          "time_reduction_percentage": 71.8
         }
       }
     }

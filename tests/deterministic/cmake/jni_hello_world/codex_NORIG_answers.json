@@ -1,4 +1,5 @@
 {
+  "agent_completion_time_seconds": 227.0,
   "answers": [
     {
       "id": 1,
@@ -98,9 +99,9 @@
       "answer": [
         "jni_hello_world.exe",
         "test_jni_wrapper.exe",
-        "libhello.dll",
         "java_hello_lib-1.0.0.jar",
         "math_lib-1.0.0.jar",
+        "libhello.dll",
         "HelloWorldTest.class"
       ]
     },
@@ -109,16 +110,14 @@
       "answer": [
         "java_hello_lib-1.0.0.jar",
         "math_lib-1.0.0.jar",
-        "libhello.dll",
-        "test_jni_wrapper.exe"
+        "libhello.dll"
       ]
     },
     {
       "id": 22,
       "answer": [
-        "libhello.dll",
         "java_hello_lib-1.0.0.jar",
-        "math_lib-1.0.0.jar"
+        "libhello.dll"
       ]
     },
     {
@@ -142,6 +141,7 @@
     {
       "id": 27,
       "answer": [
+        "C++ <cassert>",
         "JUnit 4",
         "Go testing"
       ]
@@ -158,6 +158,5 @@
       "id": 30,
       "answer": 2
     }
-  ],
-  "agent_completion_time_seconds": 290.24
+  ]
 }

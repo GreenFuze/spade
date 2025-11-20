@@ -1,0 +1,2846 @@
+{
+  "results": {
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the Go module name in go.mod? (Provide the module name)",
+        "expected": "github.com/greenfuze/go-microservices",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 2,
+        "question": "What Go version is specified in go.mod? (Provide the version number)",
+        "expected": "1.21",
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 3,
+        "question": "How many executable services are in the cmd/ directory? (Provide the count)",
+        "expected": 6,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 4,
+        "question": "How many packages with actual code used by the services are in the internal/common/ directory? (Provide the count)",
+        "expected": 10,
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": 12
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 11
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": 11
+        }
+      },
+      {
+        "id": 5,
+        "question": "How many external package dependencies are listed in go.mod? (Provide the count)",
+        "expected": 12,
+        "difficulty": "easy",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": 13
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 6,
+        "question": "How many *_test.go files are in the repository? (Provide the count)",
+        "expected": 10,
+        "difficulty": "easy",
+        "category": "testing",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 7,
+        "question": "How many aggregators are defined in the build system? (Provide the count)",
+        "expected": 0,
+        "difficulty": "easy",
+        "category": "build_system",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 0,
+          "actual": 4
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 2
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": 4
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": 4
+        }
+      },
+      {
+        "id": 8,
+        "question": "What is the default port for the API Gateway service? (Provide the port number)",
+        "expected": "8080",
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 9,
+        "question": "What is the default port for the Auth Service? (Provide the port number)",
+        "expected": "8081",
+        "difficulty": "easy",
+        "category": "source_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 10,
+        "question": "What web framework package is used for HTTP routing? (Provide the full package name as it appears in go.mod)",
+        "expected": "github.com/gin-gonic/gin",
+        "difficulty": "easy",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 11,
+        "question": "How many components are built in this repository? (Provide the count)",
+        "expected": 8,
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 12,
+        "question": "What source files does the api-gateway component use? (Provide a list)",
+        "expected": [
+          [
+            "cmd/api-gateway/main.go",
+            "internal/common/config/config.go",
+            "internal/common/http/http.go",
+            "internal/common/logger/logger.go",
+            "internal/common/validation/validation.go"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "cmd/api-gateway/main.go"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "cmd/api-gateway/main.go"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 13,
+        "question": "What source files does the user-service component use? (Provide a list)",
+        "expected": [
+          [
+            "cmd/user-service/main.go",
+            "pkg/models/models.go",
+            "internal/common/config/config.go",
+            "internal/common/http/http.go",
+            "internal/common/logger/logger.go",
+            "internal/common/validation/validation.go",
+            "internal/common/database/database.go",
+            "internal/common/utils/java_wrapper.go",
+            "internal/common/utils/jni_wrapper.c"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "cmd/user-service/main.go",
+            "internal/common/config/config.go",
+            "internal/common/database/database.go",
+            "internal/common/http/http.go",
+            "internal/common/logger/logger.go",
+            "internal/common/utils/java_wrapper.go",
+            "internal/common/utils/jni_wrapper.c",
+            "internal/common/utils/jni_wrapper.h",
+            "internal/common/validation/validation.go",
+            "pkg/models/models.go"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "cmd/user-service/main.go"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "cmd/user-service/main.go",
+            "internal/common/utils/java_wrapper.go",
+            "internal/common/utils/jni_wrapper.c",
+            "internal/common/utils/jni_wrapper.h",
+            "internal/common/utils/TextUtils.java",
+            "internal/common/utils/ScalaUtils.scala"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 14,
+        "question": "What external packages does the api-gateway component use? (Provide a list of full package names as they appear in go.mod)",
+        "expected": [
+          [
+            "github.com/gin-gonic/gin",
+            "go.uber.org/zap",
+            "github.com/spf13/viper",
+            "github.com/go-playground/validator/v10"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "github.com/gin-gonic/gin"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "github.com/gin-gonic/gin",
+            "github.com/spf13/viper",
+            "go.uber.org/zap"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 15,
+        "question": "What external packages does the user-service component use? (Provide a list of full package names as they appear in go.mod or their source)",
+        "expected": [
+          [
+            "github.com/gin-gonic/gin",
+            "github.com/google/uuid",
+            "github.com/lib/pq",
+            "go.uber.org/zap",
+            "github.com/spf13/viper",
+            "github.com/go-playground/validator/v10",
+            "JNI"
+          ]
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": [
+            "github.com/gin-gonic/gin",
+            "github.com/go-playground/validator/v10",
+            "github.com/google/uuid",
+            "github.com/lib/pq",
+            "github.com/spf13/viper",
+            "go.uber.org/zap"
+          ]
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "github.com/gin-gonic/gin",
+            "github.com/google/uuid"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": [
+            "github.com/gin-gonic/gin",
+            "github.com/google/uuid",
+            "github.com/lib/pq",
+            "github.com/spf13/viper",
+            "go.uber.org/zap"
+          ]
+        },
+        "cursor_RIG": {
+          "score": 0,
+          "actual": [
+            "github.com/gin-gonic/gin",
+            "github.com/google/uuid",
+            "github.com/lib/pq",
+            "go.uber.org/zap",
+            "github.com/spf13/viper",
+            "github.com/go-playground/validator/v10"
+          ]
+        }
+      },
+      {
+        "id": 16,
+        "question": "What programming language does the auth-service component use? (Provide the language name)",
+        "expected": [
+          "go",
+          "Go",
+          "golang",
+          "Golang",
+          "GO"
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 17,
+        "question": "What programming languages does the user-service component use? (Provide a comma-separated list or space-separated list)",
+        "expected": [
+          "go,c",
+          "go, c",
+          "Go and C",
+          "golang,c",
+          "Go,C",
+          "golang, c",
+          "go and c",
+          "C and Go",
+          "c and go",
+          "C,go",
+          "c,Go"
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": "Go, Java, Scala, C"
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": "Go, C, Java, Scala"
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": "Go, Java, Scala, C"
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 18,
+        "question": "What is the name of the Scala library component? (Provide the component name)",
+        "expected": [
+          "scala-utils"
+        ],
+        "difficulty": "medium",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 19,
+        "question": "What component does java-utils depend on? (Provide the component name)",
+        "expected": [
+          "scala-utils"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 20,
+        "question": "What component does user-service depend on? (Provide the component name)",
+        "expected": [
+          "java-utils"
+        ],
+        "difficulty": "medium",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 21,
+        "question": "What is the maximum dependency depth in this repository? (i.e., the longest chain from any component to its deepest dependency)",
+        "expected": 2,
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": 3
+        },
+        "codex_RIG": {
+          "score": 0,
+          "actual": 3
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 22,
+        "question": "List all components (including transitive dependencies) that user-service depends on. (Provide a list)",
+        "expected": [
+          [
+            "java-utils",
+            "scala-utils"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 23,
+        "question": "If the scala-utils library fails to build, which components would also fail? (Provide a list)",
+        "expected": [
+          [
+            "java-utils",
+            "user-service"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 24,
+        "question": "If the java-utils library fails to build, which components would be affected? (Provide a list)",
+        "expected": [
+          [
+            "user-service"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 25,
+        "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list)",
+        "expected": [
+          [
+            "scala-utils",
+            "api-gateway",
+            "auth-service",
+            "order-service",
+            "payment-service",
+            "notification-service"
+          ],
+          [
+            "api-gateway",
+            "scala-utils",
+            "auth-service",
+            "order-service",
+            "payment-service",
+            "notification-service"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 26,
+        "question": "Can api-gateway and auth-service be built in parallel? (Answer yes or no)",
+        "expected": [
+          "yes",
+          "Yes",
+          "y",
+          "true",
+          "TRUE"
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 27,
+        "question": "What does the deploy aggregator depend on? (Provide a list)",
+        "expected": [
+          [
+            "build-all",
+            "docker-build"
+          ],
+          [
+            "docker-build",
+            "build-all"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": []
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 0,
+          "actual": [
+            "build-all"
+          ]
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": []
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 28,
+        "question": "Which external package is used by the most components? (Provide the full package name as it appears in go.mod. If multiple packages are tied, provide any one of them)",
+        "expected": [
+          [
+            "github.com/gin-gonic/gin"
+          ],
+          [
+            "go.uber.org/zap"
+          ],
+          [
+            "github.com/spf13/viper"
+          ],
+          [
+            "github.com/go-playground/validator/v10"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 29,
+        "question": "What components does the build-all aggregator build? (Provide a list of service names)",
+        "expected": [
+          [
+            "api-gateway",
+            "auth-service",
+            "user-service",
+            "order-service",
+            "payment-service",
+            "notification-service"
+          ],
+          [
+            "auth-service",
+            "api-gateway",
+            "user-service",
+            "order-service",
+            "payment-service",
+            "notification-service"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "component_identification",
+        "claude_NORIG": {
+          "score": 0,
+          "actual": []
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 0,
+          "actual": []
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      },
+      {
+        "id": 30,
+        "question": "In what order must scala-utils, java-utils, and user-service be built? (Provide the build order as a list starting with the component that has no dependencies)",
+        "expected": [
+          [
+            "scala-utils",
+            "java-utils",
+            "user-service"
+          ]
+        ],
+        "difficulty": "hard",
+        "category": "dependency_analysis",
+        "claude_NORIG": {
+          "score": 1
+        },
+        "claude_RIG": {
+          "score": 1
+        },
+        "codex_NORIG": {
+          "score": 1
+        },
+        "codex_RIG": {
+          "score": 1
+        },
+        "cursor_NORIG": {
+          "score": 1
+        },
+        "cursor_RIG": {
+          "score": 1
+        }
+      }
+    ],
+    "claude_NORIG": {
+      "total_score": 24,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 7,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 270.0
+    },
+    "claude_RIG": {
+      "total_score": 29,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 10,
+          "max": 10
+        },
+        "hard": {
+          "score": 10,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 107.0
+    },
+    "codex_NORIG": {
+      "total_score": 22,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 5,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 383.0
+    },
+    "codex_RIG": {
+      "total_score": 28,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 9,
+          "max": 10
+        },
+        "medium": {
+          "score": 10,
+          "max": 10
+        },
+        "hard": {
+          "score": 9,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 110.0
+    },
+    "cursor_NORIG": {
+      "total_score": 21,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 5,
+          "max": 10
+        },
+        "hard": {
+          "score": 8,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 37.0
+    },
+    "cursor_RIG": {
+      "total_score": 27,
+      "max_score": 30,
+      "by_difficulty": {
+        "easy": {
+          "score": 8,
+          "max": 10
+        },
+        "medium": {
+          "score": 9,
+          "max": 10
+        },
+        "hard": {
+          "score": 10,
+          "max": 10
+        }
+      },
+      "completion_time_seconds": 30.0
+    }
+  },
+  "analysis": {
+    "by_agent": {
+      "claude": {
+        "with_rig": {
+          "score": 29,
+          "max_score": 30,
+          "percentage": 96.7,
+          "by_difficulty": {
+            "easy": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 24,
+          "max_score": 30,
+          "percentage": 80.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "medium": {
+              "score": 7,
+              "max": 10,
+              "percentage": 70.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 5,
+          "percentage": 16.7,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 3,
+              "percentage": 30.0
+            },
+            "hard": {
+              "absolute": 2,
+              "percentage": 20.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 6,
+          "by_difficulty": {
+            "easy": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                4
+              ]
+            },
+            "medium": {
+              "count": 3,
+              "percentage": 30.0,
+              "question_ids": [
+                13,
+                15,
+                17
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                27,
+                29
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 1,
+          "by_difficulty": {
+            "easy": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                7
+              ]
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          4,
+          13,
+          15,
+          17,
+          27,
+          29
+        ],
+        "questions_broken_by_rig": [
+          7
+        ],
+        "timing": {
+          "time_with_rig_seconds": 107.0,
+          "time_without_rig_seconds": 270.0,
+          "time_saved_seconds": 163.0,
+          "time_reduction_percentage": 60.4,
+          "efficiency_with_rig_score_per_second": 0.271,
+          "efficiency_without_rig_score_per_second": 0.0889
+        }
+      },
+      "codex": {
+        "with_rig": {
+          "score": 28,
+          "max_score": 30,
+          "percentage": 93.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "medium": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            },
+            "hard": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 22,
+          "max_score": 30,
+          "percentage": 73.3,
+          "by_difficulty": {
+            "easy": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "medium": {
+              "score": 5,
+              "max": 10,
+              "percentage": 50.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 6,
+          "percentage": 20.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 5,
+              "percentage": 50.0
+            },
+            "hard": {
+              "absolute": 1,
+              "percentage": 10.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 8,
+          "by_difficulty": {
+            "easy": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                7
+              ]
+            },
+            "medium": {
+              "count": 5,
+              "percentage": 50.0,
+              "question_ids": [
+                12,
+                13,
+                14,
+                15,
+                17
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                21,
+                27
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 2,
+          "by_difficulty": {
+            "easy": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                7
+              ]
+            },
+            "medium": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            },
+            "hard": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                21
+              ]
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          12,
+          13,
+          14,
+          15,
+          17,
+          27
+        ],
+        "questions_broken_by_rig": [],
+        "timing": {
+          "time_with_rig_seconds": 110.0,
+          "time_without_rig_seconds": 383.0,
+          "time_saved_seconds": 273.0,
+          "time_reduction_percentage": 71.3,
+          "efficiency_with_rig_score_per_second": 0.2545,
+          "efficiency_without_rig_score_per_second": 0.0574
+        }
+      },
+      "cursor": {
+        "with_rig": {
+          "score": 27,
+          "max_score": 30,
+          "percentage": 90.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "medium": {
+              "score": 9,
+              "max": 10,
+              "percentage": 90.0
+            },
+            "hard": {
+              "score": 10,
+              "max": 10,
+              "percentage": 100.0
+            }
+          }
+        },
+        "without_rig": {
+          "score": 21,
+          "max_score": 30,
+          "percentage": 70.0,
+          "by_difficulty": {
+            "easy": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            },
+            "medium": {
+              "score": 5,
+              "max": 10,
+              "percentage": 50.0
+            },
+            "hard": {
+              "score": 8,
+              "max": 10,
+              "percentage": 80.0
+            }
+          }
+        },
+        "rig_improvement": {
+          "absolute": 6,
+          "percentage": 20.0,
+          "by_difficulty": {
+            "easy": {
+              "absolute": 0,
+              "percentage": 0.0
+            },
+            "medium": {
+              "absolute": 4,
+              "percentage": 40.0
+            },
+            "hard": {
+              "absolute": 2,
+              "percentage": 20.0
+            }
+          }
+        },
+        "mistakes_without_rig": {
+          "total": 9,
+          "by_difficulty": {
+            "easy": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                4,
+                5
+              ]
+            },
+            "medium": {
+              "count": 5,
+              "percentage": 50.0,
+              "question_ids": [
+                12,
+                13,
+                14,
+                15,
+                17
+              ]
+            },
+            "hard": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                27,
+                29
+              ]
+            }
+          }
+        },
+        "mistakes_with_rig": {
+          "total": 3,
+          "by_difficulty": {
+            "easy": {
+              "count": 2,
+              "percentage": 20.0,
+              "question_ids": [
+                4,
+                7
+              ]
+            },
+            "medium": {
+              "count": 1,
+              "percentage": 10.0,
+              "question_ids": [
+                15
+              ]
+            },
+            "hard": {
+              "count": 0,
+              "percentage": 0.0,
+              "question_ids": []
+            }
+          }
+        },
+        "questions_fixed_by_rig": [
+          5,
+          12,
+          13,
+          14,
+          17,
+          27,
+          29
+        ],
+        "questions_broken_by_rig": [
+          7
+        ],
+        "timing": {
+          "time_with_rig_seconds": 30.0,
+          "time_without_rig_seconds": 37.0,
+          "time_saved_seconds": 7.0,
+          "time_reduction_percentage": 18.9,
+          "efficiency_with_rig_score_per_second": 0.9,
+          "efficiency_without_rig_score_per_second": 0.5676
+        }
+      }
+    },
+    "by_category": {
+      "build_system": {
+        "total_questions": 3,
+        "with_rig": {
+          "score": 6,
+          "max": 9,
+          "percentage": 66.7
+        },
+        "without_rig": {
+          "score": 8,
+          "max": 9,
+          "percentage": 88.9
+        },
+        "improvement": {
+          "absolute": -2,
+          "percentage": -22.2
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 66.7,
+            "without_rig": 100.0,
+            "improvement": -33.3
+          },
+          "codex": {
+            "with_rig": 66.7,
+            "without_rig": 66.7,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 66.7,
+            "without_rig": 100.0,
+            "improvement": -33.3
+          }
+        }
+      },
+      "source_analysis": {
+        "total_questions": 4,
+        "with_rig": {
+          "score": 11,
+          "max": 12,
+          "percentage": 91.7
+        },
+        "without_rig": {
+          "score": 10,
+          "max": 12,
+          "percentage": 83.3
+        },
+        "improvement": {
+          "absolute": 1,
+          "percentage": 8.3
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 75.0,
+            "improvement": 25.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 75.0,
+            "without_rig": 75.0,
+            "improvement": 0.0
+          }
+        }
+      },
+      "dependency_analysis": {
+        "total_questions": 15,
+        "with_rig": {
+          "score": 43,
+          "max": 45,
+          "percentage": 95.6
+        },
+        "without_rig": {
+          "score": 35,
+          "max": 45,
+          "percentage": 77.8
+        },
+        "improvement": {
+          "absolute": 8,
+          "percentage": 17.8
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 86.7,
+            "improvement": 13.3
+          },
+          "codex": {
+            "with_rig": 93.3,
+            "without_rig": 73.3,
+            "improvement": 20.0
+          },
+          "cursor": {
+            "with_rig": 93.3,
+            "without_rig": 73.3,
+            "improvement": 20.0
+          }
+        }
+      },
+      "testing": {
+        "total_questions": 1,
+        "with_rig": {
+          "score": 3,
+          "max": 3,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 3,
+          "max": 3,
+          "percentage": 100.0
+        },
+        "improvement": {
+          "absolute": 0,
+          "percentage": 0.0
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 100.0,
+            "improvement": 0.0
+          }
+        }
+      },
+      "component_identification": {
+        "total_questions": 7,
+        "with_rig": {
+          "score": 21,
+          "max": 21,
+          "percentage": 100.0
+        },
+        "without_rig": {
+          "score": 11,
+          "max": 21,
+          "percentage": 52.4
+        },
+        "improvement": {
+          "absolute": 10,
+          "percentage": 47.6
+        },
+        "per_agent": {
+          "claude": {
+            "with_rig": 100.0,
+            "without_rig": 57.1,
+            "improvement": 42.9
+          },
+          "codex": {
+            "with_rig": 100.0,
+            "without_rig": 57.1,
+            "improvement": 42.9
+          },
+          "cursor": {
+            "with_rig": 100.0,
+            "without_rig": 42.9,
+            "improvement": 57.1
+          }
+        }
+      }
+    },
+    "question_insights": {
+      "hardest_questions": [
+        {
+          "id": 7,
+          "question": "How many aggregators are defined in the build system? (Provide the count)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 0.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [],
+          "agents_correct_without_rig": [
+            "claude",
+            "cursor"
+          ],
+          "avg_improvement": -66.7
+        },
+        {
+          "id": 4,
+          "question": "How many packages with actual code used by the services are in the internal/common/ directory? (Provide the count)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 15,
+          "question": "What external packages does the user-service component use? (Provide a list of full package names as they appear in go.mod or their source)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 21,
+          "question": "What is the maximum dependency depth in this repository? (i.e., the longest chain from any component to its deepest dependency)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        }
+      ],
+      "easiest_questions": [
+        {
+          "id": 1,
+          "question": "What is the Go module name in go.mod? (Provide the module name)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 2,
+          "question": "What Go version is specified in go.mod? (Provide the version number)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 3,
+          "question": "How many executable services are in the cmd/ directory? (Provide the count)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 5,
+          "question": "How many external package dependencies are listed in go.mod? (Provide the count)",
+          "difficulty": "easy",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex"
+          ],
+          "avg_improvement": 33.3
+        },
+        {
+          "id": 6,
+          "question": "How many *_test.go files are in the repository? (Provide the count)",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 8,
+          "question": "What is the default port for the API Gateway service? (Provide the port number)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 9,
+          "question": "What is the default port for the Auth Service? (Provide the port number)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 10,
+          "question": "What web framework package is used for HTTP routing? (Provide the full package name as it appears in go.mod)",
+          "difficulty": "easy",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 11,
+          "question": "How many components are built in this repository? (Provide the count)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 12,
+          "question": "What source files does the api-gateway component use? (Provide a list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 13,
+          "question": "What source files does the user-service component use? (Provide a list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 14,
+          "question": "What external packages does the api-gateway component use? (Provide a list of full package names as they appear in go.mod)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 16,
+          "question": "What programming language does the auth-service component use? (Provide the language name)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 17,
+          "question": "What programming languages does the user-service component use? (Provide a comma-separated list or space-separated list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 18,
+          "question": "What is the name of the Scala library component? (Provide the component name)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 19,
+          "question": "What component does java-utils depend on? (Provide the component name)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 20,
+          "question": "What component does user-service depend on? (Provide the component name)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 22,
+          "question": "List all components (including transitive dependencies) that user-service depends on. (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 23,
+          "question": "If the scala-utils library fails to build, which components would also fail? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 24,
+          "question": "If the java-utils library fails to build, which components would be affected? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 25,
+          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 26,
+          "question": "Can api-gateway and auth-service be built in parallel? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 27,
+          "question": "What does the deploy aggregator depend on? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 28,
+          "question": "Which external package is used by the most components? (Provide the full package name as it appears in go.mod. If multiple packages are tied, provide any one of them)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 29,
+          "question": "What components does the build-all aggregator build? (Provide a list of service names)",
+          "difficulty": "hard",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "codex"
+          ],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 30,
+          "question": "In what order must scala-utils, java-utils, and user-service be built? (Provide the build order as a list starting with the component that has no dependencies)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        }
+      ],
+      "most_rig_sensitive": [
+        {
+          "id": 13,
+          "question": "What source files does the user-service component use? (Provide a list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 17,
+          "question": "What programming languages does the user-service component use? (Provide a comma-separated list or space-separated list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 27,
+          "question": "What does the deploy aggregator depend on? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 100.0
+        },
+        {
+          "id": 15,
+          "question": "What external packages does the user-service component use? (Provide a list of full package names as they appear in go.mod or their source)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 0.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex"
+          ],
+          "agents_correct_without_rig": [],
+          "avg_improvement": 66.7
+        },
+        {
+          "id": 12,
+          "question": "What source files does the api-gateway component use? (Provide a list)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 33.3,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude"
+          ],
+          "avg_improvement": 66.7
+        }
+      ],
+      "rig_insensitive": [
+        {
+          "id": 21,
+          "question": "What is the maximum dependency depth in this repository? (i.e., the longest chain from any component to its deepest dependency)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 66.7,
+          "success_rate_without_rig": 66.7,
+          "agents_correct_with_rig": [
+            "claude",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 1,
+          "question": "What is the Go module name in go.mod? (Provide the module name)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 2,
+          "question": "What Go version is specified in go.mod? (Provide the version number)",
+          "difficulty": "easy",
+          "category": "build_system",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 3,
+          "question": "How many executable services are in the cmd/ directory? (Provide the count)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 6,
+          "question": "How many *_test.go files are in the repository? (Provide the count)",
+          "difficulty": "easy",
+          "category": "testing",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 8,
+          "question": "What is the default port for the API Gateway service? (Provide the port number)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 9,
+          "question": "What is the default port for the Auth Service? (Provide the port number)",
+          "difficulty": "easy",
+          "category": "source_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 10,
+          "question": "What web framework package is used for HTTP routing? (Provide the full package name as it appears in go.mod)",
+          "difficulty": "easy",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 11,
+          "question": "How many components are built in this repository? (Provide the count)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 16,
+          "question": "What programming language does the auth-service component use? (Provide the language name)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 18,
+          "question": "What is the name of the Scala library component? (Provide the component name)",
+          "difficulty": "medium",
+          "category": "component_identification",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 19,
+          "question": "What component does java-utils depend on? (Provide the component name)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 20,
+          "question": "What component does user-service depend on? (Provide the component name)",
+          "difficulty": "medium",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 22,
+          "question": "List all components (including transitive dependencies) that user-service depends on. (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 23,
+          "question": "If the scala-utils library fails to build, which components would also fail? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 24,
+          "question": "If the java-utils library fails to build, which components would be affected? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 25,
+          "question": "Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 26,
+          "question": "Can api-gateway and auth-service be built in parallel? (Answer yes or no)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 28,
+          "question": "Which external package is used by the most components? (Provide the full package name as it appears in go.mod. If multiple packages are tied, provide any one of them)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        },
+        {
+          "id": 30,
+          "question": "In what order must scala-utils, java-utils, and user-service be built? (Provide the build order as a list starting with the component that has no dependencies)",
+          "difficulty": "hard",
+          "category": "dependency_analysis",
+          "success_rate_with_rig": 100.0,
+          "success_rate_without_rig": 100.0,
+          "agents_correct_with_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "agents_correct_without_rig": [
+            "claude",
+            "codex",
+            "cursor"
+          ],
+          "avg_improvement": 0.0
+        }
+      ],
+      "unanimous_failures_with_rig": [
+        7
+      ],
+      "unanimous_failures_without_rig": [
+        13,
+        17,
+        27,
+        15
+      ]
+    },
+    "rig_effectiveness": {
+      "by_difficulty": {
+        "easy": {
+          "avg_improvement": 0.0,
+          "agents_benefited": 0
+        },
+        "medium": {
+          "avg_improvement": 40.0,
+          "agents_benefited": 3
+        },
+        "hard": {
+          "avg_improvement": 16.7,
+          "agents_benefited": 3
+        }
+      },
+      "correlation": {
+        "pattern": "Agents with higher baseline show less improvement from RIG",
+        "data": [
+          {
+            "agent": "claude",
+            "baseline_pct": 80.0,
+            "improvement_pct": 16.7
+          },
+          {
+            "agent": "codex",
+            "baseline_pct": 73.3,
+            "improvement_pct": 20.0
+          },
+          {
+            "agent": "cursor",
+            "baseline_pct": 70.0,
+            "improvement_pct": 20.0
+          }
+        ]
+      }
+    },
+    "timing_insights": {
+      "speed_vs_accuracy_with_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 30.0,
+          "score_percentage": 90.0,
+          "efficiency_score_per_second": 0.9
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 107.0,
+          "score_percentage": 96.7,
+          "efficiency_score_per_second": 0.271
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 110.0,
+          "score_percentage": 93.3,
+          "efficiency_score_per_second": 0.2545
+        }
+      ],
+      "speed_vs_accuracy_without_rig": [
+        {
+          "agent": "cursor",
+          "time_seconds": 37.0,
+          "score_percentage": 70.0,
+          "efficiency_score_per_second": 0.5676
+        },
+        {
+          "agent": "claude",
+          "time_seconds": 270.0,
+          "score_percentage": 80.0,
+          "efficiency_score_per_second": 0.0889
+        },
+        {
+          "agent": "codex",
+          "time_seconds": 383.0,
+          "score_percentage": 73.3,
+          "efficiency_score_per_second": 0.0574
+        }
+      ],
+      "time_reduction_vs_score_improvement": {
+        "correlation_note": "No clear correlation between time reduction and score improvement",
+        "data": [
+          {
+            "agent": "codex",
+            "time_reduction_percentage": 71.3,
+            "score_improvement_percentage": 20.0,
+            "time_saved_seconds": 273.0,
+            "score_points_gained": 6
+          },
+          {
+            "agent": "claude",
+            "time_reduction_percentage": 60.4,
+            "score_improvement_percentage": 16.7,
+            "time_saved_seconds": 163.0,
+            "score_points_gained": 5
+          },
+          {
+            "agent": "cursor",
+            "time_reduction_percentage": 18.9,
+            "score_improvement_percentage": 20.0,
+            "time_saved_seconds": 7.0,
+            "score_points_gained": 6
+          }
+        ]
+      },
+      "efficiency_analysis": {
+        "avg_efficiency_with_rig_score_per_second": 0.4752,
+        "avg_efficiency_without_rig_score_per_second": 0.238,
+        "efficiency_improvement_percentage": 99.7
+      }
+    },
+    "summary": {
+      "best_overall_with_rig": {
+        "agent": "claude",
+        "percentage": 96.7
+      },
+      "best_overall_without_rig": {
+        "agent": "claude",
+        "percentage": 80.0
+      },
+      "most_rig_improvement": {
+        "agent": "codex",
+        "improvement_percentage": 20.0
+      },
+      "least_rig_improvement": {
+        "agent": "claude",
+        "improvement_percentage": 16.7
+      },
+      "average_with_rig": 93.3,
+      "average_without_rig": 74.4,
+      "average_rig_improvement": 18.9,
+      "timing": {
+        "average_time_with_rig_seconds": 82.33,
+        "average_time_without_rig_seconds": 230.0,
+        "average_time_saved_seconds": 147.67,
+        "average_time_reduction_percentage": 50.2,
+        "fastest_with_rig": {
+          "agent": "cursor",
+          "time_seconds": 30.0
+        },
+        "fastest_without_rig": {
+          "agent": "cursor",
+          "time_seconds": 37.0
+        },
+        "most_time_saved": {
+          "agent": "codex",
+          "time_saved_seconds": 273.0,
+          "time_reduction_percentage": 71.3
+        },
+        "highest_time_reduction_percentage": {
+          "agent": "codex",
+          "time_reduction_percentage": 71.3
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+[package]
+name = "lexer"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+common-types = { path = "../common-types" }
+error-reporting = { path = "../error-reporting" }
+logos.workspace = true
+unicode-xid.workspace = true

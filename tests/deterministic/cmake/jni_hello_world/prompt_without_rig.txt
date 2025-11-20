@@ -1,0 +1,65 @@
+You are an expert at analyzing code repositories and build systems.
+
+Please answer the following questions about this repository. Analyze the repository structure, build files, and source code to provide accurate answers.
+
+When answering questions, you should understand these common build system terms:
+
+- **Components**: Build components (executables, libraries, runnable artifacts like JARs or Python files). Each component generates an artifact from source files, or is the source files themselves if interpreted.
+- **Aggregators**: Build steps that don't generate artifacts but invoke or depend on other build steps (e.g., "build-all" targets).
+- **Runners**: Execution or test runners that don't generate artifacts.
+- **Tests**: Test suites that use a component for testing or a runner that executes the test.
+
+IMPORTANT: Write your answers to a file named "answers.json" in the root of this repository.
+
+The answers.json file must be a JSON array with this exact format:
+[
+  {
+    "id": 1,
+    "answer": "your answer here"
+  },
+  {
+    "id": 2,
+    "answer": ["list", "of", "items"]
+  }
+]
+
+For answers that are lists, use JSON arrays. For yes/no questions, answer with "yes" or "no".
+
+Questions:
+
+1. What is the CMake project name?
+2. What is the minimum CMake version required?
+3. How many .cpp files are in the src/cpp/ directory?
+4. How many .java files are in the entire repository?
+5. How many .go files are in src/go/?
+6. How many add_test commands are in the CMakeLists.txt?
+7. How many find_package commands are in the CMakeLists.txt?
+8. Is enable_testing() called in this project? (Answer yes or no)
+9. How many lines are in the CMakeLists.txt file?
+10. How many .jar files are built by this project?
+11. How many components are built in this repository?
+12. What source files (excluding headers) are used to build the jni_hello_world component? (Provide a list)
+13. What source files are used to build the java_hello_lib component? (Provide a list)
+14. Which components are built using custom CMake functions (not standard CMake commands like add_executable or add_jar)? (Provide a list, use Windows artifact names)
+15. What external packages does the jni_hello_world component depend on? (Provide a list)
+16. What source files are used to build the test_jni_wrapper component? (Provide a list)
+17. Which component does the test_jni_wrapper_cpp test execute? (use Windows artifact name)
+18. What test framework is used for test_hello_world_java?
+19. Which components depend on the JNI external package? (Provide a list, use Windows artifact names)
+20. What are the names of all output artifacts produced by this build on Windows? (Provide a list)
+21. Which components can be built first because they have zero dependencies on other components in this repository? (Provide a list, use Windows artifact names)
+22. List all components that jni_hello_world depends on (use Windows artifact names).
+23. Can java_hello_lib and libhello.dll be built in parallel? (Answer yes or no)
+24. If libhello.dll fails to build, which other components would also fail on Windows? (Provide a list, use Windows artifact names)
+25. In which programming language is the main() entry point of the application implemented?
+26. Which programming language calls Java code in this project?
+27. What test frameworks are used in this repository? (Provide a list)
+28. How many different programming languages are used across all buildable components?
+29. Which component does HelloWorldTest depend on? (use Windows artifact name)
+30. How many custom CMake functions are defined in CMakeLists.txt (using function/endfunction keywords)?
+
+
+Remember: Write your answers to answers.json in the repository root!
+
+When you have finished writing all answers, output EXACTLY this line with nothing else:
+READY!

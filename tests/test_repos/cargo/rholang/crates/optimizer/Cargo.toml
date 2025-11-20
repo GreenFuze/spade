@@ -1,0 +1,10 @@
+[package]
+name = "optimizer"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ir-gen = { path = "../ir-gen" }
+common-types = { path = "../common-types" }
+petgraph.workspace = true
+smallvec.workspace = true

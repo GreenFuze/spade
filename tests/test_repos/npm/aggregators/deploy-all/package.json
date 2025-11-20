@@ -1,0 +1,7 @@
+{
+  "name": "@monorepo/deploy-all",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "npm run build --workspace=@monorepo/web-app && npm run build --workspace=@monorepo/admin-portal && npm run build --workspace=@monorepo/api-server && echo 'Deployment complete'"
+  }
+}

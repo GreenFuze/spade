@@ -8,13 +8,15 @@ This module handles all markdown report generation with:
 - Embedded repository-specific detailed reports
 """
 
+import statistics
 from pathlib import Path
 from typing import Dict, List, Any
 from datetime import datetime, timezone
+from scipy import stats as scipy_stats
 
 from .templates import *
 from .complexity import format_complexity_breakdown, get_complexity_level, get_correlation_strength_text
-from .config import AGENT_DISPLAY, DIFFICULTIES, DIFFICULTY_DISPLAY
+from .config import AGENT_DISPLAY, DIFFICULTIES, DIFFICULTY_DISPLAY, REPOS
 
 
 def _read_description(repo_path: Path) -> str:
@@ -29,7 +31,10 @@ def _read_description(repo_path: Path) -> str:
     """
     desc_file = repo_path / "description.md"
     if not desc_file.exists():
-        return "No description available."
+        raise FileNotFoundError(
+            f"description.md not found at: {desc_file}\n"
+            f"Every repository must have a description.md file."
+        )
 
     with open(desc_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -52,10 +57,17 @@ def _read_repo_analysis(repo_path: Path) -> str:
 
     Returns:
         Full analysis markdown content
+
+    Raises:
+        FileNotFoundError: If analysis.md does not exist
     """
     analysis_file = repo_path / "analysis_images" / "analysis.md"
     if not analysis_file.exists():
-        return f"*Analysis not available for this repository.*"
+        raise FileNotFoundError(
+            f"analysis.md not found at: {analysis_file}\n"
+            f"Every repository must have an analysis.md file generated before creating the summary report.\n"
+            f"Run the individual repository analysis first."
+        )
 
     with open(analysis_file, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -107,7 +119,12 @@ def _generate_executive_summary(
 
     # Add each repository with description
     for repo in repo_data_list:
-        repo_path = script_dir / "cmake" / repo['name']
+        # Find the repo config entry that matches this name
+        repo_config = next((r for r in REPOS if r['name'] == repo['name']), None)
+        if repo_config is None:
+            raise ValueError(f"Repository '{repo['name']}' not found in REPOS config")
+        repo_path = repo_config['path']
+
         description = _read_description(repo_path)
         complexity_level = repo['complexity']['level']
 
@@ -174,6 +191,25 @@ def _generate_complexity_section(
     return lines
 
 
+def _generate_terminology_section() -> List[str]:
+    """
+    Generate terminology definitions section.
+
+    Returns:
+        List of markdown lines
+    """
+    lines = [
+        TERMINOLOGY_HEADER,
+        BLANK_LINE,
+        TERMINOLOGY_CONTENT,
+        BLANK_LINE,
+        HORIZONTAL_RULE,
+        BLANK_LINE,
+    ]
+
+    return lines
+
+
 def _generate_correlation_section(
     repo_data_list: List[Dict[str, Any]],
     aggregate: Dict[str, Any]
@@ -216,6 +252,122 @@ def _generate_correlation_section(
         HORIZONTAL_RULE,
         BLANK_LINE,
     ]
+
+    return lines
+
+
+def _generate_language_comparison_section(
+    repo_data_list: List[Dict[str, Any]]
+) -> List[str]:
+    """
+    Generate multi-lingual vs single-language comparison section.
+
+    Args:
+        repo_data_list: List of repository data
+
+    Returns:
+        List of markdown lines
+    """
+    from .config import MULTI_LINGUAL_REPOS, SINGLE_LANGUAGE_REPOS
+
+    # Separate repos by language category
+    multi_lingual_repos = [r for r in repo_data_list if r['name'] in MULTI_LINGUAL_REPOS]
+    single_language_repos = [r for r in repo_data_list if r['name'] in SINGLE_LANGUAGE_REPOS]
+
+    # Calculate averages for multi-lingual
+    multi_score_improvements = [r['results']['score_improvement'] for r in multi_lingual_repos]
+    multi_time_reductions = [r['results']['time_reduction_percentage'] for r in multi_lingual_repos]
+    multi_efficiency_improvements = [r['results']['efficiency_improvement'] for r in multi_lingual_repos]
+
+    multi_avg_score = statistics.mean(multi_score_improvements)
+    multi_avg_time = statistics.mean(multi_time_reductions)
+    multi_avg_efficiency = statistics.mean(multi_efficiency_improvements)
+
+    # Calculate averages for single-language
+    single_score_improvements = [r['results']['score_improvement'] for r in single_language_repos]
+    single_time_reductions = [r['results']['time_reduction_percentage'] for r in single_language_repos]
+    single_efficiency_improvements = [r['results']['efficiency_improvement'] for r in single_language_repos]
+
+    single_avg_score = statistics.mean(single_score_improvements)
+    single_avg_time = statistics.mean(single_time_reductions)
+    single_avg_efficiency = statistics.mean(single_efficiency_improvements)
+
+    # Calculate differences
+    score_diff = multi_avg_score - single_avg_score
+    time_diff = multi_avg_time - single_avg_time
+    efficiency_diff = multi_avg_efficiency - single_avg_efficiency
+
+    # Statistical significance tests (t-test)
+    score_ttest = scipy_stats.ttest_ind(multi_score_improvements, single_score_improvements)
+    time_ttest = scipy_stats.ttest_ind(multi_time_reductions, single_time_reductions)
+    efficiency_ttest = scipy_stats.ttest_ind(multi_efficiency_improvements, single_efficiency_improvements)
+
+    def format_significance(p_value):
+        if p_value < 0.01:
+            return "** (p<0.01)"
+        elif p_value < 0.05:
+            return "* (p<0.05)"
+        else:
+            return "n.s."
+
+    # Build markdown
+    lines = [
+        LANGUAGE_COMPARISON_HEADER,
+        BLANK_LINE,
+        LANGUAGE_COMPARISON_INTRO.format(
+            multi_count=len(multi_lingual_repos),
+            multi_repos=", ".join([r['name'] for r in multi_lingual_repos]),
+            single_count=len(single_language_repos),
+            single_repos=", ".join([r['name'] for r in single_language_repos])
+        ),
+        BLANK_LINE,
+        LANGUAGE_COMPARISON_TABLE_HEADER,
+        BLANK_LINE,
+        LANGUAGE_COMPARISON_TABLE,
+        LANGUAGE_COMPARISON_ROW.format(
+            metric="Score Improvement",
+            multi_avg=f"{multi_avg_score:.1f}%",
+            single_avg=f"{single_avg_score:.1f}%",
+            difference=f"{score_diff:+.1f}%",
+            significance=format_significance(score_ttest.pvalue)
+        ),
+        LANGUAGE_COMPARISON_ROW.format(
+            metric="Time Reduction",
+            multi_avg=f"{multi_avg_time:.1f}%",
+            single_avg=f"{single_avg_time:.1f}%",
+            difference=f"{time_diff:+.1f}%",
+            significance=format_significance(time_ttest.pvalue)
+        ),
+        LANGUAGE_COMPARISON_ROW.format(
+            metric="Efficiency Improvement",
+            multi_avg=f"{multi_avg_efficiency:.1f}%",
+            single_avg=f"{single_avg_efficiency:.1f}%",
+            difference=f"{efficiency_diff:+.1f}%",
+            significance=format_significance(efficiency_ttest.pvalue)
+        ),
+        BLANK_LINE,
+    ]
+
+    # Generate conclusion
+    if score_diff > 5 and score_ttest.pvalue < 0.05:
+        conclusion = "Multi-lingual repositories benefit significantly more from RIG"
+        interpretation = f"Multi-lingual repositories show {score_diff:.1f} percentage points higher score improvement on average (statistically significant, p={score_ttest.pvalue:.3f}). This suggests RIG is particularly valuable for complex, multi-language codebases where cross-language understanding is challenging."
+    elif abs(score_diff) < 3:
+        conclusion = "RIG provides consistent value regardless of language diversity"
+        interpretation = f"The difference between multi-lingual and single-language repositories is minimal ({score_diff:.1f} percentage points), suggesting RIG effectiveness is driven more by other complexity factors than language count alone."
+    else:
+        conclusion = "Language diversity shows moderate impact on RIG effectiveness"
+        interpretation = f"Multi-lingual repositories show {score_diff:.1f} percentage points higher score improvement, though statistical significance is limited due to small sample size (p={score_ttest.pvalue:.3f})."
+
+    lines.extend([
+        LANGUAGE_COMPARISON_FINDING.format(
+            conclusion=conclusion,
+            interpretation=interpretation
+        ),
+        BLANK_LINE,
+        HORIZONTAL_RULE,
+        BLANK_LINE,
+    ])
 
     return lines
 
@@ -631,7 +783,13 @@ def _generate_embedded_reports_section(
     # Add each repository's detailed analysis
     for repo in repo_data_list:
         repo_id = repo['name'].lower().replace('_', '-')
-        repo_path = script_dir / "cmake" / repo['name']
+
+        # Find the repo config entry to get the correct path
+        repo_config = next((r for r in REPOS if r['name'] == repo['name']), None)
+        if repo_config is None:
+            raise ValueError(f"Repository '{repo['name']}' not found in REPOS config")
+        repo_path = repo_config['path']
+
         analysis_content = _read_repo_analysis(repo_path)
         
         # in the analysis_content, adjust image paths if necessary,
@@ -696,7 +854,9 @@ def generate_markdown_report(
     # Generate all sections
     md_lines.extend(_generate_executive_summary(repo_data_list, aggregate, script_dir))
     md_lines.extend(_generate_complexity_section(repo_data_list))
+    md_lines.extend(_generate_terminology_section())
     md_lines.extend(_generate_correlation_section(repo_data_list, aggregate))
+    md_lines.extend(_generate_language_comparison_section(repo_data_list))
     md_lines.extend(_generate_repository_comparison_section(repo_data_list))
     md_lines.extend(_generate_agent_performance_section(aggregate))
     md_lines.extend(_generate_difficulty_section(aggregate))
